@@ -88,21 +88,19 @@ Keycloak服务器有三个可下载的发行版:
 
 > Keycloak构建在WildFly应用服务器之上。本指南只讨论在特定模式下部署的基础知识。如果您想了解这方面的具体信息，最好的去处是[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html).  
 
-### 3.1. Standalone Mode
+### 3.1. 独立模式
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/operating-mode/standalone.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/operating-mode/standalone.adoc)
+独立的操作模式只在您希望运行一个且仅运行一个Keycloak服务器实例时才有用。它不适用于集群部署，而且所有缓存都是非分布式的，并且只在本地使用。 不建议在生产中使用独立模式，因为只有一个故障点。如果您的单机模式服务器宕机，用户将无法登录。这种模式只适用于测试驱动和使用Keycloak的功能.
 
-Standalone operating mode is only useful when you want to run one, and only one Keycloak server instance. It is not usable for clustered deployments and all caches are non-distributed and local-only. It is not recommended that you use standalone mode in production as you will have a single point of failure. If your standalone mode server goes down, users will not be able to log in. This mode is really only useful to test drive and play with the features of Keycloak
+#### 3.1.1. 独立的启动脚本
 
-#### 3.1.1. Standalone Boot Script
+当以独立模式运行服务器时，您需要运行一个特定的脚本来启动服务器，这取决于您的操作系统。这些脚本位于服务器分发版的 *bin/* 目录中。
 
-When running the server in standalone mode, there is a specific script you need to run to boot the server depending on your operating system. These scripts live in the *bin/* directory of the server distribution.
-
-Standalone Boot Scripts
+独立的启动脚本
 
 ![standalone boot files](assets/standalone-boot-files.png)
 
-To boot the server:
+启动服务器:
 
 Linux/Unix
 
@@ -116,29 +114,25 @@ Windows
 > ...\bin\standalone.bat
 ```
 
-#### 3.1.2. Standalone Configuration
+#### 3.1.2. 独立的配置
 
-The bulk of this guide walks you through how to configure infrastructure level aspects of Keycloak. These aspects are configured in a configuration file that is specific to the application server that Keycloak is a derivative of. In the standalone operation mode, this file lives in *…/standalone/configuration/standalone.xml*. This file is also used to configure non-infrastructure level things that are specific to Keycloak components.
+本指南的大部分内容将指导您如何配置Keycloak的基础设施级别方面。 这些方面是在配置文件中配置的，该配置文件特定于Keycloak派生的应用程序服务器。在独立操作模式下，该文件位于 *.. / independent /configuration/standalone.xml* 中。 此文件还用于配置特定于Keycloak组件的非基础设施级别的内容。
 
-Standalone Config File
+独立的配置文件
 
 ![standalone config file](assets/standalone-config-file.png)
 
-|      | Any changes you make to this file while the server is running will not take effect and may even be overwritten by the server. Instead use the command line scripting or the web console of WildFly. See the [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html) for more information. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 在服务器运行时对该文件所做的任何更改都不会生效，甚至可能被服务器覆盖。而是使用命令行脚本或WildFly的web控制台。 更多信息参见[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)。                     
 
-### 3.2. Standalone Clustered Mode
+### 3.2. 独立的集群模式
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/operating-mode/standalone-ha.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/operating-mode/standalone-ha.adoc)
+当您希望在集群中运行Keycloak时，可以使用独立集群操作模式。此模式要求在希望运行服务器实例的每台计算机上都有Keycloak分发版的副本。这种模式最初很容易部署，但是会变得相当麻烦。要进行配置更改，您必须修改每台机器上的每个发行版。对于大型集群，这可能会耗费时间并容易出错。
 
-Standalone clustered operation mode is for when you want to run Keycloak within a cluster. This mode requires that you have a copy of the Keycloak distribution on each machine you want to run a server instance. This mode can be very easy to deploy initially, but can become quite cumbersome. To make a configuration change you’ll have to modify each distribution on each machine. For a large cluster this can become time consuming and error prone.
+#### 3.2.1. 独立的集群配置
 
-#### 3.2.1. Standalone Clustered Configuration
+该发行版有一个主要预配置的app服务器配置文件，用于在集群中运行。它具有用于网络、数据库、缓存和发现的所有特定基础设施设置。此文件驻留在 *…/standalone/configuration/standalone-ha.xml*. 这个配置中缺少一些东西。如果不配置共享数据库连接，就不能在集群中运行Keycloak。您还需要在集群前面部署某种类型的负载均衡器。 本指南的[集群](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustering)  和 [数据库](https://www.keycloak.org/docs/latest/server_installation/index.html#_database) 部分将指导您了解这些内容。
 
-The distribution has a mostly pre-configured app server configuration file for running within a cluster. It has all the specific infrastructure settings for networking, databases, caches, and discovery. This file resides in *…/standalone/configuration/standalone-ha.xml*. There’s a few things missing from this configuration. You can’t run Keycloak in a cluster without configuring a shared database connection. You also need to deploy some type of load balancer in front of the cluster. The [clustering](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustering) and [database](https://www.keycloak.org/docs/latest/server_installation/index.html#_database) sections of this guide walk you though these things.
-
-Standalone HA Config
+标准HA配置
 
 ![standalone ha config file](assets/standalone-ha-config-file.png)
 
