@@ -14,87 +14,79 @@ Keycloak构建在WildFly应用服务器之上，它的子项目包括Infinispan(
 
 - [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)
 
-## 2. Installation
+## 2. 安装
 
 
-  Installing Keycloak is as simple as downloading it and unzipping it. This chapter reviews system requirements as well as the directory structure of the distribution.
+  安装Keycloak非常简单，只需下载并解压缩即可。本章回顾了系统的需求以及发行版的目录结构。
 
-### 2.1. System Requirements
+### 2.1. 系统需求
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/installation/system-requirements.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/installation/system-requirements.adoc)
+以下是运行Keycloak身份验证服务器的要求:
 
-These are the requirements to run the Keycloak authentication server:
-
-- Can run on any operating system that runs Java
+- 能运行Java的任何操作系统
 - Java 8 JDK
-- zip or gzip and tar
-- At least 512M of RAM
+- zip 或者 gzip 和 tar
+- 至少512M内存
 - At least 1G of diskspace
-- A shared external database like PostgreSQL, MySQL, Oracle, etc. Keycloak requires an external shared database if you want to run in a cluster. Please see the [database configuration](https://www.keycloak.org/docs/latest/server_installation/index.html#_database) section of this guide for more information.
-- Network multicast support on your machine if you want to run in a cluster. Keycloak can be clustered without multicast, but this requires a bunch of configuration changes. Please see the [clustering](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustering) section of this guide for more information.
-- On Linux, it is recommended to use `/dev/urandom` as a source of random data to prevent Keycloak hanging due to lack of available entropy, unless `/dev/random` usage is mandated by your security policy. To achieve that on Oracle JDK 8 and OpenJDK 8, set the `java.security.egd` system property on startup to `file:/dev/urandom`.
+- 共享的外部数据库，如PostgreSQL、MySQL、Oracle等。如果要在集群中运行，Keycloak需要一个外部共享数据库。有关更多信息，请参阅本指南的[数据库配置](https://www.keycloak.org/docs/latest/server_installation/index.html#_database)部分。
+- 如果您想在集群中运行，最好计算机上的网络支持多播。Keycloak可以在没有多播的情况下集群化，但这需要大量的配置更改。有关更多信息，请参见本指南的[集群](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustering)部分。
+- 在Linux上，建议使用`/dev/urandom`作为随机数据的来源，以防止由于缺少可用的熵而导致密钥隐藏挂起，除非您的安全策略强制使用`/dev/random`。要在Oracle JDK 8和OpenJDK 8上实现这一点，请设置 `java.security.egd`系统属性为` file:/dev/urandom`。
 
-### 2.2. Installing Distribution Files
+### 2.2. 安装分布式文件
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/installation/distribution-files-community.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/installation/distribution-files-community.adoc)
-
-The Keycloak Server has three downloadable distributions:
+Keycloak服务器有三个可下载的发行版:
 
 - 'keycloak-6.0.0.[zip|tar.gz]'
 - 'keycloak-overlay-6.0.0.[zip|tar.gz]'
 - 'keycloak-demo-6.0.0.[zip|tar.gz]'
 
-The 'keycloak-6.0.0.[zip|tar.gz]' file is the server only distribution. It contains nothing other than the scripts and binaries to run the Keycloak Server. To unpack this file just run your operating system’s `unzip` or `gunzip` and `tar` utilities.
+'keycloak-6.0.0.[zip|tar.gz]'文件是服务器唯一的发行版。它只包含运行Keycloak服务器的脚本和二进制文件。要解压缩这个文件，只需运行操作系统的`unzip`或`gunzip`和`tar`实用程序。
 
-The 'keycloak-overlay-6.0.0.[zip|tar.gz]' file is a WildFly add-on that allows you to install Keycloak Server on top of an existing WildFly distribution. We do not support users that want to run their applications and Keycloak on the same server instance. To install the Keycloak Service Pack, just unzip it in the root directory of your WildFly distribution, open the bin directory in a shell and run `./jboss-cli.[sh|bat] --file=keycloak-install.cli`.
+'keycloak-overlay-6.0.0.[zip|tar.gz]'文件是一个WildFly插件，允许您在现有的WildFly发行版上安装Keycloak服务器。我们不支持用户希望在同一服务器实例上运行应用程序和Keycloak。要安装Keycloak服务包，只需将其解压到WildFly发行版的根目录中，打开shell中的bin目录并运行`./jboss-cli.[sh|bat] --file=keycloak-install.cli`。
 
-The 'keycloak-demo-6.0.0.[zip|tar.gz]' contains the server binaries, all documentation and all examples. It is preconfigured with both the OIDC and SAML client application adapters and can deploy any of the distribution examples out of the box with no configuration. This distribution is only recommended for those that want to test drive Keycloak. We do not support users that run the demo distribution in production.
+'keycloak-demo-6.0.0.[zip|tar.gz]' 包含服务器二进制文件、所有文档和所有示例。它预先配置了OIDC和SAML客户机应用程序适配器，可以在不进行任何配置的情况下开箱即用地部署任何分发示例。此分发版只建议那些想要测试Keycloak的用户使用。我们不支持用户在生产环境中运行演示发行版。
 
-To unpack of these files run the `unzip` or `gunzip` and `tar` utilities.
+要解压缩这些文件，请运行`unzip`或`gunzip`和`tar`实用程序。
 
-### 2.3. Distribution Directory Structure
+### 2.3. 分布式目录结构
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/installation/directory-structure.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/installation/directory-structure.adoc)
+本章将介绍服务器分发版的目录结构。
 
-This chapter walks you through the directory structure of the server distribution.
-
-distribution directory structure
+分布式目录结构
 
 ![distribution](assets/files.png)
 
-Let’s examine the purpose of some of the directories:
+让我们来看看其中一些目录的用途:
 
 - *bin/*
 
-  This contains various scripts to either boot the server or perform some other management action on the server.
+  它包含各种脚本，可以启动服务器，也可以在服务器上执行其他管理操作。
 
 - *domain/*
 
-  This contains configuration files and working directory when running Keycloak in [domain mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_domain-mode).
+  当在[域模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_domain-mode)中运行Keycloak时，它包含配置文件和工作目录。
 
 - *modules/*
 
-  These are all the Java libraries used by the server.
+  这些都是服务器使用的所有Java库。
 
 - *providers/*
 
-  If you are writing extensions to keycloak, you can put your extensions here. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information on this.
+  如果您正在为keycloak编写扩展，可以将扩展放在这里。有关这方面的更多信息，请参见[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
 - *standalone/*
 
-  This contains configuration files and working directory when running Keycloak in [standalone mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_standalone-mode).
+  这包含配置文件和工作目录时，运行Keycloak在[独立模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_standalone-mode)。
 
 - *themes/*
 
-  This directory contains all the html, style sheets, JavaScript files, and images used to display any UI screen displayed by the server. Here you can modify an existing theme or create your own. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information on this.
+  此目录包含用于服务器显示的任何UI所需要的所有html、样式表、JavaScript文件和图像。在这里，您可以修改现有的主题或创建自己的主题。有关这方面的更多信息，请参见[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-## 3. Choosing an Operating Mode
+## 3. 选择工作模式
 
-Before deploying Keycloak in a production environment you need to decide which type of operating mode you are going to use. Will you run Keycloak within a cluster? Do you want a centralized way to manage your server configurations? Your choice of operating mode effects how you configure databases, configure caching and even how you boot the server.
+在生产环境中部署Keycloak之前，您需要决定使用哪种类型的操作模式。您会在集群中运行Keycloak吗?您需要一种集中的方式来管理服务器配置吗?您选择的操作模式将影响您如何配置数据库、配置缓存，甚至如何启动服务器。
 
-|      | The Keycloak is built on top of the WildFly Application Server. This guide will only go over the basics for deployment within a specific mode. If you want specific information on this, a better place to go would be the [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> Keycloak构建在WildFly应用服务器之上。本指南只讨论在特定模式下部署的基础知识。如果您想了解这方面的具体信息，最好的去处是[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html).  
 
 ### 3.1. Standalone Mode
 
