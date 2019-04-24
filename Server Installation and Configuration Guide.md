@@ -2,7 +2,7 @@
 
 [原文地址: https://www.keycloak.org/docs/latest/server_installation/index.html](https://www.keycloak.org/docs/latest/server_installation/index.html)
 
-## 1. Guide Overview
+## 1. 指南概述
 
 本指南的目的是介绍在首次启动Keycloak服务器之前需要完成的步骤。如果您只是想测试Keycloak，它几乎是用它自己的嵌入式和本地数据库开箱即用。对于将要在生产环境中运行的实际部署，您需要决定如何在运行时管理服务器配置(独立或域模式)，为Keycloak存储配置共享数据库，设置加密和HTTPS，最后设置Keycloak在集群中运行。本指南将详细介绍部署服务器之前必须进行的任何预引导决策和设置的各个方面。
 
@@ -136,19 +136,17 @@ Windows
 
 ![standalone ha config file](assets/standalone-ha-config-file.png)
 
-|      | Any changes you make to this file while the server is running will not take effect and may even be overwritten by the server. Instead use the command line scripting or the web console of WildFly. See the [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html) for more information. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 在服务器运行时对该文件所做的任何更改都不会生效，甚至可能被服务器覆盖。建议使用命令行脚本或WildFly的web控制台。 更多信息参见 [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)                                  |
 
-#### 3.2.2. Standalone Clustered Boot Script
+#### 3.2.2. 独立集群启动脚本
 
-You use the same boot scripts to start Keycloak as you do in standalone mode. The difference is that you pass in an additional flag to point to the HA config file.
+使用与在独立模式下相同的引导脚本启动Keycloak。不同之处在于，您传递了一个额外的标志来指向HA配置文件。
 
-Standalone Clustered Boot Scripts
+独立集群启动脚本
 
 ![standalone boot files](https://www.keycloak.org/docs/latest/server_installation/keycloak-images/standalone-boot-files.png)
 
-To boot the server:
+启动服务器:
 
 Linux/Unix
 
@@ -162,51 +160,47 @@ Windows
 > ...\bin\standalone.bat --server-config=standalone-ha.xml
 ```
 
-### 3.3. Domain Clustered Mode
+### 3.3. 域集群模式
 
-Domain mode is a way to centrally manage and publish the configuration for your servers.
+域模式是一种集中管理和发布服务器配置的方法。
 
-Running a cluster in standard mode can quickly become aggravating as the cluster grows in size. Every time you need to make a configuration change, you have perform it on each node in the cluster. Domain mode solves this problem by providing a central place to store and publish configuration. It can be quite complex to set up, but it is worth it in the end. This capability is built into the WildFly Application Server which Keycloak derives from.
+在标准模式下运行集群会随着集群规模的增长而迅速恶化。每次需要更改配置时，都必须在集群中的每个节点上执行。 域模式解决了这个问题通过提供一个中心位置存储和发布配置。 设置起来可能相当复杂，但最终是值得的。这个功能被内置到WildFly应用服务器中，Keycloak就是从这个应用服务器派生的。
 
-|      | The guide will go over the very basics of domain mode. Detailed steps on how to set up domain mode in a cluster should be obtained from the [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 本指南将介绍域模式的基本知识。关于如何在集群中设置域模式的详细步骤应该从[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html). 获得。
 
-Here are some of the basic concepts of running in domain mode.
+以下是在域模式下运行的一些基本概念。
 
-- domain controller
+- 域控制器
 
-  The domain controller is a process that is responsible for storing, managing, and publishing the general configuration for each node in the cluster. This process is the central point from which nodes in a cluster obtain their configuration.
+  域控制器是一个进程，负责存储、管理和发布集群中每个节点的一般配置。这个进程是集群中的节点获取其配置的中心点。
 
-- host controller
+- 主机控制器
 
-  The host controller is responsible for managing server instances on a specific machine. You configure it to run one or more server instances. The domain controller can also interact with the host controllers on each machine to manage the cluster. To reduce the number of running process, a domain controller also acts as a host controller on the machine it runs on.
+  主机控制器负责管理特定机器上的服务器实例。 您将其配置为运行一个或多个服务器实例。域控制器还可以与每台机器上的主机控制器交互来管理集群。 为了减少运行进程的数量，域控制器还充当它所运行机器上的主机控制器。
 
-- domain profile
+- 域配置文件
 
-  A domain profile is a named set of configuration that can be used by a server to boot from. A domain controller can define multiple domain profiles that are consumed by different servers.
+  域配置文件是一组命名的配置文件，可供服务器用于引导。 域控制器可以定义不同服务器使用的多个域配置文件。
 
-- server group
+- 服务器组
 
-  A server group is a collection of servers. They are managed and configured as one. You can assign a domain profile to a server group and every service in that group will use that domain profile as their configuration.
+  服务器组是服务器的集合。它们被管理并配置为一个。您可以将一个域配置文件分配给一个服务器组，该组中的每个服务都将使用该域配置文件作为它们的配置。
 
-In domain mode, a domain controller is started on a master node. The configuration for the cluster resides in the domain controller. Next a host controller is started on each machine in the cluster. Each host controller deployment configuration specifies how many Keycloak server instances will be started on that machine. When the host controller boots up, it starts as many Keycloak server instances as it was configured to do. These server instances pull their configuration from the domain controller.
+在域模式下，在主节点上启动域控制器。集群的配置位于域控制器中。 接下来，在群集中的每台计算机上启动主机控制器。 每个主机控制器部署配置指定将在该计算机上启动的Keycloak服务器实例数。 当主机控制器启动时，它启动的Keycloak服务器实例与配置时一样多。这些服务器实例从域控制器中提取配置。
 
-#### 3.3.1. Domain Configuration
+#### 3.3.1. 域配置
 
-Various other chapters in this guide walk you through configuring various aspects like databases, HTTP network connections, caches, and other infrastructure related things. While standalone mode uses the *standalone.xml* file to configure these things, domain mode uses the *…/domain/configuration/domain.xml* configuration file. This is where the domain profile and server group for the Keycloak server are defined.
+本指南的其他各章将介绍如何配置数据库、HTTP网络连接、缓存和其他与基础设施相关的内容。 虽然独立模式使用 *standalone.xml* 文件来配置这些内容，但域模式使用 *.../domain/configuration/domain.xml* 配置文件。 这里定义了Keycloak 服务器的域配置文件和服务器组。
 
 domain.xml
 
 ![domain file](assets/domain-file.png)
 
-|      | Any changes you make to this file while the domain controller is running will not take effect and may even be overwritten by the server. Instead use the command line scripting or the web console of WildFly. See the [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html) for more information. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 在域控制器运行时对该文件所做的任何更改都不会生效，甚至可能被服务器覆盖。建议使用命令行脚本或WildFly的web控制台。 更多信息参见[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)
 
-Let’s look at some aspects of this *domain.xml* file. The `auth-server-standalone` and `auth-server-clustered` `profile`XML blocks are where you are going to make the bulk of your configuration decisions. You’ll be configuring things here like network connections, caches, and database connections.
+我们来看看这个 *domain.xml* 文件的某些内容。 `auth-server-standalone` 和 `auth-server-clustered` `profile` XML块是您进行大量配置决策的地方。 您将在此处配置网络连接，缓存和数据库连接等内容。
 
-auth-server profile
+auth-server配置
 
 ```
     <profiles>
@@ -218,9 +212,9 @@ auth-server profile
         </profile>
 ```
 
-The `auth-server-standalone` profile is a non-clustered setup. The `auth-server-clustered` profile is the clustered setup.
+`auth-server-standalone`配置是非集群设置。 `auth-server-clustered`配置是集群设置。
 
-If you scroll down further, you’ll see various `socket-binding-groups` defined.
+如果你进一步向下滚动，你会看到定义了各种`socket-binding-groups`。
 
 socket-binding-groups
 
@@ -239,13 +233,13 @@ socket-binding-groups
     </socket-binding-groups>
 ```
 
-This config defines the default port mappings for various connectors that are opened with each Keycloak server instance. Any value that contains `${…}` is a value that can be overridden on the command line with the `-D` switch, i.e.
+此配置定义使用每个Keycloak服务器实例打开的各种连接器的默认端口映射。 包含`$ {...}`的任何值都是可以在命令行上使用`-D`开关重写的值，例如:
 
 ```
 $ domain.sh -Djboss.http.port=80
 ```
 
-The definition of the server group for Keycloak resides in the `server-groups` XML block. It specifies the domain profile that is used (`default`) and also some default boot arguments for the Java VM when the host controller boots an instance. It also binds a `socket-binding-group` to the server group.
+Keycloak服务器组的定义位于 `server-groups` XML块中。 它指定在主机控制器启动实例时使用的域配置文件(`default`)以及Java VM的一些默认引导参数。 它还将`socket-binding-group`绑定到服务器组。
 
 server group
 
@@ -267,19 +261,17 @@ server group
     </server-groups>
 ```
 
-#### 3.3.2. Host Controller Configuration
+#### 3.3.2. 主机控制器配置
 
-Keycloak comes with two host controller configuration files that reside in the *…/domain/configuration/* directory: *host-master.xml* and *host-slave.xml*. *host-master.xml* is configured to boot up a domain controller, a load balancer, and one Keycloak server instance. *host-slave.xml* is configured to talk to the domain controller and boot up one Keycloak server instance.
+Keycloak附带了两个主机控制器配置文件，它们位于 *.../domain/configuration/* 目录中：*host-master.xml* 和 *host-slave.xml*。 *host-master.xml* 配置为启动域控制器，负载均衡器和一个Keycloak服务器实例。 *host-slave.xml* 配置为与域控制器通信并启动一个Keycloak服务器实例。
 
-|      | The load balancer is not a required service. It exists so that you can easily test drive clustering on your development machine. While usable in production, you have the option of replacing it if you have a different hardware or software based load balancer you want to use. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 负载均衡器不是必需的服务。 它的存在使您可以轻松地在开发计算机上测试驱动器群集。 虽然可以在生产中使用，但如果您要使用其他基于硬件或软件的负载均衡器，则可以选择替换它。
 
-Host Controller Config
+主机控制器配置
 
 ![host files](assets/host-files.png)
 
-To disable the load balancer server instance, edit *host-master.xml* and comment out or remove the `"load-balancer"` entry.
+要禁用负载均衡器服务器实例，请编辑 *host-master.xml* 并注释掉或删除 `"load-balancer"` 条目。
 
 ```
     <servers>
@@ -289,7 +281,7 @@ To disable the load balancer server instance, edit *host-master.xml* and comment
     </servers>
 ```
 
-Another interesting thing to note about this file is the declaration of the authentication server instance. It has a `port-offset` setting. Any network port defined in the *domain.xml* `socket-binding-group` or the server group will have the value of `port-offset` added to it. For this example domain setup we do this so that ports opened by the load balancer server don’t conflict with the authentication server instance that is started.
+关于此文件的另一个有趣的事情是声明身份验证服务器实例。 它有一个`port-offset`设置。 *domain.xml*`socket-binding-group`或服务器组中定义的任何网络端口都将添加`port-offset`的值。 对于此示例域设置，我们执行此操作，以便负载平衡器服务器打开的端口不会与启动的身份验证服务器实例冲突。
 
 ```
     <servers>
@@ -300,23 +292,23 @@ Another interesting thing to note about this file is the declaration of the auth
     </servers>
 ```
 
-#### 3.3.3. Server Instance Working Directories  
+#### 3.3.3. 服务器实例工作目录
 
-Each Keycloak server instance defined in your host files creates a working directory under *…/domain/servers/{SERVER NAME}*. Additional configuration can be put there, and any temporary, log, or data files the server instance needs or creates go there too. The structure of these per server directories ends up looking like any other WildFly booted server.
+主机文件中定义的每个Keycloak服务器实例在 *…/domain/servers/{SERVER NAME}* 下创建一个工作目录。可以在其中进行其他配置，并且服务器实例需要或创建的任何临时，日志或数据文件也可以放在那里。 每个服务器目录的结构最终看起来像任何其他WildFly启动的服务器。
 
-Working Directories
+工作目录
 
 ![domain server dir](assets/domain-server-dir.png)
 
-#### 3.3.4. Domain Boot Script
+#### 3.3.4. 域启动脚本
 
-When running the server in domain mode, there is a specific script you need to run to boot the server depending on your operating system. These scripts live in the *bin/* directory of the server distribution.
+在域模式下运行服务器时，根据您的操作系统，需要运行特定的脚本来启动服务器。 这些脚本位于服务器分发的 *bin/* 目录中。
 
-Domain Boot Script
+域启动脚本
 
 ![domain boot files](assets/domain-boot-files.png)
 
-To boot the server:
+启动服务器:
 
 Linux/Unix
 
@@ -330,27 +322,27 @@ Windows
 > ...\bin\domain.bat --host-config=host-master.xml
 ```
 
-When running the boot script you will need pass in the host controlling configuration file you are going to use via the `--host-config` switch.
+运行启动脚本时，您需要通过`--host-config`开关传入您将要使用的主机控制配置文件。
 
-#### 3.3.5. Clustered Domain Example
+#### 3.3.5. 集群域示例
 
-You can test drive clustering using the out-of-the-box *domain.xml* configuration. This example domain is meant to run on one machine and boots up:
+您可以使用开箱即用的 *domain.xml* 配置测试驱动器集群。这个示例域是用来在一台机器上运行并启动的:
 
-- a domain controller
-- an HTTP load balancer
-- 2 Keycloak server instances
+- 1个域控制器
+- 1个HTTP负载均衡器
+- 2个Keycloak服务器实例
 
-To simulate running a cluster on two machines, you’ll run the `domain.sh` script twice to start two separate host controllers. The first will be the master host controller which will start a domain controller, an HTTP load balancer, and one Keycloak authentication server instance. The second will be a slave host controller that only starts up an authentication server instance.
+要模拟在两台计算机上运行集群，您将运行`domain.sh`脚本两次以启动两个单独的主机控制器。 第一个是主控主机控制器，它将启动域控制器，HTTP负载平衡器和一个Keycloak认证服务器实例。 第二个是从属主机控制器，它只启动一个认证服务器实例。
 
-##### Setup Slave Connection to Domain Controller
+##### 设置从属控制器到域控制器的连接
 
-Before you can boot things up though, you have to configure the slave host controller so that it can talk securely to the domain controller. If you do not do this, then the slave host will not be able to obtain the centralized configuration from the domain controller. To set up a secure connection, you have to create a server admin user and a secret that will be shared between the master and the slave. You do this by running the `…/bin/add-user.sh` script.
+在启动之前，您必须配置从属主机控制器，以便它可以安全地与域控制器通信。如果不这样做，则从属主机将无法从域控制器获取集中式配置。 要设置安全连接，您必须创建服务器管理员用户和将在主服务器和从服务器之间共享的密钥。 您可以通过运行 `…/bin/add-user.sh` 脚本来完成此操作。
 
-When you run the script select `Management User` and answer `yes` when it asks you if the new user is going to be used for one AS process to connect to another. This will generate a secret that you’ll need to cut and paste into the *…/domain/configuration/host-slave.xml* file.
+当您运行脚本时，选择 `Management User` 并回答 `yes` ，当它询问您是否将新用户用于一个AS进程以连接到另一个AS进程时。 这将生成一个秘密值，您需要将其剪切并粘贴到 *…/domain/configuration/host-slave.xml* 文件中。
 
-Add App Server Admin
+添加: App Server Admin
 
-```
+```bash
 $ add-user.sh
  What type of user do you wish to add?
   a) Management User (mgmt-users.properties)
@@ -378,13 +370,11 @@ $ add-user.sh
  To represent the user add the following to the server-identities definition <secret value="bWdtdDEyMyE=" />
 ```
 
-|      | The add-user.sh does not add user to Keycloak server but to the underlying JBoss Enterprise Application Platform. The credentials used and generated in the above script are only for example purpose. Please use the ones generated on your system. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> add-user.sh不会将用户添加到Keycloak服务器，而是添加到基础JBoss企业应用程序平台。 上述脚本中使用和生成的凭据仅用于示例目的。 请使用系统上生成的。   
 
-Now cut and paste the secret value into the *…/domain/configuration/host-slave.xml* file as follows:
+现在将秘密值剪切并粘贴到 *…/domain/configuration/host-slave.xml* 文件中，如下所示：
 
-```
+```xml
      <management>
          <security-realms>
              <security-realm name="ManagementRealm">
@@ -393,163 +383,163 @@ Now cut and paste the secret value into the *…/domain/configuration/host-slave
                  </server-identities>
 ```
 
-You will also need to add the *username* of the created user in the *…/domain/configuration/host-slave.xml* file:
+您还需要在 *…/domain/configuration/host-slave.xml* 文件中添加已创建用户的 *username*：
 
-```
+```xml
      <remote security-realm="ManagementRealm" username="admin">
 ```
 
-##### Run the Boot Scripts
+##### 运行启动脚本
 
-Since we’re simulating a two node cluster on one development machine, you’ll run the boot script twice:
+由于我们在一台开发机器上模拟双节点集群，因此您将运行两次启动脚本：
 
-Boot up master
+启动 主
 
 ```
 $ domain.sh --host-config=host-master.xml
 ```
 
-Boot up slave
+启动 从属
 
 ```
 $ domain.sh --host-config=host-slave.xml
 ```
 
-To try it out, open your browser and go to <http://localhost:8080/auth>.
+要试用它，请打开浏览器并转到 <http://localhost:8080/auth>。
 
-### 3.4. Cross-Datacenter Replication Mode
+### 3.4. 跨数据中心复制模式
 
-Cross-Datacenter Replication mode is for when you want to run Keycloak in a cluster across multiple data centers, most typically using data center sites that are in different geographic regions. When using this mode, each data center will have its own cluster of Keycloak servers.
+跨数据中心复制模式适用于您希望跨多个数据中心在集群中运行Keycloak，最常用的是使用位于不同地理区域的数据中心站点。 使用此模式时，每个数据中心都有自己的Keycloak服务器集群。
 
-This documentation will refer the following example architecture diagram to illustrate and describe a simple Cross-Datacenter Replication use case.
+本文档将引用以下示例体系结构图来说明和描述简单的跨数据中心复制用例。
 
-Example Architecture Diagram
+示例架构图
 
 ![cross dc architecture](assets/cross-dc-architecture.png)
 
-#### 3.4.1. Prerequisites
+#### 3.4.1. 先决条件
 
-As this is an advanced topic, we recommend you first read the following, which provide valuable background knowledge:
+由于这是一个高级主题，我们建议您首先阅读以下内容，它们提供了宝贵的背景知识：
 
-- [Clustering with Keycloak](https://www.keycloak.org/docs/6.0/server_installation/#_clustering) When setting up for Cross-Datacenter Replication, you will use more independent Keycloak clusters, so you must understand how a cluster works and the basic concepts and requirements such as load balancing, shared databases, and multicasting.
-- [JBoss Data Grid Cross-Datacenter Replication](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication) Keycloak uses JBoss Data Grid (JDG) for the replication of Infinispan data between the data centers.
+- [集群与Keycloak](https://www.keycloak.org/docs/6.0/server_installation/#_clustering) 设置跨数据中心复制时，您将使用更多独立的Keycloak集群，因此您必须了解集群的工作方式以及基本概念和要求，例如负载平衡，共享数据库和多播。
+- [JBoss数据网格跨数据中心复制](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication) Keycloak使用JBoss Data Grid（JDG）在数据中心之间复制Infinispan数据。
 
-#### 3.4.2. Technical details
+#### 3.4.2. 技术细节
 
-This section provides an introduction to the concepts and details of how Keycloak Cross-Datacenter Replication is accomplished.
+本节介绍了如何完成Keycloak跨数据中心复制的概念和详细信息。
 
-Data
+Data(数据)
 
-Keycloak is stateful application. It uses the following as data sources:
+Keycloak是有状态的应用程序。 它使用以下作为数据源：
 
-- A database is used to persist permanent data, such as user information.
-- An Infinispan cache is used to cache persistent data from the database and also to save some short-lived and frequently-changing metadata, such as for user sessions. Infinispan is usually much faster than a database, however the data saved using Infinispan are not permanent and is not expected to persist across cluster restarts.
+- 数据库用于保存永久数据，例如用户信息。
+- Infinispan缓存用于缓存来自数据库的持久性数据，还用于保存一些短期和频繁更改的元数据，例如用于用户会话。 Infinispan通常比数据库快得多，但是使用Infinispan保存的数据不是永久性的，并且预计不会在集群重启期间持续存在。
 
-In our example architecture, there are two data centers called `site1` and `site2`. For Cross-Datacenter Replication, we must make sure that both sources of data work reliably and that Keycloak servers from `site1` are eventually able to read the data saved by Keycloak servers on `site2` .
+在我们的示例架构中，有两个名为 `site1` 和 `site2` 的数据中心。 对于跨数据中心复制，我们必须确保两个数据源都可靠地工作，并且来自 `site1` 的Keycloak服务器最终能够读取`site2`上的Keycloak服务器保存的数据。
 
-Based on the environment, you have the option to decide if you prefer:
+根据环境，您可以选择是否愿意：
 
-- Reliability - which is typically used in Active/Active mode. Data written on `site1` must be visible immediately on `site2`.
-- Performance - which is typically used in Active/Passive mode. Data written on `site1` does not need to be visible immediately on `site2`. In some cases, the data may not be visible on `site2` at all.
+- 可靠性 - 通常用于 `主/主` 模式。 写在`site1`上的数据必须立即在`site2`上可见。
+- 性能 - 通常用于 `主/被`模式。 写在`site1`上的数据不需要立即在`site2`上可见。 在某些情况下，数据可能在`site2`上根本不可见。
 
 For more details, see [Modes](https://www.keycloak.org/docs/latest/server_installation/index.html#modes).
 
-#### 3.4.3. Request processing
+#### 3.4.3. 请求处理
 
-An end user’s browser sends an HTTP request to the [front end load balancer](https://www.keycloak.org/docs/6.0/server_installation/#_setting-up-a-load-balancer-or-proxy). This load balancer is usually HTTPD or WildFly with mod_cluster, NGINX, HA Proxy, or perhaps some other kind of software or hardware load balancer.
+最终用户的浏览器向[前端负载均衡器](https://www.keycloak.org/docs/6.0/server_installation/#_setting-up-a-load-balancer-or-proxy)发送HTTP请求。 此负载均衡器通常是HTTPD或WildFly，带有mod_cluster，NGINX，HA代理，或者某些其他类型的软件或硬件负载均衡器。
 
-The load balancer then forwards the HTTP requests it receives to the underlying Keycloak instances, which can be spread among multiple data centers. Load balancers typically offer support for [sticky sessions](https://www.keycloak.org/docs/6.0/server_installation/#sticky-sessions), which means that the load balancer is able to always forward all HTTP requests from the same user to the same Keycloak instance in same data center.
+然后，负载均衡器将其接收的HTTP请求转发到基础Keycloak实例，这些实例可以在多个数据中心之间传播。 负载平衡器通常为[粘性会话](https://www.keycloak.org/docs/6.0/server_installation/#sticky-sessions)提供支持, 这意味着负载均衡器能够始终将来自同一用户的所有HTTP请求转发到同一数据中心内的同一Keycloak实例。
 
-HTTP requests that are sent from client applications to the load balancer are called `backchannel requests`. These are not seen by an end user’s browser and therefore can not be part of a sticky session between the user and the load balancer. For backchannel requests, the loadbalancer can forward the HTTP request to any Keycloak instance in any data center. This is challenging as some OpenID Connect and some SAML flows require multiple HTTP requests from both the user and the application. Because we can not reliably depend on sticky sessions to force all the related requests to be sent to the same Keycloak instance in the same data center, we must instead replicate some data across data centers, so the data are seen by subsequent HTTP requests during a particular flow.
+从客户端应用程序发送到负载均衡器的HTTP请求称为“反向通道请求”。终端用户的浏览器不会看到这些，因此不能作为用户和负载平衡器之间的粘性会话的一部分。 对于反向信道请求，负载均衡器可以将HTTP请求转发到任何数据中心中的任何Keycloak实例。 这很有挑战性，因为一些OpenID Connect和一些SAML流需要来自用户和应用程序的多个HTTP请求。 由于我们不能可靠地依赖粘性会话来强制将所有相关请求发送到同一数据中心中的同一个Keycloak实例，因此我们必须跨数据中心复制一些数据，以便在特定流期间由后续HTTP请求查看数据。
 
-#### 3.4.4. Modes
+#### 3.4.4. Modes (模式)
 
-According your requirements, there are two basic operating modes for Cross-Datacenter Replication:
+根据您的要求，跨数据中心复制有两种基本操作模式：
 
-- Active/Passive - Here the users and client applications send the requests just to the Keycloak nodes in just a single data center. The second data center is used just as a `backup` for saving the data. In case of the failure in the main data center, the data can be usually restored from the second data center.
-- Active/Active - Here the users and client applications send the requests to the Keycloak nodes in both data centers. It means that data need to be visible immediately on both sites and available to be consumed immediately from Keycloak servers on both sites. This is especially true if Keycloak server writes some data on `site1`, and it is required that the data are available immediately for reading by Keycloak servers on `site2` immediately after the write on `site1` is finished.
+- 主/备 - 这里，用户和客户端应用程序仅将请求发送到单个数据中心的Keycloak节点。 第二个数据中心仅用作保存数据的`备份`。 如果主数据中心出现故障，通常可以从第二个数据中心恢复数据。
+- 主/主 - 这里，用户和客户端应用程序将请求发送到两个数据中心的Keycloak节点。 这意味着数据需要立即在两个站点上可见，并且可以立即从两个站点上的Keycloak服务器中使用。 如果Keycloak服务器在`site1`上写入一些数据，并且要求在`site1`上的写入完成后，立即可以通过`site2`上的Keycloak服务器读取数据。
 
-The active/passive mode is better for performance. For more information about how to configure caches for either mode, see: [SYNC or ASYNC backups](https://www.keycloak.org/docs/latest/server_installation/index.html#backups).
+`主动/被动`模式对性能更好。 有关如何为任一模式配置高速缓存的详细信息，请参阅：[SYNC或ASYNC备份](https://www.keycloak.org/docs/latest/server_installation/index.html#backups).
 
-#### 3.4.5. Database
+#### 3.4.5. 数据库
 
-Keycloak uses a relational database management system (RDBMS) to persist some metadata about realms, clients, users, and so on. See [this chapter](https://www.keycloak.org/docs/6.0/server_installation/#_database) of the server installation guide for more details. In a Cross-Datacenter Replication setup, we assume that either both data centers talk to the same database or that every data center has its own database node and both database nodes are synchronously replicated across the data centers. In both cases, it is required that when a Keycloak server on `site1` persists some data and commits the transaction, those data are immediately visible by subsequent DB transactions on `site2`.
+Keycloak使用关系数据库管理系统(RDBMS)来持久保存有关领域，客户端，用户等的一些元数据。 有关详细信息，请参阅服务器安装指南的[本章](https://www.keycloak.org/docs/6.0/server_installation/#_database)。 在跨数据中心复制设置中，我们假设两个数据中心都与同一个数据库通信，或者每个数据中心都有自己的数据库节点，并且两个数据库节点在数据中心之间同步复制。 在这两种情况下，当`site1`上的Keycloak服务器持久保存某些数据并提交事务时，要求这些数据立即在`site2`上的后续数据库事务中可见。
 
-Details of DB setup are out-of-scope for Keycloak, however many RDBMS vendors like MariaDB and Oracle offer replicated databases and synchronous replication. We test Keycloak with these vendors:
+数据库设置的细节超出了Keycloak的范围，但是像MariaDB和Oracle这样的许多RDBMS供应商都提供了复制数据库和同步复制。 我们与这些供应商一起测试Keycloak：
 
 - Oracle Database 12c Release 1 (12.1) RAC
 - Galera 3.12 cluster for MariaDB server version 10.1.19-MariaDB
 
-#### 3.4.6. Infinispan caches
+#### 3.4.6. Infinispan缓存
 
-This section begins with a high level description of the Infinispan caches. More details of the cache setup follow.
+本节首先介绍Infinispan缓存的高级描述。 下面是缓存设置的更多细节。
 
-Authentication sessions
+Authentication sessions (认证会话)
 
-In Keycloak we have the concept of authentication sessions. There is a separate Infinispan cache called `authenticationSessions` used to save data during authentication of particular user. Requests from this cache usually involve only a browser and the Keycloak server, not the application. Here we can rely on sticky sessions and the `authenticationSessions` cache content does not need to be replicated across data centers, even if you are in Active/Active mode.
+在Keycloak中，我们有认证会话的概念。 有一个名为 `authenticationSessions` 的独立Infinispan缓存用于在特定用户的身份验证期间保存数据。 来自此缓存的请求通常只涉及浏览器和Keycloak服务器，而不是应用程序。 在这里，我们可以依赖粘性会话，即使您处于`主/主` 模式，也不需要跨数据中心复制 `authenticationSessions` 缓存内容。
 
-Action tokens
+Action tokens (动作令牌)
 
-We also have the concept of [action tokens](https://www.keycloak.org/docs/6.0/server_development/#_action_token_spi), which are used typically for scenarios when the user needs to confirm an action asynchronously by email. For example, during the `forget password` flow the `actionTokens` Infinispan cache is used to track metadata about related action tokens, such as which action token was already used, so it can’t be reused second time. This usually needs to be replicated across data centers.
+我们还有[动作令牌](https://www.keycloak.org/docs/6.0/server_development/#_action_token_spi)的概念， 通常用于用户需要通过电子邮件异步地确认操作的场景。例如，在“忘记密码”流期间，`actiontoken`Infinispan缓存用于跟踪有关操作令牌的元数据，比如已经使用了哪个操作令牌，因此不能第二次重用。这通常需要跨数据中心复制。
 
-Caching and invalidation of persistent data
+持久数据的缓存和失效
 
-Keycloak uses Infinispan to cache persistent data to avoid many unnecessary requests to the database. Caching improves performance, however it adds an additional challenge. When some Keycloak server updates any data, all other Keycloak servers in all data centers need to be aware of it, so they invalidate particular data from their caches. Keycloak uses local Infinispan caches called `realms`, `users`, and `authorization` to cache persistent data.
+Keycloak使用Infinispan来缓存持久数据，以避免对数据库的许多不必要的请求。 缓存提高了性能，但它增加了额外的挑战。 当某些Keycloak服务器更新任何数据时，所有数据中心中的所有其他Keycloak服务器都需要知道它，因此它们会使其缓存中的特定数据无效。 Keycloak使用称为`realms` ，`users` 和 `authorization` 的本地Infinispan缓存来缓存持久数据。
 
-We use a separate cache, `work`, which is replicated across all data centers. The work cache itself does not cache any real data. It is used only for sending invalidation messages between cluster nodes and data centers. In other words, when data is updated, such as the user `john`, the Keycloak node sends the invalidation message to all other cluster nodes in the same data center and also to all other data centers. After receiving the invalidation notice, every node then invalidates the appropriate data from their local cache.
+我们使用单独的缓存 `work`，它在所有数据中心中复制。 工作缓存本身不会缓存任何实际数据。 它仅用于在群集节点和数据中心之间发送失效消息。 换句话说，当更新数据时，例如用户`john`，Keycloak节点将失效消息发送到同一数据中心的所有其他集群节点以及所有其他数据中心。 收到无效通知后，每个节点都会从其本地缓存中使相应的数据无效。
 
-User sessions
+User sessions (用户会话)
 
-There are Infinispan caches called `sessions`, `clientSessions`, `offlineSessions`, and `offlineClientSessions`, all of which usually need to be replicated across data centers. These caches are used to save data about user sessions, which are valid for the length of a user’s browser session. The caches must handle the HTTP requests from the end user and from the application. As described above, sticky sessions can not be reliably used in this instance, but we still want to ensure that subsequent HTTP requests can see the latest data. For this reason, the data are usually replicated across data centers.
+Infinispan缓存称为 `sessions`, `clientSessions`, `offlineSessions` 和 `offlineClientSessions`，所有这些缓存通常都需要跨数据中心进行复制。 这些缓存用于保存有关用户会话的数据，这些数据对用户的浏览器会话长度有效。 缓存必须处理来自最终用户和应用程序的HTTP请求。 如上所述，在此实例中无法可靠地使用粘性会话，但我们仍希望确保后续HTTP请求可以查看最新数据。 因此，数据通常在数据中心之间复制。
 
-Brute force protection
+Brute force protection (强力保护)
 
-Finally the `loginFailures` cache is used to track data about failed logins, such as how many times the user `john` entered a bad password. The details are described [here](https://www.keycloak.org/docs/6.0/server_admin/#password-guess-brute-force-attacks). It is up to the admin whether this cache should be replicated across data centers. To have an accurate count of login failures, the replication is needed. On the other hand, not replicating this data can save some performance. So if performance is more important than accurate counts of login failures, the replication can be avoided.
+最后，`loginFailures` 缓存用于跟踪有关失败登录的数据，例如用户`john` 输入错误密码的次数。 详细说明[此处](https://www.keycloak.org/docs/6.0/server_admin/#password-guess-brute-force-attacks)。 管理员是否应该跨数据中心复制此缓存。 要准确计算登录失败次数，需要进行复制。 另一方面，不复制此数据可以节省一些性能。 因此，如果性能比准确的登录失败计数更重要，则可以避免复制。
 
-For more detail about how caches can be configured see [Tuning the JDG cache configuration](https://www.keycloak.org/docs/latest/server_installation/index.html#tuningcache).
+有关如何配置高速缓存的更多详细信息，请参阅[调整JDG高速缓存配置](https://www.keycloak.org/docs/latest/server_installation/index.html#tuningcache)。
 
-#### 3.4.7. Communication details
+#### 3.4.7. 通信细节
 
-Keycloak uses multiple, separate clusters of Infinispan caches. Every Keycloak node is in the cluster with the other Keycloak nodes in same data center, but not with the Keycloak nodes in different data centers. A Keycloak node does not communicate directly with the Keycloak nodes from different data centers. Keycloak nodes use external JDG (actually Infinispan servers) for communication across data centers. This is done using the [Infinispan HotRod protocol](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#using_hot_rod_server).
+keycover使用多个独立的Infinispan缓存集群。每个Keycloak 节点都与相同数据中心中的其他Keycloak 节点在集群中，但不包含不同数据中心的Keycloak节点。 Keycloak节点不直接与来自不同数据中心的Keycloak节点通信。 Keycloak节点使用外部JDG（实际上是Infinispan服务器）跨数据中心进行通信。 这是使用[Infinispan HotRod协议](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#using_hot_rod_server)。
 
-The Infinispan caches on the Keycloak side must be configured with the [remoteStore](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#remote_store) to ensure that data are saved to the remote cache. There is separate Infinispan cluster between JDG servers, so the data saved on JDG1 on `site1` are replicated to JDG2 on `site2` .
+Keycloak端上的Infinispan缓存必须配置为[remoteStore](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#remote_store)，以确保数据被保存到远程缓存中。JDG服务器之间有单独的Infinispan集群，因此保存在 `site1` 上的JDG1上的数据被复制到 `site2`上的JDG2上。
 
-Finally, the receiving JDG server notifies the Keycloak servers in its cluster through the Client Listeners, which are a feature of the HotRod protocol. Keycloak nodes on `site2` then update their Infinispan caches and the particular user session is also visible on Keycloak nodes on `site2`.
+最后，接收JDG服务器通过客户机侦听器通知集群中的Keycloak服务器，这是HotRod协议的一个特性。然后更新它们的Infinispan缓存，特定的用户会话也可以在 `site2` 的Keycloak节点上看到。
 
-See the [Example Architecture Diagram](https://www.keycloak.org/docs/latest/server_installation/index.html#archdiagram) for more details.
+有关更多细节，请参见[示例架构图](https://www.keycloak.org/docs/latest/server_installation/index.html#archdiagram)。
 
-#### 3.4.8. Basic setup
+#### 3.4.8. 基本设置
 
-For this example, we describe using two data centers, `site1` and `site2`. Each data center consists of 1 Infinispan server and 2 Keycloak servers. We will end up with 2 Infinispan servers and 4 Keycloak servers in total.
+在本例中，我们描述了使用两个数据中心，`site1` 和 `site2`。 每个数据中心由1个Infinispan服务器和2个Keycloak服务器组成。 我们最终将拥有2台Infinispan服务器和4台Keycloak服务器。
 
-- `Site1` consists of Infinispan server, `jdg1`, and 2 Keycloak servers, `node11` and `node12` .
-- `Site2` consists of Infinispan server, `jdg2`, and 2 Keycloak servers, `node21` and `node22` .
-- Infinispan servers `jdg1` and `jdg2` are connected to each other through the RELAY2 protocol and `backup` based Infinispan caches in a similar way as described in the [JDG documentation](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication).
-- Keycloak servers `node11` and `node12` form a cluster with each other, but they do not communicate directly with any server in `site2`. They communicate with the Infinispan server `jdg1` using the HotRod protocol (Remote cache). See [Communication details](https://www.keycloak.org/docs/latest/server_installation/index.html#communication) for the details.
-- The same details apply for `node21` and `node22`. They cluster with each other and communicate only with `jdg2` server using the HotRod protocol.
+- `Site1` 由Infinispan服务器，`jdg1` 和2个Keycloak服务器，`node11` 和 `node12` 组成。
+- `Site2` 由Infinispan服务器，`jdg2` 和2个Keycloak服务器，`node21` 和 `node22` 组成。
+- Infinispan服务器 `jdg1` 和 `jdg2` 通过 RELAY2 协议和 `backup` 的Infinispan缓存相互连接，其方式与[JDG文档](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication)中描述的类似。
+- Keycloak服务器 `node11` 和 `node12` 彼此形成一个集群，但它们不直接与 `site2` 中的任何服务器通信。 它们使用HotRod协议（远程缓存）与Infinispan服务器 `jdg1` 进行通信。 有关详细信息，请参阅[通信详细信息](https://www.keycloak.org/docs/latest/server_installation/index.html#communication)。
+- 同样的细节适用于 `node21` 和 `node22`。它们彼此集群，仅使用HotRod协议与`jdg2`服务器通信。
 
-Our example setup assumes all that all 4 Keycloak servers talk to the same database. In production, it is recommended to use separate synchronously replicated databases across data centers as described in [Database](https://www.keycloak.org/docs/latest/server_installation/index.html#database).
+我们的示例设置假定所有4个Keycloak服务器都与同一个数据库通信。 在生产中，建议在数据库中使用单独的同步复制数据库，如[数据库](https://www.keycloak.org/docs/latest/server_installation/index.html#database)中所述。
 
-##### Infinispan server setup
+##### Infinispan服务器设置
 
-Follow these steps to set up the Infinispan server:
+请按照以下步骤设置Infinispan服务器：
 
-1. Download Infinispan 9.4.8 server and unzip to a directory you choose. This location will be referred in later steps as `JDG1_HOME` .
+1. 下载Infinispan 9.4.8服务器并解压缩到您选择的目录。 该位置将在后面的步骤中称为 `JDG1_HOME` 。
 
-2. Change those things in the `JDG1_HOME/standalone/configuration/clustered.xml` in the configuration of JGroups subsystem:
+2. 在JGroups子系统的配置中更改 `JDG1_HOME/standalone/configuration/clustered.xml`中的那些内容：
 
-   1. Add the `xsite` channel, which will use `tcp` stack, under `channels` element:
+   1. 在 `channels` 元素下添加 `xsite` 通道，它将使用`tcp` 堆栈：
 
-      ```
+      ```xml
       <channels default="cluster">
           <channel name="cluster"/>
           <channel name="xsite" stack="tcp"/>
       </channels>
       ```
 
-   2. Add a `relay` element to the end of the `udp` stack. We will configure it in a way that our site is `site1` and the other site, where we will backup, is `site2`:
+   2. 在 `udp` 堆栈的末尾添加 `relay` 元素。 我们将以我们的站点为 `site1` 的方式配置它，而我们将备份的另一个站点是 `site2` ：
 
-      ```
+      ```xml
       <stack name="udp">
           ...
           <relay site="site1">
@@ -559,9 +549,9 @@ Follow these steps to set up the Infinispan server:
       </stack>
       ```
 
-   3. Configure the `tcp` stack to use `TCPPING` protocol instead of `MPING`. Remove the `MPING` element and replace it with the `TCPPING`. The `initial_hosts` element points to the hosts `jdg1` and `jdg2`:
+   3. 配置`tcp`堆栈使用`TCPPING`协议而不是'MPING`。 删除`MPING`元素并将其替换为`TCPPING`。 `initial_hosts`元素指向主机`jdg1`和`jdg2`：
 
-      ```
+      ```xml
       <stack name="tcp">
           <transport type="TCP" socket-binding="jgroups-tcp"/>
           <protocol type="TCPPING">
@@ -573,13 +563,11 @@ Follow these steps to set up the Infinispan server:
       </stack>
       ```
 
-      |      | This is just an example setup to have things quickly running. In production, you are not required to use `tcp` stack for the JGroups `RELAY2`, but you can configure any other stack. For example, you could use the default udp stack, if the network between your data centers is able to support multicast. Just make sure that the Infinispan and Keycloak clusters are mutually indiscoverable. Similarly, you are not required to use `TCPPING` as discovery protocol. And in production, you probably won’t use `TCPPING`due it’s static nature. Finally, site names are also configurable. Details of this more-detailed setup are out-of-scope of the Keycloak documentation. See the Infinispan documentation and JGroups documentation for more details. |
-      | ---- | ------------------------------------------------------------ |
-      |      |                                                              |
+      > 这只是一个让程序快速运行的示例设置。在生产中，JGroups ' RELAY2 '不需要使用' tcp '栈， 但是您可以配置任何其他堆栈。例如，如果数据中心之间的网络支持多播，可以使用默认的udp堆栈。 只要确保Infinispan和Keycloak集群是相互不可发现的。 同样，您不需要使用 `TCPPING` 作为发现协议。 在生产中，你可能不会使用`TCPPING`因为它是静态的。 最后，站点名称也是可配置的。 这个更详细的设置的详细信息超出了Keycloak文档的范围。 有关更多详细信息，请参阅Infinispan文档和JGroups文档。
 
-3. Add this into `JDG1_HOME/standalone/configuration/clustered.xml` under cache-container named `clustered`:
+3. 将其添加到名为`clustered`的缓存容器下的`JDG1_HOME/standalone/configuration/clustered.xml`中：
 
-   ```
+   ```xml
    <cache-container name="clustered" default-cache="default" statistics="true">
            ...
            <replicated-cache-configuration name="sessions-cfg" mode="SYNC" start="EAGER" batching="false">
@@ -602,25 +590,19 @@ Follow these steps to set up the Infinispan server:
    </cache-container>
    ```
 
-   |      | Details about the configuration options inside `replicated-cache-configuration` are explained in [Tuning the JDG cache configuration](https://www.keycloak.org/docs/latest/server_installation/index.html#tuningcache), which includes information about tweaking some of those options. |
-   | ---- | ------------------------------------------------------------ |
-   |      |                                                              |
+   > 有关 `replicated-cache-configuration` 中的配置选项的详细信息，请参阅[调整JDG缓存配置](https://www.keycloak.org/docs/latest/server_installation/index.html#tuningcache)，其中包含信息 关于调整其中一些选项。
 
-   |      | Unlike in previous version, the Infinispan server `replicated-cache-configuration` needs to be configured without `transaction` element. See [Troubleshooting](https://www.keycloak.org/docs/latest/server_installation/index.html#troubleshooting) for more details. |
-   | ---- | ------------------------------------------------------------ |
-   |      |                                                              |
+   > 与以前的版本不同，Infinispan服务器 `replicated-cache-configuration` 需要在没有 `transaction` 元素的情况下进行配置。 有关详细信息，请参阅[故障排除](https://www.keycloak.org/docs/latest/server_installation/index.html#troubleshooting) 。
 
-4. Some Infinispan server releases require authorization before accessing protected caches over network.
+4. 在通过网络访问受保护的缓存之前，某些Infinispan服务器版本需要授权。
 
-   |      | You should not see any issue if you use recommended Infinispan 9.4.8 server and this step can (and should) be ignored. Issues related to authorization may exist just for some other versions of Infinispan server. |
-   | ---- | ------------------------------------------------------------ |
-   |      |                                                              |
+   > 如果您使用推荐的Infinispan 9.4.8服务器，则不应该看到任何问题，并且可以（并且应该）忽略此步骤。 与授权相关的问题可能仅适用于Infinispan服务器的某些其他版本。
 
-   Keycloak requires updates to `___script_cache` cache containing scripts. If you get errors accessing this cache, you will need to set up authorization in `clustered.xml` configuration as described below:
+   Keycloak需要更新包含脚本的 `___ script_cache` 缓存。 如果访问此缓存时出错，则需要在 `clustered.xml` 配置中设置授权，如下所述：
 
-   1. In the `<management>` section, add a security realm:
+   1. 在 `<management>` 部分中，添加一个安全领域：
 
-      ```
+      ```xml
       <management>
           <security-realms>
               ...
@@ -636,9 +618,9 @@ Follow these steps to set up the Infinispan server:
           </security-realms>
       ```
 
-   2. In the server core subsystem, add `<security>` as below:
+   2. 在服务器核心子系统中，添加 `<security>` ，如下所示：
 
-      ```
+      ```xml
       <subsystem xmlns="urn:infinispan:server:core:8.4">
           <cache-container name="clustered" default-cache="default" statistics="true">
               <security>
@@ -650,9 +632,9 @@ Follow these steps to set up the Infinispan server:
               ...
       ```
 
-   3. In the endpoint subsystem, add authentication configuration to Hot Rod connector:
+   3. 在端点子系统中，将身份验证配置添加到Hot Rod连接器：
 
-      ```
+      ```xml
       <subsystem xmlns="urn:infinispan:server:endpoint:8.1">
           <hotrod-connector cache-container="clustered" socket-binding="hotrod">
               ...
@@ -665,98 +647,96 @@ Follow these steps to set up the Infinispan server:
               </authentication>
       ```
 
-5. Copy the server to the second location, which will be referred to later as `JDG2_HOME`.
+5. 将服务器复制到第二个位置，稍后将称之为 `JDG2_HOME`。
 
-6. In the `JDG2_HOME/standalone/configuration/clustered.xml` exchange `site1` with `site2` and vice versa, both in the configuration of `relay` in the JGroups subsystem and in configuration of `backups` in the cache-subsystem. For example:
+6. 在 `JDG2_HOME/standalone/configuration/clustered.xml`交换`site1`和`site2`，反之亦然，在JGroups子系统中的 `relay` 配置和cache-subsystem中 `backups` 的配置。 例如：
 
-   1. The `relay` element should look like this:
+   1. `relay`元素应如下所示：
 
-      ```
+      ```xml
       <relay site="site2">
           <remote-site name="site1" channel="xsite"/>
           <property name="relay_multicasts">false</property>
       </relay>
       ```
 
-   2. The `backups` element like this:
+   2. 像这样的`backups`元素：
 
-      ```
+      ```xml
                   <backups>
                       <backup site="site1" ....
                       ...
       ```
 
-      It is currently required to have different configuration files for the JDG servers on both sites as the Infinispan subsystem does not support replacing site names with expressions. See [this issue](https://issues.jboss.org/browse/WFLY-9458) for more details.
+      由于Infinispan子系统不支持用表达式替换站点名，因此目前需要为两个站点上的JDG服务器提供不同的配置文件。有关详细信息，请参见[this issue](https://issues.jboss.org/browse/WFLY-9458)。
 
-7. Start server `jdg1`:
+7. 启动服务器 `jdg1`:
 
-   ```
+   ```bash
    cd JDG1_HOME/bin
    ./standalone.sh -c clustered.xml -Djava.net.preferIPv4Stack=true \
      -Djboss.default.multicast.address=234.56.78.99 \
      -Djboss.node.name=jdg1 -b PUBLIC_IP_ADDRESS
    ```
 
-8. Start server `jdg2`. There is a different multicast address, so the `jdg1` and `jdg2` servers are not directly clustered with each other; rather, they are just connected through the RELAY2 protocol, and the TCP JGroups stack is used for communication between them. The start up command looks like this:
+8. 启动服务器`jdg2`。由于存在不同的组播地址，因此`jdg1`和`jdg2`服务器并不直接集群在一起;相反，它们只是通过RELAY2协议连接，TCP JGroups堆栈用于它们之间的通信。启动命令是这样的:
 
-   ```
+   ```bash
    cd JDG2_HOME/bin
    ./standalone.sh -c clustered.xml -Djava.net.preferIPv4Stack=true \
      -Djboss.default.multicast.address=234.56.78.100 \
      -Djboss.node.name=jdg2 -b PUBLIC_IP_ADDRESS
    ```
 
-9. To verify that channel works at this point, you may need to use JConsole and connect either to the running `JDG1` or the `JDG2` server. When you use the MBean `jgroups:type=protocol,cluster="cluster",protocol=RELAY2` and operation `printRoutes`, you should see output like this:
+9. 要验证此时通道是否工作，您可能需要使用JConsole并连接到正在运行的`JDG1`或`JDG2`服务器。当您使用MBean `jgroups:type=protocol,cluster="cluster",protocol=RELAY2`和操作`printRoutes`时，应该会看到如下输出:
 
    ```
    site1 --> _jdg1:site1
    site2 --> _jdg2:site2
    ```
 
-   When you use the MBean `jgroups:type=protocol,cluster="cluster",protocol=GMS`, you should see that the attribute member contains just single member:
+   当您使用MBean  `jgroups:type=protocol,cluster="cluster",protocol=GMS` 时，您应该看到属性成员只包含一个成员:
 
-   1. On `JDG1` it should be like this:
+   1. 在`JDG1`上应该是这样的:
 
       ```
       (1) jdg1
       ```
 
-   2. And on JDG2 like this:
+   2. 在JDG2上是这样的:
 
       ```
       (1) jdg2
       ```
 
-      |      | In production, you can have more Infinispan servers in every data center. You just need to ensure that Infinispan servers in same data center are using the same multicast address (In other words, the same `jboss.default.multicast.address` during startup). Then in jconsole in `GMS` protocol view, you will see all the members of current cluster. |
-      | ---- | ------------------------------------------------------------ |
-      |      |                                                              |
+      > 在生产中，您可以在每个数据中心拥有更多Infinispan服务器。 您只需要确保同一数据中心内的Infinispan服务器使用相同的多播地址（换句话说，在启动时使用相同的 `jboss.default.multicast.address` ）。 然后在`GMS` 协议视图的jconsole中，您将看到当前集群的所有成员。
 
-##### Keycloak servers setup
+##### Keycloak服务器设置
 
-1. Unzip Keycloak server distribution to a location you choose. It will be referred to later as `NODE11`.
+1. 将Keycloak服务器分发解压缩到您选择的位置。 它将在后面称为 `NODE11`。
 
-2. Configure a shared database for KeycloakDS datasource. It is recommended to use MySQL or MariaDB for testing purposes. See [Database](https://www.keycloak.org/docs/latest/server_installation/index.html#database) for more details.
+2. 为KeycloakDS数据源配置共享数据库。 建议使用MySQL或MariaDB进行测试。 有关详细信息，请参阅[数据库](https://www.keycloak.org/docs/latest/server_installation/index.html#database)。
 
-   In production you will likely need to have a separate database server in every data center and both database servers should be synchronously replicated to each other. In the example setup, we just use a single database and connect all 4 Keycloak servers to it.
+   在生产中，您可能需要在每个数据中心都有一个单独的数据库服务器，并且两个数据库服务器应该同步复制到彼此。 在示例设置中，我们只使用一个数据库并将所有4个Keycloak服务器连接到它。
 
-3. Edit `NODE11/standalone/configuration/standalone-ha.xml` :
+3. 编辑 `NODE11/standalone/configuration/standalone-ha.xml` :
 
-   1. Add the attribute `site` to the JGroups UDP protocol:
+   1. 将属性`site`添加到JGroups UDP协议：
 
-      ```
+      ```xml
                         <stack name="udp">
                             <transport type="UDP" socket-binding="jgroups-udp" site="${jboss.site.name}"/>
       ```
 
-   2. Add this `module` attribute under `cache-container` element of name `keycloak` :
+   2. 在名为`keycloak`的`cache-container`元素下添加这个`module`属性：
 
-      ```
+      ```xml
        <cache-container name="keycloak" module="org.keycloak.keycloak-model-infinispan">
       ```
 
-   3. Add the `remote-store` under `work` cache:
+   3. 在`work`缓存下添加`remote-store`：
 
-      ```
+      ```xml
       <replicated-cache name="work">
           <remote-store cache="work" remote-servers="remote-cache" passivation="false" fetch-state="false" purge="false" preload="false" shared="true">
               <property name="rawValues">true</property>
@@ -765,9 +745,9 @@ Follow these steps to set up the Infinispan server:
       </replicated-cache>
       ```
 
-   4. Add the `remote-store` like this under `sessions` cache:
+   4. 在`sessions`缓存下添加这样的`remote-store`：
 
-      ```
+      ```xml
       <distributed-cache name="sessions" owners="1">
           <remote-store cache="sessions" remote-servers="remote-cache" passivation="false" fetch-state="false" purge="false" preload="false" shared="true">
               <property name="rawValues">true</property>
@@ -776,9 +756,9 @@ Follow these steps to set up the Infinispan server:
       </distributed-cache>
       ```
 
-   5. Do the same for `offlineSessions`, `clientSessions`, `offlineClientSessions`, `loginFailures`, and `actionTokens` caches (the only difference from `sessions` cache is that `cache` property value are different):
+   5. 对于`offlineSessions`，`clientSessions`，`offlineClientSessions`，`loginFailures`和`actionTokens`缓存执行相同的操作（与`sessions`缓存的唯一区别是`cache`属性值不同）：
 
-      ```
+      ```xml
       <distributed-cache name="offlineSessions" owners="1">
           <remote-store cache="offlineSessions" remote-servers="remote-cache" passivation="false" fetch-state="false" purge="false" preload="false" shared="true">
               <property name="rawValues">true</property>
@@ -817,19 +797,19 @@ Follow these steps to set up the Infinispan server:
       </distributed-cache>
       ```
 
-   6. Add outbound socket binding for the remote store into `socket-binding-group` element configuration:
+   6. 将远程存储的出站套接字绑定添加到`socket-binding-group`元素配置中：
 
-      ```
+      ```xml
       <outbound-socket-binding name="remote-cache">
           <remote-destination host="${remote.cache.host:localhost}" port="${remote.cache.port:11222}"/>
       </outbound-socket-binding>
       ```
 
-   7. The configuration of distributed cache `authenticationSessions` and other caches is left unchanged.
+   7. 分布式缓存`authenticationSessions`和其他缓存的配置保持不变。
 
-   8. Optionally enable DEBUG logging under the `logging` subsystem:
+   8. （可选）在`logging`子系统下启用DEBUG日志记录：
 
-      ```
+      ```xml
       <logger category="org.keycloak.cluster.infinispan">
           <level name="DEBUG"/>
       </logger>
@@ -844,166 +824,158 @@ Follow these steps to set up the Infinispan server:
       </logger>
       ```
 
-4. Copy the `NODE11` to 3 other directories referred later as `NODE12`, `NODE21` and `NODE22`.
+4. 将`NODE11`复制到3个其他目录，后面称为`NODE12`，`NODE21`和`NODE22`。
 
-5. Start `NODE11` :
+5. 启动 `NODE11` :
 
-   ```
+   ```bash
    cd NODE11/bin
    ./standalone.sh -c standalone-ha.xml -Djboss.node.name=node11 -Djboss.site.name=site1 \
      -Djboss.default.multicast.address=234.56.78.1 -Dremote.cache.host=jdg1 \
      -Djava.net.preferIPv4Stack=true -b PUBLIC_IP_ADDRESS
    ```
 
-6. Start `NODE12` :
+6. 启动 `NODE12` :
 
-   ```
+   ```bash
    cd NODE12/bin
    ./standalone.sh -c standalone-ha.xml -Djboss.node.name=node12 -Djboss.site.name=site1 \
      -Djboss.default.multicast.address=234.56.78.1 -Dremote.cache.host=jdg1 \
      -Djava.net.preferIPv4Stack=true -b PUBLIC_IP_ADDRESS
    ```
 
-   The cluster nodes should be connected. Something like this should be in the log of both NODE11 and NODE12:
+   应该连接集群节点。类似这样的东西应该同时出现在NODE11和NODE12的日志中:
 
    ```
    Received new cluster view for channel keycloak: [node11|1] (2) [node11, node12]
    ```
 
-   |      | The channel name in the log might be different. |
-   | ---- | ----------------------------------------------- |
-   |      |                                                 |
+   > 日志中的通道名称可能不同。
 
-7. Start `NODE21` :
+7. 启动 `NODE21` :
 
-   ```
+   ```bash
    cd NODE21/bin
    ./standalone.sh -c standalone-ha.xml -Djboss.node.name=node21 -Djboss.site.name=site2 \
      -Djboss.default.multicast.address=234.56.78.2 -Dremote.cache.host=jdg2 \
      -Djava.net.preferIPv4Stack=true -b PUBLIC_IP_ADDRESS
    ```
 
-   It shouldn’t be connected to the cluster with `NODE11` and `NODE12`, but to separate one:
+   它不应该使用`NODE11`和`NODE12`连接到集群，而是分开一个：
 
    ```
    Received new cluster view for channel keycloak: [node21|0] (1) [node21]
    ```
 
-8. Start `NODE22` :
+8. 启动 `NODE22` :
 
-   ```
+   ```bash
    cd NODE22/bin
    ./standalone.sh -c standalone-ha.xml -Djboss.node.name=node22 -Djboss.site.name=site2 \
      -Djboss.default.multicast.address=234.56.78.2 -Dremote.cache.host=jdg2 \
      -Djava.net.preferIPv4Stack=true -b PUBLIC_IP_ADDRESS
    ```
 
-   It should be in cluster with `NODE21` :
+   它应该在与`NODE21`的集群中：
 
    ```
    Received new cluster view for channel keycloak: [node21|1] (2) [node21, node22]
    ```
 
-   |      | The channel name in the log might be different. |
-   | ---- | ----------------------------------------------- |
-   |      |                                                 |
+   > 日志中的通道名称可能不同。 
 
-9. Test:
+9. 测试:
 
-   1. Go to `http://node11:8080/auth/` and create the initial admin user.
+   1. 转到 `http://node11:8080/auth/` 并创建初始管理员用户。
 
-   2. Go to `http://node11:8080/auth/admin` and login as admin to admin console.
+   2. 转到 `http://node11:8080/auth/admin` 并以admin身份登录管理控制台。
 
-   3. Open a second browser and go to any of nodes `http://node12:8080/auth/admin` or `http://node21:8080/auth/admin` or `http://node22:8080/auth/admin`. After login, you should be able to see the same sessions in tab `Sessions` of particular user, client or realm on all 4 servers.
+   3. 打开第二个浏览器并转到任何节点 `http://node12:8080/auth/admin` 或`http://node21:8080/auth/admin` 或  `http://node22:8080/auth/admin` 。 登录后，您应该能够在所有4台服务器上的特定用户，客户端或领域的“会话”选项卡中看到相同的会话。
 
-   4. After doing any change in Keycloak admin console (eg. update some user or some realm), the update should be immediately visible on any of 4 nodes as caches should be properly invalidated everywhere.
+   4. 在对Keycloak管理控制台进行任何更改后（例如，更新某些用户或某些领域），更新应立即在4个节点中的任何一个上可见，因为缓存应在任何地方正确无效。
 
-   5. Check server.logs if needed. After login or logout, the message like this should be on all the nodes `NODEXY/standalone/log/server.log` :
+   5. 如果需要，请检查server.logs。 登录或注销后，这样的消息应该在所有节点上 `NODEXY/standalone/log/server.log`：
 
       ```
       2017-08-25 17:35:17,737 DEBUG [org.keycloak.models.sessions.infinispan.remotestore.RemoteCacheSessionListener] (Client-Listener-sessions-30012a77422542f5) Received event from remote store.
       Event 'CLIENT_CACHE_ENTRY_REMOVED', key '193489e7-e2bc-4069-afe8-f1dfa73084ea', skip 'false'
       ```
 
-#### 3.4.9. Administration of Cross DC deployment
+#### 3.4.9. 跨DC部署的管理
 
-This section contains some tips and options related to Cross-Datacenter Replication.
+本节包含与跨数据中心复制相关的一些提示和选项。
 
-- When you run the Keycloak server inside a data center, it is required that the database referenced in `KeycloakDS`datasource is already running and available in that data center. It is also necessary that the Infinispan server referenced by the `outbound-socket-binding`, which is referenced from the Infinispan cache `remote-store` element, is already running. Otherwise the Keycloak server will fail to start.
-- Every data center can have more database nodes if you want to support database failover and better reliability. Refer to the documentation of your database and JDBC driver for the details how to set this up on the database side and how the `KeycloakDS` datasource on Keycloak side needs to be configured.
-- Every datacenter can have more Infinispan servers running in the cluster. This is useful if you want some failover and better fault tolerance. The HotRod protocol used for communication between Infinispan servers and Keycloak servers has a feature that Infinispan servers will automatically send new topology to the Keycloak servers about the change in the Infinispan cluster, so the remote store on Keycloak side will know to which Infinispan servers it can connect. Read the Infinispan and WildFly documentation for more details.
-- It is highly recommended that a master Infinispan server is running in every site before the Keycloak servers in **any** site are started. As in our example, we started both `jdg1` and `jdg2` first, before all Keycloak servers. If you still need to run the Keycloak server and the backup site is offline, it is recommended to manually switch the backup site offline on the Infinispan servers on your site, as described in [Bringing sites offline and online](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline). If you do not manually switch the unavailable site offline, the first startup may fail or they may be some exceptions during startup until the backup site is taken offline automatically due the configured count of failed operations.
+- 当您在数据中心内运行Keycloak服务器时， 需要在 `KeycloakDS` 数据源中引用的数据库已经在该数据中心中运行并可用。 `outbound-socket-binding`引用的Infinispan服务器也是必要的， 从Infinispan缓存`remote-store`元素引用的,已经在运行。否则Keycloak服务器将无法启动。
+- 如果要支持数据库故障转移和更高的可靠性，每个数据中心都可以拥有更多数据库节点。 有关如何在数据库端进行设置以及如何在Keycloak端配置`KeycloakDS`数据源的详细信息，请参阅数据库和JDBC驱动程序的文档。
+- 每个数据中心都可以在集群中运行更多Infinispan服务器。 如果您需要一些故障转移和更好的容错能力，这将非常有用。 用于Infinispan服务器和Keycloak服务器之间通信的HotRod协议具有以下功能：Infinispan服务器将自动向Keycloak服务器发送有关Infinispan群集更改的新拓扑， 因此，Keycloak端的远程存储将知道它可以连接到哪个Infinispan服务器。阅读Infinispan和WildFly文档了解更多细节。
+- 强烈建议在启动**任何**站点中的Keycloak服务器之前，在每个站点中运行一个主Infinispan服务器。 在我们的例子中，我们首先在所有Keycloak服务器之前启动了`jdg1`和`jdg2`。 如果您仍然需要运行Keycloak服务器并且备份站点处于脱机状态，建议您在站点上的Infinispan服务器上手动切换备份站点，如[使站点脱机并联机](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline)中所述。 如果不手动将不可用站点脱机，则第一次启动可能会失败，或者在启动期间可能会出现一些异常，直到备份站点因配置的失败操作计数而自动脱机。
 
-#### 3.4.10. Bringing sites offline and online
+#### 3.4.10. 使网站脱机和在线
 
-For example, assume this scenario:
+例如，假设这种情况：
 
-1. Site `site2` is entirely offline from the `site1` perspective. This means that all Infinispan servers on `site2` are off **or** the network between `site1` and `site2` is broken.
-2. You run Keycloak servers and Infinispan server `jdg1` in site `site1`
-3. Someone logs in on a Keycloak server on `site1`.
-4. The Keycloak server from `site1` will try to write the session to the remote cache on `jdg1` server, which is supposed to backup data to the `jdg2` server in the `site2`. See [Communication details](https://www.keycloak.org/docs/latest/server_installation/index.html#communication) for more information.
-5. Server `jdg2` is offline or unreachable from `jdg1`. So the backup from `jdg1` to `jdg2` will fail.
-6. The exception is thrown in `jdg1` log and the failure will be propagated from `jdg1` server to Keycloak servers as well because the default `FAIL` backup failure policy is configured. See [Backup failure policy](https://www.keycloak.org/docs/latest/server_installation/index.html#backupfailure) for details around the backup policies.
-7. The error will happen on Keycloak side too and user may not be able to finish his login.
+1. 站点`site2`从`site1`角度完全脱机。 这意味着`site2`上的所有Infinispan服务器都关闭**或者`site1`和`site2`之间的网络被破坏了。
+2. 您在站点`site1`中运行Keycloak服务器和Infinispan服务器`jdg1`
+3. 有人在`site1`上的Keycloak服务器上登录。
+4. 来自`site1`的Keycloak服务器将尝试将会话写入`jdg1`服务器上的远程缓存，该服务器应该将数据备份到`site2`中的`jdg2`服务器。 有关详细信息，请参阅[通信详细信息](https://www.keycloak.org/docs/latest/server_installation/index.html#communication)。
+5. 服务器`jdg2`离线或无法访问`jdg1`。 所以从`jdg1`到`jdg2`的备份将失败。
+6. 在`jdg1`日志中抛出异常，故障也将从`jdg1`服务器传播到Keycloak服务器，因为配置了默认的`FAIL`备份失败策略。 有关备份策略的详细信息，请参阅[备份失败策略](https://www.keycloak.org/docs/latest/server_installation/index.html#backupfailure)。
+7. 错误也会在Keycloak方面发生，用户可能无法完成登录。
 
-According to your environment, it may be more or less probable that the network between sites is unavailable or temporarily broken (split-brain). In case this happens, it is good that Infinispan servers on `site1` are aware of the fact that Infinispan servers on `site2` are unavailable, so they will stop trying to reach the servers in the `jdg2` site and the backup failures won’t happen. This is called `Take site offline` .
+根据您的环境，站点之间的网络可能或多或少可能不可用或暂时中断（裂脑）。如果发生这种情况，最好是`site1`上的Infinispan服务器知道`site2`上的Infinispan服务器不可用，因此它们将停止尝试访问`jdg2`站点上的服务器，并且不会发生备份故障。这就是所谓的“让网站脱机”。
 
-Take site offline
+使网站脱机
 
-There are 2 ways to take the site offline.
+有两种方法可以使网站脱机。
 
-**Manually by admin** - Admin can use the `jconsole` or other tool and run some JMX operations to manually take the particular site offline. This is useful especially if the outage is planned. With `jconsole` or CLI, you can connect to the `jdg1`server and take the `site2` offline. More details about this are available in the [JDG documentation](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication#taking_a_site_offline).
+**由管理员手动** - 管理员可以使用`jconsole`或其他工具运行一些JMX操作来手动使特定站点脱机。 这非常有用，尤其是在计划中断时。使用`jconsole`或CLI，您可以连接到`jdg1`服务器并使`site2`脱机。 有关这方面的更多详细信息，请参见[JDG文档](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication#taking_a_site_offline)。
 
-|      | These steps usually need to be done for all the Keycloak caches mentioned in [SYNC or ASYNC backups](https://www.keycloak.org/docs/latest/server_installation/index.html#backups). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 通常需要对[SYNC或ASYNC备份](https://www.keycloak.org/docs/latest/server_installation/index.html#backups)中提到的所有Keycloak缓存执行这些步骤。 
 
-**Automatically** - After some amount of failed backups, the `site2` will usually be taken offline automatically. This is done due the configuration of `take-offline` element inside the cache configuration as configured in [Infinispan server setup](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup).
+**自动** - 经过一定数量的失败备份后，`site2`通常会自动脱机。 这是通过在[Infinispan服务器设置](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup)中配置的缓存配置中的`take-offline`元素的配置来完成的。
 
-```
+```xml
 <take-offline min-wait="60000" after-failures="3" />
 ```
 
-This example shows that the site will be taken offline automatically for the particular single cache if there are at least 3 subsequent failed backups and there is no any successful backup within 60 seconds.
+这个示例显示，如果在60秒内至少有3个后续备份失败，并且没有任何成功备份，那么对于特定的单个缓存，站点将自动脱机。
 
-Automatically taking a site offline is useful especially if the broken network between sites is unplanned. The disadvantage is that there will be some failed backups until the network outage is detected, which could also mean failures on the application side. For example, there will be failed logins for some users or big login timeouts. Especially if `failure-policy` with value `FAIL` is used.
+自动使站点脱机是非常有用的，特别是当站点之间的网络中断是计划外的。 缺点是，在检测到网络中断之前，会有一些失败的备份，这也可能意味着应用程序端出现故障。 例如，某些用户的登录失败或登录超时很长。 特别是如果使用值为 `FAIL` 的 `failure-policy`。
 
-|      | The tracking of whether a site is offline is tracked separately for every cache. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 每个缓存都会单独跟踪站点是否处于脱机状态。 
 
-Take site online
+把网站在线
 
-Once your network is back and `site1` and `site2` can talk to each other, you may need to put the site online. This needs to be done manually through JMX or CLI in similar way as taking a site offline. Again, you may need to check all the caches and bring them online.
+一旦你的网络恢复了，`site1` 和 `site2` 可以互相交谈，你可能需要把网站上线。这需要通过JMX或CLI手动完成，方法类似于使站点脱机。同样，您可能需要检查所有缓存并将它们联机。
 
-Once the sites are put online, it’s usually good to:
+一旦网站上线，通常最好:
 
-- Do the [State transfer](https://www.keycloak.org/docs/latest/server_installation/index.html#statetransfer).
-- Manually [Clear caches](https://www.keycloak.org/docs/latest/server_installation/index.html#clearcache).
+- 做[状态转移](https://www.keycloak.org/docs/latest/server_installation/index.html#statetransfer)。
+- 手动[清除缓存](https://www.keycloak.org/docs/latest/server_installation/index.html#clearcache)。
 
-#### 3.4.11. State transfer
+#### 3.4.11. 状态转移
 
-State transfer is a required, manual step. Infinispan server does not do this automatically, for example during split-brain, it is only the admin who may decide which site has preference and hence if state transfer needs to be done bidirectionally between both sites or just unidirectionally, as in only from `site1` to `site2`, but not from `site2` to `site1`.
+国家转移是必需的手动步骤。 Infinispan服务器不会自动执行此操作，例如在裂脑期间，只有管理员可以决定哪个站点具有首选项，因此是否需要在两个站点之间双向进行状态转移，或者只是单向进行，如同仅来自`site1 `到`site2`，但不是从`site2`到`site1`。
 
-A bidirectional state transfer will ensure that entities which were created **after** split-brain on `site1` will be transferred to `site2`. This is not an issue as they do not yet exist on `site2`. Similarly, entities created **after** split-brain on `site2` will be transferred to `site1`. Possibly problematic parts are those entities which exist **before** split-brain on both sites and which were updated during split-brain on both sites. When this happens, one of the sites will **win** and will overwrite the updates done during split-brain by the second site.
+双向状态转移将确保`site1`上的裂脑**后**创建的实体被转移到`site2`上。 这不是问题，因为它们在`site2`上还不存在。 类似地，在`site2`上裂脑**后**创建的实体将被转移到`site1`上。 可能有问题的部分是那些在两个站点上的裂脑**之前**存在并且在两个站点上的裂脑期间更新的实体。 当这种情况发生时，其中一个站点将**胜出**，并覆盖第二个站点在脑裂期间完成的更新。
 
-Unfortunately, there is no any universal solution to this. Split-brains and network outages are just state, which is usually impossible to be handled 100% correctly with 100% consistent data between sites. In the case of Keycloak, it typically is not a critical issue. In the worst case, users will need to re-login again to their clients, or have the improper count of loginFailures tracked for brute force protection. See the Infinispan/JGroups documentation for more tips how to deal with split-brain.
+不幸的是，没有任何通用的解决方案。 脑裂和网络中断只是状态，通常不可能100%正确地处理站点之间100%一致的数据。 就Keycloak而言，它通常不是一个关键问题。 在最坏的情况下，用户需要重新登录到他们的客户端，或者有不正确的loginFailures计数用于强力保护。 有关如何处理裂脑的更多提示，请参阅Infinispan/JGroups文档。
 
-The state transfer can be also done on the Infinispan server side through JMX. The operation name is `pushState`. There are few other operations to monitor status, cancel push state, and so on. More info about state transfer is available in the [Infinispan docs](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication#pushing_state_transfer_to_sites).
+状态转移也可以通过JMX在Infinispan服务器端完成。 操作名称是`pushState`。 几乎没有其他操作来监视状态，取消推送状态等。 有关状态转移的更多信息，请参阅[Infinispan docs](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication#pushing_state_transfer_to_sites)。
 
-#### 3.4.12. Clear caches
+#### 3.4.12. 清除缓存
 
-After split-brain it is safe to manually clear caches in the Keycloak admin console. This is because there might be some data changed in the database on `site1` and because of the event, that the cache should be invalidated wasn’t transferred during split-brain to `site2`. Hence Keycloak nodes on `site2` may still have some stale data in their caches.
+在脑裂之后，可以安全地在Keycloak管理控制台中手动清除缓存。 这是因为在`site1`上的数据库中可能存在一些数据发生了变化，并且由于该事件，缓存应该被无效，并且在脑裂期间没有被转移到`site2`。 因此，`site2`上的Keycloak节点可能仍然在其缓存中有一些陈旧的数据。
 
-To clear the caches, see [Clearing Server Caches](https://www.keycloak.org/docs/6.0/server_admin/#_clear-cache).
+要清除缓存，请参阅[清除服务器缓存](https://www.keycloak.org/docs/6.0/server_admin/#_clear-cache)。
 
-When the network is back, it is sufficient to clear the cache just on one Keycloak node on any random site. The cache invalidation event will be sent to all the other Keycloak nodes in all sites. However, it needs to be done for all the caches (realms, users, keys). See [Clearing Server Caches](https://www.keycloak.org/docs/6.0/server_admin/#_clear-cache) for more information.
+当网络恢复时，仅在任何随机站点上的一个Keycloak节点上清除缓存就足够了。 缓存失效事件将发送到所有站点中的所有其他Keycloak节点。 但是，需要对所有缓存（领域，用户，密钥）执行此操作。 有关详细信息，请参阅[清除服务器缓存](https://www.keycloak.org/docs/6.0/server_admin/#_clear-cache)。
 
-#### 3.4.13. Tuning the JDG cache configuration
+#### 3.4.13. 调整JDG缓存配置
 
-This section contains tips and options for configuring your JDG cache.
+本节包含配置JDG缓存的技巧和选项。
 
-Backup failure policy
+备份失败策略
 
 By default, the configuration of backup `failure-policy` in the Infinispan cache configuration in the JDG `clustered.xml`file is configured as `FAIL`. You may change it to `WARN` or `IGNORE`, as you prefer.
 
