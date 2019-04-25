@@ -1458,31 +1458,29 @@ Keycloak使用两种分层技术来持久保存其关系数据。 底层技术�
 
 以下是为Keycloak配置RDBMS所需执行的步骤。
 
-1. Locate and download a JDBC driver for your database
-2. Package the driver JAR into a module and install this module into the server
-3. Declare the JDBC driver in the configuration profile of the server
-4. Modify the datasource configuration to use your database’s JDBC driver
-5. Modify the datasource configuration to define the connection parameters to your database
+1. 找到并下载数据库的JDBC驱动程序
+2. 将驱动程序JAR打包到模块中并将此模块安装到服务器中
+3. 在服务器的配置文件中声明JDBC驱动程序
+4. 修改数据源配置以使用数据库的JDBC驱动程序
+5. 修改数据源配置以定义数据库的连接参数
 
-This chapter will use PostgresSQL for all its examples. Other databases follow the same steps for installation.
+本章将使用PostgresQL作为其所有示例。 其他数据库遵循相同的安装步骤。
 
-### 6.2. Package the JDBC Driver
+### 6.2. 打包JDBC驱动程序
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/database/jdbc.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/database/jdbc.adoc)
+查找并下载RDBMS的JDBC驱动程序JAR。 在使用此驱动程序之前，必须将其打包到模块中并将其安装到服务器中。 模块定义加载到Keycloak类路径中的JAR以及这些JAR对其他模块的依赖关系。 它们设置起来非常简单。
 
-Find and download the JDBC driver JAR for your RDBMS. Before you can use this driver, you must package it up into a module and install it into the server. Modules define JARs that are loaded into the Keycloak classpath and the dependencies those JARs have on other modules. They are pretty simple to set up.
+在Keycloak发行版的 *…/modules/* 目录中，您需要创建一个目录结构来保存模块定义。 约定是使用JDBC驱动程序的Java包名称作为目录结构的名称。 对于PostgreSQL，创建目录 *org/postgresql/main* 。 将数据库驱动程序JAR复制到此目录中，并在其中创建一个空的 *module.xml* 文件。
 
-Within the *…/modules/* directory of your Keycloak distribution, you need to create a directory structure to hold your module definition. The convention is use the Java package name of the JDBC driver for the name of the directory structure. For PostgreSQL, create the directory *org/postgresql/main*. Copy your database driver JAR into this directory and create an empty *module.xml* file within it too.
-
-Module Directory
+模块目录
 
 ![db module](assets/db-module.png)
 
-After you have done this, open up the *module.xml* file and create the following XML:
+完成此操作后，打开 *module.xml* 文件并创建以下XML：
 
-Module XML
+模块 XML
 
-```
+```xml
 <?xml version="1.0" ?>
 <module xmlns="urn:jboss:module:1.3" name="org.postgresql">
 
@@ -1497,17 +1495,17 @@ Module XML
 </module>
 ```
 
-The module name should match the directory structure of your module. So, *org/postgresql* maps to `org.postgresql`. The `resource-root path` attribute should specify the JAR filename of the driver. The rest are just the normal dependencies that any JDBC driver JAR would have.
+模块名称应与模块的目录结构匹配。 所以，*org/postgresql* 映射到`org.postgresql`。 `resource-root path`属性应指定驱动程序的JAR文件名。 其余的只是任何JDBC驱动程序JAR所具有的正常依赖关系。
 
-### 6.3. Declare and Load JDBC Driver
+### 6.3. 声明并加载JDBC驱动程序
 
-The next thing you have to do is declare your newly packaged JDBC driver into your deployment profile so that it loads and becomes available when the server boots up. Where you perform this action depends on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode). If you’re deploying in standard mode, edit *…/standalone/configuration/standalone.xml*. If you’re deploying in standard clustering mode, edit *…/standalone/configuration/standalone-ha.xml*. If you’re deploying in domain mode, edit *…/domain/configuration/domain.xml*. In domain mode, you’ll need to make sure you edit the profile you are using: either `auth-server-standalone` or `auth-server-clustered`
+接下来要做的是将新打包的JDBC驱动程序声明到部署配置文件中，以便在服务器启动时加载并变为可用。 执行此操作的位置取决于您的[操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)。 如果要在标准模式下部署，请编辑*…/standalone/configuration/standalone.xml*。 如果要以标准群集模式进行部署，请编辑*.../standalone/configuration/ standalone-ha.xml*。 如果要在域模式下部署，请编辑*.../domain/configuration/domain.xml*。 在域模式下，您需要确保编辑正在使用的配置文件：`auth-server-standalone`或`auth-server-clustered`
 
-Within the profile, search for the `drivers` XML block within the `datasources` subsystem. You should see a pre-defined driver declared for the H2 JDBC driver. This is where you’ll declare the JDBC driver for your external database.
+在配置文件中，搜索`datasources`子系统中的`drivers` XML块。 您应该看到为H2 JDBC驱动程序声明的预定义驱动程序。 这是您为外部数据库声明JDBC驱动程序的地方。
 
-JDBC Drivers
+JDBC 驱动
 
-```
+```xml
   <subsystem xmlns="urn:jboss:domain:datasources:5.0">
      <datasources>
        ...
@@ -1520,9 +1518,9 @@ JDBC Drivers
   </subsystem>
 ```
 
-Within the `drivers` XML block you’ll need to declare an additional JDBC driver. It needs to have a `name` which you can choose to be anything you want. You specify the `module` attribute which points to the `module` package you created earlier for the driver JAR. Finally you have to specify the driver’s Java class. Here’s an example of installing PostgreSQL driver that lives in the module example defined earlier in this chapter.
+在`drivers` XML块中，您需要声明一个额外的JDBC驱动程序。 它需要一个`name`，你可以选择任何你想要的。 您指定`module`属性，该属性指向您之前为驱动程序JAR创建的`module`包。 最后，您必须指定驱动程序的Java类。 下面是安装PostgreSQL驱动程序的示例，该驱动程序位于本章前面定义的模块示例中。
 
-Declare Your JDBC Drivers
+声明您的JDBC驱动程序
 
 ```
   <subsystem xmlns="urn:jboss:domain:datasources:5.0">
@@ -1540,15 +1538,13 @@ Declare Your JDBC Drivers
   </subsystem>
 ```
 
-### 6.4. Modify the Keycloak Datasource
+### 6.4. 修改Keycloak数据源
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/database/datasource.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/database/datasource.adoc)
+声明JDBC驱动程序后，必须修改Keycloak用于将其连接到新外部数据库的现有数据源配置。 您将在注册JDBC驱动程序的相同配置文件和XML块中执行此操作。以下是设置与新数据库的连接的示例：
 
-After declaring your JDBC driver, you have to modify the existing datasource configuration that Keycloak uses to connect it to your new external database. You’ll do this within the same configuration file and XML block that you registered your JDBC driver in. Here’s an example that sets up the connection to your new database:
+声明您的JDBC驱动程序
 
-Declare Your JDBC Drivers
-
-```
+```xml
   <subsystem xmlns="urn:jboss:domain:datasources:5.0">
      <datasources>
        ...
@@ -1568,27 +1564,23 @@ Declare Your JDBC Drivers
   </subsystem>
 ```
 
-Search for the `datasource` definition for `KeycloakDS`. You’ll first need to modify the `connection-url`. The documentation for your vendor’s JDBC implementation should specify the format for this connection URL value.
+搜索`KeycloakDS`的`datasource`定义。 您首先需要修改`connection-url`。 供应商的JDBC实现的文档应指定此连接URL值的格式。
 
-Next define the `driver` you will use. This is the logical name of the JDBC driver you declared in the previous section of this chapter.
+接下来定义你将使用的`driver`。 这是您在本章上一节中声明的JDBC驱动程序的逻辑名称。
 
-It is expensive to open a new connection to a database every time you want to perform a transaction. To compensate, the datasource implementation maintains a pool of open connections. The `max-pool-size` specifies the maximum number of connections it will pool. You may want to change the value of this depending on the load of your system.
+每次要执行事务时，打开与数据库的新连接都很昂贵。 为了补偿，数据源实现维护了一个打开的连接池。 `max-pool-size`指定它将允许的最大连接数。 您可能希望根据系统负载更改此值。
 
-Finally, with PostgreSQL at least, you need to define the database username and password that is needed to connect to the database. You may be worried that this is in clear text in the example. There are methods to obfuscate this, but this is beyond the scope of this guide.
+最后，至少使用PostgreSQL，您需要定义连接到数据库所需的数据库用户名和密码。 您可能会担心示例中的明文是明文。 有一些方法可以对此进行模糊处理，但这超出了本指南的范围。
 
-|      | For more information about datasource features, see [the datasource configuration chapter](http://docs.wildfly.org/16/Admin_Guide.html#DataSource) in the *WildFly 16 Documentation*. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 有关数据源功能的更多信息，请参阅* WildFly 16文档*中的[数据源配置章节](http://docs.wildfly.org/16/Admin_Guide.html#DataSource)。 
 
-### 6.5. Database Configuration
+### 6.5. 数据库配置
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/database/hibernate.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/database/hibernate.adoc)
+此组件的配置位于发行版中的`standalone.xml`，`standalone-ha.xml`或`domain.xml`文件中。 此文件的位置取决于您的[操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)。
 
-The configuration for this component is found in the `standalone.xml`, `standalone-ha.xml`, or `domain.xml` file in your distribution. The location of this file depends on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode).
+数据库配置
 
-Database Config
-
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:keycloak-server:1.1">
     ...
     <spi name="connectionsJpa">
@@ -1605,98 +1597,92 @@ Database Config
 </subsystem>
 ```
 
-Possible configuration options are:
+可能的配置选项是：
 
 - dataSource
 
-  JNDI name of the dataSource
+  DataSource的JNDI名称
 
 - jta
 
-  boolean property to specify if datasource is JTA capable
+  boolean属性，用于指定datasource是否支持JTA
 
 - driverDialect
 
-  Value of database dialect. In most cases you don’t need to specify this property as dialect will be autodetected by Hibernate.
+  数据库方言的值。在大多数情况下，您不需要指定此属性，因为Hibernate将自动检测方言。
 
 - initializeEmpty
 
-  Initialize database if empty. If set to false the database has to be manually initialized. If you want to manually initialize the database set migrationStrategy to `manual` which will create a file with SQL commands to initialize the database. Defaults to true.
+  如果为空则初始化数据库。 如果设置为false，则必须手动初始化数据库。 如果要手动将数据库集migrationStrategy初始化为`manual`，它将创建一个带有SQL命令的文件来初始化数据库。 默认为true。
 
 - migrationStrategy
 
-  Strategy to use to migrate database. Valid values are `update`, `manual` and `validate`. Update will automatically migrate the database schema. Manual will export the required changes to a file with SQL commands that you can manually execute on the database. Validate will simply check if the database is up-to-date.
+  用于迁移数据库的策略。 有效值为`update`，`manual`和`validate`。 Update将自动迁移数据库架构。 手动将使用可在数据库上手动执行的SQL命令将所需更改导出到文件。 验证将只检查数据库是否是最新的。
 
 - migrationExport
 
-  Path for where to write manual database initialization/migration file.
+  编写手动数据库初始化/迁移文件的位置的路径。
 
 - showSql
 
-  Specify whether Hibernate should show all SQL commands in the console (false by default). This is very verbose!
+  指定Hibernate是否应在控制台中显示所有SQL命令（默认为false）。 这非常冗长！
 
 - formatSql
 
-  Specify whether Hibernate should format SQL commands (true by default)
+  指定Hibernate是否应格式化SQL命令（默认为true）
 
 - globalStatsInterval
 
-  Will log global statistics from Hibernate about executed DB queries and other things. Statistics are always reported to server log at specified interval (in seconds) and are cleared after each report.
+  将从Hibernate记录关于执行的数据库查询和其他事情的全局统计信息。 统计信息始终以指定的时间间隔（以秒为单位）报告给服务器日志，并在每次报告后清除。
 
 - schema
 
-  Specify the database schema to use
+  指定要使用的数据库的schema
 
-|      | These configuration switches and more are described in the [*WildFly 16 Development Guide*](http://docs.wildfly.org/16/Developer_Guide.html#hibernate-properties). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 这些配置开关等在[* WildFly 16开发指南*](http://docs.wildfly.org/16/Developer_Guide.html#hibernate-properties)中有所描述。 
 
-### 6.6. Unicode Considerations for Databases
+### 6.6. 数据库的Unicode注意事项
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/database/unicode-considerations.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/database/unicode-considerations.adoc)
+Keycloak中的数据库模式仅考虑以下特殊字段中的Unicode字符串：
 
-Database schema in Keycloak only accounts for Unicode strings in the following special fields:
+- Realms: 显示名称，HTML显示名称
+- Federation Providers: 显示名称
+- Users: 用户名，给定名称，姓氏，属性名称和值
+- Groups: 名称，属性名称和值
+- Roles: 名字
+- Descriptions of objects: 对象的描述
 
-- Realms: display name, HTML display name
-- Federation Providers: display name
-- Users: username, given name, last name, attribute names and values
-- Groups: name, attribute names and values
-- Roles: name
-- Descriptions of objects
+否则，字符仅限于数据库编码中包含的字符，通常为8位。 但是，对于某些数据库系统，可以启用Unicode字符的UTF-8编码，并在所有文本字段中使用完整的Unicode字符集。 通常，与8位编码的情况相比，这通过较短的字符串最大长度来抵消。
 
-Otherwise, characters are limited to those contained in database encoding which is often 8-bit. However, for some database systems, it is possible to enable UTF-8 encoding of Unicode characters and use full Unicode character set in all text fields. Often, this is counterbalanced by shorter maximum length of the strings than in case of 8-bit encodings.
+某些数据库需要对数据库和/或JDBC驱动程序进行特殊设置才能处理Unicode字符。 请在下面找到您的数据库的设置。 请注意，如果此处列出了数据库，只要它在数据库级别和JDBC驱动程序上正确处理UTF-8编码，它仍然可以正常工作。
 
-Some of the databases require special settings to database and/or JDBC driver to be able to handle Unicode characters. Please find the settings for your database below. Note that if a database is listed here, it can still work properly provided it handles UTF-8 encoding properly both on the level of database and JDBC driver.
+从技术上讲，Unicode支持所有字段的关键标准是数据库是否允许为`VARCHAR`和`CHAR`字段设置Unicode字符集。 如果是，那么Unicode很可能是合理的，通常以字段长度为代价。 如果它只支持`NVARCHAR`和`NCHAR`字段中的Unicode，则不太可能支持所有文本字段，因为Keycloak模式广泛使用`VARCHAR`和`CHAR`字段。
 
-Technically, the key criterion for Unicode support for all fields is whether the database allows setting of Unicode character set for `VARCHAR` and `CHAR` fields. If yes, there is a high chance that Unicode will be plausible, usually at the expense of field length. If it only supports Unicode in `NVARCHAR` and `NCHAR` fields, Unicode support for all text fields is unlikely as Keycloak schema uses `VARCHAR` and `CHAR` fields extensively.
+#### 6.6.1. Oracle 数据库
 
-#### 6.6.1. Oracle Database
+如果数据库是在`VARCHAR`和`CHAR`字段中使用Unicode支持创建的（例如，使用`AL32UTF8`字符集作为数据库字符集），则可以正确处理Unicode字符。 JDBC驱动程序无需特殊设置。
 
-Unicode characters are properly handled provided the database was created with Unicode support in `VARCHAR` and `CHAR`fields (e.g. by using `AL32UTF8` character set as the database character set). No special settings is needed for JDBC driver.
+如果数据库字符集不是Unicode，那么要在特殊字段中使用Unicode字符，需要使用连接属性`oracle.jdbc.defaultNChar`设置为`true`来配置JDBC驱动程序。 将`oracle.jdbc.convertNcharLiterals`连接属性设置为`true`可能是明智的，尽管不是绝对必要的。 可以将这些属性设置为系统属性或连接属性。 请注意，设置`oracle.jdbc.defaultNChar`可能会对性能产生负面影响。 有关详细信息，请参阅Oracle JDBC驱动程序配置文档。
 
-If the database character set is not Unicode, then to use Unicode characters in the special fields, the JDBC driver needs to be configured with the connection property `oracle.jdbc.defaultNChar` set to `true`. It might be wise, though not strictly necessary, to also set the `oracle.jdbc.convertNcharLiterals` connection property to `true`. These properties can be set either as system properties or as connection properties. Please note that setting `oracle.jdbc.defaultNChar` may have negative impact on performance. For details, please refer to Oracle JDBC driver configuration documentation.
+#### 6.6.2. Microsoft SQL Server 数据库
 
-#### 6.6.2. Microsoft SQL Server Database
+只为特殊字段正确处理Unicode字符。 不需要JDBC驱动程序或数据库的特殊设置。
 
-Unicode characters are properly handled only for the special fields. No special settings of JDBC driver or database is necessary.
+#### 6.6.3. MySQL 数据库
 
-#### 6.6.3. MySQL Database
+如果在`CREATE DATABASE`命令中的`VARCHAR`和`CHAR`fields中使用Unicode支持创建数据库，则可以正确处理Unicode字符（例如，使用`utf8`字符集作为MySQL 5.5中的默认数据库字符集。请注意 由于对`utf8`字符集[[1](https://www.keycloak.org/docs/latest/server_installation/index.html#_footnote_1)]的存储要求不同，`utf8mb4`字符集不起作用。 请注意，在这种情况下，对非特殊字段的长度限制不适用，因为创建列以容纳给定数量的字符，而不是字节。 如果数据库缺省字符集不允许存储Unicode，则只有特殊字段允许存储Unicode值。
 
-Unicode characters are properly handled provided the database was created with Unicode support in `VARCHAR` and `CHAR`fields in the `CREATE DATABASE` command (e.g. by using `utf8` character set as the default database character set in MySQL 5.5. Please note that `utf8mb4` character set does not work due to different storage requirements to `utf8` character set [[1](https://www.keycloak.org/docs/latest/server_installation/index.html#_footnote_1)]). Note that in this case, length restriction to non-special fields does not apply because columns are created to accommodate given amount of characters, not bytes. If the database default character set does not allow storing Unicode, only the special fields allow storing Unicode values.
+在JDBC驱动程序设置方面，需要在JDBC连接设置中添加连接属性`characterEncoding = UTF-8`。
 
-At the side of JDBC driver settings, it is necessary to add a connection property `characterEncoding=UTF-8` to the JDBC connection settings.
+#### 6.6.4. PostgreSQL 数据库
 
-#### 6.6.4. PostgreSQL Database
+当数据库字符集为`UTF8`时，支持Unicode。 在这种情况下，Unicode字符可以在任何字段中使用，非特殊字段的字段长度不会减少。 不需要JDBC驱动程序的特殊设置。
 
-Unicode is supported when the database character set is `UTF8`. In that case, Unicode characters can be used in any field, there is no reduction of field length for non-special fields. No special settings of JDBC driver is necessary.
+## 7. 网络设置
 
-## 7. Network Setup
+keycover可能会因为一些网络限制而无法使用。首先，所有网络端点都绑定到`localhost`，因此auth服务器实际上只能在一台本地机器上使用。对于基于HTTP的连接，它不使用80和443之类的默认端口。HTTPS/SSL不是开箱即用配置的，如果没有它，keycover有许多安全漏洞。最后，keyshield可能经常需要与外部服务器建立安全的SSL和HTTPS连接，因此需要建立信任存储，以便正确验证端点。本章将讨论所有这些内容。
 
-Keycloak can run out of the box with some networking limitations. For one, all network endpoints bind to `localhost` so the auth server is really only usable on one local machine. For HTTP based connections, it does not use default ports like 80 and 443. HTTPS/SSL is not configured out of the box and without it, Keycloak has many security vulnerabilities. Finally, Keycloak may often need to make secure SSL and HTTPS connections to external servers and thus need a trust store set up so that endpoints can be validated correctly. This chapter discusses all of these things.
-
-### 7.1. Bind Addresses
-
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/network/bind-address.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/network/bind-address.adoc)
+### 7.1. 绑定地址
 
 By default Keycloak binds to the localhost loopback address `127.0.0.1`. That’s not a very useful default if you want the authentication server available on your network. Generally, what we recommend is that you deploy a reverse proxy or load balancer on a public network and route traffic to individual Keycloak server instances on a private network. In either case though, you still need to set up your network interfaces to bind to something other than `localhost`.
 
