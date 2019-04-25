@@ -1684,19 +1684,19 @@ keycover可能会因为一些网络限制而无法使用。首先，所有网络
 
 ### 7.1. 绑定地址
 
-By default Keycloak binds to the localhost loopback address `127.0.0.1`. That’s not a very useful default if you want the authentication server available on your network. Generally, what we recommend is that you deploy a reverse proxy or load balancer on a public network and route traffic to individual Keycloak server instances on a private network. In either case though, you still need to set up your network interfaces to bind to something other than `localhost`.
+默认情况下，keycover绑定到本地主机环回地址`127.0.0.1`。如果您希望网络上的身份验证服务器可用，那么这不是一个非常有用的缺省值。通常，我们建议在公共网络上部署反向代理或负载平衡器，并将流量路由到私有网络上的各个Keycloak服务器实例。无论哪种情况，您仍然需要设置网络接口来绑定到`localhost`之外的其他东西。
 
-Setting the bind address is quite easy and can be done on the command line with either the *standalone.sh* or *domain.sh* boot scripts discussed in the [Choosing an Operating Mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode) chapter.
+设置绑定地址非常简单，可以在命令行上使用[选择操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)章节 中讨论的 *standalone.sh* 或 *domain.sh* 启动脚本来完成。
 
-```
+```bash
 $ standalone.sh -b 192.168.0.5
 ```
 
-The `-b` switch sets the IP bind address for any public interfaces.
+`-b`开关为任何公共接口设置IP绑定地址。
 
-Alternatively, if you don’t want to set the bind address at the command line, you can edit the profile configuration of your deployment. Open up the profile configuration file (*standalone.xml* or *domain.xml* depending on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)) and look for the `interfaces` XML block.
+或者，如果您不想在命令行设置绑定地址，则可以编辑部署的配置文件配置。 打开配置文件配置文件（*standalone.xml* 或 *domain.xml*，具体取决于您的[操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode) ）并寻找`interfaces` XML块。
 
-```
+```xml
     <interfaces>
         <interface name="management">
             <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
@@ -1707,27 +1707,23 @@ Alternatively, if you don’t want to set the bind address at the command line, 
     </interfaces>
 ```
 
-The `public` interface corresponds to subsystems creating sockets that are available publicly. An example of one of these subsystems is the web layer which serves up the authentication endpoints of Keycloak. The `management` interface corresponds to sockets opened up by the management layer of the WildFly. Specifically the sockets which allow you to use the `jboss-cli.sh` command line interface and the WildFly web console.
+`public`接口对应于创建可公开使用的套接字的子系统。 其中一个子系统的示例是Web层，它提供Keycloak的身份验证端点。 `management`接口对应于WildFly管理层打开的套接字。 特别是允许您使用`jboss-cli.sh`命令行界面和WildFly Web控制台的套接字。
 
-In looking at the `public` interface you see that it has a special string `${jboss.bind.address:127.0.0.1}`. This string denotes a value `127.0.0.1` that can be overridden on the command line by setting a Java system property, i.e.:
+在查看`public`接口时，您会看到它有一个特殊字符串`${jboss.bind.address:127.0.0.1}`。 此字符串表示值`127.0.0.1`，可以通过设置Java系统属性在命令行上覆盖，即：
 
-```
+```bash
 $ domain.sh -Djboss.bind.address=192.168.0.5
 ```
 
-The `-b` is just a shorthand notation for this command. So, you can either change the bind address value directly in the profile config, or change it on the command line when you boot up.
+`-b`只是这个命令的简写符号。 因此，您可以直接在配置文件配置中更改绑定地址值，也可以在启动时在命令行上更改它。
 
-|      | There are many more options available when setting up `interface` definitions. For more information, see [the network interface](http://docs.wildfly.org/16/Admin_Guide.html#Interfaces_and_ports) in the *WildFly 16 Documentation*. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 设置`interface`定义时，还有更多选项可用。 有关更多信息，请参阅 *WildFly 16文档* 中的[网络接口](http://docs.wildfly.org/16/Admin_Guide.html#Interfaces_and_ports)。
 
-### 7.2. Socket Port Bindings
+### 7.2. 套接字端口绑定
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/network/ports.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/network/ports.adoc)
+为每个套接字打开的端口具有预定义的默认值，可以在命令行或配置中覆盖。 为了说明这种配置，让我们假装你在[独立模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_standalone-mode)中运行并打开*…/standalone/configuration/standalone.xml*。 搜索`socket-binding-group`。
 
-The ports opened for each socket have a pre-defined default that can be overridden at the command line or within configuration. To illustrate this configuration, let’s pretend you are running in [standalone mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_standalone-mode) and open up the *…/standalone/configuration/standalone.xml*. Search for `socket-binding-group`.
-
-```
+```xml
     <socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
         <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
         <socket-binding name="management-https" interface="management" port="${jboss.management.https.port:9993}"/>
@@ -1742,29 +1738,29 @@ The ports opened for each socket have a pre-defined default that can be overridd
     </socket-binding-group>
 ```
 
-`socket-bindings` define socket connections that will be opened by the server. These bindings specify the `interface`(bind address) they use as well as what port number they will open. The ones you will be most interested in are:
+`socket-bindings`定义将由服务器打开的套接字连接。 这些绑定指定了它们使用的`interface`（绑定地址）以及它们将打开的端口号。 你最感兴趣的是：
 
 - http
 
-  Defines the port used for Keycloak HTTP connections
+  定义用于Keycloak HTTP连接的端口
 
 - https
 
-  Defines the port used for Keycloak HTTPS connections
+  定义用于Keycloak HTTPS连接的端口
 
 - ajp
 
-  This socket binding defines the port used for the AJP protocol. This protocol is used by Apache HTTPD server in conjunction `mod-cluster` when you are using Apache HTTPD as a load balancer.
+  此套接字绑定定义用于AJP协议的端口。 当您使用Apache HTTPD作为负载均衡器时，Apache HTTPD服务器将此协议与`mod-cluster`结合使用。
 
 - management-http
 
-  Defines the HTTP connection used by WildFly CLI and web console.
+  定义WildFly CLI和Web控制台使用的HTTP连接。
 
-When running in [domain mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_domain-mode) setting the socket configurations is a bit trickier as the example *domain.xml* file has multiple `socket-binding-groups` defined. If you scroll down to the `server-group` definitions you can see what `socket-binding-group` is used for each `server-group`.
+在[域模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_domain-mode)中运行时，设置套接字配置有点棘手，因为示例 *domain.xml*文件具有 多个`socket-binding-groups`定义。 如果向下滚动到`server-group`定义，你可以看到`socket-binding-group`用于每个`server-group`。
 
-domain socket bindings
+域套接字绑定
 
-```
+```xml
     <server-groups>
         <server-group name="load-balancer-group" profile="load-balancer">
             ...
@@ -1777,50 +1773,44 @@ domain socket bindings
     </server-groups>
 ```
 
-|      | There are many more options available when setting up `socket-binding-group` definitions. For more information, see [the socket binding group](http://docs.wildfly.org/16/Admin_Guide.html#Interfaces_and_ports) in the *WildFly 16 Documentation*. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 设置`socket-binding-group`定义时，还有更多选项可用。 有关更多信息，请参阅 *WildFly 16文档* 中的[套接字绑定组](http://docs.wildfly.org/16/Admin_Guide.html#Interfaces_and_ports)。
 
-### 7.3. Setting up HTTPS/SSL
+### 7.3. 设置 HTTPS/SSL
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/network/https.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/network/https.adoc)
+> 默认情况下，Keycloak未设置为处理SSL/HTTPS。 强烈建议您在Keycloak服务器本身或Keycloak服务器前面的反向代理上启用SSL。 
 
-|      | Keycloak is not set up by default to handle SSL/HTTPS. It is highly recommended that you either enable SSL on the Keycloak server itself or on a reverse proxy in front of the Keycloak server. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+此默认行为由每个Keycloak领域的SSL/HTTPS模式定义。 这在[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/)中有更详细的讨论，但让我们给出一些上下文和这些模式的简要概述。
 
-This default behavior is defined by the SSL/HTTPS mode of each Keycloak realm. This is discussed in more detail in the [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/), but let’s give some context and a brief overview of these modes.
+- 外部请求
 
-- external requests
+  只要您坚持使用`localhost`，`127.0.0.1`，`10.0.x.x`，`192.168.x.x`和`172.16.x.x`等私有IP地址，Keycloak就可以在没有SSL的情况下运行。 如果您没有在服务器上配置SSL/HTTPS，或者您尝试通过HTTP从非私有IP地址访问Keycloak，则会收到错误消息。
 
-  Keycloak can run out of the box without SSL so long as you stick to private IP addresses like `localhost`, `127.0.0.1`, `10.0.x.x`, `192.168.x.x`, and `172.16.x.x`. If you don???t have SSL/HTTPS configured on the server or you try to access Keycloak over HTTP from a non-private IP adress you will get an error.
+- none (没有)
 
-- none
+  Keycloak不需要SSL。当你玩弄东西时,这应该只用于开发。
 
-  Keycloak does not require SSL. This should really only be used in development when you are playing around with things.
+- 所有请求
 
-- all requests
+  Keycloak要求所有IP地址都使用SSL。
 
-  Keycloak requires SSL for all IP addresses.
+可以在Keycloak管理控制台中配置每个领域的SSL模式。
 
-The SSL mode for each realm can be configured in the Keycloak admin console.
+#### 7.3.1. 为Keycloak Server启用SSL/HTTPS
 
-#### 7.3.1. Enabling SSL/HTTPS for the Keycloak Server
+如果您没有使用反向代理或负载平衡器来处理HTTPS流量，则需要为Keycloak服务器启用HTTPS。 这涉及到
 
-If you are not using a reverse proxy or load balancer to handle HTTPS traffic for you, you’ll need to enable HTTPS for the Keycloak server. This involves
+1. 获取或生成包含SSL/HTTP流量的私钥和证书的密钥库
+2. 配置Keycloak服务器以使用此密钥对和证书。
 
-1. Obtaining or generating a keystore that contains the private key and certificate for SSL/HTTP traffic
-2. Configuring the Keycloak server to use this keypair and certificate.
+##### 创建证书和Java密钥库
 
-##### Creating the Certificate and Java Keystore
+为了允许HTTPS连接，您需要获取自签名或第三方签名证书并将其导入Java密钥库，然后才能在要部署Keycloak Server的Web容器中启用HTTPS。
 
-In order to allow HTTPS connections, you need to obtain a self signed or third-party signed certificate and import it into a Java keystore before you can enable HTTPS in the web container you are deploying the Keycloak Server to.
+###### 自签名证书
 
-###### Self Signed Certificate
+在开发过程中，您可能没有第三方签名证书可用于测试Keycloak部署，因此您需要使用Java JDK附带的`keytool`实用程序生成自签名证书。
 
-In development, you will probably not have a third party signed certificate available to test a Keycloak deployment so you’ll need to generate a self-signed one using the `keytool` utility that comes with the Java JDK.
-
-```
+```bash
 $ keytool -genkey -alias localhost -keyalg RSA -keystore keycloak.jks -validity 10950
     Enter keystore password: secret
     Re-enter new password: secret
@@ -1840,17 +1830,17 @@ $ keytool -genkey -alias localhost -keyalg RSA -keystore keycloak.jks -validity 
     [no]:  yes
 ```
 
-You should answer `What is your first and last name ?` question with the DNS name of the machine you’re installing the server on. For testing purposes, `localhost` should be used. After executing this command, the `keycloak.jks` file will be generated in the same directory as you executed the `keytool` command in.
+您应该使用您正在安装服务器的计算机的DNS名称来回答`您的名字和姓氏是什么？`问题。 出于测试目的，应使用`localhost`。 执行此命令后，`keycloak.jks`文件将在您执行`keytool`命令的同一目录中生成。
 
-If you want a third-party signed certificate, but don’t have one, you can obtain one for free at [cacert.org](http://www.cacert.org/). You’ll have to do a little set up first before doing this though.
+如果您需要第三方签名证书，但没有第三方签名证书，可以在[cacert.org](http://www.cacert.org/)免费获取。 在这之前你必须先做一点设置。
 
-The first thing to do is generate a Certificate Request:
+首先要做的是生成证书申请：
 
-```
+```bash
 $ keytool -certreq -alias yourdomain -keystore keycloak.jks > keycloak.careq
 ```
 
-Where `yourdomain` is a DNS name for which this certificate is generated for. Keytool generates the request:
+其中`yourdomain`是为其生成此证书的DNS名称。 Keytool生成请求：
 
 ```
 -----BEGIN NEW CERTIFICATE REQUEST-----
@@ -1870,39 +1860,39 @@ vqIFQeuLL3BaHwpl3t7j2lMWcK1p80laAxEASib/fAwrRHpLHBXRcq6uALUOZl4Alt8=
 -----END NEW CERTIFICATE REQUEST-----
 ```
 
-Send this ca request to your CA. The CA will issue you a signed certificate and send it to you. Before you import your new cert, you must obtain and import the root certificate of the CA. You can download the cert from CA (ie.: root.crt) and import as follows:
+将此ca请求发送给您的CA. CA将向您签发签名证书并将其发送给您。 在导入新证书之前，必须获取并导入CA的根证书。 您可以从CA下载证书（即：root.crt）并导入如下：
 
 ```
 $ keytool -import -keystore keycloak.jks -file root.crt -alias root
 ```
 
-Last step is to import your new CA generated certificate to your keystore:
+最后一步是将新的CA生成的证书导入密钥库：
 
 ```
 $ keytool -import -alias yourdomain -keystore keycloak.jks -file your-certificate.cer
 ```
 
-##### Configure Keycloak to Use the Keystore
+##### 配置Keycloak以使用密钥库
 
-Now that you have a Java keystore with the appropriate certificates, you need to configure your Keycloak installation to use it. First, you must edit the *standalone.xml*, *standalone-ha.xml*, or *host.xml* file to use the keystore and enable HTTPS. You may then either move the keystore file to the *configuration/* directory of your deployment or the file in a location you choose and provide an absolute path to it. If you are using absolute paths, remove the optional `relative-to` parameter from your configuration (See [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)).
+现在您已拥有具有相应证书的Java密钥库，您需要配置Keycloak安装以使用它。 首先，您必须编辑*standalone.xml*，*standalone-ha.xml* 或 *host.xml*文件以使用密钥库并启用HTTPS。然后，您可以将密钥库文件移动到部署的 *configuration/* 目录或您选择的位置中的文件，并提供它的绝对路径。 如果使用绝对路径，请从配置中删除可选的`relative-to`参数（参见[操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)）。
 
-Add the new `security-realm` element using the CLI:
+使用CLI添加新的`security-realm`元素：
 
-```
+```bash
 $ /core-service=management/security-realm=UndertowRealm:add()
 
 $ /core-service=management/security-realm=UndertowRealm/server-identity=ssl:add(keystore-path=keycloak.jks, keystore-relative-to=jboss.server.config.dir, keystore-password=secret)
 ```
 
-If using domain mode, the commands should be executed in every host using the `/host=<host_name>/` prefix (in order to create the `security-realm` in all of them), like this, which you would repeat for each host:
+如果使用域模式，命令应该在每个主机中使用`/host=<host_name>/`前缀执行（为了在所有主机中创建`security-realm`），就像这样，你会重复 每个主机：
 
 ```
 $ /host=<host_name>/core-service=management/security-realm=UndertowRealm/server-identity=ssl:add(keystore-path=keycloak.jks, keystore-relative-to=jboss.server.config.dir, keystore-password=secret)
 ```
 
-In the standalone or host configuration file, the `security-realms` element should look like this:
+在独立或主机配置文件中，`security-realms`元素应如下所示：
 
-```
+```xml
 <security-realm name="UndertowRealm">
     <server-identities>
         <ssl>
@@ -1912,17 +1902,17 @@ In the standalone or host configuration file, the `security-realms` element shou
 </security-realm>
 ```
 
-Next, in the standalone or each domain configuration file, search for any instances of `security-realm`. Modify the `https-listener` to use the created realm:
+接下来，在独立或每个域配置文件中，搜索`security-realm`的任何实例。 修改`https-listener`以使用创建的领域：
 
 ```
 $ /subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=security-realm, value=UndertowRealm)
 ```
 
-If using domain mode, prefix the command with the profile that is being used with: `/profile=<profile_name>/`.
+如果使用域模式，请在命令前加上正在使用的配置文件：`/profile=<profile_name>/`。
 
-The resulting element, `server name="default-server"`, which is a child element of `subsystem xmlns="urn:jboss:domain:undertow:8.0"`, should contain the following stanza:
+结果元素`server name="default-server"`是`subsystem xmlns="urn:jboss:domain:undertow:8.0"`的子元素，应该包含以下节：
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
    <buffer-cache name="default"/>
    <server name="default-server">
@@ -1931,13 +1921,13 @@ The resulting element, `server name="default-server"`, which is a child element 
 </subsystem>
 ```
 
-### 7.4. Outgoing HTTP Requests
+### 7.4. 传出HTTP请求
 
-The Keycloak server often needs to make non-browser HTTP requests to the applications and services it secures. The auth server manages these outgoing connections by maintaining an HTTP client connection pool. There are some things you’ll need to configure in `standalone.xml`, `standalone-ha.xml`, or `domain.xml`. The location of this file depends on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode).
+Keycloak服务器通常需要向其保护的应用程序和服务发出非浏览器HTTP请求。 auth服务器通过维护HTTP客户端连接池来管理这些传出连接。 您需要在`standalone.xml`，`standalone-ha.xml`或`domain.xml`中配置一些内容。 此文件的位置取决于您的[操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)。
 
-HTTP client Config example
+HTTP客户端配置示例
 
-```
+```xml
 <spi name="connectionsHttpClient">
     <provider name="default" enabled="true">
         <properties>
@@ -1947,65 +1937,65 @@ HTTP client Config example
 </spi>
 ```
 
-Possible configuration options are:
+可能的配置选项是：
 
 - establish-connection-timeout-millis
 
-  Timeout for establishing a socket connection.
+  建立套接字连接的超时时间。
 
 - socket-timeout-millis
 
-  If an outgoing request does not receive data for this amount of time, timeout the connection.
+  如果传出请求未在此时间内收到数据，则超时连接。
 
 - connection-pool-size
 
-  How many connections can be in the pool (128 by default).
+  池中可以有多少个连接（默认为128）。
 
 - max-pooled-per-route
 
-  How many connections can be pooled per host (64 by default).
+  每个主机可以合并多少个连接（默认为64个）。
 
 - connection-ttl-millis
 
-  Maximum connection time to live in milliseconds. Not set by default.
+  最长连接时间（以毫秒为单位）。 默认情况下未设置。
 
 - max-connection-idle-time-millis
 
-  Maximum time the connection might stay idle in the connection pool (900 seconds by default). Will start background cleaner thread of Apache HTTP client. Set to -`1` to disable this checking and the background thread.
+  连接可能在连接池中保持空闲的最长时间（默认为900秒）。 将启动Apache HTTP客户端的后台清理线程。 设置为-`1`以禁用此检查和后台线程。
 
 - disable-cookies
 
-  `true` by default. When set to true, this will disable any cookie caching.
+  默认为`true`。 设置为true时，这将禁用任何cookie缓存。
 
 - client-keystore
 
-  This is the file path to a Java keystore file. This keystore contains client certificate for two-way SSL.
+  这是Java密钥库文件的文件路径。 此密钥库包含双向SSL的客户端证书。
 
 - client-keystore-password
 
-  Password for the client keystore. This is *REQUIRED* if `client-keystore` is set.
+  客户端密钥库的密码。 如果设置了`client-keystore`，这是 *REQUIRED* 。
 
 - client-key-password
 
-  Password for the client’s key. This is *REQUIRED* if `client-keystore` is set.
+  客户密钥的密码。 如果设置了`client-keystore`，这是 *REQUIRED* 。
 
 - proxy-mappings
 
-  Dennotes proxy configurations for outgoing HTTP requests. See the section on [Proxy Mappings for Outgoing HTTP Requests](https://www.keycloak.org/docs/latest/server_installation/index.html#_proxymappings) for more details.
+  注意传出HTTP请求的代理配置。 有关更多详细信息，请参阅[传出HTTP请求的代理映射](https://www.keycloak.org/docs/latest/server_installation/index.html#_proxymappings)部分。
 
-#### 7.4.1. Proxy Mappings for Outgoing HTTP Requests
+#### 7.4.1. 传出HTTP请求的代理映射
 
-Outgoing HTTP requests sent by Keycloak can optionally use a proxy server based on a comma delimited list of proxy-mappings. A proxy-mapping denotes the combination of a regex based hostname pattern and a proxy-uri in the form of `hostnamePattern;proxyUri`, e.g.:
+Keycloak发送的传出HTTP请求可以选择使用基于逗号分隔的代理映射列表的代理服务器。 代理映射表示基于正则表达式的主机名模式和`hostnamePattern;proxyUri`形式的proxy-uri的组合，例如：
 
 ```
 .*\.(google|googleapis)\.com;http://www-proxy.acme.com:8080
 ```
 
-To determine the proxy for an outgoing HTTP request the target hostname is matched against the configured hostname patterns. The first matching pattern determines the proxy-uri to use. If none of the configured patterns match for the given hostname then no proxy is used.
+要确定传出HTTP请求的代理，需要根据配置的主机名模式匹配目标主机名。第一个匹配模式确定要使用的代理uri。如果配置的模式都不匹配给定的主机名，则不使用代理。
 
-The special value `NO_PROXY` for the proxy-uri can be used to indicate that no proxy should be used for hosts matching the associated hostname pattern. It is possible to specify a catch-all pattern at the end of the proxy-mappings to define a default proxy for all outgoing requests.
+代理uri的特殊值 `NO_PROXY` 可用于指示不应将任何代理用于匹配关联主机名模式的主机。可以在代理映射的末尾指定一个catch-all模式，为所有发出的请求定义一个默认代理。
 
-The following example demonstrates the proxy-mapping configuration.
+以下示例演示了代理映射配置。
 
 ```
 # All requests to Google APIs should use http://www-proxy.acme.com:8080 as proxy
@@ -2018,7 +2008,7 @@ The following example demonstrates the proxy-mapping configuration.
 .*;http://fallback:8080
 ```
 
-This can be configured via the following `jboss-cli` command. Note that you need to properly escape the regex-pattern as shown below.
+这可以通过以下`jboss-cli`命令配置。 请注意，您需要正确地转义正则表达式模式，如下所示。
 
 ```
 echo SETUP: Configure proxy routes for HttpClient SPI
@@ -2030,9 +2020,9 @@ echo SETUP: Configure proxy routes for HttpClient SPI
 /subsystem=keycloak-server/spi=connectionsHttpClient/provider=default:write-attribute(name=properties.proxy-mappings,value=[".*\\.(google|googleapis)\\.com;http://www-proxy.acme.com:8080",".*\\.acme\\.com;NO_PROXY",".*;http://fallback:8080"])
 ```
 
-The `jboss-cli` command results in the following subsystem configuration. Note that one needs to encode `"` characters with `"`.
+`jboss-cli` 命令将导致以下子系统配置。注意，需要用 `"` 来编码 `"` 字符。
 
-```
+```xml
 <spi name="connectionsHttpClient">
     <provider name="default" enabled="true">
         <properties>
@@ -2044,25 +2034,23 @@ The `jboss-cli` command results in the following subsystem configuration. Note t
 </spi>
 ```
 
-#### 7.4.2. Outgoing HTTPS Request Truststore
+#### 7.4.2. 传出HTTPS请求信任库
 
-When Keycloak invokes on remote HTTPS endpoints, it has to validate the remote server’s certificate in order to ensure it is connecting to a trusted server. This is necessary in order to prevent man-in-the-middle attacks. The certificates of these remote server’s or the CA that signed these certificates must be put in a truststore. This truststore is managed by the Keycloak server.
+当Keycloak在远程HTTPS端点上调用时，它必须验证远程服务器的证书，以确保它连接到受信任的服务器。 这对于防止中间人攻击是必要的。 必须将这些远程服务器的证书或签署这些证书的CA放在信任库中。 此信任库由Keycloak服务器管理。
 
-The truststore is used when connecting securely to identity brokers, LDAP identity providers, when sending emails, and for backchannel communication with client applications.
+在安全地连接到身份代理，LDAP身份提供程序，发送电子邮件以及与客户端应用程序进行反向通道通信时，将使用信任库。
 
-|      | By default, a truststore provider is not configured, and any https connections fall back to standard java truststore configuration as described in [Java’s JSSE Reference Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html). If there is no trust established, then these outgoing HTTPS requests will fail. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 默认情况下，未配置信任库提供程序，并且任何https连接都回退到标准java信任库配置，如[Java的JSSE参考指南](https://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html)中所述。 如果没有建立信任，则这些传出的HTTPS请求将失败。 
 
-You can use *keytool* to create a new truststore file or add trusted host certificates to an existing one:
+您可以使用 *keytool* 创建新的信任库文件或将可信主机证书添加到现有文件：
 
-```
+```bash
 $ keytool -import -alias HOSTDOMAIN -keystore truststore.jks -file host-certificate.cer
 ```
 
-The truststore is configured within the `standalone.xml`, `standalone-ha.xml`, or `domain.xml` file in your distribution. The location of this file depends on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode). You can add your truststore configuration by using the following template:
+信任库在您的发行版中的`standalone.xml`，`standalone-ha.xml`或`domain.xml`文件中配置。 此文件的位置取决于您的[操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)。 您可以使用以下模板添加信任库配置：
 
-```
+```xml
 <spi name="truststore">
     <provider name="file" enabled="true">
         <properties>
@@ -2075,23 +2063,23 @@ The truststore is configured within the `standalone.xml`, `standalone-ha.xml`, o
 </spi>
 ```
 
-Possible configuration options for this setting are:
+此设置的可能配置选项包括：
 
 - file
 
-  The path to a Java keystore file. HTTPS requests need a way to verify the host of the server they are talking to. This is what the trustore does. The keystore contains one or more trusted host certificates or certificate authorities. This truststore file should only contain public certificates of your secured hosts. This is *REQUIRED* if `disabled` is not true.
+  Java密钥库文件的路径。 HTTPS请求需要一种方法来验证他们正在与之通信的服务器的主机。 这就是委托人所做的。 密钥库包含一个或多个可信主机证书或证书颁发机构。 此信任库文件应仅包含安全主机的公共证书。 如果`disabled`不成立，这是 *REQUIRED* 。
 
 - password
 
-  Password for the truststore. This is *REQUIRED* if `disabled` is not true.
+  信任库的密码。 如果`disabled`不成立，这是 *REQUIRED* 。
 
 - hostname-verification-policy
 
-  `WILDCARD` by default. For HTTPS requests, this verifies the hostname of the server’s certificate. `ANY` means that the hostname is not verified. `WILDCARD` Allows wildcards in subdomain names i.e. *.foo.com. `STRICT` CN must match hostname exactly.
+  `WILDCARD`默认情况下。 对于HTTPS请求，这将验证服务器证书的主机名。 `ANY`表示未验证主机名。 `WILDCARD` 允许子域名中的通配符，即*.foo.com。 `STRICT` CN必须与主机名完全匹配。
 
 - disabled
 
-  If true (default value), truststore configuration will be ignored, and certificate checking will fall back to JSSE configuration as described. If set to false, you must configure `file`, and `password` for the truststore.
+  如果为true（默认值），则将忽略信任库配置，并且证书检查将回退到JSSE配置，如上所述。 如果设置为false，则必须为truststore配置`file`和`password`。
 
 ## 8. Clustering
 
