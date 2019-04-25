@@ -977,101 +977,99 @@ Keycloak端上的Infinispan缓存必须配置为[remoteStore](http://infinispan.
 
 备份失败策略
 
-By default, the configuration of backup `failure-policy` in the Infinispan cache configuration in the JDG `clustered.xml`file is configured as `FAIL`. You may change it to `WARN` or `IGNORE`, as you prefer.
+默认情况下，JDG的`clustered.xml`文件中Infinispan缓存配置中的备份`failure-policy`配置级别为`FAIL`。 您可以根据需要将其更改为`WARN`或`IGNORE`。
 
-The difference between `FAIL` and `WARN` is that when `FAIL` is used and the Infinispan server tries to back data up to the other site and the backup fails then the failure will be propagated back to the caller (the Keycloak server). The backup might fail because the second site is temporarily unreachable or there is a concurrent transaction which is trying to update same entity. In this case, the Keycloak server will then retry the operation a few times. However, if the retry fails, then the user might see the error after a longer timeout.
+`FAIL`和`WARN`之间的区别在于，当使用`FAIL`并且Infinispan服务器尝试将数据备份到另一个站点并且备份失败时，失败将传播回调用者（Keycloak服务器）。 备份可能会失败，因为第二个站点暂时无法访问，或者存在尝试更新同一实体的并发事务。 在这种情况下，Keycloak服务器将重试该操作几次。 但是，如果重试失败，则用户可能会在更长的超时后看到错误。
 
-When using `WARN`, the failed backups are not propagated from the Infinispan server to the Keycloak server. The user won’t see the error and the failed backup will be just ignored. There will be a shorter timeout, typically 10 seconds as that’s the default timeout for backup. It can be changed by the attribute `timeout` of `backup` element. There won’t be retries. There will just be a WARNING message in the Infinispan server log.
+使用`WARN`时，失败的备份不会从Infinispan服务器传播到Keycloak服务器。 用户将看不到错误，将忽略失败的备份。 将有一个较短的超时，通常为10秒，因为这是备份的默认超时。 它可以通过`backup`元素的属性`timeout`来改变。 不会重试。 Infinispan服务器日志中只会出现一条WARNING消息。
 
-The potential issue is, that in some cases, there may be just some a short network outage between sites, where the retry (usage of the `FAIL` policy) may help, so with `WARN` (without retry), there will be some data inconsistencies across sites. This can also happen if there is an attempt to update the same entity concurrently on both sites.
+潜在的问题是，在某些情况下，站点之间可能只有一些短暂的网络中断，其中重试（使用`FAIL`策略）可能有所帮助，因此使用`WARN`（不重试），将会有 站点间的一些数据不一致。 如果尝试在两个站点上同时更新同一实体，也会发生这种情况。
 
-How bad are these inconsistencies? Usually only means that a user will need to re-authenticate.
+这些不一致有多糟糕？ 通常只表示用户需要重新进行身份验证。
 
-When using the `WARN` policy, it may happen that the single-use cache, which is provided by the `actionTokens` cache and which handles that particular key is really single use, but may "successfully" write the same key twice. But, for example, the OAuth2 specification [mentions](https://tools.ietf.org/html/rfc6749#section-10.5) that code must be single-use. With the `WARN` policy, this may not be strictly guaranteed and the same code could be written twice if there is an attempt to write it concurrently in both sites.
+当使用`WARN`策略时，可能会发生由`actionTokens`缓存提供并处理该特定密钥的一次性缓存实际上是单独使用，但可能“成功”两次写入相同的密钥。 但是，例如，OAuth2规范[提及](https://tools.ietf.org/html/rfc6749#section-10.5)该代码必须是单一使用的。 使用`WARN`策略，可能无法严格保证，如果尝试在两个站点中同时写入相同的代码，则可以写两次相同的代码。
 
-If there is a longer network outage or split-brain, then with both `FAIL` and `WARN`, the other site will be taken offline after some time and failures as described in [Bringing sites offline and online](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline). With the default 1 minute timeout, it is usually 1-3 minutes until all the involved caches are taken offline. After that, all the operations will work fine from an end user perspective. You only need to manually restore the site when it is back online as mentioned in [Bringing sites offline and online](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline).
+如果有较长的网络中断或裂脑，那么同时使用`FAIL`和`WARN`，其他站点将在一段时间后失效，如[使站点离线和联机](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline)中所述。 使用默认的1分钟超时，通常需要1-3分钟才能使所有相关的缓存脱机。 之后，从最终用户的角度来看，所有操作都可以正常工作。 如[网站离线和在线](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline)中所述，您只需在网站重新联机时手动恢复该网站。
 
-In summary, if you expect frequent, longer outages between sites and it is acceptable for you to have some data inconsistencies and a not 100% accurate single-use cache, but you never want end-users to see the errors and long timeouts, then switch to `WARN`.
+总之，如果您希望站点之间频繁，更长时间的中断，并且您可以接受一些数据不一致且不是100％准确的一次性缓存，但您绝不希望最终用户看到错误和长时间超时，那么 切换到`WARN`。
 
-The difference between `WARN` and `IGNORE` is, that with `IGNORE` warnings are not written in the JDG log. See more details in the Infinispan documentation.
+`WARN`和`IGNORE`之间的区别在于，`IGNORE`警告不会写入JDG日志中。 请参阅Infinispan文档中的更多详细信息。
 
-Lock acquisition timeout
+Lock acquisition timeout (锁定获取超时)
 
-The default configuration is using transaction in NON_DURABLE_XA mode with acquire timeout 0. This means that transaction will fail-fast if there is another transaction in progress for the same key.
+默认配置是在NON_DURABLE_XA模式下使用事务，获取超时为0.这意味着如果同一个密钥正在进行另一个事务，则事务将快速失败。
 
-The reason to switch this to 0 instead of default 10 seconds was to avoid possible deadlock issues. With Keycloak, it can happen that the same entity (typically session entity or loginFailure) is updated concurrently from both sites. This can cause deadlock under some circumstances, which will cause the transaction to be blocked for 10 seconds. See [this JIRA report](https://issues.jboss.org/browse/JDG-1318) for details.
+将其切换为0而不是默认10秒的原因是为了避免可能的死锁问题。 使用Keycloak，可能会发生同一实体（通常是会话实体或loginFailure）从两个站点同时更新。 这可能会在某些情况下导致死锁，这将导致事务被阻止10秒。 有关详细信息，请参阅[此JIRA报告](https://issues.jboss.org/browse/JDG-1318)。
 
-With timeout 0, the transaction will immediately fail and then will be retried from Keycloak if backup `failure-policy` with the value `FAIL` is configured. As long as the second concurrent transaction is finished, the retry will usually be successful and the entity will have applied updates from both concurrent transactions.
+如果超时为0，则事务将立即失败，如果配置了具有值`FAIL`的备份`failure-policy`，则将从Keycloak重试该事务。 只要第二个并发事务完成，重试通常就会成功，并且实体将从两个并发事务中应用更新。
 
-We see very good consistency and results for concurrent transaction with this configuration, and it is recommended to keep it.
+我们看到使用此配置进行并发事务的一致性和结果非常好，建议保留它。
 
-The only (non-functional) problem is the exception in the Infinispan server log, which happens every time when the lock is not immediately available.
+唯一（非功能）问题是Infinispan服务器日志中的异常，每次锁定不可用时都会发生。
 
-#### 3.4.14. SYNC or ASYNC backups
+#### 3.4.14. 同步或异步备份
 
-An important part of the `backup` element is the `strategy` attribute. You must decide whether it needs to be `SYNC` or `ASYNC`. We have 7 caches which might be Cross-Datacenter Replication aware, and these can be configured in 3 different modes regarding cross-dc:
+`backup`元素的一个重要部分是`strategy`属性。 您必须决定是否需要`SYNC`或`ASYNC`。 我们有7个可能支持跨数据中心复制的缓存，这些缓存可以配置为3种不同的交叉直流模式：
 
-1. SYNC backup
-2. ASYNC backup
-3. No backup at all
+1. 同步 备份
+2. 异步 备份
+3. 不备份
 
-If the `SYNC` backup is used, then the backup is synchronous and operation is considered finished on the caller (Keycloak server) side once the backup is processed on the second site. This has worse performance than `ASYNC`, but on the other hand, you are sure that subsequent reads of the particular entity, such as user session, on `site2` will see the updates from `site1`. Also, it is needed if you want data consistency. As with `ASYNC` the caller is not notified at all if backup to the other site failed.
+如果使用`SYNC`备份，则备份是同步的，并且在第二个站点上处理备份后，调用者（Keycloak服务器）端的操作将被视为已完成。 这比`ASYNC`的性能更差，但另一方面，您确信在`site2`上对特定实体（如用户会话）的后续读取将从`site1`中看到更新。 此外，如果您想要数据一致性，则需要它。 与`ASYNC`一样，如果备份到其他站点失败，则不会通知呼叫者。
 
-For some caches, it is even possible to not backup at all and completely skip writing data to the Infinispan server. To set this up, do not use the `remote-store` element for the particular cache on the Keycloak side (file `KEYCLOAK_HOME/standalone/configuration/standalone-ha.xml`) and then the particular `replicated-cache` element is also not needed on the Infinispan server side.
+对于某些缓存，甚至可能根本不进行备份并完全跳过将数据写入Infinispan服务器。 要进行此设置，请不要将`remote-store`元素用于Keycloak端的特定缓存 (文件 `KEYCLOAK_HOME/standalone/configuration/standalone-ha.xml`) ，然后使用特定的`replicated-cache`元素。 在Infinispan服务器端也不需要。
 
-By default, all 7 caches are configured with `SYNC` backup, which is the safest option. Here are a few things to consider:
+默认情况下，所有7个缓存都配置了`SYNC`备份，这是最安全的选项。 以下是一些需要考虑的事项：
 
-- If you are using active/passive mode (all Keycloak servers are in single site `site1` and the Infinispan server in `site2` is used purely as backup. See [Modes](https://www.keycloak.org/docs/latest/server_installation/index.html#modes) for more details), then it is usually fine to use `ASYNC` strategy for all the caches to save the performance.
-- The `work` cache is used mainly to send some messages, such as cache invalidation events, to the other site. It is also used to ensure that some special events, such as userStorage synchronizations, happen only on single site. It is recommended to keep this set to `SYNC`.
-- The `actionTokens` cache is used as single-use cache to track that some tokens/tickets were used just once. For example action tokens or OAuth2 codes. It is possible to set this to `ASYNC` to slightly improved performance, but then it is not guaranteed that particular ticket is really single-use. For example, if there is concurrent request for same ticket in both sites, then it is possible that both requests will be successful with the `ASYNC` strategy. So what you set here will depend on whether you prefer better security (`SYNC` strategy) or better performance (`ASYNC` strategy).
-- The `loginFailures` cache may be used in any of the 3 modes. If there is no backup at all, it means that count of login failures for a user will be counted separately for every site (See [Infinispan caches](https://www.keycloak.org/docs/latest/server_installation/index.html#cache) for details). This has some security implications, however it has some performance advantages. Also it mitigates the possible risk of denial of service (DoS) attacks. For example, if an attacker simulates 1000 concurrent requests using the username and password of the user on both sites, it will mean lots of messages being passed between the sites, which may result in network congestion. The `ASYNC` strategy might be even worse as the attacker requests won’t be blocked by waiting for the backup to the other site, resulting in potentially even more congested network traffic. The count of login failures also will not be accurate with the `ASYNC` strategy.
+- 如果您使用的是主动/被动模式（所有Keycloak服务器都在单站点`site1`中，而`site2`中的Infinispan服务器仅用作备份。请参阅[模式](https://www.keycloak.org/docs/latest/server_installation/index.html#modes)以获取更多详细信息），然后通常可以使用所有缓存的`ASYNC`策略来保存性能。
+- `work`缓存主要用于向其他站点发送一些消息，例如缓存失效事件。 它还用于确保某些特殊事件,例如userStorage同步;仅在单个站点上发生。 建议将此设置保持为`SYNC。
+- `actionTokens`缓存用作一次性缓存，用于跟踪某些令牌/票证仅使用一次。 例如，动作令牌或OAuth2代码。 可以将其设置为`ASYNC`以略微提高性能，但是不能保证特定票证真的是单次使用。 例如，如果两个站点中同时存在同一票证请求，那么两个请求都可能成功使用`ASYNC`策略。 所以你在这里设置的将取决于你是否更喜欢更好的安全性（`SYNC`策略）或更好的性能（`ASYNC`策略）。
+- `loginFailures`缓存可以在3种模式中的任何一种中使用。 如果根本没有备份，则意味着每个站点将单独计算用户的登录失败次数（请参阅[Infinispan缓存](https://www.keycloak.org/docs/latest/server_installation/index.html#cache)了解详情）。 这具有一些安全隐患，但它具有一些性能优势。 此外，它还可以降低拒绝服务（DoS）攻击的风险。 例如，如果攻击者使用两个站点上的用户的用户名和密码模拟1000个并发请求，则意味着在站点之间传递大量消息，这可能导致网络拥塞。 `ASYNC`策略可能更糟糕，因为等待备份到其他站点不会阻止攻击者请求，从而导致可能更加拥挤的网络流量。 使用`ASYNC`策略，登录失败的次数也不准确。
 
-For the environments with slower network between data centers and probability of DoS, it is recommended to not backup the `loginFailures` cache at all.
+对于数据中心之间网络速度较慢且DoS概率较低的环境，建议不要备份`loginFailures`缓存。
 
-- It is recommended to keep the `sessions` and `clientSessions` caches in `SYNC`. Switching them to `ASYNC` is possible only if you are sure that user requests and backchannel requests (requests from client applications to Keycloak as described in [Request processing](https://www.keycloak.org/docs/latest/server_installation/index.html#requestprocessing)) will be always processed on same site. This is true, for example, if:
+- 建议在`SYNC`中保留`sessions`和`clientSessions`缓存。 只有当您确定用户请求和反向通道请求（从[请求处理](https://www.keycloak.org/docs/latest/server_installation/index.html#requestprocessing)中描述的客户端应用程序到Keycloak的请求）时，才可以将它们切换为`ASYNC`）将始终在同一站点上处理。 例如，如果：
 
-  - You use active/passive mode as described [Modes](https://www.keycloak.org/docs/latest/server_installation/index.html#modes).
+  - 您使用主动/被动模式，如[模式](https://www.keycloak.org/docs/latest/server_installation/index.html#modes)所述。
 
-  - All your client applications are using the Keycloak [JavaScript Adapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter). The JavaScript adapter sends the backchannel requests within the browser and hence they participate on the browser sticky session and will end on same cluster node (hence on same site) as the other browser requests of this user.
+  - 您的所有客户端应用程序都使用Keycloak [JavaScript Adapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter)。 JavaScript适配器在浏览器中发送反向通道请求，因此它们参与浏览器粘性会话，并将在与该用户的其他浏览器请求相同的群集节点（因此在同一站点上）结束。
 
-  - Your load balancer is able to serve the requests based on client IP address (location) and the client applications are deployed on both sites.
+  - 您的负载均衡器能够根据客户端IP地址（位置）提供请求，并在两个站点上部署客户端应用程序。
 
-    For example you have 2 sites LON and NYC. As long as your applications are deployed in both LON and NYC sites too, you can ensure that all the user requests from London users will be redirected to the applications in LON site and also to the Keycloak servers in LON site. Backchannel requests from the LON site client deployments will end on Keycloak servers in LON site too. On the other hand, for the American users, all the Keycloak requests, application requests and backchannel requests will be processed on NYC site.
+    例如，您有2个站点LON和NYC。 只要您的应用程序也部署在LON和NYC站点中，您就可以确保来自伦敦用户的所有用户请求将被重定向到LON站点中的应用程序以及LON站点中的Keycloak服务器。 来自LON站点客户端部署的Backchannel请求也将在LON站点中的Keycloak服务器上结束。 另一方面，对于美国用户，所有Keycloak请求，应用程序请求和反向通道请求将在NYC站点上处理。
 
-- For `offlineSessions` and `offlineClientSessions` it is similar, with the difference that you even don’t need to backup them at all if you never plan to use offline tokens for any of your client applications.
+- 对于`offlineSessions`和`offlineClientSessions`，它是相似的，不同之处在于，如果您从未计划为任何客户端应用程序使用脱机令牌，则根本不需要备份它们。
 
-Generally, if you are in doubt and performance is not a blocker for you, it’s safer to keep the caches in `SYNC` strategy.
+一般来说，如果您有疑问并且性能不适合您，那么将缓存保持在`SYNC`策略中会更安全。
 
-|      | Regarding the switch to SYNC/ASYNC backup, make sure that you edit the `strategy` attribute of the `backup` element. For example like this: |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 关于切换到SYNC/ASYNC备份，请确保编辑`backup`元素的`strategy`属性。 例如这样： 
 
-```
+```xml
 <backup site="site2" failure-policy="FAIL" strategy="ASYNC" enabled="true">
 ```
 
-Note the `mode` attribute of cache-configuration element.
+注意cache-configuration元素的`mode`属性。
 
-#### 3.4.15. Troubleshooting
+#### 3.4.15. 故障排除
 
-The following tips are intended to assist you should you need to troubleshoot:
+以下提示旨在帮助您解决问题：
 
-- It is recommended to go through the [Basic setup](https://www.keycloak.org/docs/latest/server_installation/index.html#setup) and have this one working first, so that you have some understanding of how things work. It is also wise to read this entire document to have some understanding of things.
+- 建议通过[基本设置](https://www.keycloak.org/docs/latest/server_installation/index.html#setup)并首先使用此工具，以便您对事情有所了解 工作。 阅读整篇文档以了解事物也是明智之举。
 
-- Check in jconsole cluster status (GMS) and the JGroups status (RELAY) of Infinispan as described in [Infinispan server setup](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup). If things do not look as expected, then the issue is likely in the setup of Infinispan servers.
+- 按照[Infinispan服务器设置](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup)中的说明检入Infinispan的jconsole集群状态（GMS）和JGroups状态（RELAY）。 如果事情看起来不像预期，那么问题很可能出在Infinispan服务器的设置上。
 
-- For the Keycloak servers, you should see a message like this during the server startup:
+- 对于Keycloak服务器，您应该在服务器启动期间看到这样的消息：
 
   ```
   18:09:30,156 INFO  [org.keycloak.connections.infinispan.DefaultInfinispanConnectionProviderFactory] (ServerService Thread Pool -- 54)
   Node name: node11, Site name: site1
   ```
 
-  Check that the site name and the node name looks as expected during the startup of Keycloak server.
+  在Keycloak服务器启动期间检查站点名称和节点名称是否与预期一致。
 
-- Check that Keycloak servers are in cluster as expected, including that only the Keycloak servers from the same data center are in cluster with each other. This can be also checked in JConsole through the GMS view. See [cluster troubleshooting](https://www.keycloak.org/docs/6.0/server_installation/#troubleshooting) for additional details.
+- 检查Keycloak服务器是否按预期位于集群中，包括只有来自同一数据中心的Keycloak服务器彼此在集群中。 这也可以通过GMS视图在JConsole中进行检查。 有关其他详细信息，请参阅[集群疑难解答](https://www.keycloak.org/docs/6.0/server_installation/#troubleshooting)。
 
-- If there are exceptions during startup of Keycloak server like this:
+- 如果在启动Keycloak服务器期间有异常，如下所示：
 
   ```
   17:33:58,605 ERROR [org.infinispan.client.hotrod.impl.operations.RetryOnFailureOperation] (ServerService Thread Pool -- 59) ISPN004007: Exception encountered. Retry 10 out of 10: org.infinispan.client.hotrod.exceptions.TransportException:: Could not fetch transport
@@ -1080,24 +1078,24 @@ The following tips are intended to assist you should you need to troubleshoot:
   	at org.infinispan.client.hotrod.impl.transport.tcp.TcpTransport.<init>(TcpTransport.java:82)
   ```
 
-  it usually means that Keycloak server is not able to reach the Infinispan server in his own datacenter. Make sure that firewall is set as expected and Infinispan server is possible to connect.
+  它通常意味着Keycloak服务器无法访问自己的数据中心的Infinispan服务器。 确保按预期设置防火墙，并且可以连接Infinispan服务器。
 
-- If there are exceptions during startup of Keycloak server like this:
+- 如果在启动Keycloak服务器期间有异常，如下所示：
 
   ```
   16:44:18,321 WARN  [org.infinispan.client.hotrod.impl.protocol.Codec21] (ServerService Thread Pool -- 57) ISPN004005: Error received from the server: javax.transaction.RollbackException: ARJUNA016053: Could not commit transaction.
    ...
   ```
 
-  then check the log of corresponding Infinispan server of your site and check if has failed to backup to the other site. If the backup site is unavailable, then it is recommended to switch it offline, so that Infinispan server won’t try to backup to the offline site causing the operations to pass successfully on Keycloak server side as well. See [Administration of Cross DC deployment](https://www.keycloak.org/docs/latest/server_installation/index.html#administration) for more information.
+  然后检查您站点的相应Infinispan服务器的日志，并检查是否未能备份到其他站点。 如果备份站点不可用，则建议将其切换为脱机，以便Infinispan服务器不会尝试备份到脱机站点，从而导致操作也在Keycloak服务器端成功通过。 有关详细信息，请参阅[交叉DC部署管理](https://www.keycloak.org/docs/latest/server_installation/index.html#administration)。
 
-- Check the Infinispan statistics, which are available through JMX. For example, try to login and then see if the new session was successfully written to both Infinispan servers and is available in the `sessions` cache there. This can be done indirectly by checking the count of elements in the `sessions` cache for the MBean `jboss.datagrid-infinispan:type=Cache,name="sessions(repl_sync)",manager="clustered",component=Statistics` and attribute `numberOfEntries`. After login, there should be one more entry for `numberOfEntries` on both Infinispan servers on both sites.
+- 检查可通过JMX获得的Infinispan统计信息。 例如，尝试登录，然后查看新会话是否已成功写入两个Infinispan服务器，并在那里的`sessions`缓存中可用。 这可以通过检查MBean的`sessions`缓存中的元素数来间接完成`jboss.datagrid-infinispan:type=Cache,name="sessions(repl_sync)",manager="clustered",component=Statistics`和属性`numberOfEntries`。 登录后，两个站点上的两个Infinispan服务器上都应该有一个`numberOfEntries`条目。
 
-- Enable DEBUG logging as described [Keycloak servers setup](https://www.keycloak.org/docs/latest/server_installation/index.html#serversetup). For example, if you log in and you think that the new session is not available on the second site, it’s good to check the Keycloak server logs and check that listeners were triggered as described in the [Keycloak servers setup](https://www.keycloak.org/docs/latest/server_installation/index.html#serversetup). If you do not know and want to ask on keycloak-user mailing list, it is helpful to send the log files from Keycloak servers on both datacenters in the email. Either add the log snippets to the mails or put the logs somewhere and reference them in the email.
+- 按照[Keycloak服务器设置](https://www.keycloak.org/docs/latest/server_installation/index.html#serversetup)所述启用DEBUG日志记录。 例如，如果您登录并且认为新会话在第二个站点上不可用，则最好检查Keycloak服务器日志并检查是否按照[Keycloak服务器设置](https://www.keycloak.org/docs/latest/server_installation/index.html#serversetup)中的说明触发了侦听器。 如果您不知道并想要在keycloak-user邮件列表上询问，那么从电子邮件中的两个数据中心的Keycloak服务器发送日志文件会很有帮助。 将日志片段添加到邮件或将日志放在某处并在电子邮件中引用它们。
 
-- If you updated the entity, such as `user`, on Keycloak server on `site1` and you do not see that entity updated on the Keycloak server on `site2`, then the issue can be either in the replication of the synchronous database itself or that Keycloak caches are not properly invalidated. You may try to temporarily disable the Keycloak caches as described [here](https://www.keycloak.org/docs/6.0/server_installation/#disabling-caching) to nail down if the issue is at the database replication level. Also it may help to manually connect to the database and check if data are updated as expected. This is specific to every database, so you will need to consult the documentation for your database.
+- 如果您在`site1`上的Keycloak服务器上更新了实体，例如`user`，并且您没有在`site2`上的Keycloak服务器上看到该实体更新，那么问题可能在于复制同步数据库本身 或Keycloak缓存未正确无效。 您可以尝试暂时禁用Keycloak缓存，如[here](https://www.keycloak.org/docs/6.0/server_installation/#disabling-caching)所述，以确定问题是否在数据库复制级别。 此外，手动连接到数据库并检查数据是否按预期更新可能会有所帮助。 这是特定于每个数据库的，因此您需要查阅数据库的文档。
 
-- Sometimes you may see the exceptions related to locks like this in Infinispan server log:
+- 有时您可能会在Infinispan服务器日志中看到与此类锁相关的异常：
 
   ```
   (HotRodServerHandler-6-35) ISPN000136: Error executing command ReplaceCommand,
@@ -1105,18 +1103,18 @@ The following tips are intended to assist you should you need to troubleshoot:
   0 milliseconds for key [B0x033E243034396234..[39] and requestor GlobalTx:jdg1:4353. Lock is held by GlobalTx:jdg1:4352
   ```
 
-  Those exceptions are not necessarily an issue. They may happen anytime when a concurrent edit of the same entity is triggered on both DCs. This is common in a deployment. Usually the Keycloak server is notified about the failed operation and will retry it, so from the user’s point of view, there is usually not any issue.
+  这些例外不一定是个问题。 它们可能在任何时候在两个DC上触发同一实体的并发编辑时发生。 这在部署中很常见。 通常，Keycloak服务器会收到有关失败操作的通知，并会重试，因此从用户的角度来看，通常没有任何问题。
 
-- If there are exceptions during startup of Keycloak server, like this:
+- 如果Keycloak服务器启动期间有异常，如下所示：
 
   ```
   16:44:18,321 WARN  [org.infinispan.client.hotrod.impl.protocol.Codec21] (ServerService Thread Pool -- 55) ISPN004005: Error received from the server: java.lang.SecurityException: ISPN000287: Unauthorized access: subject 'Subject with principal(s): []' lacks 'READ' permission
    ...
   ```
 
-  These log entries are the result of Keycloak automatically detecting whether authentication is required on Infinispan and mean that authentication is necessary. At this point you will notice that either the server starts successfully and you can safely ignore these or that the server fails to start. If the server fails to start, ensure that Infinispan has been configured properly for authentication as described in [Infinispan server setup](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup). To prevent this log entry from being included, you can force authentication by setting `remoteStoreSecurityEnabled` property to `true` in `spi=connectionsInfinispan/provider=default` configuration:
+  这些日志条目是Keycloak自动检测Infinispan是否需要身份验证的结果，并且意味着需要进行身份验证。 此时您将注意到服务器成功启动并且您可以安全地忽略这些或服务器无法启动。 如果服务器无法启动，请确保已按照[Infinispan服务器设置](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup)中的说明正确配置Infinispan进行身份验证。 要防止包含此日志条目，可以通过在`spi=connectionsInfinispan/provider=default`配置中将`remoteStoreSecurityEnabled`属性设置为`true`来强制进行身份验证：
 
-  ```
+  ```xml
   <subsystem xmlns="urn:jboss:domain:keycloak-server:1.1">
       ...
       <spi name="connectionsInfinispan">
@@ -1130,23 +1128,23 @@ The following tips are intended to assist you should you need to troubleshoot:
       </spi>
   ```
 
-- If you try to authenticate with Keycloak to your application, but authentication fails with an infinite number of redirects in your browser and you see the errors like this in the Keycloak server log:
+- 如果您尝试使用Keycloak对您的应用程序进行身份验证，但身份验证失败并且浏览器中存在无限次重定向，并且您在Keycloak服务器日志中看到如下错误：
 
   ```
   2017-11-27 14:50:31,587 WARN  [org.keycloak.events] (default task-17) type=LOGIN_ERROR, realmId=master, clientId=null, userId=null, ipAddress=aa.bb.cc.dd, error=expired_code, restart_after_timeout=true
   ```
 
-  it probably means that your load balancer needs to be set to support sticky sessions. Make sure that the provided route name used during startup of Keycloak server (Property `jboss.node.name`) contains the correct name used by the load balancer server to identify the current server.
+  这可能意味着您的负载均衡器需要设置为支持粘性会话。 确保在启动Keycloak服务器（Property`jboss.node.name`）期间使用的提供的路由名称包含负载均衡器服务器用于标识当前服务器的正确名称。
 
-- If the Infinispan `work` cache grows indefinitely, you may be experiencing [this Infinispan issue](https://issues.jboss.org/browse/JDG-987), which is caused by cache items not being properly expired. In that case, update the cache declaration with an empty `<expiration />` tag like this:
+- 如果Infinispan`work`缓存无限增长，您可能会遇到[此Infinispan问题](https://issues.jboss.org/browse/JDG-987)，这是由缓存项未正确过期引起的。 在这种情况下，使用空的`<expiration />`标记更新缓存声明，如下所示：
 
-  ```
+  ```xml
       <replicated-cache name="work" configuration="sessions-cfg">
           <expiration />
       </replicated-cache>
   ```
 
-- If you see Warnings in the Infinispan server log like:
+- 如果您在Infinispan服务器日志中看到警告，例如：
 
   ```
   18:06:19,687 WARN  [org.infinispan.server.hotrod.Decoder2x] (HotRod-ServerWorker-7-12) ISPN006011: Operation 'PUT_IF_ABSENT' forced to
@@ -1155,9 +1153,9 @@ The following tips are intended to assist you should you need to troubleshoot:
     be used with transactional caches, otherwise data inconsistency issues could arise under failure situations
   ```
 
-  you can just ignore them. To avoid the warning, the caches on Infinispan server side could be changed to transactional caches, but this is not recommended as it can cause some other issues caused by the bug <https://issues.jboss.org/browse/ISPN-9323>. So for now, the warnings just need to be ignored.
+  你可以忽略它们。 为了避免警告，Infinispan服务器端的缓存可以更改为事务缓存，但不推荐这样做，因为它可能导致由bug引起的其他一些问题<https://issues.jboss.org/browse/ISPN-9323>。 所以现在，警告只需要被忽略。
 
-- If you see errors in the Infinispan server log like:
+- 如果您在Infinispan服务器日志中看到错误，例如：
 
   ```
   12:08:32,921 ERROR [org.infinispan.server.hotrod.CacheDecodeContext] (HotRod-ServerWorker-7-11) ISPN005003: Exception reported: org.infinispan.server.hotrod.InvalidMagicIdException: Error reading magic byte or message id: 7
@@ -1168,40 +1166,38 @@ The following tips are intended to assist you should you need to troubleshoot:
   	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:248)
   ```
 
-  and you see some similar errors in the Keycloak log, it can indicate that there are incompatible versions of the HotRod protocol being used. This is likely happen when you try to use Keycloak with the JDG 7.2 server or an old version of the Infinispan server. It will help if you add the `protocolVersion` property as an additional property to the `remote-store`element in the Keycloak configuration file. For example:
+  并且您在Keycloak日志中看到一些类似的错误，它可以表明正在使用的HotRod协议的版本不兼容。 当您尝试将Keycloak与JDG 7.2服务器或旧版本的Infinispan服务器一起使用时，可能会发生这种情况。 如果将`protocolVersion`属性作为附加属性添加到Keycloak配置文件中的`remote-store`元素，将会有所帮助。 例如：
 
   ```
   <property name="protocolVersion">2.6</property>
   ```
 
-## 4. Manage Subsystem Configuration
+## 4. 管理子系统配置
 
-Low-level configuration of Keycloak is done by editing the `standalone.xml`, `standalone-ha.xml`, or `domain.xml` file in your distribution. The location of this file depends on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode).
+Keycloak的低级配置是通过编辑发行版中的`standalone.xml`，`standalone-ha.xml`或`domain.xml`文件来完成的。 此文件的位置取决于您的[操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)。
 
-While there are endless settings you can configure here, this section will focus on configuration of the *keycloak-server*subsystem. No matter which configuration file you are using, configuration of the *keycloak-server* subsystem is the same.
+虽然您可以在此配置无限设置，但本节将重点介绍 *keycloak-server* 子系统的配置。 无论您使用哪个配置文件，*keycloak-server* 子系统的配置都是相同的。
 
-The keycloak-server subsystem is typically declared toward the end of the file like this:
+keycloak-server子系统通常在文件末尾声明，如下所示：
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:keycloak-server:1.1">
    <web-context>auth</web-context>
    ...
 </subsystem>
 ```
 
-Note that anything changed in this subsystem will not take effect until the server is rebooted.
+请注意，在重新启动服务器之前，此子系统中的任何更改都不会生效。
 
-### 4.1. Configure SPI Providers
+### 4.1. 配置SPI提供程序
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/config-subsystem/configure-spi-providers.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/config-subsystem/configure-spi-providers.adoc)
+每个配置设置的细节在该设置的上下文中的其他地方讨论。 但是，了解用于在SPI提供程序上声明设置的格式很有用。
 
-The specifics of each configuration setting is discussed elsewhere in context with that setting. However, it is useful to understand the format used to declare settings on SPI providers.
+Keycloak是一个高度模块化的系统，具有很大的灵活性。 有超过50个服务提供程序接口（SPI），您可以交换每个SPI的实现。 SPI的实现称为*提供者*。
 
-Keycloak is a highly modular system that allows great flexibility. There are more than 50 service provider interfaces (SPIs), and you are allowed to swap out implementations of each SPI. An implementation of an SPI is known as a *provider*.
+SPI声明中的所有元素都是可选的，但完整的SPI声明如下所示：
 
-All elements in an SPI declaration are optional, but a full SPI declaration looks like this:
-
-```
+```xml
 <spi name="myspi">
     <default-provider>myprovider</default-provider>
     <provider name="myprovider" enabled="true">
@@ -1217,13 +1213,13 @@ All elements in an SPI declaration are optional, but a full SPI declaration look
 </spi>
 ```
 
-Here we have two providers defined for the SPI `myspi`. The `default-provider` is listed as `myprovider`. However it is up to the SPI to decide how it will treat this setting. Some SPIs allow more than one provider and some do not. So `default-provider` can help the SPI to choose.
+这里我们为SPI`myspi`定义了两个提供程序。 `default-provider`被列为`myprovider`。 但是由SPI来决定如何处理这个设置。 有些SPI允许多个提供商，有些则不允许。 所以`default-provider`可以帮助SPI选择。
 
-Also notice that each provider defines its own set of configuration properties. The fact that both providers above have a property called `foo` is just a coincidence.
+另请注意，每个提供程序都定义了自己的一组配置属性。 上面两个提供商都有一个名为`foo`的属性这一事实只是巧合。
 
-The type of each property value is interpreted by the provider. However, there is one exception. Consider the `jpa` provider for the `eventsStore` SPI:
+每个属性值的类型由提供程序解释。 但是，有一个例外。 考虑`eventsStore`  SPI 的 `jpa` 提供程序：
 
-```
+```xml
 <spi name="eventsStore">
     <provider name="jpa" enabled="true">
         <properties>
@@ -1234,39 +1230,37 @@ The type of each property value is interpreted by the provider. However, there i
 </spi>
 ```
 
-We see that the value begins and ends with square brackets. That means that the value will be passed to the provider as a list. In this example, the system will pass the provider a list with two element values *EVENT1* and *EVENT2*. To add more values to the list, just separate each list element with a comma. Unfortunately, you do need to escape the quotes surrounding each list element with `&quot;`.
+我们看到值以方括号开头和结尾。 这意味着该值将作为列表传递给提供程序。 在此示例中，系统将向提供程序传递一个包含两个元素值 *EVENT1* 和 *EVENT2* 的列表。 要向列表中添加更多值，只需使用逗号分隔每个列表元素即可。 不幸的是，你需要使用 `＆quot;` 来转义每个列表元素周围的引号。
 
-### 4.2. Start the WildFly CLI
+### 4.2. 启动WildFly CLI
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/config-subsystem/start-cli.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/config-subsystem/start-cli.adoc)
+除了手动编辑配置外，您还可以通过 *jboss-cli* 工具发出命令来更改配置。 CLI允许您在本地或远程配置服务器。 当与脚本结合使用时，它尤其有用。
 
-Besides editing the configuration by hand, you also have the option of changing the configuration by issuing commands via the *jboss-cli* tool. CLI allows you to configure servers locally or remotely. And it is especially useful when combined with scripting.
-
-To start the WildFly CLI, you need to run `jboss-cli`.
+要启动WildFly CLI，您需要运行`jboss-cli`。
 
 Linux/Unix
 
-```
+```bash
 $ .../bin/jboss-cli.sh
 ```
 
 Windows
 
-```
+```bat
 > ...\bin\jboss-cli.bat
 ```
 
-This will bring you to a prompt like this:
+这将带您到这样的提示：
 
-Prompt
+提示
 
 ```
 [disconnected /]
 ```
 
-If you wish to execute commands on a running server, you will first execute the `connect` command.
+如果您希望在正在运行的服务器上执行命令，则首先执行`connect`命令。
 
-connect
+连接
 
 ```
 [disconnected /] connect
@@ -1274,38 +1268,38 @@ connect
 [standalone@localhost:9990 /]
 ```
 
-You may be thinking to yourself, "I didn’t enter in any username or password!". If you run `jboss-cli` on the same machine as your running standalone server or domain controller and your account has appropriate file permissions, you do not have to setup or enter in an admin username and password. See the [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html) for more details on how to make things more secure if you are uncomfortable with that setup.
+你可能会想，“我没有输入任何用户名或密码！”。 如果您在运行独立服务器或域控制器的同一台计算机上运行`jboss-cli`，并且您的帐户具有适当的文件权限，则无需设置或输入管理员用户名和密码。 请参阅[* WildFly 16文档*](http://docs.wildfly.org/16/Admin_Guide.html)，了解如果您对该设置感到不舒服时如何使事情更安全的更多详细信息。
 
-### 4.3. CLI Embedded Mode
+### 4.3. CLI嵌入式模式
 
-If you do happen to be on the same machine as your standalone server and you want to issue commands while the server is not active, you can embed the server into CLI and make changes in a special mode that disallows incoming requests. To do this, first execute the `embed-server` command with the config file you wish to change.
+如果您碰巧与独立服务器位于同一台计算机上，并且您希望在服务器未处于活动状态时发出命令，则可以将服务器嵌入CLI并在不允许传入请求的特殊模式下进行更改。 为此，首先使用您要更改的配置文件执行`embed-server`命令。
 
-embed-server
+embed-server (嵌入服务器)
 
 ```
 [disconnected /] embed-server --server-config=standalone.xml
 [standalone@embedded /]
 ```
 
-### 4.4. CLI GUI Mode
+### 4.4. CLI GUI模式
 
-The CLI can also run in GUI mode. GUI mode launches a Swing application that allows you to graphically view and edit the entire management model of a *running* server. GUI mode is especially useful when you need help formatting your CLI commands and learning about the options available. The GUI can also retrieve server logs from a local or remote server.
+CLI也可以在GUI模式下运行。 GUI模式启动Swing应用程序，允许您以图形方式查看和编辑 *running* 服务器的整个管理模型。 当您需要帮助格式化CLI命令并了解可用选项时，GUI模式特别有用。 GUI还可以从本地或远程服务器检索服务器日志。
 
-Start in GUI mode
+从GUI模式开始
 
-```
+```bash
 $ .../bin/jboss-cli.sh --gui
 ```
 
-*Note: to connect to a remote server, you pass the --connect option as well. Use the --help option for more details.*
+*注意: 要连接到远程服务器，还要传递--connect选项。 使用--help选项可获取更多详细信息。*
 
-After launching GUI mode, you will probably want to scroll down to find the node, `subsystem=keycloak-server`. If you right-click on the node and click `Explore subsystem=keycloak-server`, you will get a new tab that shows only the keycloak-server subsystem.
+启动GUI模式后，您可能需要向下滚动才能找到节点 `subsystem=keycloak-server` 。 如果右键单击该节点并单击  `Explore subsystem=keycloak-server` ，您将获得一个仅显示keycloak-server子系统的新选项卡。
 
 ![cli gui](assets/cli-gui.png)
 
-### 4.5. CLI Scripting
+### 4.5. CLI脚本
 
-The CLI has extensive scripting capabilities. A script is just a text file with CLI commands in it. Consider a simple script that turns off theme and template caching.
+CLI具有广泛的脚本功能。 脚本只是一个包含CLI命令的文本文件。 考虑一个关闭主题和模板缓存的简单脚本。
 
 turn-off-caching.cli
 
@@ -1314,93 +1308,91 @@ turn-off-caching.cli
 /subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheTemplates,value=false)
 ```
 
-To execute the script, I can follow the `Scripts` menu in CLI GUI, or execute the script from the command line as follows:
+要执行脚本，我可以按照CLI GUI中的`Scripts`菜单，或者从命令行执行脚本，如下所示：
 
-```
+```bash
 $ .../bin/jboss-cli.sh --file=turn-off-caching.cli
 ```
 
-### 4.6. CLI Recipes
+### 4.6. CLI食谱
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/config-subsystem/cli-recipes.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/config-subsystem/cli-recipes.adoc)
+以下是一些配置任务以及如何使用CLI命令执行它们。 请注意，在第一个示例中的所有示例中，我们使用通配符路径 `**` 表示您应该替换keycloak-server子系统的路径。
 
-Here are some configuration tasks and how to perform them with CLI commands. Note that in all but the first example, we use the wildcard path `**` to mean you should substitute or the path to the keycloak-server subsystem.
-
-For standalone, this just means:
+对于独立模式，这意味着:
 
 ```
 **` = `/subsystem=keycloak-server
 ```
 
-For domain mode, this would mean something like:
+对于域模式，这意味着：
 
 ```
 **` = `/profile=auth-server-clustered/subsystem=keycloak-server
 ```
 
-#### 4.6.1. Change the web context of the server
+#### 4.6.1. 更改服务器的Web上下文
 
 ```
 /subsystem=keycloak-server/:write-attribute(name=web-context,value=myContext)
 ```
 
-#### 4.6.2. Set the global default theme
+#### 4.6.2. 设置全局默认主题
 
 ```
 **/theme=defaults/:write-attribute(name=default,value=myTheme)
 ```
 
-#### 4.6.3. Add a new SPI and a provider
+#### 4.6.3. 添加新的SPI和提供程序
 
 ```
 **/spi=mySPI/:add
 **/spi=mySPI/provider=myProvider/:add(enabled=true)
 ```
 
-#### 4.6.4. Disable a provider
+#### 4.6.4. 禁用提供商
 
 ```
 **/spi=mySPI/provider=myProvider/:write-attribute(name=enabled,value=false)
 ```
 
-#### 4.6.5. Change the default provider for an SPI
+#### 4.6.5. 更改SPI的默认提供程序
 
 ```
 **/spi=mySPI/:write-attribute(name=default-provider,value=myProvider)
 ```
 
-#### 4.6.6. Configure the dblock SPI
+#### 4.6.6. 配置dblock SPI
 
 ```
 **/spi=dblock/:add(default-provider=jpa)
 **/spi=dblock/provider=jpa/:add(properties={lockWaitTimeout => "900"},enabled=true)
 ```
 
-#### 4.6.7. Add or change a single property value for a provider
+#### 4.6.7. 为提供者添加或更改单个属性值
 
 ```
 **/spi=dblock/provider=jpa/:map-put(name=properties,key=lockWaitTimeout,value=3)
 ```
 
-#### 4.6.8. Remove a single property from a provider
+#### 4.6.8. 从提供程序中删除单个属性
 
 ```
 **/spi=dblock/provider=jpa/:map-remove(name=properties,key=lockRecheckTime)
 ```
 
-#### 4.6.9. Set values on a provider property of type `List`
+#### 4.6.9. 在类型为`List`的提供程序属性上设置值
 
 ```
 **/spi=eventsStore/provider=jpa/:map-put(name=properties,key=exclude-events,value=[EVENT1,EVENT2])
 ```
 
-## 5. Profiles
+## 5. Profiles (特征文件)
 
-There are features in Keycloak that are not enabled by default, these include features that are not fully supported. In addition there are some features that are enabled by default, but that can be disabled.
+Keycloak中的某些功能默认情况下未启用，这些功能包括不完全支持的功能。 此外，默认情况下会启用一些功能，但可以禁用这些功能。
 
-The features that can be enabled and disabled are:
+可以启用和禁用的功能包括：
 
-| Name                     | Description                                  | Enabled by default | Support level |
+| 名称                     | 描述                                  | 默认启用 | 支持级别 |
 | :----------------------- | :------------------------------------------- | :----------------- | :------------ |
 | account2                 | New Account Management Console               | No                 | Experimental  |
 | account_api              | Account Management REST API                  | No                 | Preview       |
@@ -1412,65 +1404,59 @@ The features that can be enabled and disabled are:
 | script                   | Write custom authenticators using JavaScript | Yes                | Preview       |
 | token_exchange           | Token Exchange Service                       | No                 | Preview       |
 
-To enable all preview features start the server with:
+要启用所有预览功能，请启动服务器：
 
-```
+```bash
 bin/standalone.sh|bat -Dkeycloak.profile=preview
 ```
 
-You can set this permanently by creating the file `standalone/configuration/profile.properties` (or `domain/servers/server-one/configuration/profile.properties` for `server-one` in domain mode). Add the following to the file:
+您可以通过在域模式下为`server-one`创建文件`standalone/configuration/profile.properties`（或`domain/servers/server-one/configuration/profile.properties`）来永久设置它。 将以下内容添加到文件中：
 
-```
+```properties
 profile=preview
 ```
 
-To enable a specific feature start the server with:
+要启用特定功能，请启动服务器：
 
-```
+```bash
 bin/standalone.sh|bat -Dkeycloak.profile.feature.<feature name>=enabled
 ```
 
-For example to enable Docker use `-Dkeycloak.profile.feature.docker=enabled`.
+例如，要启用Docker，请使用`-Dkeycloak.profile.feature.docker=enabled`。
 
-You can set this permanently in the `profile.properties` file by adding:
+您可以通过添加以下内容在`profile.properties`文件中永久设置它：
 
-```
+```properties
 feature.docker=enabled
 ```
 
-To disable a specific feature start the server with:
+要禁用特定功能，请启动服务器：
 
-```
+```bash
 bin/standalone.sh|bat -Dkeycloak.profile.feature.<feature name>=disabled
 ```
 
-For example to disable Impersonation use `-Dkeycloak.profile.feature.impersonation=disabled`.
+例如，要禁用模拟，请使用`-Dkeycloak.profile.feature.impersonation=disabled`。
 
-You can set this permanently in the `profile.properties` file by adding:
+您可以通过添加以下内容在`profile.properties`文件中永久设置它：
 
-```
+```properties
 feature.impersonation=disabled
 ```
 
-## 6. Relational Database Setup
+## 6. 关系数据库设置
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/database.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/database.adoc)
+Keycloak附带了自己的基于Java的嵌入式关系数据库H2。 这是Keycloak用于保存数据的默认数据库，以便您可以开箱即用地运行身份验证服务器。 我们强烈建议您使用更多生产就绪的外部数据库替换它。 H2数据库在高并发情况下不是很可行，也不应该在集群中使用。 本章的目的是向您展示如何将Keycloak连接到更成熟的数据库。
 
-Keycloak comes with its own embedded Java-based relational database called H2. This is the default database that Keycloak will use to persist data and really only exists so that you can run the authentication server out of the box. We highly recommend that you replace it with a more production ready external database. The H2 database is not very viable in high concurrency situations and should not be used in a cluster either. The purpose of this chapter is to show you how to connect Keycloak to a more mature database.
+Keycloak使用两种分层技术来持久保存其关系数据。 底层技术是JDBC。 JDBC是一种用于连接到RDBMS的Java API。 每种数据库类型都有不同的JDBC驱动程序，由数据库供应商提供。 本章讨论如何配置Keycloak以使用这些特定于供应商的驱动程序之一。
 
-Keycloak uses two layered technologies to persist its relational data. The bottom layered technology is JDBC. JDBC is a Java API that is used to connect to a RDBMS. There are different JDBC drivers per database type that are provided by your database vendor. This chapter discusses how to configure Keycloak to use one of these vendor-specific drivers.
+用于持久性的顶层技术是Hibernate JPA。 这是将Java对象映射到关系数据的关系映射API的对象。 Keycloak的大部分部署永远不会触及Hibernate的配置方面，但我们将讨论如果遇到这种罕见的情况，如何做到这一点。
 
-The top layered technology for persistence is Hibernate JPA. This is a object to relational mapping API that maps Java Objects to relational data. Most deployments of Keycloak will never have to touch the configuration aspects of Hibernate, but we will discuss how that is done if you run into that rare circumstance.
+> 在 *WildFly 16文档* 的[数据源配置章节](http://docs.wildfly.org/16/Admin_Guide.html#DataSource)中更全面地介绍了数据源配置。
 
-|      | Datasource configuration is covered much more thoroughly in [the datasource configuration chapter](http://docs.wildfly.org/16/Admin_Guide.html#DataSource) in the *WildFly 16 Documentation*. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+### 6.1. RDBMS设置清单
 
-### 6.1. RDBMS Setup Checklist
-
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/database/checklist.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/database/checklist.adoc)
-
-These are the steps you will need to perform to get an RDBMS configured for Keycloak.
+以下是为Keycloak配置RDBMS所需执行的步骤。
 
 1. Locate and download a JDBC driver for your database
 2. Package the driver JAR into a module and install this module into the server
