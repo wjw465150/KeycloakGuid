@@ -1,106 +1,106 @@
-# Server Installation and Configuration Guide
+# KeyCloak·şÎñÆ÷°²×°ºÍÅäÖÃÖ¸ÄÏ {#Server Installation and Configuration Guide}
 
-[åŸæ–‡åœ°å€: https://www.keycloak.org/docs/latest/server_installation/index.html](https://www.keycloak.org/docs/latest/server_installation/index.html)
+[Ô­ÎÄµØÖ·: https://www.keycloak.org/docs/latest/server_installation/index.html](https://www.keycloak.org/docs/latest/server_installation/index.html)
 
-## 1. æŒ‡å—æ¦‚è¿°
+## 1. Ö¸ÄÏ¸ÅÊö {#Guide Overview}
 
-æœ¬æŒ‡å—çš„ç›®çš„æ˜¯ä»‹ç»åœ¨é¦–æ¬¡å¯åŠ¨KeycloakæœåŠ¡å™¨ä¹‹å‰éœ€è¦å®Œæˆçš„æ­¥éª¤ã€‚å¦‚æœæ‚¨åªæ˜¯æƒ³æµ‹è¯•Keycloakï¼Œå®ƒå‡ ä¹æ˜¯ç”¨å®ƒè‡ªå·±çš„åµŒå…¥å¼å’Œæœ¬åœ°æ•°æ®åº“å¼€ç®±å³ç”¨ã€‚å¯¹äºå°†è¦åœ¨ç”Ÿäº§ç¯å¢ƒä¸­è¿è¡Œçš„å®é™…éƒ¨ç½²ï¼Œæ‚¨éœ€è¦å†³å®šå¦‚ä½•åœ¨è¿è¡Œæ—¶ç®¡ç†æœåŠ¡å™¨é…ç½®(ç‹¬ç«‹æˆ–åŸŸæ¨¡å¼)ï¼Œä¸ºKeycloakå­˜å‚¨é…ç½®å…±äº«æ•°æ®åº“ï¼Œè®¾ç½®åŠ å¯†å’ŒHTTPSï¼Œæœ€åè®¾ç½®Keycloakåœ¨é›†ç¾¤ä¸­è¿è¡Œã€‚æœ¬æŒ‡å—å°†è¯¦ç»†ä»‹ç»éƒ¨ç½²æœåŠ¡å™¨ä¹‹å‰å¿…é¡»è¿›è¡Œçš„ä»»ä½•é¢„å¼•å¯¼å†³ç­–å’Œè®¾ç½®çš„å„ä¸ªæ–¹é¢ã€‚
+±¾Ö¸ÄÏµÄÄ¿µÄÊÇ½éÉÜÔÚÊ×´ÎÆô¶¯Keycloak·şÎñÆ÷Ö®Ç°ĞèÒªÍê³ÉµÄ²½Öè¡£Èç¹ûÄúÖ»ÊÇÏë²âÊÔKeycloak£¬Ëü¼¸ºõÊÇÓÃËü×Ô¼ºµÄÇ¶ÈëÊ½ºÍ±¾µØÊı¾İ¿â¿ªÏä¼´ÓÃ¡£¶ÔÓÚ½«ÒªÔÚÉú²ú»·¾³ÖĞÔËĞĞµÄÊµ¼Ê²¿Êğ£¬ÄúĞèÒª¾ö¶¨ÈçºÎÔÚÔËĞĞÊ±¹ÜÀí·şÎñÆ÷ÅäÖÃ(¶ÀÁ¢»òÓòÄ£Ê½)£¬ÎªKeycloak´æ´¢ÅäÖÃ¹²ÏíÊı¾İ¿â£¬ÉèÖÃ¼ÓÃÜºÍHTTPS£¬×îºóÉèÖÃKeycloakÔÚ¼¯ÈºÖĞÔËĞĞ¡£±¾Ö¸ÄÏ½«ÏêÏ¸½éÉÜ²¿Êğ·şÎñÆ÷Ö®Ç°±ØĞë½øĞĞµÄÈÎºÎÔ¤Òıµ¼¾ö²ßºÍÉèÖÃµÄ¸÷¸ö·½Ãæ¡£
 
-éœ€è¦ç‰¹åˆ«æ³¨æ„çš„ä¸€ç‚¹æ˜¯ï¼ŒKeycloakæ´¾ç”Ÿè‡ªWildFlyåº”ç”¨ç¨‹åºæœåŠ¡å™¨ã€‚é…ç½®Keycloakçš„è®¸å¤šæ–¹é¢éƒ½å›´ç»•ç€WildFlyé…ç½®å…ƒç´ ã€‚å¦‚æœæ‚¨æƒ³æ·±å…¥äº†è§£æ›´å¤šç»†èŠ‚ï¼Œæœ¬æŒ‡å—é€šå¸¸ä¼šå°†æ‚¨å¼•å‘æ‰‹å†Œä¹‹å¤–çš„æ–‡æ¡£ã€‚
+ĞèÒªÌØ±ğ×¢ÒâµÄÒ»µãÊÇ£¬KeycloakÅÉÉú×ÔWildFlyÓ¦ÓÃ³ÌĞò·şÎñÆ÷¡£ÅäÖÃKeycloakµÄĞí¶à·½Ãæ¶¼Î§ÈÆ×ÅWildFlyÅäÖÃÔªËØ¡£Èç¹ûÄúÏëÉîÈëÁË½â¸ü¶àÏ¸½Ú£¬±¾Ö¸ÄÏÍ¨³£»á½«ÄúÒıÏòÊÖ²áÖ®ÍâµÄÎÄµµ¡£
 
-### 1.1. å»ºè®®é¢å¤–çš„å¤–éƒ¨æ–‡æ¡£
+### 1.1. ½¨Òé¶îÍâµÄÍâ²¿ÎÄµµ {#Recommended Additional External Documentation}
 
-Keycloakæ„å»ºåœ¨WildFlyåº”ç”¨æœåŠ¡å™¨ä¹‹ä¸Šï¼Œå®ƒçš„å­é¡¹ç›®åŒ…æ‹¬Infinispan(ç”¨äºç¼“å­˜)å’ŒHibernate(ç”¨äºæŒä¹…æ€§)ã€‚æœ¬æŒ‡å—åªæ¶µç›–åŸºç¡€è®¾æ–½çº§é…ç½®çš„åŸºç¡€çŸ¥è¯†ã€‚å¼ºçƒˆå»ºè®®æ‚¨ä»”ç»†é˜…è¯»WildFlyåŠå…¶å­é¡¹ç›®çš„æ–‡æ¡£ã€‚ä»¥ä¸‹æ˜¯æ–‡æ¡£é“¾æ¥:
+Keycloak¹¹½¨ÔÚWildFlyÓ¦ÓÃ·şÎñÆ÷Ö®ÉÏ£¬ËüµÄ×ÓÏîÄ¿°üÀ¨Infinispan(ÓÃÓÚ»º´æ)ºÍHibernate(ÓÃÓÚ³Ö¾ÃĞÔ)¡£±¾Ö¸ÄÏÖ»º­¸Ç»ù´¡ÉèÊ©¼¶ÅäÖÃµÄ»ù´¡ÖªÊ¶¡£Ç¿ÁÒ½¨ÒéÄú×ĞÏ¸ÔÄ¶ÁWildFly¼°Æä×ÓÏîÄ¿µÄÎÄµµ¡£ÒÔÏÂÊÇÎÄµµÁ´½Ó:
 
 - [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)
 
-## 2. å®‰è£…
+## 2. °²×° {#Installation}
 
 
-  å®‰è£…Keycloakéå¸¸ç®€å•ï¼Œåªéœ€ä¸‹è½½å¹¶è§£å‹ç¼©å³å¯ã€‚æœ¬ç« å›é¡¾äº†ç³»ç»Ÿçš„éœ€æ±‚ä»¥åŠå‘è¡Œç‰ˆçš„ç›®å½•ç»“æ„ã€‚
+  °²×°Keycloak·Ç³£¼òµ¥£¬Ö»ĞèÏÂÔØ²¢½âÑ¹Ëõ¼´¿É¡£±¾ÕÂ»Ø¹ËÁËÏµÍ³µÄĞèÇóÒÔ¼°·¢ĞĞ°æµÄÄ¿Â¼½á¹¹¡£
 
-### 2.1. ç³»ç»Ÿéœ€æ±‚
+### 2.1. ÏµÍ³ĞèÇó {#System Requirements}
 
-ä»¥ä¸‹æ˜¯è¿è¡ŒKeycloakèº«ä»½éªŒè¯æœåŠ¡å™¨çš„è¦æ±‚:
+ÒÔÏÂÊÇÔËĞĞKeycloakÉí·İÑéÖ¤·şÎñÆ÷µÄÒªÇó:
 
-- èƒ½è¿è¡ŒJavaçš„ä»»ä½•æ“ä½œç³»ç»Ÿ
+- ÄÜÔËĞĞJavaµÄÈÎºÎ²Ù×÷ÏµÍ³
 - Java 8 JDK
-- zip æˆ–è€… gzip å’Œ tar
-- è‡³å°‘512Må†…å­˜
+- zip »òÕß gzip ºÍ tar
+- ÖÁÉÙ512MÄÚ´æ
 - At least 1G of diskspace
-- å…±äº«çš„å¤–éƒ¨æ•°æ®åº“ï¼Œå¦‚PostgreSQLã€MySQLã€Oracleç­‰ã€‚å¦‚æœè¦åœ¨é›†ç¾¤ä¸­è¿è¡Œï¼ŒKeycloakéœ€è¦ä¸€ä¸ªå¤–éƒ¨å…±äº«æ•°æ®åº“ã€‚æœ‰å…³æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚é˜…æœ¬æŒ‡å—çš„[æ•°æ®åº“é…ç½®](https://www.keycloak.org/docs/latest/server_installation/index.html#_database)éƒ¨åˆ†ã€‚
-- å¦‚æœæ‚¨æƒ³åœ¨é›†ç¾¤ä¸­è¿è¡Œï¼Œæœ€å¥½è®¡ç®—æœºä¸Šçš„ç½‘ç»œæ”¯æŒå¤šæ’­ã€‚Keycloakå¯ä»¥åœ¨æ²¡æœ‰å¤šæ’­çš„æƒ…å†µä¸‹é›†ç¾¤åŒ–ï¼Œä½†è¿™éœ€è¦å¤§é‡çš„é…ç½®æ›´æ”¹ã€‚æœ‰å…³æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚è§æœ¬æŒ‡å—çš„[é›†ç¾¤](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustering)éƒ¨åˆ†ã€‚
-- åœ¨Linuxä¸Šï¼Œå»ºè®®ä½¿ç”¨`/dev/urandom`ä½œä¸ºéšæœºæ•°æ®çš„æ¥æºï¼Œä»¥é˜²æ­¢ç”±äºç¼ºå°‘å¯ç”¨çš„ç†µè€Œå¯¼è‡´å¯†é’¥éšè—æŒ‚èµ·ï¼Œé™¤éæ‚¨çš„å®‰å…¨ç­–ç•¥å¼ºåˆ¶ä½¿ç”¨`/dev/random`ã€‚è¦åœ¨Oracle JDK 8å’ŒOpenJDK 8ä¸Šå®ç°è¿™ä¸€ç‚¹ï¼Œè¯·è®¾ç½® `java.security.egd`ç³»ç»Ÿå±æ€§ä¸º` file:/dev/urandom`ã€‚
+- ¹²ÏíµÄÍâ²¿Êı¾İ¿â£¬ÈçPostgreSQL¡¢MySQL¡¢OracleµÈ¡£Èç¹ûÒªÔÚ¼¯ÈºÖĞÔËĞĞ£¬KeycloakĞèÒªÒ»¸öÍâ²¿¹²ÏíÊı¾İ¿â¡£ÓĞ¹Ø¸ü¶àĞÅÏ¢£¬Çë²ÎÔÄ±¾Ö¸ÄÏµÄ[Êı¾İ¿âÅäÖÃ](https://www.keycloak.org/docs/latest/server_installation/index.html#_database)²¿·Ö¡£
+- Èç¹ûÄúÏëÔÚ¼¯ÈºÖĞÔËĞĞ£¬×îºÃ¼ÆËã»úÉÏµÄÍøÂçÖ§³Ö¶à²¥¡£Keycloak¿ÉÒÔÔÚÃ»ÓĞ¶à²¥µÄÇé¿öÏÂ¼¯Èº»¯£¬µ«ÕâĞèÒª´óÁ¿µÄÅäÖÃ¸ü¸Ä¡£ÓĞ¹Ø¸ü¶àĞÅÏ¢£¬Çë²Î¼û±¾Ö¸ÄÏµÄ[¼¯Èº](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustering)²¿·Ö¡£
+- ÔÚLinuxÉÏ£¬½¨ÒéÊ¹ÓÃ`/dev/urandom`×÷ÎªËæ»úÊı¾İµÄÀ´Ô´£¬ÒÔ·ÀÖ¹ÓÉÓÚÈ±ÉÙ¿ÉÓÃµÄìØ¶øµ¼ÖÂÃÜÔ¿Òş²Ø¹ÒÆğ£¬³ı·ÇÄúµÄ°²È«²ßÂÔÇ¿ÖÆÊ¹ÓÃ`/dev/random`¡£ÒªÔÚOracle JDK 8ºÍOpenJDK 8ÉÏÊµÏÖÕâÒ»µã£¬ÇëÉèÖÃ `java.security.egd`ÏµÍ³ÊôĞÔÎª` file:/dev/urandom`¡£
 
-### 2.2. å®‰è£…åˆ†å¸ƒå¼æ–‡ä»¶
+### 2.2. °²×°·Ö²¼Ê½ÎÄ¼ş {#Installing Distribution Files}
 
-KeycloakæœåŠ¡å™¨æœ‰ä¸‰ä¸ªå¯ä¸‹è½½çš„å‘è¡Œç‰ˆ:
+Keycloak·şÎñÆ÷ÓĞÈı¸ö¿ÉÏÂÔØµÄ·¢ĞĞ°æ:
 
 - 'keycloak-6.0.0.[zip|tar.gz]'
 - 'keycloak-overlay-6.0.0.[zip|tar.gz]'
 - 'keycloak-demo-6.0.0.[zip|tar.gz]'
 
-'keycloak-6.0.0.[zip|tar.gz]'æ–‡ä»¶æ˜¯æœåŠ¡å™¨å”¯ä¸€çš„å‘è¡Œç‰ˆã€‚å®ƒåªåŒ…å«è¿è¡ŒKeycloakæœåŠ¡å™¨çš„è„šæœ¬å’ŒäºŒè¿›åˆ¶æ–‡ä»¶ã€‚è¦è§£å‹ç¼©è¿™ä¸ªæ–‡ä»¶ï¼Œåªéœ€è¿è¡Œæ“ä½œç³»ç»Ÿçš„`unzip`æˆ–`gunzip`å’Œ`tar`å®ç”¨ç¨‹åºã€‚
+'keycloak-6.0.0.[zip|tar.gz]'ÎÄ¼şÊÇ·şÎñÆ÷Î¨Ò»µÄ·¢ĞĞ°æ¡£ËüÖ»°üº¬ÔËĞĞKeycloak·şÎñÆ÷µÄ½Å±¾ºÍ¶ş½øÖÆÎÄ¼ş¡£Òª½âÑ¹ËõÕâ¸öÎÄ¼ş£¬Ö»ĞèÔËĞĞ²Ù×÷ÏµÍ³µÄ`unzip`»ò`gunzip`ºÍ`tar`ÊµÓÃ³ÌĞò¡£
 
-'keycloak-overlay-6.0.0.[zip|tar.gz]'æ–‡ä»¶æ˜¯ä¸€ä¸ªWildFlyæ’ä»¶ï¼Œå…è®¸æ‚¨åœ¨ç°æœ‰çš„WildFlyå‘è¡Œç‰ˆä¸Šå®‰è£…KeycloakæœåŠ¡å™¨ã€‚æˆ‘ä»¬ä¸æ”¯æŒç”¨æˆ·å¸Œæœ›åœ¨åŒä¸€æœåŠ¡å™¨å®ä¾‹ä¸Šè¿è¡Œåº”ç”¨ç¨‹åºå’ŒKeycloakã€‚è¦å®‰è£…KeycloakæœåŠ¡åŒ…ï¼Œåªéœ€å°†å…¶è§£å‹åˆ°WildFlyå‘è¡Œç‰ˆçš„æ ¹ç›®å½•ä¸­ï¼Œæ‰“å¼€shellä¸­çš„binç›®å½•å¹¶è¿è¡Œ`./jboss-cli.[sh|bat] --file=keycloak-install.cli`ã€‚
+'keycloak-overlay-6.0.0.[zip|tar.gz]'ÎÄ¼şÊÇÒ»¸öWildFly²å¼ş£¬ÔÊĞíÄúÔÚÏÖÓĞµÄWildFly·¢ĞĞ°æÉÏ°²×°Keycloak·şÎñÆ÷¡£ÎÒÃÇ²»Ö§³ÖÓÃ»§Ï£ÍûÔÚÍ¬Ò»·şÎñÆ÷ÊµÀıÉÏÔËĞĞÓ¦ÓÃ³ÌĞòºÍKeycloak¡£Òª°²×°Keycloak·şÎñ°ü£¬Ö»Ğè½«Æä½âÑ¹µ½WildFly·¢ĞĞ°æµÄ¸ùÄ¿Â¼ÖĞ£¬´ò¿ªshellÖĞµÄbinÄ¿Â¼²¢ÔËĞĞ`./jboss-cli.[sh|bat] --file=keycloak-install.cli`¡£
 
-'keycloak-demo-6.0.0.[zip|tar.gz]' åŒ…å«æœåŠ¡å™¨äºŒè¿›åˆ¶æ–‡ä»¶ã€æ‰€æœ‰æ–‡æ¡£å’Œæ‰€æœ‰ç¤ºä¾‹ã€‚å®ƒé¢„å…ˆé…ç½®äº†OIDCå’ŒSAMLå®¢æˆ·æœºåº”ç”¨ç¨‹åºé€‚é…å™¨ï¼Œå¯ä»¥åœ¨ä¸è¿›è¡Œä»»ä½•é…ç½®çš„æƒ…å†µä¸‹å¼€ç®±å³ç”¨åœ°éƒ¨ç½²ä»»ä½•åˆ†å‘ç¤ºä¾‹ã€‚æ­¤åˆ†å‘ç‰ˆåªå»ºè®®é‚£äº›æƒ³è¦æµ‹è¯•Keycloakçš„ç”¨æˆ·ä½¿ç”¨ã€‚æˆ‘ä»¬ä¸æ”¯æŒç”¨æˆ·åœ¨ç”Ÿäº§ç¯å¢ƒä¸­è¿è¡Œæ¼”ç¤ºå‘è¡Œç‰ˆã€‚
+'keycloak-demo-6.0.0.[zip|tar.gz]' °üº¬·şÎñÆ÷¶ş½øÖÆÎÄ¼ş¡¢ËùÓĞÎÄµµºÍËùÓĞÊ¾Àı¡£ËüÔ¤ÏÈÅäÖÃÁËOIDCºÍSAML¿Í»§»úÓ¦ÓÃ³ÌĞòÊÊÅäÆ÷£¬¿ÉÒÔÔÚ²»½øĞĞÈÎºÎÅäÖÃµÄÇé¿öÏÂ¿ªÏä¼´ÓÃµØ²¿ÊğÈÎºÎ·Ö·¢Ê¾Àı¡£´Ë·Ö·¢°æÖ»½¨ÒéÄÇĞ©ÏëÒª²âÊÔKeycloakµÄÓÃ»§Ê¹ÓÃ¡£ÎÒÃÇ²»Ö§³ÖÓÃ»§ÔÚÉú²ú»·¾³ÖĞÔËĞĞÑİÊ¾·¢ĞĞ°æ¡£
 
-è¦è§£å‹ç¼©è¿™äº›æ–‡ä»¶ï¼Œè¯·è¿è¡Œ`unzip`æˆ–`gunzip`å’Œ`tar`å®ç”¨ç¨‹åºã€‚
+Òª½âÑ¹ËõÕâĞ©ÎÄ¼ş£¬ÇëÔËĞĞ`unzip`»ò`gunzip`ºÍ`tar`ÊµÓÃ³ÌĞò¡£
 
-### 2.3. åˆ†å¸ƒå¼ç›®å½•ç»“æ„
+### 2.3. ·Ö²¼Ê½Ä¿Â¼½á¹¹ {#Distribution Directory Structure}
 
-æœ¬ç« å°†ä»‹ç»æœåŠ¡å™¨åˆ†å‘ç‰ˆçš„ç›®å½•ç»“æ„ã€‚
+±¾ÕÂ½«½éÉÜ·şÎñÆ÷·Ö·¢°æµÄÄ¿Â¼½á¹¹¡£
 
-åˆ†å¸ƒå¼ç›®å½•ç»“æ„
+·Ö²¼Ê½Ä¿Â¼½á¹¹
 
 ![distribution](assets/files.png)
 
-è®©æˆ‘ä»¬æ¥çœ‹çœ‹å…¶ä¸­ä¸€äº›ç›®å½•çš„ç”¨é€”:
+ÈÃÎÒÃÇÀ´¿´¿´ÆäÖĞÒ»Ğ©Ä¿Â¼µÄÓÃÍ¾:
 
 - *bin/*
 
-  å®ƒåŒ…å«å„ç§è„šæœ¬ï¼Œå¯ä»¥å¯åŠ¨æœåŠ¡å™¨ï¼Œä¹Ÿå¯ä»¥åœ¨æœåŠ¡å™¨ä¸Šæ‰§è¡Œå…¶ä»–ç®¡ç†æ“ä½œã€‚
+  Ëü°üº¬¸÷ÖÖ½Å±¾£¬¿ÉÒÔÆô¶¯·şÎñÆ÷£¬Ò²¿ÉÒÔÔÚ·şÎñÆ÷ÉÏÖ´ĞĞÆäËû¹ÜÀí²Ù×÷¡£
 
 - *domain/*
 
-  å½“åœ¨[åŸŸæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_domain-mode)ä¸­è¿è¡ŒKeycloakæ—¶ï¼Œå®ƒåŒ…å«é…ç½®æ–‡ä»¶å’Œå·¥ä½œç›®å½•ã€‚
+  µ±ÔÚ[ÓòÄ£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_domain-mode)ÖĞÔËĞĞKeycloakÊ±£¬Ëü°üº¬ÅäÖÃÎÄ¼şºÍ¹¤×÷Ä¿Â¼¡£
 
 - *modules/*
 
-  è¿™äº›éƒ½æ˜¯æœåŠ¡å™¨ä½¿ç”¨çš„æ‰€æœ‰Javaåº“ã€‚
+  ÕâĞ©¶¼ÊÇ·şÎñÆ÷Ê¹ÓÃµÄËùÓĞJava¿â¡£
 
 - *providers/*
 
-  å¦‚æœæ‚¨æ­£åœ¨ä¸ºkeycloakç¼–å†™æ‰©å±•ï¼Œå¯ä»¥å°†æ‰©å±•æ”¾åœ¨è¿™é‡Œã€‚æœ‰å…³è¿™æ–¹é¢çš„æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚è§[æœåŠ¡å™¨å¼€å‘äººå‘˜æŒ‡å—](https://www.keycloak.org/docs/6.0/server_development/)ã€‚
+  Èç¹ûÄúÕıÔÚÎªkeycloak±àĞ´À©Õ¹£¬¿ÉÒÔ½«À©Õ¹·ÅÔÚÕâÀï¡£ÓĞ¹ØÕâ·½ÃæµÄ¸ü¶àĞÅÏ¢£¬Çë²Î¼û[·şÎñÆ÷¿ª·¢ÈËÔ±Ö¸ÄÏ](https://www.keycloak.org/docs/6.0/server_development/)¡£
 
 - *standalone/*
 
-  è¿™åŒ…å«é…ç½®æ–‡ä»¶å’Œå·¥ä½œç›®å½•æ—¶ï¼Œè¿è¡ŒKeycloakåœ¨[ç‹¬ç«‹æ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_standalone-mode)ã€‚
+  Õâ°üº¬ÅäÖÃÎÄ¼şºÍ¹¤×÷Ä¿Â¼Ê±£¬ÔËĞĞKeycloakÔÚ[¶ÀÁ¢Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_standalone-mode)¡£
 
 - *themes/*
 
-  æ­¤ç›®å½•åŒ…å«ç”¨äºæœåŠ¡å™¨æ˜¾ç¤ºçš„ä»»ä½•UIæ‰€éœ€è¦çš„æ‰€æœ‰htmlã€æ ·å¼è¡¨ã€JavaScriptæ–‡ä»¶å’Œå›¾åƒã€‚åœ¨è¿™é‡Œï¼Œæ‚¨å¯ä»¥ä¿®æ”¹ç°æœ‰çš„ä¸»é¢˜æˆ–åˆ›å»ºè‡ªå·±çš„ä¸»é¢˜ã€‚æœ‰å…³è¿™æ–¹é¢çš„æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚è§[æœåŠ¡å™¨å¼€å‘äººå‘˜æŒ‡å—](https://www.keycloak.org/docs/6.0/server_development/)ã€‚
+  ´ËÄ¿Â¼°üº¬ÓÃÓÚ·şÎñÆ÷ÏÔÊ¾µÄÈÎºÎUIËùĞèÒªµÄËùÓĞhtml¡¢ÑùÊ½±í¡¢JavaScriptÎÄ¼şºÍÍ¼Ïñ¡£ÔÚÕâÀï£¬Äú¿ÉÒÔĞŞ¸ÄÏÖÓĞµÄÖ÷Ìâ»ò´´½¨×Ô¼ºµÄÖ÷Ìâ¡£ÓĞ¹ØÕâ·½ÃæµÄ¸ü¶àĞÅÏ¢£¬Çë²Î¼û[·şÎñÆ÷¿ª·¢ÈËÔ±Ö¸ÄÏ](https://www.keycloak.org/docs/6.0/server_development/)¡£
 
-## 3. é€‰æ‹©å·¥ä½œæ¨¡å¼
+## 3. Ñ¡Ôñ¹¤×÷Ä£Ê½ {#Choosing an Operating Mode}
 
-åœ¨ç”Ÿäº§ç¯å¢ƒä¸­éƒ¨ç½²Keycloakä¹‹å‰ï¼Œæ‚¨éœ€è¦å†³å®šä½¿ç”¨å“ªç§ç±»å‹çš„æ“ä½œæ¨¡å¼ã€‚æ‚¨ä¼šåœ¨é›†ç¾¤ä¸­è¿è¡ŒKeycloakå—?æ‚¨éœ€è¦ä¸€ç§é›†ä¸­çš„æ–¹å¼æ¥ç®¡ç†æœåŠ¡å™¨é…ç½®å—?æ‚¨é€‰æ‹©çš„æ“ä½œæ¨¡å¼å°†å½±å“æ‚¨å¦‚ä½•é…ç½®æ•°æ®åº“ã€é…ç½®ç¼“å­˜ï¼Œç”šè‡³å¦‚ä½•å¯åŠ¨æœåŠ¡å™¨ã€‚
+ÔÚÉú²ú»·¾³ÖĞ²¿ÊğKeycloakÖ®Ç°£¬ÄúĞèÒª¾ö¶¨Ê¹ÓÃÄÄÖÖÀàĞÍµÄ²Ù×÷Ä£Ê½¡£Äú»áÔÚ¼¯ÈºÖĞÔËĞĞKeycloakÂğ?ÄúĞèÒªÒ»ÖÖ¼¯ÖĞµÄ·½Ê½À´¹ÜÀí·şÎñÆ÷ÅäÖÃÂğ?ÄúÑ¡ÔñµÄ²Ù×÷Ä£Ê½½«Ó°ÏìÄúÈçºÎÅäÖÃÊı¾İ¿â¡¢ÅäÖÃ»º´æ£¬ÉõÖÁÈçºÎÆô¶¯·şÎñÆ÷¡£
 
-> Keycloakæ„å»ºåœ¨WildFlyåº”ç”¨æœåŠ¡å™¨ä¹‹ä¸Šã€‚æœ¬æŒ‡å—åªè®¨è®ºåœ¨ç‰¹å®šæ¨¡å¼ä¸‹éƒ¨ç½²çš„åŸºç¡€çŸ¥è¯†ã€‚å¦‚æœæ‚¨æƒ³äº†è§£è¿™æ–¹é¢çš„å…·ä½“ä¿¡æ¯ï¼Œæœ€å¥½çš„å»å¤„æ˜¯[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html).  
+> Keycloak¹¹½¨ÔÚWildFlyÓ¦ÓÃ·şÎñÆ÷Ö®ÉÏ¡£±¾Ö¸ÄÏÖ»ÌÖÂÛÔÚÌØ¶¨Ä£Ê½ÏÂ²¿ÊğµÄ»ù´¡ÖªÊ¶¡£Èç¹ûÄúÏëÁË½âÕâ·½ÃæµÄ¾ßÌåĞÅÏ¢£¬×îºÃµÄÈ¥´¦ÊÇ[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html).  
 
-### 3.1. ç‹¬ç«‹æ¨¡å¼
+### 3.1. ¶ÀÁ¢Ä£Ê½ {#Standalone Mode}
 
-ç‹¬ç«‹çš„æ“ä½œæ¨¡å¼åªåœ¨æ‚¨å¸Œæœ›è¿è¡Œä¸€ä¸ªä¸”ä»…è¿è¡Œä¸€ä¸ªKeycloakæœåŠ¡å™¨å®ä¾‹æ—¶æ‰æœ‰ç”¨ã€‚å®ƒä¸é€‚ç”¨äºé›†ç¾¤éƒ¨ç½²ï¼Œè€Œä¸”æ‰€æœ‰ç¼“å­˜éƒ½æ˜¯éåˆ†å¸ƒå¼çš„ï¼Œå¹¶ä¸”åªåœ¨æœ¬åœ°ä½¿ç”¨ã€‚ ä¸å»ºè®®åœ¨ç”Ÿäº§ä¸­ä½¿ç”¨ç‹¬ç«‹æ¨¡å¼ï¼Œå› ä¸ºåªæœ‰ä¸€ä¸ªæ•…éšœç‚¹ã€‚å¦‚æœæ‚¨çš„å•æœºæ¨¡å¼æœåŠ¡å™¨å®•æœºï¼Œç”¨æˆ·å°†æ— æ³•ç™»å½•ã€‚è¿™ç§æ¨¡å¼åªé€‚ç”¨äºæµ‹è¯•é©±åŠ¨å’Œä½¿ç”¨Keycloakçš„åŠŸèƒ½.
+¶ÀÁ¢µÄ²Ù×÷Ä£Ê½Ö»ÔÚÄúÏ£ÍûÔËĞĞÒ»¸öÇÒ½öÔËĞĞÒ»¸öKeycloak·şÎñÆ÷ÊµÀıÊ±²ÅÓĞÓÃ¡£Ëü²»ÊÊÓÃÓÚ¼¯Èº²¿Êğ£¬¶øÇÒËùÓĞ»º´æ¶¼ÊÇ·Ç·Ö²¼Ê½µÄ£¬²¢ÇÒÖ»ÔÚ±¾µØÊ¹ÓÃ¡£ ²»½¨ÒéÔÚÉú²úÖĞÊ¹ÓÃ¶ÀÁ¢Ä£Ê½£¬ÒòÎªÖ»ÓĞÒ»¸ö¹ÊÕÏµã¡£Èç¹ûÄúµÄµ¥»úÄ£Ê½·şÎñÆ÷å´»ú£¬ÓÃ»§½«ÎŞ·¨µÇÂ¼¡£ÕâÖÖÄ£Ê½Ö»ÊÊÓÃÓÚ²âÊÔÇı¶¯ºÍÊ¹ÓÃKeycloakµÄ¹¦ÄÜ.
 
-#### 3.1.1. ç‹¬ç«‹çš„å¯åŠ¨è„šæœ¬
+#### 3.1.1. ¶ÀÁ¢µÄÆô¶¯½Å±¾ {#Standalone Boot Script}
 
-å½“ä»¥ç‹¬ç«‹æ¨¡å¼è¿è¡ŒæœåŠ¡å™¨æ—¶ï¼Œæ‚¨éœ€è¦è¿è¡Œä¸€ä¸ªç‰¹å®šçš„è„šæœ¬æ¥å¯åŠ¨æœåŠ¡å™¨ï¼Œè¿™å–å†³äºæ‚¨çš„æ“ä½œç³»ç»Ÿã€‚è¿™äº›è„šæœ¬ä½äºæœåŠ¡å™¨åˆ†å‘ç‰ˆçš„ *bin/* ç›®å½•ä¸­ã€‚
+µ±ÒÔ¶ÀÁ¢Ä£Ê½ÔËĞĞ·şÎñÆ÷Ê±£¬ÄúĞèÒªÔËĞĞÒ»¸öÌØ¶¨µÄ½Å±¾À´Æô¶¯·şÎñÆ÷£¬ÕâÈ¡¾öÓÚÄúµÄ²Ù×÷ÏµÍ³¡£ÕâĞ©½Å±¾Î»ÓÚ·şÎñÆ÷·Ö·¢°æµÄ *bin/* Ä¿Â¼ÖĞ¡£
 
-ç‹¬ç«‹çš„å¯åŠ¨è„šæœ¬
+¶ÀÁ¢µÄÆô¶¯½Å±¾
 
 ![standalone boot files](assets/standalone-boot-files.png)
 
-å¯åŠ¨æœåŠ¡å™¨:
+Æô¶¯·şÎñÆ÷:
 
 Linux/Unix
 
@@ -114,39 +114,39 @@ Windows
 > ...\bin\standalone.bat
 ```
 
-#### 3.1.2. ç‹¬ç«‹çš„é…ç½®
+#### 3.1.2. ¶ÀÁ¢µÄÅäÖÃ {#Standalone Configuration}
 
-æœ¬æŒ‡å—çš„å¤§éƒ¨åˆ†å†…å®¹å°†æŒ‡å¯¼æ‚¨å¦‚ä½•é…ç½®Keycloakçš„åŸºç¡€è®¾æ–½çº§åˆ«æ–¹é¢ã€‚ è¿™äº›æ–¹é¢æ˜¯åœ¨é…ç½®æ–‡ä»¶ä¸­é…ç½®çš„ï¼Œè¯¥é…ç½®æ–‡ä»¶ç‰¹å®šäºKeycloakæ´¾ç”Ÿçš„åº”ç”¨ç¨‹åºæœåŠ¡å™¨ã€‚åœ¨ç‹¬ç«‹æ“ä½œæ¨¡å¼ä¸‹ï¼Œè¯¥æ–‡ä»¶ä½äº *.. / independent /configuration/standalone.xml* ä¸­ã€‚ æ­¤æ–‡ä»¶è¿˜ç”¨äºé…ç½®ç‰¹å®šäºKeycloakç»„ä»¶çš„éåŸºç¡€è®¾æ–½çº§åˆ«çš„å†…å®¹ã€‚
+±¾Ö¸ÄÏµÄ´ó²¿·ÖÄÚÈİ½«Ö¸µ¼ÄúÈçºÎÅäÖÃKeycloakµÄ»ù´¡ÉèÊ©¼¶±ğ·½Ãæ¡£ ÕâĞ©·½ÃæÊÇÔÚÅäÖÃÎÄ¼şÖĞÅäÖÃµÄ£¬¸ÃÅäÖÃÎÄ¼şÌØ¶¨ÓÚKeycloakÅÉÉúµÄÓ¦ÓÃ³ÌĞò·şÎñÆ÷¡£ÔÚ¶ÀÁ¢²Ù×÷Ä£Ê½ÏÂ£¬¸ÃÎÄ¼şÎ»ÓÚ *.. / independent /configuration/standalone.xml* ÖĞ¡£ ´ËÎÄ¼ş»¹ÓÃÓÚÅäÖÃÌØ¶¨ÓÚKeycloak×é¼şµÄ·Ç»ù´¡ÉèÊ©¼¶±ğµÄÄÚÈİ¡£
 
-ç‹¬ç«‹çš„é…ç½®æ–‡ä»¶
+¶ÀÁ¢µÄÅäÖÃÎÄ¼ş
 
 ![standalone config file](assets/standalone-config-file.png)
 
-> åœ¨æœåŠ¡å™¨è¿è¡Œæ—¶å¯¹è¯¥æ–‡ä»¶æ‰€åšçš„ä»»ä½•æ›´æ”¹éƒ½ä¸ä¼šç”Ÿæ•ˆï¼Œç”šè‡³å¯èƒ½è¢«æœåŠ¡å™¨è¦†ç›–ã€‚è€Œæ˜¯ä½¿ç”¨å‘½ä»¤è¡Œè„šæœ¬æˆ–WildFlyçš„webæ§åˆ¶å°ã€‚ æ›´å¤šä¿¡æ¯å‚è§[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)ã€‚                     
+> ÔÚ·şÎñÆ÷ÔËĞĞÊ±¶Ô¸ÃÎÄ¼şËù×öµÄÈÎºÎ¸ü¸Ä¶¼²»»áÉúĞ§£¬ÉõÖÁ¿ÉÄÜ±»·şÎñÆ÷¸²¸Ç¡£¶øÊÇÊ¹ÓÃÃüÁîĞĞ½Å±¾»òWildFlyµÄweb¿ØÖÆÌ¨¡£ ¸ü¶àĞÅÏ¢²Î¼û[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)¡£                     
 
-### 3.2. ç‹¬ç«‹çš„é›†ç¾¤æ¨¡å¼
+### 3.2. ¶ÀÁ¢µÄ¼¯ÈºÄ£Ê½ {#Standalone Clustered Mode}
 
-å½“æ‚¨å¸Œæœ›åœ¨é›†ç¾¤ä¸­è¿è¡ŒKeycloakæ—¶ï¼Œå¯ä»¥ä½¿ç”¨ç‹¬ç«‹é›†ç¾¤æ“ä½œæ¨¡å¼ã€‚æ­¤æ¨¡å¼è¦æ±‚åœ¨å¸Œæœ›è¿è¡ŒæœåŠ¡å™¨å®ä¾‹çš„æ¯å°è®¡ç®—æœºä¸Šéƒ½æœ‰Keycloakåˆ†å‘ç‰ˆçš„å‰¯æœ¬ã€‚è¿™ç§æ¨¡å¼æœ€åˆå¾ˆå®¹æ˜“éƒ¨ç½²ï¼Œä½†æ˜¯ä¼šå˜å¾—ç›¸å½“éº»çƒ¦ã€‚è¦è¿›è¡Œé…ç½®æ›´æ”¹ï¼Œæ‚¨å¿…é¡»ä¿®æ”¹æ¯å°æœºå™¨ä¸Šçš„æ¯ä¸ªå‘è¡Œç‰ˆã€‚å¯¹äºå¤§å‹é›†ç¾¤ï¼Œè¿™å¯èƒ½ä¼šè€—è´¹æ—¶é—´å¹¶å®¹æ˜“å‡ºé”™ã€‚
+µ±ÄúÏ£ÍûÔÚ¼¯ÈºÖĞÔËĞĞKeycloakÊ±£¬¿ÉÒÔÊ¹ÓÃ¶ÀÁ¢¼¯Èº²Ù×÷Ä£Ê½¡£´ËÄ£Ê½ÒªÇóÔÚÏ£ÍûÔËĞĞ·şÎñÆ÷ÊµÀıµÄÃ¿Ì¨¼ÆËã»úÉÏ¶¼ÓĞKeycloak·Ö·¢°æµÄ¸±±¾¡£ÕâÖÖÄ£Ê½×î³õºÜÈİÒ×²¿Êğ£¬µ«ÊÇ»á±äµÃÏàµ±Âé·³¡£Òª½øĞĞÅäÖÃ¸ü¸Ä£¬Äú±ØĞëĞŞ¸ÄÃ¿Ì¨»úÆ÷ÉÏµÄÃ¿¸ö·¢ĞĞ°æ¡£¶ÔÓÚ´óĞÍ¼¯Èº£¬Õâ¿ÉÄÜ»áºÄ·ÑÊ±¼ä²¢ÈİÒ×³ö´í¡£
 
-#### 3.2.1. ç‹¬ç«‹çš„é›†ç¾¤é…ç½®
+#### 3.2.1. ¶ÀÁ¢µÄ¼¯ÈºÅäÖÃ {#Standalone Clustered Configuration}
 
-è¯¥å‘è¡Œç‰ˆæœ‰ä¸€ä¸ªä¸»è¦é¢„é…ç½®çš„appæœåŠ¡å™¨é…ç½®æ–‡ä»¶ï¼Œç”¨äºåœ¨é›†ç¾¤ä¸­è¿è¡Œã€‚å®ƒå…·æœ‰ç”¨äºç½‘ç»œã€æ•°æ®åº“ã€ç¼“å­˜å’Œå‘ç°çš„æ‰€æœ‰ç‰¹å®šåŸºç¡€è®¾æ–½è®¾ç½®ã€‚æ­¤æ–‡ä»¶é©»ç•™åœ¨ *â€¦/standalone/configuration/standalone-ha.xml*. è¿™ä¸ªé…ç½®ä¸­ç¼ºå°‘ä¸€äº›ä¸œè¥¿ã€‚å¦‚æœä¸é…ç½®å…±äº«æ•°æ®åº“è¿æ¥ï¼Œå°±ä¸èƒ½åœ¨é›†ç¾¤ä¸­è¿è¡ŒKeycloakã€‚æ‚¨è¿˜éœ€è¦åœ¨é›†ç¾¤å‰é¢éƒ¨ç½²æŸç§ç±»å‹çš„è´Ÿè½½å‡è¡¡å™¨ã€‚ æœ¬æŒ‡å—çš„[é›†ç¾¤](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustering)  å’Œ [æ•°æ®åº“](https://www.keycloak.org/docs/latest/server_installation/index.html#_database) éƒ¨åˆ†å°†æŒ‡å¯¼æ‚¨äº†è§£è¿™äº›å†…å®¹ã€‚
+¸Ã·¢ĞĞ°æÓĞÒ»¸öÖ÷ÒªÔ¤ÅäÖÃµÄapp·şÎñÆ÷ÅäÖÃÎÄ¼ş£¬ÓÃÓÚÔÚ¼¯ÈºÖĞÔËĞĞ¡£Ëü¾ßÓĞÓÃÓÚÍøÂç¡¢Êı¾İ¿â¡¢»º´æºÍ·¢ÏÖµÄËùÓĞÌØ¶¨»ù´¡ÉèÊ©ÉèÖÃ¡£´ËÎÄ¼ş×¤ÁôÔÚ *¡­/standalone/configuration/standalone-ha.xml*. Õâ¸öÅäÖÃÖĞÈ±ÉÙÒ»Ğ©¶«Î÷¡£Èç¹û²»ÅäÖÃ¹²ÏíÊı¾İ¿âÁ¬½Ó£¬¾Í²»ÄÜÔÚ¼¯ÈºÖĞÔËĞĞKeycloak¡£Äú»¹ĞèÒªÔÚ¼¯ÈºÇ°Ãæ²¿ÊğÄ³ÖÖÀàĞÍµÄ¸ºÔØ¾ùºâÆ÷¡£ ±¾Ö¸ÄÏµÄ[¼¯Èº](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustering)  ºÍ [Êı¾İ¿â](https://www.keycloak.org/docs/latest/server_installation/index.html#_database) ²¿·Ö½«Ö¸µ¼ÄúÁË½âÕâĞ©ÄÚÈİ¡£
 
-æ ‡å‡†HAé…ç½®
+±ê×¼HAÅäÖÃ
 
 ![standalone ha config file](assets/standalone-ha-config-file.png)
 
-> åœ¨æœåŠ¡å™¨è¿è¡Œæ—¶å¯¹è¯¥æ–‡ä»¶æ‰€åšçš„ä»»ä½•æ›´æ”¹éƒ½ä¸ä¼šç”Ÿæ•ˆï¼Œç”šè‡³å¯èƒ½è¢«æœåŠ¡å™¨è¦†ç›–ã€‚å»ºè®®ä½¿ç”¨å‘½ä»¤è¡Œè„šæœ¬æˆ–WildFlyçš„webæ§åˆ¶å°ã€‚ æ›´å¤šä¿¡æ¯å‚è§ [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)                                  |
+> ÔÚ·şÎñÆ÷ÔËĞĞÊ±¶Ô¸ÃÎÄ¼şËù×öµÄÈÎºÎ¸ü¸Ä¶¼²»»áÉúĞ§£¬ÉõÖÁ¿ÉÄÜ±»·şÎñÆ÷¸²¸Ç¡£½¨ÒéÊ¹ÓÃÃüÁîĞĞ½Å±¾»òWildFlyµÄweb¿ØÖÆÌ¨¡£ ¸ü¶àĞÅÏ¢²Î¼û [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)                                  |
 
-#### 3.2.2. ç‹¬ç«‹é›†ç¾¤å¯åŠ¨è„šæœ¬
+#### 3.2.2. ¶ÀÁ¢¼¯ÈºÆô¶¯½Å±¾ {#Standalone Clustered Boot Script}
 
-ä½¿ç”¨ä¸åœ¨ç‹¬ç«‹æ¨¡å¼ä¸‹ç›¸åŒçš„å¼•å¯¼è„šæœ¬å¯åŠ¨Keycloakã€‚ä¸åŒä¹‹å¤„åœ¨äºï¼Œæ‚¨ä¼ é€’äº†ä¸€ä¸ªé¢å¤–çš„æ ‡å¿—æ¥æŒ‡å‘HAé…ç½®æ–‡ä»¶ã€‚
+Ê¹ÓÃÓëÔÚ¶ÀÁ¢Ä£Ê½ÏÂÏàÍ¬µÄÒıµ¼½Å±¾Æô¶¯Keycloak¡£²»Í¬Ö®´¦ÔÚÓÚ£¬Äú´«µİÁËÒ»¸ö¶îÍâµÄ±êÖ¾À´Ö¸ÏòHAÅäÖÃÎÄ¼ş¡£
 
-ç‹¬ç«‹é›†ç¾¤å¯åŠ¨è„šæœ¬
+¶ÀÁ¢¼¯ÈºÆô¶¯½Å±¾
 
 ![standalone boot files](https://www.keycloak.org/docs/latest/server_installation/keycloak-images/standalone-boot-files.png)
 
-å¯åŠ¨æœåŠ¡å™¨:
+Æô¶¯·şÎñÆ÷:
 
 Linux/Unix
 
@@ -160,47 +160,47 @@ Windows
 > ...\bin\standalone.bat --server-config=standalone-ha.xml
 ```
 
-### 3.3. åŸŸé›†ç¾¤æ¨¡å¼
+### 3.3. Óò¼¯ÈºÄ£Ê½ {#}
 
-åŸŸæ¨¡å¼æ˜¯ä¸€ç§é›†ä¸­ç®¡ç†å’Œå‘å¸ƒæœåŠ¡å™¨é…ç½®çš„æ–¹æ³•ã€‚
+ÓòÄ£Ê½ÊÇÒ»ÖÖ¼¯ÖĞ¹ÜÀíºÍ·¢²¼·şÎñÆ÷ÅäÖÃµÄ·½·¨¡£
 
-åœ¨æ ‡å‡†æ¨¡å¼ä¸‹è¿è¡Œé›†ç¾¤ä¼šéšç€é›†ç¾¤è§„æ¨¡çš„å¢é•¿è€Œè¿…é€Ÿæ¶åŒ–ã€‚æ¯æ¬¡éœ€è¦æ›´æ”¹é…ç½®æ—¶ï¼Œéƒ½å¿…é¡»åœ¨é›†ç¾¤ä¸­çš„æ¯ä¸ªèŠ‚ç‚¹ä¸Šæ‰§è¡Œã€‚ åŸŸæ¨¡å¼è§£å†³äº†è¿™ä¸ªé—®é¢˜é€šè¿‡æä¾›ä¸€ä¸ªä¸­å¿ƒä½ç½®å­˜å‚¨å’Œå‘å¸ƒé…ç½®ã€‚ è®¾ç½®èµ·æ¥å¯èƒ½ç›¸å½“å¤æ‚ï¼Œä½†æœ€ç»ˆæ˜¯å€¼å¾—çš„ã€‚è¿™ä¸ªåŠŸèƒ½è¢«å†…ç½®åˆ°WildFlyåº”ç”¨æœåŠ¡å™¨ä¸­ï¼ŒKeycloakå°±æ˜¯ä»è¿™ä¸ªåº”ç”¨æœåŠ¡å™¨æ´¾ç”Ÿçš„ã€‚
+ÔÚ±ê×¼Ä£Ê½ÏÂÔËĞĞ¼¯Èº»áËæ×Å¼¯Èº¹æÄ£µÄÔö³¤¶øÑ¸ËÙ¶ñ»¯¡£Ã¿´ÎĞèÒª¸ü¸ÄÅäÖÃÊ±£¬¶¼±ØĞëÔÚ¼¯ÈºÖĞµÄÃ¿¸ö½ÚµãÉÏÖ´ĞĞ¡£ ÓòÄ£Ê½½â¾öÁËÕâ¸öÎÊÌâÍ¨¹ıÌá¹©Ò»¸öÖĞĞÄÎ»ÖÃ´æ´¢ºÍ·¢²¼ÅäÖÃ¡£ ÉèÖÃÆğÀ´¿ÉÄÜÏàµ±¸´ÔÓ£¬µ«×îÖÕÊÇÖµµÃµÄ¡£Õâ¸ö¹¦ÄÜ±»ÄÚÖÃµ½WildFlyÓ¦ÓÃ·şÎñÆ÷ÖĞ£¬Keycloak¾ÍÊÇ´ÓÕâ¸öÓ¦ÓÃ·şÎñÆ÷ÅÉÉúµÄ¡£
 
-> æœ¬æŒ‡å—å°†ä»‹ç»åŸŸæ¨¡å¼çš„åŸºæœ¬çŸ¥è¯†ã€‚å…³äºå¦‚ä½•åœ¨é›†ç¾¤ä¸­è®¾ç½®åŸŸæ¨¡å¼çš„è¯¦ç»†æ­¥éª¤åº”è¯¥ä»[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html). è·å¾—ã€‚
+> ±¾Ö¸ÄÏ½«½éÉÜÓòÄ£Ê½µÄ»ù±¾ÖªÊ¶¡£¹ØÓÚÈçºÎÔÚ¼¯ÈºÖĞÉèÖÃÓòÄ£Ê½µÄÏêÏ¸²½ÖèÓ¦¸Ã´Ó[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html). »ñµÃ¡£
 
-ä»¥ä¸‹æ˜¯åœ¨åŸŸæ¨¡å¼ä¸‹è¿è¡Œçš„ä¸€äº›åŸºæœ¬æ¦‚å¿µã€‚
+ÒÔÏÂÊÇÔÚÓòÄ£Ê½ÏÂÔËĞĞµÄÒ»Ğ©»ù±¾¸ÅÄî¡£
 
-- åŸŸæ§åˆ¶å™¨
+- Óò¿ØÖÆÆ÷
 
-  åŸŸæ§åˆ¶å™¨æ˜¯ä¸€ä¸ªè¿›ç¨‹ï¼Œè´Ÿè´£å­˜å‚¨ã€ç®¡ç†å’Œå‘å¸ƒé›†ç¾¤ä¸­æ¯ä¸ªèŠ‚ç‚¹çš„ä¸€èˆ¬é…ç½®ã€‚è¿™ä¸ªè¿›ç¨‹æ˜¯é›†ç¾¤ä¸­çš„èŠ‚ç‚¹è·å–å…¶é…ç½®çš„ä¸­å¿ƒç‚¹ã€‚
+  Óò¿ØÖÆÆ÷ÊÇÒ»¸ö½ø³Ì£¬¸ºÔğ´æ´¢¡¢¹ÜÀíºÍ·¢²¼¼¯ÈºÖĞÃ¿¸ö½ÚµãµÄÒ»°ãÅäÖÃ¡£Õâ¸ö½ø³ÌÊÇ¼¯ÈºÖĞµÄ½Úµã»ñÈ¡ÆäÅäÖÃµÄÖĞĞÄµã¡£
 
-- ä¸»æœºæ§åˆ¶å™¨
+- Ö÷»ú¿ØÖÆÆ÷
 
-  ä¸»æœºæ§åˆ¶å™¨è´Ÿè´£ç®¡ç†ç‰¹å®šæœºå™¨ä¸Šçš„æœåŠ¡å™¨å®ä¾‹ã€‚ æ‚¨å°†å…¶é…ç½®ä¸ºè¿è¡Œä¸€ä¸ªæˆ–å¤šä¸ªæœåŠ¡å™¨å®ä¾‹ã€‚åŸŸæ§åˆ¶å™¨è¿˜å¯ä»¥ä¸æ¯å°æœºå™¨ä¸Šçš„ä¸»æœºæ§åˆ¶å™¨äº¤äº’æ¥ç®¡ç†é›†ç¾¤ã€‚ ä¸ºäº†å‡å°‘è¿è¡Œè¿›ç¨‹çš„æ•°é‡ï¼ŒåŸŸæ§åˆ¶å™¨è¿˜å……å½“å®ƒæ‰€è¿è¡Œæœºå™¨ä¸Šçš„ä¸»æœºæ§åˆ¶å™¨ã€‚
+  Ö÷»ú¿ØÖÆÆ÷¸ºÔğ¹ÜÀíÌØ¶¨»úÆ÷ÉÏµÄ·şÎñÆ÷ÊµÀı¡£ Äú½«ÆäÅäÖÃÎªÔËĞĞÒ»¸ö»ò¶à¸ö·şÎñÆ÷ÊµÀı¡£Óò¿ØÖÆÆ÷»¹¿ÉÒÔÓëÃ¿Ì¨»úÆ÷ÉÏµÄÖ÷»ú¿ØÖÆÆ÷½»»¥À´¹ÜÀí¼¯Èº¡£ ÎªÁË¼õÉÙÔËĞĞ½ø³ÌµÄÊıÁ¿£¬Óò¿ØÖÆÆ÷»¹³äµ±ËüËùÔËĞĞ»úÆ÷ÉÏµÄÖ÷»ú¿ØÖÆÆ÷¡£
 
-- åŸŸé…ç½®æ–‡ä»¶
+- ÓòÅäÖÃÎÄ¼ş
 
-  åŸŸé…ç½®æ–‡ä»¶æ˜¯ä¸€ç»„å‘½åçš„é…ç½®æ–‡ä»¶ï¼Œå¯ä¾›æœåŠ¡å™¨ç”¨äºå¼•å¯¼ã€‚ åŸŸæ§åˆ¶å™¨å¯ä»¥å®šä¹‰ä¸åŒæœåŠ¡å™¨ä½¿ç”¨çš„å¤šä¸ªåŸŸé…ç½®æ–‡ä»¶ã€‚
+  ÓòÅäÖÃÎÄ¼şÊÇÒ»×éÃüÃûµÄÅäÖÃÎÄ¼ş£¬¿É¹©·şÎñÆ÷ÓÃÓÚÒıµ¼¡£ Óò¿ØÖÆÆ÷¿ÉÒÔ¶¨Òå²»Í¬·şÎñÆ÷Ê¹ÓÃµÄ¶à¸öÓòÅäÖÃÎÄ¼ş¡£
 
-- æœåŠ¡å™¨ç»„
+- ·şÎñÆ÷×é
 
-  æœåŠ¡å™¨ç»„æ˜¯æœåŠ¡å™¨çš„é›†åˆã€‚å®ƒä»¬è¢«ç®¡ç†å¹¶é…ç½®ä¸ºä¸€ä¸ªã€‚æ‚¨å¯ä»¥å°†ä¸€ä¸ªåŸŸé…ç½®æ–‡ä»¶åˆ†é…ç»™ä¸€ä¸ªæœåŠ¡å™¨ç»„ï¼Œè¯¥ç»„ä¸­çš„æ¯ä¸ªæœåŠ¡éƒ½å°†ä½¿ç”¨è¯¥åŸŸé…ç½®æ–‡ä»¶ä½œä¸ºå®ƒä»¬çš„é…ç½®ã€‚
+  ·şÎñÆ÷×éÊÇ·şÎñÆ÷µÄ¼¯ºÏ¡£ËüÃÇ±»¹ÜÀí²¢ÅäÖÃÎªÒ»¸ö¡£Äú¿ÉÒÔ½«Ò»¸öÓòÅäÖÃÎÄ¼ş·ÖÅä¸øÒ»¸ö·şÎñÆ÷×é£¬¸Ã×éÖĞµÄÃ¿¸ö·şÎñ¶¼½«Ê¹ÓÃ¸ÃÓòÅäÖÃÎÄ¼ş×÷ÎªËüÃÇµÄÅäÖÃ¡£
 
-åœ¨åŸŸæ¨¡å¼ä¸‹ï¼Œåœ¨ä¸»èŠ‚ç‚¹ä¸Šå¯åŠ¨åŸŸæ§åˆ¶å™¨ã€‚é›†ç¾¤çš„é…ç½®ä½äºåŸŸæ§åˆ¶å™¨ä¸­ã€‚ æ¥ä¸‹æ¥ï¼Œåœ¨ç¾¤é›†ä¸­çš„æ¯å°è®¡ç®—æœºä¸Šå¯åŠ¨ä¸»æœºæ§åˆ¶å™¨ã€‚ æ¯ä¸ªä¸»æœºæ§åˆ¶å™¨éƒ¨ç½²é…ç½®æŒ‡å®šå°†åœ¨è¯¥è®¡ç®—æœºä¸Šå¯åŠ¨çš„KeycloakæœåŠ¡å™¨å®ä¾‹æ•°ã€‚ å½“ä¸»æœºæ§åˆ¶å™¨å¯åŠ¨æ—¶ï¼Œå®ƒå¯åŠ¨çš„KeycloakæœåŠ¡å™¨å®ä¾‹ä¸é…ç½®æ—¶ä¸€æ ·å¤šã€‚è¿™äº›æœåŠ¡å™¨å®ä¾‹ä»åŸŸæ§åˆ¶å™¨ä¸­æå–é…ç½®ã€‚
+ÔÚÓòÄ£Ê½ÏÂ£¬ÔÚÖ÷½ÚµãÉÏÆô¶¯Óò¿ØÖÆÆ÷¡£¼¯ÈºµÄÅäÖÃÎ»ÓÚÓò¿ØÖÆÆ÷ÖĞ¡£ ½ÓÏÂÀ´£¬ÔÚÈº¼¯ÖĞµÄÃ¿Ì¨¼ÆËã»úÉÏÆô¶¯Ö÷»ú¿ØÖÆÆ÷¡£ Ã¿¸öÖ÷»ú¿ØÖÆÆ÷²¿ÊğÅäÖÃÖ¸¶¨½«ÔÚ¸Ã¼ÆËã»úÉÏÆô¶¯µÄKeycloak·şÎñÆ÷ÊµÀıÊı¡£ µ±Ö÷»ú¿ØÖÆÆ÷Æô¶¯Ê±£¬ËüÆô¶¯µÄKeycloak·şÎñÆ÷ÊµÀıÓëÅäÖÃÊ±Ò»Ñù¶à¡£ÕâĞ©·şÎñÆ÷ÊµÀı´ÓÓò¿ØÖÆÆ÷ÖĞÌáÈ¡ÅäÖÃ¡£
 
-#### 3.3.1. åŸŸé…ç½®
+#### 3.3.1. ÓòÅäÖÃ {#}
 
-æœ¬æŒ‡å—çš„å…¶ä»–å„ç« å°†ä»‹ç»å¦‚ä½•é…ç½®æ•°æ®åº“ã€HTTPç½‘ç»œè¿æ¥ã€ç¼“å­˜å’Œå…¶ä»–ä¸åŸºç¡€è®¾æ–½ç›¸å…³çš„å†…å®¹ã€‚ è™½ç„¶ç‹¬ç«‹æ¨¡å¼ä½¿ç”¨ *standalone.xml* æ–‡ä»¶æ¥é…ç½®è¿™äº›å†…å®¹ï¼Œä½†åŸŸæ¨¡å¼ä½¿ç”¨ *.../domain/configuration/domain.xml* é…ç½®æ–‡ä»¶ã€‚ è¿™é‡Œå®šä¹‰äº†Keycloak æœåŠ¡å™¨çš„åŸŸé…ç½®æ–‡ä»¶å’ŒæœåŠ¡å™¨ç»„ã€‚
+±¾Ö¸ÄÏµÄÆäËû¸÷ÕÂ½«½éÉÜÈçºÎÅäÖÃÊı¾İ¿â¡¢HTTPÍøÂçÁ¬½Ó¡¢»º´æºÍÆäËûÓë»ù´¡ÉèÊ©Ïà¹ØµÄÄÚÈİ¡£ ËäÈ»¶ÀÁ¢Ä£Ê½Ê¹ÓÃ *standalone.xml* ÎÄ¼şÀ´ÅäÖÃÕâĞ©ÄÚÈİ£¬µ«ÓòÄ£Ê½Ê¹ÓÃ *.../domain/configuration/domain.xml* ÅäÖÃÎÄ¼ş¡£ ÕâÀï¶¨ÒåÁËKeycloak ·şÎñÆ÷µÄÓòÅäÖÃÎÄ¼şºÍ·şÎñÆ÷×é¡£
 
 domain.xml
 
 ![domain file](assets/domain-file.png)
 
-> åœ¨åŸŸæ§åˆ¶å™¨è¿è¡Œæ—¶å¯¹è¯¥æ–‡ä»¶æ‰€åšçš„ä»»ä½•æ›´æ”¹éƒ½ä¸ä¼šç”Ÿæ•ˆï¼Œç”šè‡³å¯èƒ½è¢«æœåŠ¡å™¨è¦†ç›–ã€‚å»ºè®®ä½¿ç”¨å‘½ä»¤è¡Œè„šæœ¬æˆ–WildFlyçš„webæ§åˆ¶å°ã€‚ æ›´å¤šä¿¡æ¯å‚è§[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)
+> ÔÚÓò¿ØÖÆÆ÷ÔËĞĞÊ±¶Ô¸ÃÎÄ¼şËù×öµÄÈÎºÎ¸ü¸Ä¶¼²»»áÉúĞ§£¬ÉõÖÁ¿ÉÄÜ±»·şÎñÆ÷¸²¸Ç¡£½¨ÒéÊ¹ÓÃÃüÁîĞĞ½Å±¾»òWildFlyµÄweb¿ØÖÆÌ¨¡£ ¸ü¶àĞÅÏ¢²Î¼û[*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)
 
-æˆ‘ä»¬æ¥çœ‹çœ‹è¿™ä¸ª *domain.xml* æ–‡ä»¶çš„æŸäº›å†…å®¹ã€‚ `auth-server-standalone` å’Œ `auth-server-clustered` `profile` XMLå—æ˜¯æ‚¨è¿›è¡Œå¤§é‡é…ç½®å†³ç­–çš„åœ°æ–¹ã€‚ æ‚¨å°†åœ¨æ­¤å¤„é…ç½®ç½‘ç»œè¿æ¥ï¼Œç¼“å­˜å’Œæ•°æ®åº“è¿æ¥ç­‰å†…å®¹ã€‚
+ÎÒÃÇÀ´¿´¿´Õâ¸ö *domain.xml* ÎÄ¼şµÄÄ³Ğ©ÄÚÈİ¡£ `auth-server-standalone` ºÍ `auth-server-clustered` `profile` XML¿éÊÇÄú½øĞĞ´óÁ¿ÅäÖÃ¾ö²ßµÄµØ·½¡£ Äú½«ÔÚ´Ë´¦ÅäÖÃÍøÂçÁ¬½Ó£¬»º´æºÍÊı¾İ¿âÁ¬½ÓµÈÄÚÈİ¡£
 
-auth-serveré…ç½®
+auth-serverÅäÖÃ
 
 ```
     <profiles>
@@ -212,9 +212,9 @@ auth-serveré…ç½®
         </profile>
 ```
 
-`auth-server-standalone`é…ç½®æ˜¯éé›†ç¾¤è®¾ç½®ã€‚ `auth-server-clustered`é…ç½®æ˜¯é›†ç¾¤è®¾ç½®ã€‚
+`auth-server-standalone`ÅäÖÃÊÇ·Ç¼¯ÈºÉèÖÃ¡£ `auth-server-clustered`ÅäÖÃÊÇ¼¯ÈºÉèÖÃ¡£
 
-å¦‚æœä½ è¿›ä¸€æ­¥å‘ä¸‹æ»šåŠ¨ï¼Œä½ ä¼šçœ‹åˆ°å®šä¹‰äº†å„ç§`socket-binding-groups`ã€‚
+Èç¹ûÄã½øÒ»²½ÏòÏÂ¹ö¶¯£¬Äã»á¿´µ½¶¨ÒåÁË¸÷ÖÖ`socket-binding-groups`¡£
 
 socket-binding-groups
 
@@ -233,13 +233,13 @@ socket-binding-groups
     </socket-binding-groups>
 ```
 
-æ­¤é…ç½®å®šä¹‰ä½¿ç”¨æ¯ä¸ªKeycloakæœåŠ¡å™¨å®ä¾‹æ‰“å¼€çš„å„ç§è¿æ¥å™¨çš„é»˜è®¤ç«¯å£æ˜ å°„ã€‚ åŒ…å«`$ {...}`çš„ä»»ä½•å€¼éƒ½æ˜¯å¯ä»¥åœ¨å‘½ä»¤è¡Œä¸Šä½¿ç”¨`-D`å¼€å…³é‡å†™çš„å€¼ï¼Œä¾‹å¦‚:
+´ËÅäÖÃ¶¨ÒåÊ¹ÓÃÃ¿¸öKeycloak·şÎñÆ÷ÊµÀı´ò¿ªµÄ¸÷ÖÖÁ¬½ÓÆ÷µÄÄ¬ÈÏ¶Ë¿ÚÓ³Éä¡£ °üº¬`$ {...}`µÄÈÎºÎÖµ¶¼ÊÇ¿ÉÒÔÔÚÃüÁîĞĞÉÏÊ¹ÓÃ`-D`¿ª¹ØÖØĞ´µÄÖµ£¬ÀıÈç:
 
 ```
 $ domain.sh -Djboss.http.port=80
 ```
 
-KeycloakæœåŠ¡å™¨ç»„çš„å®šä¹‰ä½äº `server-groups` XMLå—ä¸­ã€‚ å®ƒæŒ‡å®šåœ¨ä¸»æœºæ§åˆ¶å™¨å¯åŠ¨å®ä¾‹æ—¶ä½¿ç”¨çš„åŸŸé…ç½®æ–‡ä»¶(`default`)ä»¥åŠJava VMçš„ä¸€äº›é»˜è®¤å¼•å¯¼å‚æ•°ã€‚ å®ƒè¿˜å°†`socket-binding-group`ç»‘å®šåˆ°æœåŠ¡å™¨ç»„ã€‚
+Keycloak·şÎñÆ÷×éµÄ¶¨ÒåÎ»ÓÚ `server-groups` XML¿éÖĞ¡£ ËüÖ¸¶¨ÔÚÖ÷»ú¿ØÖÆÆ÷Æô¶¯ÊµÀıÊ±Ê¹ÓÃµÄÓòÅäÖÃÎÄ¼ş(`default`)ÒÔ¼°Java VMµÄÒ»Ğ©Ä¬ÈÏÒıµ¼²ÎÊı¡£ Ëü»¹½«`socket-binding-group`°ó¶¨µ½·şÎñÆ÷×é¡£
 
 server group
 
@@ -261,17 +261,17 @@ server group
     </server-groups>
 ```
 
-#### 3.3.2. ä¸»æœºæ§åˆ¶å™¨é…ç½®
+#### 3.3.2. Ö÷»ú¿ØÖÆÆ÷ÅäÖÃ {#}
 
-Keycloaké™„å¸¦äº†ä¸¤ä¸ªä¸»æœºæ§åˆ¶å™¨é…ç½®æ–‡ä»¶ï¼Œå®ƒä»¬ä½äº *.../domain/configuration/* ç›®å½•ä¸­ï¼š*host-master.xml* å’Œ *host-slave.xml*ã€‚ *host-master.xml* é…ç½®ä¸ºå¯åŠ¨åŸŸæ§åˆ¶å™¨ï¼Œè´Ÿè½½å‡è¡¡å™¨å’Œä¸€ä¸ªKeycloakæœåŠ¡å™¨å®ä¾‹ã€‚ *host-slave.xml* é…ç½®ä¸ºä¸åŸŸæ§åˆ¶å™¨é€šä¿¡å¹¶å¯åŠ¨ä¸€ä¸ªKeycloakæœåŠ¡å™¨å®ä¾‹ã€‚
+Keycloak¸½´øÁËÁ½¸öÖ÷»ú¿ØÖÆÆ÷ÅäÖÃÎÄ¼ş£¬ËüÃÇÎ»ÓÚ *.../domain/configuration/* Ä¿Â¼ÖĞ£º*host-master.xml* ºÍ *host-slave.xml*¡£ *host-master.xml* ÅäÖÃÎªÆô¶¯Óò¿ØÖÆÆ÷£¬¸ºÔØ¾ùºâÆ÷ºÍÒ»¸öKeycloak·şÎñÆ÷ÊµÀı¡£ *host-slave.xml* ÅäÖÃÎªÓëÓò¿ØÖÆÆ÷Í¨ĞÅ²¢Æô¶¯Ò»¸öKeycloak·şÎñÆ÷ÊµÀı¡£
 
-> è´Ÿè½½å‡è¡¡å™¨ä¸æ˜¯å¿…éœ€çš„æœåŠ¡ã€‚ å®ƒçš„å­˜åœ¨ä½¿æ‚¨å¯ä»¥è½»æ¾åœ°åœ¨å¼€å‘è®¡ç®—æœºä¸Šæµ‹è¯•é©±åŠ¨å™¨ç¾¤é›†ã€‚ è™½ç„¶å¯ä»¥åœ¨ç”Ÿäº§ä¸­ä½¿ç”¨ï¼Œä½†å¦‚æœæ‚¨è¦ä½¿ç”¨å…¶ä»–åŸºäºç¡¬ä»¶æˆ–è½¯ä»¶çš„è´Ÿè½½å‡è¡¡å™¨ï¼Œåˆ™å¯ä»¥é€‰æ‹©æ›¿æ¢å®ƒã€‚
+> ¸ºÔØ¾ùºâÆ÷²»ÊÇ±ØĞèµÄ·şÎñ¡£ ËüµÄ´æÔÚÊ¹Äú¿ÉÒÔÇáËÉµØÔÚ¿ª·¢¼ÆËã»úÉÏ²âÊÔÇı¶¯Æ÷Èº¼¯¡£ ËäÈ»¿ÉÒÔÔÚÉú²úÖĞÊ¹ÓÃ£¬µ«Èç¹ûÄúÒªÊ¹ÓÃÆäËû»ùÓÚÓ²¼ş»òÈí¼şµÄ¸ºÔØ¾ùºâÆ÷£¬Ôò¿ÉÒÔÑ¡ÔñÌæ»»Ëü¡£
 
-ä¸»æœºæ§åˆ¶å™¨é…ç½®
+Ö÷»ú¿ØÖÆÆ÷ÅäÖÃ
 
 ![host files](assets/host-files.png)
 
-è¦ç¦ç”¨è´Ÿè½½å‡è¡¡å™¨æœåŠ¡å™¨å®ä¾‹ï¼Œè¯·ç¼–è¾‘ *host-master.xml* å¹¶æ³¨é‡Šæ‰æˆ–åˆ é™¤ `"load-balancer"` æ¡ç›®ã€‚
+Òª½ûÓÃ¸ºÔØ¾ùºâÆ÷·şÎñÆ÷ÊµÀı£¬Çë±à¼­ *host-master.xml* ²¢×¢ÊÍµô»òÉ¾³ı `"load-balancer"` ÌõÄ¿¡£
 
 ```
     <servers>
@@ -281,7 +281,7 @@ Keycloaké™„å¸¦äº†ä¸¤ä¸ªä¸»æœºæ§åˆ¶å™¨é…ç½®æ–‡ä»¶ï¼Œå®ƒä»¬ä½äº *.../domain/co
     </servers>
 ```
 
-å…³äºæ­¤æ–‡ä»¶çš„å¦ä¸€ä¸ªæœ‰è¶£çš„äº‹æƒ…æ˜¯å£°æ˜èº«ä»½éªŒè¯æœåŠ¡å™¨å®ä¾‹ã€‚ å®ƒæœ‰ä¸€ä¸ª`port-offset`è®¾ç½®ã€‚ *domain.xml*`socket-binding-group`æˆ–æœåŠ¡å™¨ç»„ä¸­å®šä¹‰çš„ä»»ä½•ç½‘ç»œç«¯å£éƒ½å°†æ·»åŠ `port-offset`çš„å€¼ã€‚ å¯¹äºæ­¤ç¤ºä¾‹åŸŸè®¾ç½®ï¼Œæˆ‘ä»¬æ‰§è¡Œæ­¤æ“ä½œï¼Œä»¥ä¾¿è´Ÿè½½å¹³è¡¡å™¨æœåŠ¡å™¨æ‰“å¼€çš„ç«¯å£ä¸ä¼šä¸å¯åŠ¨çš„èº«ä»½éªŒè¯æœåŠ¡å™¨å®ä¾‹å†²çªã€‚
+¹ØÓÚ´ËÎÄ¼şµÄÁíÒ»¸öÓĞÈ¤µÄÊÂÇéÊÇÉùÃ÷Éí·İÑéÖ¤·şÎñÆ÷ÊµÀı¡£ ËüÓĞÒ»¸ö`port-offset`ÉèÖÃ¡£ *domain.xml*`socket-binding-group`»ò·şÎñÆ÷×éÖĞ¶¨ÒåµÄÈÎºÎÍøÂç¶Ë¿Ú¶¼½«Ìí¼Ó`port-offset`µÄÖµ¡£ ¶ÔÓÚ´ËÊ¾ÀıÓòÉèÖÃ£¬ÎÒÃÇÖ´ĞĞ´Ë²Ù×÷£¬ÒÔ±ã¸ºÔØÆ½ºâÆ÷·şÎñÆ÷´ò¿ªµÄ¶Ë¿Ú²»»áÓëÆô¶¯µÄÉí·İÑéÖ¤·şÎñÆ÷ÊµÀı³åÍ»¡£
 
 ```
     <servers>
@@ -292,23 +292,23 @@ Keycloaké™„å¸¦äº†ä¸¤ä¸ªä¸»æœºæ§åˆ¶å™¨é…ç½®æ–‡ä»¶ï¼Œå®ƒä»¬ä½äº *.../domain/co
     </servers>
 ```
 
-#### 3.3.3. æœåŠ¡å™¨å®ä¾‹å·¥ä½œç›®å½•
+#### 3.3.3. ·şÎñÆ÷ÊµÀı¹¤×÷Ä¿Â¼ {#}
 
-ä¸»æœºæ–‡ä»¶ä¸­å®šä¹‰çš„æ¯ä¸ªKeycloakæœåŠ¡å™¨å®ä¾‹åœ¨ *â€¦/domain/servers/{SERVER NAME}* ä¸‹åˆ›å»ºä¸€ä¸ªå·¥ä½œç›®å½•ã€‚å¯ä»¥åœ¨å…¶ä¸­è¿›è¡Œå…¶ä»–é…ç½®ï¼Œå¹¶ä¸”æœåŠ¡å™¨å®ä¾‹éœ€è¦æˆ–åˆ›å»ºçš„ä»»ä½•ä¸´æ—¶ï¼Œæ—¥å¿—æˆ–æ•°æ®æ–‡ä»¶ä¹Ÿå¯ä»¥æ”¾åœ¨é‚£é‡Œã€‚ æ¯ä¸ªæœåŠ¡å™¨ç›®å½•çš„ç»“æ„æœ€ç»ˆçœ‹èµ·æ¥åƒä»»ä½•å…¶ä»–WildFlyå¯åŠ¨çš„æœåŠ¡å™¨ã€‚
+Ö÷»úÎÄ¼şÖĞ¶¨ÒåµÄÃ¿¸öKeycloak·şÎñÆ÷ÊµÀıÔÚ *¡­/domain/servers/{SERVER NAME}* ÏÂ´´½¨Ò»¸ö¹¤×÷Ä¿Â¼¡£¿ÉÒÔÔÚÆäÖĞ½øĞĞÆäËûÅäÖÃ£¬²¢ÇÒ·şÎñÆ÷ÊµÀıĞèÒª»ò´´½¨µÄÈÎºÎÁÙÊ±£¬ÈÕÖ¾»òÊı¾İÎÄ¼şÒ²¿ÉÒÔ·ÅÔÚÄÇÀï¡£ Ã¿¸ö·şÎñÆ÷Ä¿Â¼µÄ½á¹¹×îÖÕ¿´ÆğÀ´ÏñÈÎºÎÆäËûWildFlyÆô¶¯µÄ·şÎñÆ÷¡£
 
-å·¥ä½œç›®å½•
+¹¤×÷Ä¿Â¼
 
 ![domain server dir](assets/domain-server-dir.png)
 
-#### 3.3.4. åŸŸå¯åŠ¨è„šæœ¬
+#### 3.3.4. ÓòÆô¶¯½Å±¾ {#}
 
-åœ¨åŸŸæ¨¡å¼ä¸‹è¿è¡ŒæœåŠ¡å™¨æ—¶ï¼Œæ ¹æ®æ‚¨çš„æ“ä½œç³»ç»Ÿï¼Œéœ€è¦è¿è¡Œç‰¹å®šçš„è„šæœ¬æ¥å¯åŠ¨æœåŠ¡å™¨ã€‚ è¿™äº›è„šæœ¬ä½äºæœåŠ¡å™¨åˆ†å‘çš„ *bin/* ç›®å½•ä¸­ã€‚
+ÔÚÓòÄ£Ê½ÏÂÔËĞĞ·şÎñÆ÷Ê±£¬¸ù¾İÄúµÄ²Ù×÷ÏµÍ³£¬ĞèÒªÔËĞĞÌØ¶¨µÄ½Å±¾À´Æô¶¯·şÎñÆ÷¡£ ÕâĞ©½Å±¾Î»ÓÚ·şÎñÆ÷·Ö·¢µÄ *bin/* Ä¿Â¼ÖĞ¡£
 
-åŸŸå¯åŠ¨è„šæœ¬
+ÓòÆô¶¯½Å±¾
 
 ![domain boot files](assets/domain-boot-files.png)
 
-å¯åŠ¨æœåŠ¡å™¨:
+Æô¶¯·şÎñÆ÷:
 
 Linux/Unix
 
@@ -322,25 +322,25 @@ Windows
 > ...\bin\domain.bat --host-config=host-master.xml
 ```
 
-è¿è¡Œå¯åŠ¨è„šæœ¬æ—¶ï¼Œæ‚¨éœ€è¦é€šè¿‡`--host-config`å¼€å…³ä¼ å…¥æ‚¨å°†è¦ä½¿ç”¨çš„ä¸»æœºæ§åˆ¶é…ç½®æ–‡ä»¶ã€‚
+ÔËĞĞÆô¶¯½Å±¾Ê±£¬ÄúĞèÒªÍ¨¹ı`--host-config`¿ª¹Ø´«ÈëÄú½«ÒªÊ¹ÓÃµÄÖ÷»ú¿ØÖÆÅäÖÃÎÄ¼ş¡£
 
-#### 3.3.5. é›†ç¾¤åŸŸç¤ºä¾‹
+#### 3.3.5. ¼¯ÈºÓòÊ¾Àı {#}
 
-æ‚¨å¯ä»¥ä½¿ç”¨å¼€ç®±å³ç”¨çš„ *domain.xml* é…ç½®æµ‹è¯•é©±åŠ¨å™¨é›†ç¾¤ã€‚è¿™ä¸ªç¤ºä¾‹åŸŸæ˜¯ç”¨æ¥åœ¨ä¸€å°æœºå™¨ä¸Šè¿è¡Œå¹¶å¯åŠ¨çš„:
+Äú¿ÉÒÔÊ¹ÓÃ¿ªÏä¼´ÓÃµÄ *domain.xml* ÅäÖÃ²âÊÔÇı¶¯Æ÷¼¯Èº¡£Õâ¸öÊ¾ÀıÓòÊÇÓÃÀ´ÔÚÒ»Ì¨»úÆ÷ÉÏÔËĞĞ²¢Æô¶¯µÄ:
 
-- 1ä¸ªåŸŸæ§åˆ¶å™¨
-- 1ä¸ªHTTPè´Ÿè½½å‡è¡¡å™¨
-- 2ä¸ªKeycloakæœåŠ¡å™¨å®ä¾‹
+- 1¸öÓò¿ØÖÆÆ÷
+- 1¸öHTTP¸ºÔØ¾ùºâÆ÷
+- 2¸öKeycloak·şÎñÆ÷ÊµÀı
 
-è¦æ¨¡æ‹Ÿåœ¨ä¸¤å°è®¡ç®—æœºä¸Šè¿è¡Œé›†ç¾¤ï¼Œæ‚¨å°†è¿è¡Œ`domain.sh`è„šæœ¬ä¸¤æ¬¡ä»¥å¯åŠ¨ä¸¤ä¸ªå•ç‹¬çš„ä¸»æœºæ§åˆ¶å™¨ã€‚ ç¬¬ä¸€ä¸ªæ˜¯ä¸»æ§ä¸»æœºæ§åˆ¶å™¨ï¼Œå®ƒå°†å¯åŠ¨åŸŸæ§åˆ¶å™¨ï¼ŒHTTPè´Ÿè½½å¹³è¡¡å™¨å’Œä¸€ä¸ªKeycloakè®¤è¯æœåŠ¡å™¨å®ä¾‹ã€‚ ç¬¬äºŒä¸ªæ˜¯ä»å±ä¸»æœºæ§åˆ¶å™¨ï¼Œå®ƒåªå¯åŠ¨ä¸€ä¸ªè®¤è¯æœåŠ¡å™¨å®ä¾‹ã€‚
+ÒªÄ£ÄâÔÚÁ½Ì¨¼ÆËã»úÉÏÔËĞĞ¼¯Èº£¬Äú½«ÔËĞĞ`domain.sh`½Å±¾Á½´ÎÒÔÆô¶¯Á½¸öµ¥¶ÀµÄÖ÷»ú¿ØÖÆÆ÷¡£ µÚÒ»¸öÊÇÖ÷¿ØÖ÷»ú¿ØÖÆÆ÷£¬Ëü½«Æô¶¯Óò¿ØÖÆÆ÷£¬HTTP¸ºÔØÆ½ºâÆ÷ºÍÒ»¸öKeycloakÈÏÖ¤·şÎñÆ÷ÊµÀı¡£ µÚ¶ş¸öÊÇ´ÓÊôÖ÷»ú¿ØÖÆÆ÷£¬ËüÖ»Æô¶¯Ò»¸öÈÏÖ¤·şÎñÆ÷ÊµÀı¡£
 
-##### è®¾ç½®ä»å±æ§åˆ¶å™¨åˆ°åŸŸæ§åˆ¶å™¨çš„è¿æ¥
+##### ÉèÖÃ´ÓÊô¿ØÖÆÆ÷µ½Óò¿ØÖÆÆ÷µÄÁ¬½Ó {#}
 
-åœ¨å¯åŠ¨ä¹‹å‰ï¼Œæ‚¨å¿…é¡»é…ç½®ä»å±ä¸»æœºæ§åˆ¶å™¨ï¼Œä»¥ä¾¿å®ƒå¯ä»¥å®‰å…¨åœ°ä¸åŸŸæ§åˆ¶å™¨é€šä¿¡ã€‚å¦‚æœä¸è¿™æ ·åšï¼Œåˆ™ä»å±ä¸»æœºå°†æ— æ³•ä»åŸŸæ§åˆ¶å™¨è·å–é›†ä¸­å¼é…ç½®ã€‚ è¦è®¾ç½®å®‰å…¨è¿æ¥ï¼Œæ‚¨å¿…é¡»åˆ›å»ºæœåŠ¡å™¨ç®¡ç†å‘˜ç”¨æˆ·å’Œå°†åœ¨ä¸»æœåŠ¡å™¨å’Œä»æœåŠ¡å™¨ä¹‹é—´å…±äº«çš„å¯†é’¥ã€‚ æ‚¨å¯ä»¥é€šè¿‡è¿è¡Œ `â€¦/bin/add-user.sh` è„šæœ¬æ¥å®Œæˆæ­¤æ“ä½œã€‚
+ÔÚÆô¶¯Ö®Ç°£¬Äú±ØĞëÅäÖÃ´ÓÊôÖ÷»ú¿ØÖÆÆ÷£¬ÒÔ±ãËü¿ÉÒÔ°²È«µØÓëÓò¿ØÖÆÆ÷Í¨ĞÅ¡£Èç¹û²»ÕâÑù×ö£¬Ôò´ÓÊôÖ÷»ú½«ÎŞ·¨´ÓÓò¿ØÖÆÆ÷»ñÈ¡¼¯ÖĞÊ½ÅäÖÃ¡£ ÒªÉèÖÃ°²È«Á¬½Ó£¬Äú±ØĞë´´½¨·şÎñÆ÷¹ÜÀíÔ±ÓÃ»§ºÍ½«ÔÚÖ÷·şÎñÆ÷ºÍ´Ó·şÎñÆ÷Ö®¼ä¹²ÏíµÄÃÜÔ¿¡£ Äú¿ÉÒÔÍ¨¹ıÔËĞĞ `¡­/bin/add-user.sh` ½Å±¾À´Íê³É´Ë²Ù×÷¡£
 
-å½“æ‚¨è¿è¡Œè„šæœ¬æ—¶ï¼Œé€‰æ‹© `Management User` å¹¶å›ç­” `yes` ï¼Œå½“å®ƒè¯¢é—®æ‚¨æ˜¯å¦å°†æ–°ç”¨æˆ·ç”¨äºä¸€ä¸ªASè¿›ç¨‹ä»¥è¿æ¥åˆ°å¦ä¸€ä¸ªASè¿›ç¨‹æ—¶ã€‚ è¿™å°†ç”Ÿæˆä¸€ä¸ªç§˜å¯†å€¼ï¼Œæ‚¨éœ€è¦å°†å…¶å‰ªåˆ‡å¹¶ç²˜è´´åˆ° *â€¦/domain/configuration/host-slave.xml* æ–‡ä»¶ä¸­ã€‚
+µ±ÄúÔËĞĞ½Å±¾Ê±£¬Ñ¡Ôñ `Management User` ²¢»Ø´ğ `yes` £¬µ±ËüÑ¯ÎÊÄúÊÇ·ñ½«ĞÂÓÃ»§ÓÃÓÚÒ»¸öAS½ø³ÌÒÔÁ¬½Óµ½ÁíÒ»¸öAS½ø³ÌÊ±¡£ Õâ½«Éú³ÉÒ»¸öÃØÃÜÖµ£¬ÄúĞèÒª½«Æä¼ôÇĞ²¢Õ³Ìùµ½ *¡­/domain/configuration/host-slave.xml* ÎÄ¼şÖĞ¡£
 
-æ·»åŠ : App Server Admin
+Ìí¼Ó: App Server Admin
 
 ```bash
 $ add-user.sh
@@ -370,9 +370,9 @@ $ add-user.sh
  To represent the user add the following to the server-identities definition <secret value="bWdtdDEyMyE=" />
 ```
 
-> add-user.shä¸ä¼šå°†ç”¨æˆ·æ·»åŠ åˆ°KeycloakæœåŠ¡å™¨ï¼Œè€Œæ˜¯æ·»åŠ åˆ°åŸºç¡€JBossä¼ä¸šåº”ç”¨ç¨‹åºå¹³å°ã€‚ ä¸Šè¿°è„šæœ¬ä¸­ä½¿ç”¨å’Œç”Ÿæˆçš„å‡­æ®ä»…ç”¨äºç¤ºä¾‹ç›®çš„ã€‚ è¯·ä½¿ç”¨ç³»ç»Ÿä¸Šç”Ÿæˆçš„ã€‚   
+> add-user.sh²»»á½«ÓÃ»§Ìí¼Óµ½Keycloak·şÎñÆ÷£¬¶øÊÇÌí¼Óµ½»ù´¡JBossÆóÒµÓ¦ÓÃ³ÌĞòÆ½Ì¨¡£ ÉÏÊö½Å±¾ÖĞÊ¹ÓÃºÍÉú³ÉµÄÆ¾¾İ½öÓÃÓÚÊ¾ÀıÄ¿µÄ¡£ ÇëÊ¹ÓÃÏµÍ³ÉÏÉú³ÉµÄ¡£   
 
-ç°åœ¨å°†ç§˜å¯†å€¼å‰ªåˆ‡å¹¶ç²˜è´´åˆ° *â€¦/domain/configuration/host-slave.xml* æ–‡ä»¶ä¸­ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
+ÏÖÔÚ½«ÃØÃÜÖµ¼ôÇĞ²¢Õ³Ìùµ½ *¡­/domain/configuration/host-slave.xml* ÎÄ¼şÖĞ£¬ÈçÏÂËùÊ¾£º
 
 ```xml
      <management>
@@ -383,152 +383,152 @@ $ add-user.sh
                  </server-identities>
 ```
 
-æ‚¨è¿˜éœ€è¦åœ¨ *â€¦/domain/configuration/host-slave.xml* æ–‡ä»¶ä¸­æ·»åŠ å·²åˆ›å»ºç”¨æˆ·çš„ *username*ï¼š
+Äú»¹ĞèÒªÔÚ *¡­/domain/configuration/host-slave.xml* ÎÄ¼şÖĞÌí¼ÓÒÑ´´½¨ÓÃ»§µÄ *username*£º
 
 ```xml
      <remote security-realm="ManagementRealm" username="admin">
 ```
 
-##### è¿è¡Œå¯åŠ¨è„šæœ¬
+##### ÔËĞĞÆô¶¯½Å±¾ {#}
 
-ç”±äºæˆ‘ä»¬åœ¨ä¸€å°å¼€å‘æœºå™¨ä¸Šæ¨¡æ‹ŸåŒèŠ‚ç‚¹é›†ç¾¤ï¼Œå› æ­¤æ‚¨å°†è¿è¡Œä¸¤æ¬¡å¯åŠ¨è„šæœ¬ï¼š
+ÓÉÓÚÎÒÃÇÔÚÒ»Ì¨¿ª·¢»úÆ÷ÉÏÄ£ÄâË«½Úµã¼¯Èº£¬Òò´ËÄú½«ÔËĞĞÁ½´ÎÆô¶¯½Å±¾£º
 
-å¯åŠ¨ ä¸»
+Æô¶¯ Ö÷
 
 ```
 $ domain.sh --host-config=host-master.xml
 ```
 
-å¯åŠ¨ ä»å±
+Æô¶¯ ´ÓÊô
 
 ```
 $ domain.sh --host-config=host-slave.xml
 ```
 
-è¦è¯•ç”¨å®ƒï¼Œè¯·æ‰“å¼€æµè§ˆå™¨å¹¶è½¬åˆ° <http://localhost:8080/auth>ã€‚
+ÒªÊÔÓÃËü£¬Çë´ò¿ªä¯ÀÀÆ÷²¢×ªµ½ <http://localhost:8080/auth>¡£
 
-### 3.4. è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶æ¨¡å¼
+### 3.4. ¿çÊı¾İÖĞĞÄ¸´ÖÆÄ£Ê½ {#}
 
-è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶æ¨¡å¼é€‚ç”¨äºæ‚¨å¸Œæœ›è·¨å¤šä¸ªæ•°æ®ä¸­å¿ƒåœ¨é›†ç¾¤ä¸­è¿è¡ŒKeycloakï¼Œæœ€å¸¸ç”¨çš„æ˜¯ä½¿ç”¨ä½äºä¸åŒåœ°ç†åŒºåŸŸçš„æ•°æ®ä¸­å¿ƒç«™ç‚¹ã€‚ ä½¿ç”¨æ­¤æ¨¡å¼æ—¶ï¼Œæ¯ä¸ªæ•°æ®ä¸­å¿ƒéƒ½æœ‰è‡ªå·±çš„KeycloakæœåŠ¡å™¨é›†ç¾¤ã€‚
+¿çÊı¾İÖĞĞÄ¸´ÖÆÄ£Ê½ÊÊÓÃÓÚÄúÏ£Íû¿ç¶à¸öÊı¾İÖĞĞÄÔÚ¼¯ÈºÖĞÔËĞĞKeycloak£¬×î³£ÓÃµÄÊÇÊ¹ÓÃÎ»ÓÚ²»Í¬µØÀíÇøÓòµÄÊı¾İÖĞĞÄÕ¾µã¡£ Ê¹ÓÃ´ËÄ£Ê½Ê±£¬Ã¿¸öÊı¾İÖĞĞÄ¶¼ÓĞ×Ô¼ºµÄKeycloak·şÎñÆ÷¼¯Èº¡£
 
-æœ¬æ–‡æ¡£å°†å¼•ç”¨ä»¥ä¸‹ç¤ºä¾‹ä½“ç³»ç»“æ„å›¾æ¥è¯´æ˜å’Œæè¿°ç®€å•çš„è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶ç”¨ä¾‹ã€‚
+±¾ÎÄµµ½«ÒıÓÃÒÔÏÂÊ¾ÀıÌåÏµ½á¹¹Í¼À´ËµÃ÷ºÍÃèÊö¼òµ¥µÄ¿çÊı¾İÖĞĞÄ¸´ÖÆÓÃÀı¡£
 
-ç¤ºä¾‹æ¶æ„å›¾
+Ê¾Àı¼Ü¹¹Í¼
 
 ![cross dc architecture](assets/cross-dc-architecture.png)
 
-#### 3.4.1. å…ˆå†³æ¡ä»¶
+#### 3.4.1. ÏÈ¾öÌõ¼ş {#}
 
-ç”±äºè¿™æ˜¯ä¸€ä¸ªé«˜çº§ä¸»é¢˜ï¼Œæˆ‘ä»¬å»ºè®®æ‚¨é¦–å…ˆé˜…è¯»ä»¥ä¸‹å†…å®¹ï¼Œå®ƒä»¬æä¾›äº†å®è´µçš„èƒŒæ™¯çŸ¥è¯†ï¼š
+ÓÉÓÚÕâÊÇÒ»¸ö¸ß¼¶Ö÷Ìâ£¬ÎÒÃÇ½¨ÒéÄúÊ×ÏÈÔÄ¶ÁÒÔÏÂÄÚÈİ£¬ËüÃÇÌá¹©ÁË±¦¹óµÄ±³¾°ÖªÊ¶£º
 
-- [é›†ç¾¤ä¸Keycloak](https://www.keycloak.org/docs/6.0/server_installation/#_clustering) è®¾ç½®è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶æ—¶ï¼Œæ‚¨å°†ä½¿ç”¨æ›´å¤šç‹¬ç«‹çš„Keycloaké›†ç¾¤ï¼Œå› æ­¤æ‚¨å¿…é¡»äº†è§£é›†ç¾¤çš„å·¥ä½œæ–¹å¼ä»¥åŠåŸºæœ¬æ¦‚å¿µå’Œè¦æ±‚ï¼Œä¾‹å¦‚è´Ÿè½½å¹³è¡¡ï¼Œå…±äº«æ•°æ®åº“å’Œå¤šæ’­ã€‚
-- [JBossæ•°æ®ç½‘æ ¼è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication) Keycloakä½¿ç”¨JBoss Data Gridï¼ˆJDGï¼‰åœ¨æ•°æ®ä¸­å¿ƒä¹‹é—´å¤åˆ¶Infinispanæ•°æ®ã€‚
+- [¼¯ÈºÓëKeycloak](https://www.keycloak.org/docs/6.0/server_installation/#_clustering) ÉèÖÃ¿çÊı¾İÖĞĞÄ¸´ÖÆÊ±£¬Äú½«Ê¹ÓÃ¸ü¶à¶ÀÁ¢µÄKeycloak¼¯Èº£¬Òò´ËÄú±ØĞëÁË½â¼¯ÈºµÄ¹¤×÷·½Ê½ÒÔ¼°»ù±¾¸ÅÄîºÍÒªÇó£¬ÀıÈç¸ºÔØÆ½ºâ£¬¹²ÏíÊı¾İ¿âºÍ¶à²¥¡£
+- [JBossÊı¾İÍø¸ñ¿çÊı¾İÖĞĞÄ¸´ÖÆ](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication) KeycloakÊ¹ÓÃJBoss Data Grid£¨JDG£©ÔÚÊı¾İÖĞĞÄÖ®¼ä¸´ÖÆInfinispanÊı¾İ¡£
 
-#### 3.4.2. æŠ€æœ¯ç»†èŠ‚
+#### 3.4.2. ¼¼ÊõÏ¸½Ú {#}
 
-æœ¬èŠ‚ä»‹ç»äº†å¦‚ä½•å®ŒæˆKeycloakè·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶çš„æ¦‚å¿µå’Œè¯¦ç»†ä¿¡æ¯ã€‚
+±¾½Ú½éÉÜÁËÈçºÎÍê³ÉKeycloak¿çÊı¾İÖĞĞÄ¸´ÖÆµÄ¸ÅÄîºÍÏêÏ¸ĞÅÏ¢¡£
 
-Data(æ•°æ®)
+Data(Êı¾İ)
 
-Keycloakæ˜¯æœ‰çŠ¶æ€çš„åº”ç”¨ç¨‹åºã€‚ å®ƒä½¿ç”¨ä»¥ä¸‹ä½œä¸ºæ•°æ®æºï¼š
+KeycloakÊÇÓĞ×´Ì¬µÄÓ¦ÓÃ³ÌĞò¡£ ËüÊ¹ÓÃÒÔÏÂ×÷ÎªÊı¾İÔ´£º
 
-- æ•°æ®åº“ç”¨äºä¿å­˜æ°¸ä¹…æ•°æ®ï¼Œä¾‹å¦‚ç”¨æˆ·ä¿¡æ¯ã€‚
-- Infinispanç¼“å­˜ç”¨äºç¼“å­˜æ¥è‡ªæ•°æ®åº“çš„æŒä¹…æ€§æ•°æ®ï¼Œè¿˜ç”¨äºä¿å­˜ä¸€äº›çŸ­æœŸå’Œé¢‘ç¹æ›´æ”¹çš„å…ƒæ•°æ®ï¼Œä¾‹å¦‚ç”¨äºç”¨æˆ·ä¼šè¯ã€‚ Infinispané€šå¸¸æ¯”æ•°æ®åº“å¿«å¾—å¤šï¼Œä½†æ˜¯ä½¿ç”¨Infinispanä¿å­˜çš„æ•°æ®ä¸æ˜¯æ°¸ä¹…æ€§çš„ï¼Œå¹¶ä¸”é¢„è®¡ä¸ä¼šåœ¨é›†ç¾¤é‡å¯æœŸé—´æŒç»­å­˜åœ¨ã€‚
+- Êı¾İ¿âÓÃÓÚ±£´æÓÀ¾ÃÊı¾İ£¬ÀıÈçÓÃ»§ĞÅÏ¢¡£
+- Infinispan»º´æÓÃÓÚ»º´æÀ´×ÔÊı¾İ¿âµÄ³Ö¾ÃĞÔÊı¾İ£¬»¹ÓÃÓÚ±£´æÒ»Ğ©¶ÌÆÚºÍÆµ·±¸ü¸ÄµÄÔªÊı¾İ£¬ÀıÈçÓÃÓÚÓÃ»§»á»°¡£ InfinispanÍ¨³£±ÈÊı¾İ¿â¿ìµÃ¶à£¬µ«ÊÇÊ¹ÓÃInfinispan±£´æµÄÊı¾İ²»ÊÇÓÀ¾ÃĞÔµÄ£¬²¢ÇÒÔ¤¼Æ²»»áÔÚ¼¯ÈºÖØÆôÆÚ¼ä³ÖĞø´æÔÚ¡£
 
-åœ¨æˆ‘ä»¬çš„ç¤ºä¾‹æ¶æ„ä¸­ï¼Œæœ‰ä¸¤ä¸ªåä¸º `site1` å’Œ `site2` çš„æ•°æ®ä¸­å¿ƒã€‚ å¯¹äºè·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶ï¼Œæˆ‘ä»¬å¿…é¡»ç¡®ä¿ä¸¤ä¸ªæ•°æ®æºéƒ½å¯é åœ°å·¥ä½œï¼Œå¹¶ä¸”æ¥è‡ª `site1` çš„KeycloakæœåŠ¡å™¨æœ€ç»ˆèƒ½å¤Ÿè¯»å–`site2`ä¸Šçš„KeycloakæœåŠ¡å™¨ä¿å­˜çš„æ•°æ®ã€‚
+ÔÚÎÒÃÇµÄÊ¾Àı¼Ü¹¹ÖĞ£¬ÓĞÁ½¸öÃûÎª `site1` ºÍ `site2` µÄÊı¾İÖĞĞÄ¡£ ¶ÔÓÚ¿çÊı¾İÖĞĞÄ¸´ÖÆ£¬ÎÒÃÇ±ØĞëÈ·±£Á½¸öÊı¾İÔ´¶¼¿É¿¿µØ¹¤×÷£¬²¢ÇÒÀ´×Ô `site1` µÄKeycloak·şÎñÆ÷×îÖÕÄÜ¹»¶ÁÈ¡`site2`ÉÏµÄKeycloak·şÎñÆ÷±£´æµÄÊı¾İ¡£
 
-æ ¹æ®ç¯å¢ƒï¼Œæ‚¨å¯ä»¥é€‰æ‹©æ˜¯å¦æ„¿æ„ï¼š
+¸ù¾İ»·¾³£¬Äú¿ÉÒÔÑ¡ÔñÊÇ·ñÔ¸Òâ£º
 
-- å¯é æ€§ - é€šå¸¸ç”¨äº `ä¸»/ä¸»` æ¨¡å¼ã€‚ å†™åœ¨`site1`ä¸Šçš„æ•°æ®å¿…é¡»ç«‹å³åœ¨`site2`ä¸Šå¯è§ã€‚
-- æ€§èƒ½ - é€šå¸¸ç”¨äº `ä¸»/è¢«`æ¨¡å¼ã€‚ å†™åœ¨`site1`ä¸Šçš„æ•°æ®ä¸éœ€è¦ç«‹å³åœ¨`site2`ä¸Šå¯è§ã€‚ åœ¨æŸäº›æƒ…å†µä¸‹ï¼Œæ•°æ®å¯èƒ½åœ¨`site2`ä¸Šæ ¹æœ¬ä¸å¯è§ã€‚
+- ¿É¿¿ĞÔ - Í¨³£ÓÃÓÚ `Ö÷/Ö÷` Ä£Ê½¡£ Ğ´ÔÚ`site1`ÉÏµÄÊı¾İ±ØĞëÁ¢¼´ÔÚ`site2`ÉÏ¿É¼û¡£
+- ĞÔÄÜ - Í¨³£ÓÃÓÚ `Ö÷/±»`Ä£Ê½¡£ Ğ´ÔÚ`site1`ÉÏµÄÊı¾İ²»ĞèÒªÁ¢¼´ÔÚ`site2`ÉÏ¿É¼û¡£ ÔÚÄ³Ğ©Çé¿öÏÂ£¬Êı¾İ¿ÉÄÜÔÚ`site2`ÉÏ¸ù±¾²»¿É¼û¡£
 
 For more details, see [Modes](https://www.keycloak.org/docs/latest/server_installation/index.html#modes).
 
-#### 3.4.3. è¯·æ±‚å¤„ç†
+#### 3.4.3. ÇëÇó´¦Àí {#}
 
-æœ€ç»ˆç”¨æˆ·çš„æµè§ˆå™¨å‘[å‰ç«¯è´Ÿè½½å‡è¡¡å™¨](https://www.keycloak.org/docs/6.0/server_installation/#_setting-up-a-load-balancer-or-proxy)å‘é€HTTPè¯·æ±‚ã€‚ æ­¤è´Ÿè½½å‡è¡¡å™¨é€šå¸¸æ˜¯HTTPDæˆ–WildFlyï¼Œå¸¦æœ‰mod_clusterï¼ŒNGINXï¼ŒHAä»£ç†ï¼Œæˆ–è€…æŸäº›å…¶ä»–ç±»å‹çš„è½¯ä»¶æˆ–ç¡¬ä»¶è´Ÿè½½å‡è¡¡å™¨ã€‚
+×îÖÕÓÃ»§µÄä¯ÀÀÆ÷Ïò[Ç°¶Ë¸ºÔØ¾ùºâÆ÷](https://www.keycloak.org/docs/6.0/server_installation/#_setting-up-a-load-balancer-or-proxy)·¢ËÍHTTPÇëÇó¡£ ´Ë¸ºÔØ¾ùºâÆ÷Í¨³£ÊÇHTTPD»òWildFly£¬´øÓĞmod_cluster£¬NGINX£¬HA´úÀí£¬»òÕßÄ³Ğ©ÆäËûÀàĞÍµÄÈí¼ş»òÓ²¼ş¸ºÔØ¾ùºâÆ÷¡£
 
-ç„¶åï¼Œè´Ÿè½½å‡è¡¡å™¨å°†å…¶æ¥æ”¶çš„HTTPè¯·æ±‚è½¬å‘åˆ°åŸºç¡€Keycloakå®ä¾‹ï¼Œè¿™äº›å®ä¾‹å¯ä»¥åœ¨å¤šä¸ªæ•°æ®ä¸­å¿ƒä¹‹é—´ä¼ æ’­ã€‚ è´Ÿè½½å¹³è¡¡å™¨é€šå¸¸ä¸º[ç²˜æ€§ä¼šè¯](https://www.keycloak.org/docs/6.0/server_installation/#sticky-sessions)æä¾›æ”¯æŒ, è¿™æ„å‘³ç€è´Ÿè½½å‡è¡¡å™¨èƒ½å¤Ÿå§‹ç»ˆå°†æ¥è‡ªåŒä¸€ç”¨æˆ·çš„æ‰€æœ‰HTTPè¯·æ±‚è½¬å‘åˆ°åŒä¸€æ•°æ®ä¸­å¿ƒå†…çš„åŒä¸€Keycloakå®ä¾‹ã€‚
+È»ºó£¬¸ºÔØ¾ùºâÆ÷½«Æä½ÓÊÕµÄHTTPÇëÇó×ª·¢µ½»ù´¡KeycloakÊµÀı£¬ÕâĞ©ÊµÀı¿ÉÒÔÔÚ¶à¸öÊı¾İÖĞĞÄÖ®¼ä´«²¥¡£ ¸ºÔØÆ½ºâÆ÷Í¨³£Îª[Õ³ĞÔ»á»°](https://www.keycloak.org/docs/6.0/server_installation/#sticky-sessions)Ìá¹©Ö§³Ö, ÕâÒâÎ¶×Å¸ºÔØ¾ùºâÆ÷ÄÜ¹»Ê¼ÖÕ½«À´×ÔÍ¬Ò»ÓÃ»§µÄËùÓĞHTTPÇëÇó×ª·¢µ½Í¬Ò»Êı¾İÖĞĞÄÄÚµÄÍ¬Ò»KeycloakÊµÀı¡£
 
-ä»å®¢æˆ·ç«¯åº”ç”¨ç¨‹åºå‘é€åˆ°è´Ÿè½½å‡è¡¡å™¨çš„HTTPè¯·æ±‚ç§°ä¸ºâ€œåå‘é€šé“è¯·æ±‚â€ã€‚ç»ˆç«¯ç”¨æˆ·çš„æµè§ˆå™¨ä¸ä¼šçœ‹åˆ°è¿™äº›ï¼Œå› æ­¤ä¸èƒ½ä½œä¸ºç”¨æˆ·å’Œè´Ÿè½½å¹³è¡¡å™¨ä¹‹é—´çš„ç²˜æ€§ä¼šè¯çš„ä¸€éƒ¨åˆ†ã€‚ å¯¹äºåå‘ä¿¡é“è¯·æ±‚ï¼Œè´Ÿè½½å‡è¡¡å™¨å¯ä»¥å°†HTTPè¯·æ±‚è½¬å‘åˆ°ä»»ä½•æ•°æ®ä¸­å¿ƒä¸­çš„ä»»ä½•Keycloakå®ä¾‹ã€‚ è¿™å¾ˆæœ‰æŒ‘æˆ˜æ€§ï¼Œå› ä¸ºä¸€äº›OpenID Connectå’Œä¸€äº›SAMLæµéœ€è¦æ¥è‡ªç”¨æˆ·å’Œåº”ç”¨ç¨‹åºçš„å¤šä¸ªHTTPè¯·æ±‚ã€‚ ç”±äºæˆ‘ä»¬ä¸èƒ½å¯é åœ°ä¾èµ–ç²˜æ€§ä¼šè¯æ¥å¼ºåˆ¶å°†æ‰€æœ‰ç›¸å…³è¯·æ±‚å‘é€åˆ°åŒä¸€æ•°æ®ä¸­å¿ƒä¸­çš„åŒä¸€ä¸ªKeycloakå®ä¾‹ï¼Œå› æ­¤æˆ‘ä»¬å¿…é¡»è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶ä¸€äº›æ•°æ®ï¼Œä»¥ä¾¿åœ¨ç‰¹å®šæµæœŸé—´ç”±åç»­HTTPè¯·æ±‚æŸ¥çœ‹æ•°æ®ã€‚
+´Ó¿Í»§¶ËÓ¦ÓÃ³ÌĞò·¢ËÍµ½¸ºÔØ¾ùºâÆ÷µÄHTTPÇëÇó³ÆÎª¡°·´ÏòÍ¨µÀÇëÇó¡±¡£ÖÕ¶ËÓÃ»§µÄä¯ÀÀÆ÷²»»á¿´µ½ÕâĞ©£¬Òò´Ë²»ÄÜ×÷ÎªÓÃ»§ºÍ¸ºÔØÆ½ºâÆ÷Ö®¼äµÄÕ³ĞÔ»á»°µÄÒ»²¿·Ö¡£ ¶ÔÓÚ·´ÏòĞÅµÀÇëÇó£¬¸ºÔØ¾ùºâÆ÷¿ÉÒÔ½«HTTPÇëÇó×ª·¢µ½ÈÎºÎÊı¾İÖĞĞÄÖĞµÄÈÎºÎKeycloakÊµÀı¡£ ÕâºÜÓĞÌôÕ½ĞÔ£¬ÒòÎªÒ»Ğ©OpenID ConnectºÍÒ»Ğ©SAMLÁ÷ĞèÒªÀ´×ÔÓÃ»§ºÍÓ¦ÓÃ³ÌĞòµÄ¶à¸öHTTPÇëÇó¡£ ÓÉÓÚÎÒÃÇ²»ÄÜ¿É¿¿µØÒÀÀµÕ³ĞÔ»á»°À´Ç¿ÖÆ½«ËùÓĞÏà¹ØÇëÇó·¢ËÍµ½Í¬Ò»Êı¾İÖĞĞÄÖĞµÄÍ¬Ò»¸öKeycloakÊµÀı£¬Òò´ËÎÒÃÇ±ØĞë¿çÊı¾İÖĞĞÄ¸´ÖÆÒ»Ğ©Êı¾İ£¬ÒÔ±ãÔÚÌØ¶¨Á÷ÆÚ¼äÓÉºóĞøHTTPÇëÇó²é¿´Êı¾İ¡£
 
-#### 3.4.4. Modes (æ¨¡å¼)
+#### 3.4.4. Modes (Ä£Ê½) {#}
 
-æ ¹æ®æ‚¨çš„è¦æ±‚ï¼Œè·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶æœ‰ä¸¤ç§åŸºæœ¬æ“ä½œæ¨¡å¼ï¼š
+¸ù¾İÄúµÄÒªÇó£¬¿çÊı¾İÖĞĞÄ¸´ÖÆÓĞÁ½ÖÖ»ù±¾²Ù×÷Ä£Ê½£º
 
-- ä¸»/å¤‡ - è¿™é‡Œï¼Œç”¨æˆ·å’Œå®¢æˆ·ç«¯åº”ç”¨ç¨‹åºä»…å°†è¯·æ±‚å‘é€åˆ°å•ä¸ªæ•°æ®ä¸­å¿ƒçš„KeycloakèŠ‚ç‚¹ã€‚ ç¬¬äºŒä¸ªæ•°æ®ä¸­å¿ƒä»…ç”¨ä½œä¿å­˜æ•°æ®çš„`å¤‡ä»½`ã€‚ å¦‚æœä¸»æ•°æ®ä¸­å¿ƒå‡ºç°æ•…éšœï¼Œé€šå¸¸å¯ä»¥ä»ç¬¬äºŒä¸ªæ•°æ®ä¸­å¿ƒæ¢å¤æ•°æ®ã€‚
-- ä¸»/ä¸» - è¿™é‡Œï¼Œç”¨æˆ·å’Œå®¢æˆ·ç«¯åº”ç”¨ç¨‹åºå°†è¯·æ±‚å‘é€åˆ°ä¸¤ä¸ªæ•°æ®ä¸­å¿ƒçš„KeycloakèŠ‚ç‚¹ã€‚ è¿™æ„å‘³ç€æ•°æ®éœ€è¦ç«‹å³åœ¨ä¸¤ä¸ªç«™ç‚¹ä¸Šå¯è§ï¼Œå¹¶ä¸”å¯ä»¥ç«‹å³ä»ä¸¤ä¸ªç«™ç‚¹ä¸Šçš„KeycloakæœåŠ¡å™¨ä¸­ä½¿ç”¨ã€‚ å¦‚æœKeycloakæœåŠ¡å™¨åœ¨`site1`ä¸Šå†™å…¥ä¸€äº›æ•°æ®ï¼Œå¹¶ä¸”è¦æ±‚åœ¨`site1`ä¸Šçš„å†™å…¥å®Œæˆåï¼Œç«‹å³å¯ä»¥é€šè¿‡`site2`ä¸Šçš„KeycloakæœåŠ¡å™¨è¯»å–æ•°æ®ã€‚
+- Ö÷/±¸ - ÕâÀï£¬ÓÃ»§ºÍ¿Í»§¶ËÓ¦ÓÃ³ÌĞò½ö½«ÇëÇó·¢ËÍµ½µ¥¸öÊı¾İÖĞĞÄµÄKeycloak½Úµã¡£ µÚ¶ş¸öÊı¾İÖĞĞÄ½öÓÃ×÷±£´æÊı¾İµÄ`±¸·İ`¡£ Èç¹ûÖ÷Êı¾İÖĞĞÄ³öÏÖ¹ÊÕÏ£¬Í¨³£¿ÉÒÔ´ÓµÚ¶ş¸öÊı¾İÖĞĞÄ»Ö¸´Êı¾İ¡£
+- Ö÷/Ö÷ - ÕâÀï£¬ÓÃ»§ºÍ¿Í»§¶ËÓ¦ÓÃ³ÌĞò½«ÇëÇó·¢ËÍµ½Á½¸öÊı¾İÖĞĞÄµÄKeycloak½Úµã¡£ ÕâÒâÎ¶×ÅÊı¾İĞèÒªÁ¢¼´ÔÚÁ½¸öÕ¾µãÉÏ¿É¼û£¬²¢ÇÒ¿ÉÒÔÁ¢¼´´ÓÁ½¸öÕ¾µãÉÏµÄKeycloak·şÎñÆ÷ÖĞÊ¹ÓÃ¡£ Èç¹ûKeycloak·şÎñÆ÷ÔÚ`site1`ÉÏĞ´ÈëÒ»Ğ©Êı¾İ£¬²¢ÇÒÒªÇóÔÚ`site1`ÉÏµÄĞ´ÈëÍê³Éºó£¬Á¢¼´¿ÉÒÔÍ¨¹ı`site2`ÉÏµÄKeycloak·şÎñÆ÷¶ÁÈ¡Êı¾İ¡£
 
-`ä¸»åŠ¨/è¢«åŠ¨`æ¨¡å¼å¯¹æ€§èƒ½æ›´å¥½ã€‚ æœ‰å…³å¦‚ä½•ä¸ºä»»ä¸€æ¨¡å¼é…ç½®é«˜é€Ÿç¼“å­˜çš„è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…ï¼š[SYNCæˆ–ASYNCå¤‡ä»½](https://www.keycloak.org/docs/latest/server_installation/index.html#backups).
+`Ö÷¶¯/±»¶¯`Ä£Ê½¶ÔĞÔÄÜ¸üºÃ¡£ ÓĞ¹ØÈçºÎÎªÈÎÒ»Ä£Ê½ÅäÖÃ¸ßËÙ»º´æµÄÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ£º[SYNC»òASYNC±¸·İ](https://www.keycloak.org/docs/latest/server_installation/index.html#backups).
 
-#### 3.4.5. æ•°æ®åº“
+#### 3.4.5. Êı¾İ¿â {#}
 
-Keycloakä½¿ç”¨å…³ç³»æ•°æ®åº“ç®¡ç†ç³»ç»Ÿ(RDBMS)æ¥æŒä¹…ä¿å­˜æœ‰å…³é¢†åŸŸï¼Œå®¢æˆ·ç«¯ï¼Œç”¨æˆ·ç­‰çš„ä¸€äº›å…ƒæ•°æ®ã€‚ æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…æœåŠ¡å™¨å®‰è£…æŒ‡å—çš„[æœ¬ç« ](https://www.keycloak.org/docs/6.0/server_installation/#_database)ã€‚ åœ¨è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶è®¾ç½®ä¸­ï¼Œæˆ‘ä»¬å‡è®¾ä¸¤ä¸ªæ•°æ®ä¸­å¿ƒéƒ½ä¸åŒä¸€ä¸ªæ•°æ®åº“é€šä¿¡ï¼Œæˆ–è€…æ¯ä¸ªæ•°æ®ä¸­å¿ƒéƒ½æœ‰è‡ªå·±çš„æ•°æ®åº“èŠ‚ç‚¹ï¼Œå¹¶ä¸”ä¸¤ä¸ªæ•°æ®åº“èŠ‚ç‚¹åœ¨æ•°æ®ä¸­å¿ƒä¹‹é—´åŒæ­¥å¤åˆ¶ã€‚ åœ¨è¿™ä¸¤ç§æƒ…å†µä¸‹ï¼Œå½“`site1`ä¸Šçš„KeycloakæœåŠ¡å™¨æŒä¹…ä¿å­˜æŸäº›æ•°æ®å¹¶æäº¤äº‹åŠ¡æ—¶ï¼Œè¦æ±‚è¿™äº›æ•°æ®ç«‹å³åœ¨`site2`ä¸Šçš„åç»­æ•°æ®åº“äº‹åŠ¡ä¸­å¯è§ã€‚
+KeycloakÊ¹ÓÃ¹ØÏµÊı¾İ¿â¹ÜÀíÏµÍ³(RDBMS)À´³Ö¾Ã±£´æÓĞ¹ØÁìÓò£¬¿Í»§¶Ë£¬ÓÃ»§µÈµÄÒ»Ğ©ÔªÊı¾İ¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ·şÎñÆ÷°²×°Ö¸ÄÏµÄ[±¾ÕÂ](https://www.keycloak.org/docs/6.0/server_installation/#_database)¡£ ÔÚ¿çÊı¾İÖĞĞÄ¸´ÖÆÉèÖÃÖĞ£¬ÎÒÃÇ¼ÙÉèÁ½¸öÊı¾İÖĞĞÄ¶¼ÓëÍ¬Ò»¸öÊı¾İ¿âÍ¨ĞÅ£¬»òÕßÃ¿¸öÊı¾İÖĞĞÄ¶¼ÓĞ×Ô¼ºµÄÊı¾İ¿â½Úµã£¬²¢ÇÒÁ½¸öÊı¾İ¿â½ÚµãÔÚÊı¾İÖĞĞÄÖ®¼äÍ¬²½¸´ÖÆ¡£ ÔÚÕâÁ½ÖÖÇé¿öÏÂ£¬µ±`site1`ÉÏµÄKeycloak·şÎñÆ÷³Ö¾Ã±£´æÄ³Ğ©Êı¾İ²¢Ìá½»ÊÂÎñÊ±£¬ÒªÇóÕâĞ©Êı¾İÁ¢¼´ÔÚ`site2`ÉÏµÄºóĞøÊı¾İ¿âÊÂÎñÖĞ¿É¼û¡£
 
-æ•°æ®åº“è®¾ç½®çš„ç»†èŠ‚è¶…å‡ºäº†Keycloakçš„èŒƒå›´ï¼Œä½†æ˜¯åƒMariaDBå’ŒOracleè¿™æ ·çš„è®¸å¤šRDBMSä¾›åº”å•†éƒ½æä¾›äº†å¤åˆ¶æ•°æ®åº“å’ŒåŒæ­¥å¤åˆ¶ã€‚ æˆ‘ä»¬ä¸è¿™äº›ä¾›åº”å•†ä¸€èµ·æµ‹è¯•Keycloakï¼š
+Êı¾İ¿âÉèÖÃµÄÏ¸½Ú³¬³öÁËKeycloakµÄ·¶Î§£¬µ«ÊÇÏñMariaDBºÍOracleÕâÑùµÄĞí¶àRDBMS¹©Ó¦ÉÌ¶¼Ìá¹©ÁË¸´ÖÆÊı¾İ¿âºÍÍ¬²½¸´ÖÆ¡£ ÎÒÃÇÓëÕâĞ©¹©Ó¦ÉÌÒ»Æğ²âÊÔKeycloak£º
 
 - Oracle Database 12c Release 1 (12.1) RAC
 - Galera 3.12 cluster for MariaDB server version 10.1.19-MariaDB
 
-#### 3.4.6. Infinispanç¼“å­˜
+#### 3.4.6. Infinispan»º´æ {#}
 
-æœ¬èŠ‚é¦–å…ˆä»‹ç»Infinispanç¼“å­˜çš„é«˜çº§æè¿°ã€‚ ä¸‹é¢æ˜¯ç¼“å­˜è®¾ç½®çš„æ›´å¤šç»†èŠ‚ã€‚
+±¾½ÚÊ×ÏÈ½éÉÜInfinispan»º´æµÄ¸ß¼¶ÃèÊö¡£ ÏÂÃæÊÇ»º´æÉèÖÃµÄ¸ü¶àÏ¸½Ú¡£
 
-Authentication sessions (è®¤è¯ä¼šè¯)
+Authentication sessions (ÈÏÖ¤»á»°)
 
-åœ¨Keycloakä¸­ï¼Œæˆ‘ä»¬æœ‰è®¤è¯ä¼šè¯çš„æ¦‚å¿µã€‚ æœ‰ä¸€ä¸ªåä¸º `authenticationSessions` çš„ç‹¬ç«‹Infinispanç¼“å­˜ç”¨äºåœ¨ç‰¹å®šç”¨æˆ·çš„èº«ä»½éªŒè¯æœŸé—´ä¿å­˜æ•°æ®ã€‚ æ¥è‡ªæ­¤ç¼“å­˜çš„è¯·æ±‚é€šå¸¸åªæ¶‰åŠæµè§ˆå™¨å’ŒKeycloakæœåŠ¡å™¨ï¼Œè€Œä¸æ˜¯åº”ç”¨ç¨‹åºã€‚ åœ¨è¿™é‡Œï¼Œæˆ‘ä»¬å¯ä»¥ä¾èµ–ç²˜æ€§ä¼šè¯ï¼Œå³ä½¿æ‚¨å¤„äº`ä¸»/ä¸»` æ¨¡å¼ï¼Œä¹Ÿä¸éœ€è¦è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶ `authenticationSessions` ç¼“å­˜å†…å®¹ã€‚
+ÔÚKeycloakÖĞ£¬ÎÒÃÇÓĞÈÏÖ¤»á»°µÄ¸ÅÄî¡£ ÓĞÒ»¸öÃûÎª `authenticationSessions` µÄ¶ÀÁ¢Infinispan»º´æÓÃÓÚÔÚÌØ¶¨ÓÃ»§µÄÉí·İÑéÖ¤ÆÚ¼ä±£´æÊı¾İ¡£ À´×Ô´Ë»º´æµÄÇëÇóÍ¨³£Ö»Éæ¼°ä¯ÀÀÆ÷ºÍKeycloak·şÎñÆ÷£¬¶ø²»ÊÇÓ¦ÓÃ³ÌĞò¡£ ÔÚÕâÀï£¬ÎÒÃÇ¿ÉÒÔÒÀÀµÕ³ĞÔ»á»°£¬¼´Ê¹Äú´¦ÓÚ`Ö÷/Ö÷` Ä£Ê½£¬Ò²²»ĞèÒª¿çÊı¾İÖĞĞÄ¸´ÖÆ `authenticationSessions` »º´æÄÚÈİ¡£
 
-Action tokens (åŠ¨ä½œä»¤ç‰Œ)
+Action tokens (¶¯×÷ÁîÅÆ)
 
-æˆ‘ä»¬è¿˜æœ‰[åŠ¨ä½œä»¤ç‰Œ](https://www.keycloak.org/docs/6.0/server_development/#_action_token_spi)çš„æ¦‚å¿µï¼Œ é€šå¸¸ç”¨äºç”¨æˆ·éœ€è¦é€šè¿‡ç”µå­é‚®ä»¶å¼‚æ­¥åœ°ç¡®è®¤æ“ä½œçš„åœºæ™¯ã€‚ä¾‹å¦‚ï¼Œåœ¨â€œå¿˜è®°å¯†ç â€æµæœŸé—´ï¼Œ`actiontoken`Infinispanç¼“å­˜ç”¨äºè·Ÿè¸ªæœ‰å…³æ“ä½œä»¤ç‰Œçš„å…ƒæ•°æ®ï¼Œæ¯”å¦‚å·²ç»ä½¿ç”¨äº†å“ªä¸ªæ“ä½œä»¤ç‰Œï¼Œå› æ­¤ä¸èƒ½ç¬¬äºŒæ¬¡é‡ç”¨ã€‚è¿™é€šå¸¸éœ€è¦è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶ã€‚
+ÎÒÃÇ»¹ÓĞ[¶¯×÷ÁîÅÆ](https://www.keycloak.org/docs/6.0/server_development/#_action_token_spi)µÄ¸ÅÄî£¬ Í¨³£ÓÃÓÚÓÃ»§ĞèÒªÍ¨¹ıµç×ÓÓÊ¼şÒì²½µØÈ·ÈÏ²Ù×÷µÄ³¡¾°¡£ÀıÈç£¬ÔÚ¡°Íü¼ÇÃÜÂë¡±Á÷ÆÚ¼ä£¬`actiontoken`Infinispan»º´æÓÃÓÚ¸ú×ÙÓĞ¹Ø²Ù×÷ÁîÅÆµÄÔªÊı¾İ£¬±ÈÈçÒÑ¾­Ê¹ÓÃÁËÄÄ¸ö²Ù×÷ÁîÅÆ£¬Òò´Ë²»ÄÜµÚ¶ş´ÎÖØÓÃ¡£ÕâÍ¨³£ĞèÒª¿çÊı¾İÖĞĞÄ¸´ÖÆ¡£
 
-æŒä¹…æ•°æ®çš„ç¼“å­˜å’Œå¤±æ•ˆ
+³Ö¾ÃÊı¾İµÄ»º´æºÍÊ§Ğ§
 
-Keycloakä½¿ç”¨Infinispanæ¥ç¼“å­˜æŒä¹…æ•°æ®ï¼Œä»¥é¿å…å¯¹æ•°æ®åº“çš„è®¸å¤šä¸å¿…è¦çš„è¯·æ±‚ã€‚ ç¼“å­˜æé«˜äº†æ€§èƒ½ï¼Œä½†å®ƒå¢åŠ äº†é¢å¤–çš„æŒ‘æˆ˜ã€‚ å½“æŸäº›KeycloakæœåŠ¡å™¨æ›´æ–°ä»»ä½•æ•°æ®æ—¶ï¼Œæ‰€æœ‰æ•°æ®ä¸­å¿ƒä¸­çš„æ‰€æœ‰å…¶ä»–KeycloakæœåŠ¡å™¨éƒ½éœ€è¦çŸ¥é“å®ƒï¼Œå› æ­¤å®ƒä»¬ä¼šä½¿å…¶ç¼“å­˜ä¸­çš„ç‰¹å®šæ•°æ®æ— æ•ˆã€‚ Keycloakä½¿ç”¨ç§°ä¸º`realms` ï¼Œ`users` å’Œ `authorization` çš„æœ¬åœ°Infinispanç¼“å­˜æ¥ç¼“å­˜æŒä¹…æ•°æ®ã€‚
+KeycloakÊ¹ÓÃInfinispanÀ´»º´æ³Ö¾ÃÊı¾İ£¬ÒÔ±ÜÃâ¶ÔÊı¾İ¿âµÄĞí¶à²»±ØÒªµÄÇëÇó¡£ »º´æÌá¸ßÁËĞÔÄÜ£¬µ«ËüÔö¼ÓÁË¶îÍâµÄÌôÕ½¡£ µ±Ä³Ğ©Keycloak·şÎñÆ÷¸üĞÂÈÎºÎÊı¾İÊ±£¬ËùÓĞÊı¾İÖĞĞÄÖĞµÄËùÓĞÆäËûKeycloak·şÎñÆ÷¶¼ĞèÒªÖªµÀËü£¬Òò´ËËüÃÇ»áÊ¹Æä»º´æÖĞµÄÌØ¶¨Êı¾İÎŞĞ§¡£ KeycloakÊ¹ÓÃ³ÆÎª`realms` £¬`users` ºÍ `authorization` µÄ±¾µØInfinispan»º´æÀ´»º´æ³Ö¾ÃÊı¾İ¡£
 
-æˆ‘ä»¬ä½¿ç”¨å•ç‹¬çš„ç¼“å­˜ `work`ï¼Œå®ƒåœ¨æ‰€æœ‰æ•°æ®ä¸­å¿ƒä¸­å¤åˆ¶ã€‚ å·¥ä½œç¼“å­˜æœ¬èº«ä¸ä¼šç¼“å­˜ä»»ä½•å®é™…æ•°æ®ã€‚ å®ƒä»…ç”¨äºåœ¨ç¾¤é›†èŠ‚ç‚¹å’Œæ•°æ®ä¸­å¿ƒä¹‹é—´å‘é€å¤±æ•ˆæ¶ˆæ¯ã€‚ æ¢å¥è¯è¯´ï¼Œå½“æ›´æ–°æ•°æ®æ—¶ï¼Œä¾‹å¦‚ç”¨æˆ·`john`ï¼ŒKeycloakèŠ‚ç‚¹å°†å¤±æ•ˆæ¶ˆæ¯å‘é€åˆ°åŒä¸€æ•°æ®ä¸­å¿ƒçš„æ‰€æœ‰å…¶ä»–é›†ç¾¤èŠ‚ç‚¹ä»¥åŠæ‰€æœ‰å…¶ä»–æ•°æ®ä¸­å¿ƒã€‚ æ”¶åˆ°æ— æ•ˆé€šçŸ¥åï¼Œæ¯ä¸ªèŠ‚ç‚¹éƒ½ä¼šä»å…¶æœ¬åœ°ç¼“å­˜ä¸­ä½¿ç›¸åº”çš„æ•°æ®æ— æ•ˆã€‚
+ÎÒÃÇÊ¹ÓÃµ¥¶ÀµÄ»º´æ `work`£¬ËüÔÚËùÓĞÊı¾İÖĞĞÄÖĞ¸´ÖÆ¡£ ¹¤×÷»º´æ±¾Éí²»»á»º´æÈÎºÎÊµ¼ÊÊı¾İ¡£ Ëü½öÓÃÓÚÔÚÈº¼¯½ÚµãºÍÊı¾İÖĞĞÄÖ®¼ä·¢ËÍÊ§Ğ§ÏûÏ¢¡£ »»¾ä»°Ëµ£¬µ±¸üĞÂÊı¾İÊ±£¬ÀıÈçÓÃ»§`john`£¬Keycloak½Úµã½«Ê§Ğ§ÏûÏ¢·¢ËÍµ½Í¬Ò»Êı¾İÖĞĞÄµÄËùÓĞÆäËû¼¯Èº½ÚµãÒÔ¼°ËùÓĞÆäËûÊı¾İÖĞĞÄ¡£ ÊÕµ½ÎŞĞ§Í¨Öªºó£¬Ã¿¸ö½Úµã¶¼»á´ÓÆä±¾µØ»º´æÖĞÊ¹ÏàÓ¦µÄÊı¾İÎŞĞ§¡£
 
-User sessions (ç”¨æˆ·ä¼šè¯)
+User sessions (ÓÃ»§»á»°)
 
-Infinispanç¼“å­˜ç§°ä¸º `sessions`, `clientSessions`, `offlineSessions` å’Œ `offlineClientSessions`ï¼Œæ‰€æœ‰è¿™äº›ç¼“å­˜é€šå¸¸éƒ½éœ€è¦è·¨æ•°æ®ä¸­å¿ƒè¿›è¡Œå¤åˆ¶ã€‚ è¿™äº›ç¼“å­˜ç”¨äºä¿å­˜æœ‰å…³ç”¨æˆ·ä¼šè¯çš„æ•°æ®ï¼Œè¿™äº›æ•°æ®å¯¹ç”¨æˆ·çš„æµè§ˆå™¨ä¼šè¯é•¿åº¦æœ‰æ•ˆã€‚ ç¼“å­˜å¿…é¡»å¤„ç†æ¥è‡ªæœ€ç»ˆç”¨æˆ·å’Œåº”ç”¨ç¨‹åºçš„HTTPè¯·æ±‚ã€‚ å¦‚ä¸Šæ‰€è¿°ï¼Œåœ¨æ­¤å®ä¾‹ä¸­æ— æ³•å¯é åœ°ä½¿ç”¨ç²˜æ€§ä¼šè¯ï¼Œä½†æˆ‘ä»¬ä»å¸Œæœ›ç¡®ä¿åç»­HTTPè¯·æ±‚å¯ä»¥æŸ¥çœ‹æœ€æ–°æ•°æ®ã€‚ å› æ­¤ï¼Œæ•°æ®é€šå¸¸åœ¨æ•°æ®ä¸­å¿ƒä¹‹é—´å¤åˆ¶ã€‚
+Infinispan»º´æ³ÆÎª `sessions`, `clientSessions`, `offlineSessions` ºÍ `offlineClientSessions`£¬ËùÓĞÕâĞ©»º´æÍ¨³£¶¼ĞèÒª¿çÊı¾İÖĞĞÄ½øĞĞ¸´ÖÆ¡£ ÕâĞ©»º´æÓÃÓÚ±£´æÓĞ¹ØÓÃ»§»á»°µÄÊı¾İ£¬ÕâĞ©Êı¾İ¶ÔÓÃ»§µÄä¯ÀÀÆ÷»á»°³¤¶ÈÓĞĞ§¡£ »º´æ±ØĞë´¦ÀíÀ´×Ô×îÖÕÓÃ»§ºÍÓ¦ÓÃ³ÌĞòµÄHTTPÇëÇó¡£ ÈçÉÏËùÊö£¬ÔÚ´ËÊµÀıÖĞÎŞ·¨¿É¿¿µØÊ¹ÓÃÕ³ĞÔ»á»°£¬µ«ÎÒÃÇÈÔÏ£ÍûÈ·±£ºóĞøHTTPÇëÇó¿ÉÒÔ²é¿´×îĞÂÊı¾İ¡£ Òò´Ë£¬Êı¾İÍ¨³£ÔÚÊı¾İÖĞĞÄÖ®¼ä¸´ÖÆ¡£
 
-Brute force protection (å¼ºåŠ›ä¿æŠ¤)
+Brute force protection (Ç¿Á¦±£»¤)
 
-æœ€åï¼Œ`loginFailures` ç¼“å­˜ç”¨äºè·Ÿè¸ªæœ‰å…³å¤±è´¥ç™»å½•çš„æ•°æ®ï¼Œä¾‹å¦‚ç”¨æˆ·`john` è¾“å…¥é”™è¯¯å¯†ç çš„æ¬¡æ•°ã€‚ è¯¦ç»†è¯´æ˜[æ­¤å¤„](https://www.keycloak.org/docs/6.0/server_admin/#password-guess-brute-force-attacks)ã€‚ ç®¡ç†å‘˜æ˜¯å¦åº”è¯¥è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶æ­¤ç¼“å­˜ã€‚ è¦å‡†ç¡®è®¡ç®—ç™»å½•å¤±è´¥æ¬¡æ•°ï¼Œéœ€è¦è¿›è¡Œå¤åˆ¶ã€‚ å¦ä¸€æ–¹é¢ï¼Œä¸å¤åˆ¶æ­¤æ•°æ®å¯ä»¥èŠ‚çœä¸€äº›æ€§èƒ½ã€‚ å› æ­¤ï¼Œå¦‚æœæ€§èƒ½æ¯”å‡†ç¡®çš„ç™»å½•å¤±è´¥è®¡æ•°æ›´é‡è¦ï¼Œåˆ™å¯ä»¥é¿å…å¤åˆ¶ã€‚
+×îºó£¬`loginFailures` »º´æÓÃÓÚ¸ú×ÙÓĞ¹ØÊ§°ÜµÇÂ¼µÄÊı¾İ£¬ÀıÈçÓÃ»§`john` ÊäÈë´íÎóÃÜÂëµÄ´ÎÊı¡£ ÏêÏ¸ËµÃ÷[´Ë´¦](https://www.keycloak.org/docs/6.0/server_admin/#password-guess-brute-force-attacks)¡£ ¹ÜÀíÔ±ÊÇ·ñÓ¦¸Ã¿çÊı¾İÖĞĞÄ¸´ÖÆ´Ë»º´æ¡£ Òª×¼È·¼ÆËãµÇÂ¼Ê§°Ü´ÎÊı£¬ĞèÒª½øĞĞ¸´ÖÆ¡£ ÁíÒ»·½Ãæ£¬²»¸´ÖÆ´ËÊı¾İ¿ÉÒÔ½ÚÊ¡Ò»Ğ©ĞÔÄÜ¡£ Òò´Ë£¬Èç¹ûĞÔÄÜ±È×¼È·µÄµÇÂ¼Ê§°Ü¼ÆÊı¸üÖØÒª£¬Ôò¿ÉÒÔ±ÜÃâ¸´ÖÆ¡£
 
-æœ‰å…³å¦‚ä½•é…ç½®é«˜é€Ÿç¼“å­˜çš„æ›´å¤šè¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[è°ƒæ•´JDGé«˜é€Ÿç¼“å­˜é…ç½®](https://www.keycloak.org/docs/latest/server_installation/index.html#tuningcache)ã€‚
+ÓĞ¹ØÈçºÎÅäÖÃ¸ßËÙ»º´æµÄ¸ü¶àÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[µ÷ÕûJDG¸ßËÙ»º´æÅäÖÃ](https://www.keycloak.org/docs/latest/server_installation/index.html#tuningcache)¡£
 
-#### 3.4.7. é€šä¿¡ç»†èŠ‚
+#### 3.4.7. Í¨ĞÅÏ¸½Ú {#}
 
-keycoverä½¿ç”¨å¤šä¸ªç‹¬ç«‹çš„Infinispanç¼“å­˜é›†ç¾¤ã€‚æ¯ä¸ªKeycloak èŠ‚ç‚¹éƒ½ä¸ç›¸åŒæ•°æ®ä¸­å¿ƒä¸­çš„å…¶ä»–Keycloak èŠ‚ç‚¹åœ¨é›†ç¾¤ä¸­ï¼Œä½†ä¸åŒ…å«ä¸åŒæ•°æ®ä¸­å¿ƒçš„KeycloakèŠ‚ç‚¹ã€‚ KeycloakèŠ‚ç‚¹ä¸ç›´æ¥ä¸æ¥è‡ªä¸åŒæ•°æ®ä¸­å¿ƒçš„KeycloakèŠ‚ç‚¹é€šä¿¡ã€‚ KeycloakèŠ‚ç‚¹ä½¿ç”¨å¤–éƒ¨JDGï¼ˆå®é™…ä¸Šæ˜¯InfinispanæœåŠ¡å™¨ï¼‰è·¨æ•°æ®ä¸­å¿ƒè¿›è¡Œé€šä¿¡ã€‚ è¿™æ˜¯ä½¿ç”¨[Infinispan HotRodåè®®](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#using_hot_rod_server)ã€‚
+keycoverÊ¹ÓÃ¶à¸ö¶ÀÁ¢µÄInfinispan»º´æ¼¯Èº¡£Ã¿¸öKeycloak ½Úµã¶¼ÓëÏàÍ¬Êı¾İÖĞĞÄÖĞµÄÆäËûKeycloak ½ÚµãÔÚ¼¯ÈºÖĞ£¬µ«²»°üº¬²»Í¬Êı¾İÖĞĞÄµÄKeycloak½Úµã¡£ Keycloak½Úµã²»Ö±½ÓÓëÀ´×Ô²»Í¬Êı¾İÖĞĞÄµÄKeycloak½ÚµãÍ¨ĞÅ¡£ Keycloak½ÚµãÊ¹ÓÃÍâ²¿JDG£¨Êµ¼ÊÉÏÊÇInfinispan·şÎñÆ÷£©¿çÊı¾İÖĞĞÄ½øĞĞÍ¨ĞÅ¡£ ÕâÊÇÊ¹ÓÃ[Infinispan HotRodĞ­Òé](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#using_hot_rod_server)¡£
 
-Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#remote_store)ï¼Œä»¥ç¡®ä¿æ•°æ®è¢«ä¿å­˜åˆ°è¿œç¨‹ç¼“å­˜ä¸­ã€‚JDGæœåŠ¡å™¨ä¹‹é—´æœ‰å•ç‹¬çš„Infinispané›†ç¾¤ï¼Œå› æ­¤ä¿å­˜åœ¨ `site1` ä¸Šçš„JDG1ä¸Šçš„æ•°æ®è¢«å¤åˆ¶åˆ° `site2`ä¸Šçš„JDG2ä¸Šã€‚
+Keycloak¶ËÉÏµÄInfinispan»º´æ±ØĞëÅäÖÃÎª[remoteStore](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#remote_store)£¬ÒÔÈ·±£Êı¾İ±»±£´æµ½Ô¶³Ì»º´æÖĞ¡£JDG·şÎñÆ÷Ö®¼äÓĞµ¥¶ÀµÄInfinispan¼¯Èº£¬Òò´Ë±£´æÔÚ `site1` ÉÏµÄJDG1ÉÏµÄÊı¾İ±»¸´ÖÆµ½ `site2`ÉÏµÄJDG2ÉÏ¡£
 
-æœ€åï¼Œæ¥æ”¶JDGæœåŠ¡å™¨é€šè¿‡å®¢æˆ·æœºä¾¦å¬å™¨é€šçŸ¥é›†ç¾¤ä¸­çš„KeycloakæœåŠ¡å™¨ï¼Œè¿™æ˜¯HotRodåè®®çš„ä¸€ä¸ªç‰¹æ€§ã€‚ç„¶åæ›´æ–°å®ƒä»¬çš„Infinispanç¼“å­˜ï¼Œç‰¹å®šçš„ç”¨æˆ·ä¼šè¯ä¹Ÿå¯ä»¥åœ¨ `site2` çš„KeycloakèŠ‚ç‚¹ä¸Šçœ‹åˆ°ã€‚
+×îºó£¬½ÓÊÕJDG·şÎñÆ÷Í¨¹ı¿Í»§»úÕìÌıÆ÷Í¨Öª¼¯ÈºÖĞµÄKeycloak·şÎñÆ÷£¬ÕâÊÇHotRodĞ­ÒéµÄÒ»¸öÌØĞÔ¡£È»ºó¸üĞÂËüÃÇµÄInfinispan»º´æ£¬ÌØ¶¨µÄÓÃ»§»á»°Ò²¿ÉÒÔÔÚ `site2` µÄKeycloak½ÚµãÉÏ¿´µ½¡£
 
-æœ‰å…³æ›´å¤šç»†èŠ‚ï¼Œè¯·å‚è§[ç¤ºä¾‹æ¶æ„å›¾](https://www.keycloak.org/docs/latest/server_installation/index.html#archdiagram)ã€‚
+ÓĞ¹Ø¸ü¶àÏ¸½Ú£¬Çë²Î¼û[Ê¾Àı¼Ü¹¹Í¼](https://www.keycloak.org/docs/latest/server_installation/index.html#archdiagram)¡£
 
-#### 3.4.8. åŸºæœ¬è®¾ç½®
+#### 3.4.8. »ù±¾ÉèÖÃ {#}
 
-åœ¨æœ¬ä¾‹ä¸­ï¼Œæˆ‘ä»¬æè¿°äº†ä½¿ç”¨ä¸¤ä¸ªæ•°æ®ä¸­å¿ƒï¼Œ`site1` å’Œ `site2`ã€‚ æ¯ä¸ªæ•°æ®ä¸­å¿ƒç”±1ä¸ªInfinispanæœåŠ¡å™¨å’Œ2ä¸ªKeycloakæœåŠ¡å™¨ç»„æˆã€‚ æˆ‘ä»¬æœ€ç»ˆå°†æ‹¥æœ‰2å°InfinispanæœåŠ¡å™¨å’Œ4å°KeycloakæœåŠ¡å™¨ã€‚
+ÔÚ±¾ÀıÖĞ£¬ÎÒÃÇÃèÊöÁËÊ¹ÓÃÁ½¸öÊı¾İÖĞĞÄ£¬`site1` ºÍ `site2`¡£ Ã¿¸öÊı¾İÖĞĞÄÓÉ1¸öInfinispan·şÎñÆ÷ºÍ2¸öKeycloak·şÎñÆ÷×é³É¡£ ÎÒÃÇ×îÖÕ½«ÓµÓĞ2Ì¨Infinispan·şÎñÆ÷ºÍ4Ì¨Keycloak·şÎñÆ÷¡£
 
-- `Site1` ç”±InfinispanæœåŠ¡å™¨ï¼Œ`jdg1` å’Œ2ä¸ªKeycloakæœåŠ¡å™¨ï¼Œ`node11` å’Œ `node12` ç»„æˆã€‚
-- `Site2` ç”±InfinispanæœåŠ¡å™¨ï¼Œ`jdg2` å’Œ2ä¸ªKeycloakæœåŠ¡å™¨ï¼Œ`node21` å’Œ `node22` ç»„æˆã€‚
-- InfinispanæœåŠ¡å™¨ `jdg1` å’Œ `jdg2` é€šè¿‡ RELAY2 åè®®å’Œ `backup` çš„Infinispanç¼“å­˜ç›¸äº’è¿æ¥ï¼Œå…¶æ–¹å¼ä¸[JDGæ–‡æ¡£](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication)ä¸­æè¿°çš„ç±»ä¼¼ã€‚
-- KeycloakæœåŠ¡å™¨ `node11` å’Œ `node12` å½¼æ­¤å½¢æˆä¸€ä¸ªé›†ç¾¤ï¼Œä½†å®ƒä»¬ä¸ç›´æ¥ä¸ `site2` ä¸­çš„ä»»ä½•æœåŠ¡å™¨é€šä¿¡ã€‚ å®ƒä»¬ä½¿ç”¨HotRodåè®®ï¼ˆè¿œç¨‹ç¼“å­˜ï¼‰ä¸InfinispanæœåŠ¡å™¨ `jdg1` è¿›è¡Œé€šä¿¡ã€‚ æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[é€šä¿¡è¯¦ç»†ä¿¡æ¯](https://www.keycloak.org/docs/latest/server_installation/index.html#communication)ã€‚
-- åŒæ ·çš„ç»†èŠ‚é€‚ç”¨äº `node21` å’Œ `node22`ã€‚å®ƒä»¬å½¼æ­¤é›†ç¾¤ï¼Œä»…ä½¿ç”¨HotRodåè®®ä¸`jdg2`æœåŠ¡å™¨é€šä¿¡ã€‚
+- `Site1` ÓÉInfinispan·şÎñÆ÷£¬`jdg1` ºÍ2¸öKeycloak·şÎñÆ÷£¬`node11` ºÍ `node12` ×é³É¡£
+- `Site2` ÓÉInfinispan·şÎñÆ÷£¬`jdg2` ºÍ2¸öKeycloak·şÎñÆ÷£¬`node21` ºÍ `node22` ×é³É¡£
+- Infinispan·şÎñÆ÷ `jdg1` ºÍ `jdg2` Í¨¹ı RELAY2 Ğ­ÒéºÍ `backup` µÄInfinispan»º´æÏà»¥Á¬½Ó£¬Æä·½Ê½Óë[JDGÎÄµµ](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication)ÖĞÃèÊöµÄÀàËÆ¡£
+- Keycloak·şÎñÆ÷ `node11` ºÍ `node12` ±Ë´ËĞÎ³ÉÒ»¸ö¼¯Èº£¬µ«ËüÃÇ²»Ö±½ÓÓë `site2` ÖĞµÄÈÎºÎ·şÎñÆ÷Í¨ĞÅ¡£ ËüÃÇÊ¹ÓÃHotRodĞ­Òé£¨Ô¶³Ì»º´æ£©ÓëInfinispan·şÎñÆ÷ `jdg1` ½øĞĞÍ¨ĞÅ¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[Í¨ĞÅÏêÏ¸ĞÅÏ¢](https://www.keycloak.org/docs/latest/server_installation/index.html#communication)¡£
+- Í¬ÑùµÄÏ¸½ÚÊÊÓÃÓÚ `node21` ºÍ `node22`¡£ËüÃÇ±Ë´Ë¼¯Èº£¬½öÊ¹ÓÃHotRodĞ­ÒéÓë`jdg2`·şÎñÆ÷Í¨ĞÅ¡£
 
-æˆ‘ä»¬çš„ç¤ºä¾‹è®¾ç½®å‡å®šæ‰€æœ‰4ä¸ªKeycloakæœåŠ¡å™¨éƒ½ä¸åŒä¸€ä¸ªæ•°æ®åº“é€šä¿¡ã€‚ åœ¨ç”Ÿäº§ä¸­ï¼Œå»ºè®®åœ¨æ•°æ®åº“ä¸­ä½¿ç”¨å•ç‹¬çš„åŒæ­¥å¤åˆ¶æ•°æ®åº“ï¼Œå¦‚[æ•°æ®åº“](https://www.keycloak.org/docs/latest/server_installation/index.html#database)ä¸­æ‰€è¿°ã€‚
+ÎÒÃÇµÄÊ¾ÀıÉèÖÃ¼Ù¶¨ËùÓĞ4¸öKeycloak·şÎñÆ÷¶¼ÓëÍ¬Ò»¸öÊı¾İ¿âÍ¨ĞÅ¡£ ÔÚÉú²úÖĞ£¬½¨ÒéÔÚÊı¾İ¿âÖĞÊ¹ÓÃµ¥¶ÀµÄÍ¬²½¸´ÖÆÊı¾İ¿â£¬Èç[Êı¾İ¿â](https://www.keycloak.org/docs/latest/server_installation/index.html#database)ÖĞËùÊö¡£
 
-##### InfinispanæœåŠ¡å™¨è®¾ç½®
+##### Infinispan·şÎñÆ÷ÉèÖÃ {#}
 
-è¯·æŒ‰ç…§ä»¥ä¸‹æ­¥éª¤è®¾ç½®InfinispanæœåŠ¡å™¨ï¼š
+Çë°´ÕÕÒÔÏÂ²½ÖèÉèÖÃInfinispan·şÎñÆ÷£º
 
-1. ä¸‹è½½Infinispan 9.4.8æœåŠ¡å™¨å¹¶è§£å‹ç¼©åˆ°æ‚¨é€‰æ‹©çš„ç›®å½•ã€‚ è¯¥ä½ç½®å°†åœ¨åé¢çš„æ­¥éª¤ä¸­ç§°ä¸º `JDG1_HOME` ã€‚
+1. ÏÂÔØInfinispan 9.4.8·şÎñÆ÷²¢½âÑ¹Ëõµ½ÄúÑ¡ÔñµÄÄ¿Â¼¡£ ¸ÃÎ»ÖÃ½«ÔÚºóÃæµÄ²½ÖèÖĞ³ÆÎª `JDG1_HOME` ¡£
 
-2. åœ¨JGroupså­ç³»ç»Ÿçš„é…ç½®ä¸­æ›´æ”¹ `JDG1_HOME/standalone/configuration/clustered.xml`ä¸­çš„é‚£äº›å†…å®¹ï¼š
+2. ÔÚJGroups×ÓÏµÍ³µÄÅäÖÃÖĞ¸ü¸Ä `JDG1_HOME/standalone/configuration/clustered.xml`ÖĞµÄÄÇĞ©ÄÚÈİ£º
 
-   1. åœ¨ `channels` å…ƒç´ ä¸‹æ·»åŠ  `xsite` é€šé“ï¼Œå®ƒå°†ä½¿ç”¨`tcp` å †æ ˆï¼š
+   1. ÔÚ `channels` ÔªËØÏÂÌí¼Ó `xsite` Í¨µÀ£¬Ëü½«Ê¹ÓÃ`tcp` ¶ÑÕ»£º
 
       ```xml
       <channels default="cluster">
@@ -537,7 +537,7 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
       </channels>
       ```
 
-   2. åœ¨ `udp` å †æ ˆçš„æœ«å°¾æ·»åŠ  `relay` å…ƒç´ ã€‚ æˆ‘ä»¬å°†ä»¥æˆ‘ä»¬çš„ç«™ç‚¹ä¸º `site1` çš„æ–¹å¼é…ç½®å®ƒï¼Œè€Œæˆ‘ä»¬å°†å¤‡ä»½çš„å¦ä¸€ä¸ªç«™ç‚¹æ˜¯ `site2` ï¼š
+   2. ÔÚ `udp` ¶ÑÕ»µÄÄ©Î²Ìí¼Ó `relay` ÔªËØ¡£ ÎÒÃÇ½«ÒÔÎÒÃÇµÄÕ¾µãÎª `site1` µÄ·½Ê½ÅäÖÃËü£¬¶øÎÒÃÇ½«±¸·İµÄÁíÒ»¸öÕ¾µãÊÇ `site2` £º
 
       ```xml
       <stack name="udp">
@@ -549,7 +549,7 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
       </stack>
       ```
 
-   3. é…ç½®`tcp`å †æ ˆä½¿ç”¨`TCPPING`åè®®è€Œä¸æ˜¯'MPING`ã€‚ åˆ é™¤`MPING`å…ƒç´ å¹¶å°†å…¶æ›¿æ¢ä¸º`TCPPING`ã€‚ `initial_hosts`å…ƒç´ æŒ‡å‘ä¸»æœº`jdg1`å’Œ`jdg2`ï¼š
+   3. ÅäÖÃ`tcp`¶ÑÕ»Ê¹ÓÃ`TCPPING`Ğ­Òé¶ø²»ÊÇ'MPING`¡£ É¾³ı`MPING`ÔªËØ²¢½«ÆäÌæ»»Îª`TCPPING`¡£ `initial_hosts`ÔªËØÖ¸ÏòÖ÷»ú`jdg1`ºÍ`jdg2`£º
 
       ```xml
       <stack name="tcp">
@@ -563,9 +563,9 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
       </stack>
       ```
 
-      > è¿™åªæ˜¯ä¸€ä¸ªè®©ç¨‹åºå¿«é€Ÿè¿è¡Œçš„ç¤ºä¾‹è®¾ç½®ã€‚åœ¨ç”Ÿäº§ä¸­ï¼ŒJGroups ' RELAY2 'ä¸éœ€è¦ä½¿ç”¨' tcp 'æ ˆï¼Œ ä½†æ˜¯æ‚¨å¯ä»¥é…ç½®ä»»ä½•å…¶ä»–å †æ ˆã€‚ä¾‹å¦‚ï¼Œå¦‚æœæ•°æ®ä¸­å¿ƒä¹‹é—´çš„ç½‘ç»œæ”¯æŒå¤šæ’­ï¼Œå¯ä»¥ä½¿ç”¨é»˜è®¤çš„udpå †æ ˆã€‚ åªè¦ç¡®ä¿Infinispanå’ŒKeycloaké›†ç¾¤æ˜¯ç›¸äº’ä¸å¯å‘ç°çš„ã€‚ åŒæ ·ï¼Œæ‚¨ä¸éœ€è¦ä½¿ç”¨ `TCPPING` ä½œä¸ºå‘ç°åè®®ã€‚ åœ¨ç”Ÿäº§ä¸­ï¼Œä½ å¯èƒ½ä¸ä¼šä½¿ç”¨`TCPPING`å› ä¸ºå®ƒæ˜¯é™æ€çš„ã€‚ æœ€åï¼Œç«™ç‚¹åç§°ä¹Ÿæ˜¯å¯é…ç½®çš„ã€‚ è¿™ä¸ªæ›´è¯¦ç»†çš„è®¾ç½®çš„è¯¦ç»†ä¿¡æ¯è¶…å‡ºäº†Keycloakæ–‡æ¡£çš„èŒƒå›´ã€‚ æœ‰å…³æ›´å¤šè¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…Infinispanæ–‡æ¡£å’ŒJGroupsæ–‡æ¡£ã€‚
+      > ÕâÖ»ÊÇÒ»¸öÈÃ³ÌĞò¿ìËÙÔËĞĞµÄÊ¾ÀıÉèÖÃ¡£ÔÚÉú²úÖĞ£¬JGroups ' RELAY2 '²»ĞèÒªÊ¹ÓÃ' tcp 'Õ»£¬ µ«ÊÇÄú¿ÉÒÔÅäÖÃÈÎºÎÆäËû¶ÑÕ»¡£ÀıÈç£¬Èç¹ûÊı¾İÖĞĞÄÖ®¼äµÄÍøÂçÖ§³Ö¶à²¥£¬¿ÉÒÔÊ¹ÓÃÄ¬ÈÏµÄudp¶ÑÕ»¡£ Ö»ÒªÈ·±£InfinispanºÍKeycloak¼¯ÈºÊÇÏà»¥²»¿É·¢ÏÖµÄ¡£ Í¬Ñù£¬Äú²»ĞèÒªÊ¹ÓÃ `TCPPING` ×÷Îª·¢ÏÖĞ­Òé¡£ ÔÚÉú²úÖĞ£¬Äã¿ÉÄÜ²»»áÊ¹ÓÃ`TCPPING`ÒòÎªËüÊÇ¾²Ì¬µÄ¡£ ×îºó£¬Õ¾µãÃû³ÆÒ²ÊÇ¿ÉÅäÖÃµÄ¡£ Õâ¸ö¸üÏêÏ¸µÄÉèÖÃµÄÏêÏ¸ĞÅÏ¢³¬³öÁËKeycloakÎÄµµµÄ·¶Î§¡£ ÓĞ¹Ø¸ü¶àÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄInfinispanÎÄµµºÍJGroupsÎÄµµ¡£
 
-3. å°†å…¶æ·»åŠ åˆ°åä¸º`clustered`çš„ç¼“å­˜å®¹å™¨ä¸‹çš„`JDG1_HOME/standalone/configuration/clustered.xml`ä¸­ï¼š
+3. ½«ÆäÌí¼Óµ½ÃûÎª`clustered`µÄ»º´æÈİÆ÷ÏÂµÄ`JDG1_HOME/standalone/configuration/clustered.xml`ÖĞ£º
 
    ```xml
    <cache-container name="clustered" default-cache="default" statistics="true">
@@ -590,17 +590,17 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
    </cache-container>
    ```
 
-   > æœ‰å…³ `replicated-cache-configuration` ä¸­çš„é…ç½®é€‰é¡¹çš„è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[è°ƒæ•´JDGç¼“å­˜é…ç½®](https://www.keycloak.org/docs/latest/server_installation/index.html#tuningcache)ï¼Œå…¶ä¸­åŒ…å«ä¿¡æ¯ å…³äºè°ƒæ•´å…¶ä¸­ä¸€äº›é€‰é¡¹ã€‚
+   > ÓĞ¹Ø `replicated-cache-configuration` ÖĞµÄÅäÖÃÑ¡ÏîµÄÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[µ÷ÕûJDG»º´æÅäÖÃ](https://www.keycloak.org/docs/latest/server_installation/index.html#tuningcache)£¬ÆäÖĞ°üº¬ĞÅÏ¢ ¹ØÓÚµ÷ÕûÆäÖĞÒ»Ğ©Ñ¡Ïî¡£
 
-   > ä¸ä»¥å‰çš„ç‰ˆæœ¬ä¸åŒï¼ŒInfinispanæœåŠ¡å™¨ `replicated-cache-configuration` éœ€è¦åœ¨æ²¡æœ‰ `transaction` å…ƒç´ çš„æƒ…å†µä¸‹è¿›è¡Œé…ç½®ã€‚ æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[æ•…éšœæ’é™¤](https://www.keycloak.org/docs/latest/server_installation/index.html#troubleshooting) ã€‚
+   > ÓëÒÔÇ°µÄ°æ±¾²»Í¬£¬Infinispan·şÎñÆ÷ `replicated-cache-configuration` ĞèÒªÔÚÃ»ÓĞ `transaction` ÔªËØµÄÇé¿öÏÂ½øĞĞÅäÖÃ¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[¹ÊÕÏÅÅ³ı](https://www.keycloak.org/docs/latest/server_installation/index.html#troubleshooting) ¡£
 
-4. åœ¨é€šè¿‡ç½‘ç»œè®¿é—®å—ä¿æŠ¤çš„ç¼“å­˜ä¹‹å‰ï¼ŒæŸäº›InfinispanæœåŠ¡å™¨ç‰ˆæœ¬éœ€è¦æˆæƒã€‚
+4. ÔÚÍ¨¹ıÍøÂç·ÃÎÊÊÜ±£»¤µÄ»º´æÖ®Ç°£¬Ä³Ğ©Infinispan·şÎñÆ÷°æ±¾ĞèÒªÊÚÈ¨¡£
 
-   > å¦‚æœæ‚¨ä½¿ç”¨æ¨èçš„Infinispan 9.4.8æœåŠ¡å™¨ï¼Œåˆ™ä¸åº”è¯¥çœ‹åˆ°ä»»ä½•é—®é¢˜ï¼Œå¹¶ä¸”å¯ä»¥ï¼ˆå¹¶ä¸”åº”è¯¥ï¼‰å¿½ç•¥æ­¤æ­¥éª¤ã€‚ ä¸æˆæƒç›¸å…³çš„é—®é¢˜å¯èƒ½ä»…é€‚ç”¨äºInfinispanæœåŠ¡å™¨çš„æŸäº›å…¶ä»–ç‰ˆæœ¬ã€‚
+   > Èç¹ûÄúÊ¹ÓÃÍÆ¼öµÄInfinispan 9.4.8·şÎñÆ÷£¬Ôò²»Ó¦¸Ã¿´µ½ÈÎºÎÎÊÌâ£¬²¢ÇÒ¿ÉÒÔ£¨²¢ÇÒÓ¦¸Ã£©ºöÂÔ´Ë²½Öè¡£ ÓëÊÚÈ¨Ïà¹ØµÄÎÊÌâ¿ÉÄÜ½öÊÊÓÃÓÚInfinispan·şÎñÆ÷µÄÄ³Ğ©ÆäËû°æ±¾¡£
 
-   Keycloakéœ€è¦æ›´æ–°åŒ…å«è„šæœ¬çš„ `___ script_cache` ç¼“å­˜ã€‚ å¦‚æœè®¿é—®æ­¤ç¼“å­˜æ—¶å‡ºé”™ï¼Œåˆ™éœ€è¦åœ¨ `clustered.xml` é…ç½®ä¸­è®¾ç½®æˆæƒï¼Œå¦‚ä¸‹æ‰€è¿°ï¼š
+   KeycloakĞèÒª¸üĞÂ°üº¬½Å±¾µÄ `___ script_cache` »º´æ¡£ Èç¹û·ÃÎÊ´Ë»º´æÊ±³ö´í£¬ÔòĞèÒªÔÚ `clustered.xml` ÅäÖÃÖĞÉèÖÃÊÚÈ¨£¬ÈçÏÂËùÊö£º
 
-   1. åœ¨ `<management>` éƒ¨åˆ†ä¸­ï¼Œæ·»åŠ ä¸€ä¸ªå®‰å…¨é¢†åŸŸï¼š
+   1. ÔÚ `<management>` ²¿·ÖÖĞ£¬Ìí¼ÓÒ»¸ö°²È«ÁìÓò£º
 
       ```xml
       <management>
@@ -618,7 +618,7 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
           </security-realms>
       ```
 
-   2. åœ¨æœåŠ¡å™¨æ ¸å¿ƒå­ç³»ç»Ÿä¸­ï¼Œæ·»åŠ  `<security>` ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
+   2. ÔÚ·şÎñÆ÷ºËĞÄ×ÓÏµÍ³ÖĞ£¬Ìí¼Ó `<security>` £¬ÈçÏÂËùÊ¾£º
 
       ```xml
       <subsystem xmlns="urn:infinispan:server:core:8.4">
@@ -632,7 +632,7 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
               ...
       ```
 
-   3. åœ¨ç«¯ç‚¹å­ç³»ç»Ÿä¸­ï¼Œå°†èº«ä»½éªŒè¯é…ç½®æ·»åŠ åˆ°Hot Rodè¿æ¥å™¨ï¼š
+   3. ÔÚ¶Ëµã×ÓÏµÍ³ÖĞ£¬½«Éí·İÑéÖ¤ÅäÖÃÌí¼Óµ½Hot RodÁ¬½ÓÆ÷£º
 
       ```xml
       <subsystem xmlns="urn:infinispan:server:endpoint:8.1">
@@ -647,11 +647,11 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
               </authentication>
       ```
 
-5. å°†æœåŠ¡å™¨å¤åˆ¶åˆ°ç¬¬äºŒä¸ªä½ç½®ï¼Œç¨åå°†ç§°ä¹‹ä¸º `JDG2_HOME`ã€‚
+5. ½«·şÎñÆ÷¸´ÖÆµ½µÚ¶ş¸öÎ»ÖÃ£¬ÉÔºó½«³ÆÖ®Îª `JDG2_HOME`¡£
 
-6. åœ¨ `JDG2_HOME/standalone/configuration/clustered.xml`äº¤æ¢`site1`å’Œ`site2`ï¼Œåä¹‹äº¦ç„¶ï¼Œåœ¨JGroupså­ç³»ç»Ÿä¸­çš„ `relay` é…ç½®å’Œcache-subsystemä¸­ `backups` çš„é…ç½®ã€‚ ä¾‹å¦‚ï¼š
+6. ÔÚ `JDG2_HOME/standalone/configuration/clustered.xml`½»»»`site1`ºÍ`site2`£¬·´Ö®ÒàÈ»£¬ÔÚJGroups×ÓÏµÍ³ÖĞµÄ `relay` ÅäÖÃºÍcache-subsystemÖĞ `backups` µÄÅäÖÃ¡£ ÀıÈç£º
 
-   1. `relay`å…ƒç´ åº”å¦‚ä¸‹æ‰€ç¤ºï¼š
+   1. `relay`ÔªËØÓ¦ÈçÏÂËùÊ¾£º
 
       ```xml
       <relay site="site2">
@@ -660,7 +660,7 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
       </relay>
       ```
 
-   2. åƒè¿™æ ·çš„`backups`å…ƒç´ ï¼š
+   2. ÏñÕâÑùµÄ`backups`ÔªËØ£º
 
       ```xml
                   <backups>
@@ -668,9 +668,9 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
                       ...
       ```
 
-      ç”±äºInfinispanå­ç³»ç»Ÿä¸æ”¯æŒç”¨è¡¨è¾¾å¼æ›¿æ¢ç«™ç‚¹åï¼Œå› æ­¤ç›®å‰éœ€è¦ä¸ºä¸¤ä¸ªç«™ç‚¹ä¸Šçš„JDGæœåŠ¡å™¨æä¾›ä¸åŒçš„é…ç½®æ–‡ä»¶ã€‚æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚è§[this issue](https://issues.jboss.org/browse/WFLY-9458)ã€‚
+      ÓÉÓÚInfinispan×ÓÏµÍ³²»Ö§³ÖÓÃ±í´ïÊ½Ìæ»»Õ¾µãÃû£¬Òò´ËÄ¿Ç°ĞèÒªÎªÁ½¸öÕ¾µãÉÏµÄJDG·şÎñÆ÷Ìá¹©²»Í¬µÄÅäÖÃÎÄ¼ş¡£ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²Î¼û[this issue](https://issues.jboss.org/browse/WFLY-9458)¡£
 
-7. å¯åŠ¨æœåŠ¡å™¨ `jdg1`:
+7. Æô¶¯·şÎñÆ÷ `jdg1`:
 
    ```bash
    cd JDG1_HOME/bin
@@ -679,7 +679,7 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
      -Djboss.node.name=jdg1 -b PUBLIC_IP_ADDRESS
    ```
 
-8. å¯åŠ¨æœåŠ¡å™¨`jdg2`ã€‚ç”±äºå­˜åœ¨ä¸åŒçš„ç»„æ’­åœ°å€ï¼Œå› æ­¤`jdg1`å’Œ`jdg2`æœåŠ¡å™¨å¹¶ä¸ç›´æ¥é›†ç¾¤åœ¨ä¸€èµ·;ç›¸åï¼Œå®ƒä»¬åªæ˜¯é€šè¿‡RELAY2åè®®è¿æ¥ï¼ŒTCP JGroupså †æ ˆç”¨äºå®ƒä»¬ä¹‹é—´çš„é€šä¿¡ã€‚å¯åŠ¨å‘½ä»¤æ˜¯è¿™æ ·çš„:
+8. Æô¶¯·şÎñÆ÷`jdg2`¡£ÓÉÓÚ´æÔÚ²»Í¬µÄ×é²¥µØÖ·£¬Òò´Ë`jdg1`ºÍ`jdg2`·şÎñÆ÷²¢²»Ö±½Ó¼¯ÈºÔÚÒ»Æğ;Ïà·´£¬ËüÃÇÖ»ÊÇÍ¨¹ıRELAY2Ğ­ÒéÁ¬½Ó£¬TCP JGroups¶ÑÕ»ÓÃÓÚËüÃÇÖ®¼äµÄÍ¨ĞÅ¡£Æô¶¯ÃüÁîÊÇÕâÑùµÄ:
 
    ```bash
    cd JDG2_HOME/bin
@@ -688,53 +688,53 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
      -Djboss.node.name=jdg2 -b PUBLIC_IP_ADDRESS
    ```
 
-9. è¦éªŒè¯æ­¤æ—¶é€šé“æ˜¯å¦å·¥ä½œï¼Œæ‚¨å¯èƒ½éœ€è¦ä½¿ç”¨JConsoleå¹¶è¿æ¥åˆ°æ­£åœ¨è¿è¡Œçš„`JDG1`æˆ–`JDG2`æœåŠ¡å™¨ã€‚å½“æ‚¨ä½¿ç”¨MBean `jgroups:type=protocol,cluster="cluster",protocol=RELAY2`å’Œæ“ä½œ`printRoutes`æ—¶ï¼Œåº”è¯¥ä¼šçœ‹åˆ°å¦‚ä¸‹è¾“å‡º:
+9. ÒªÑéÖ¤´ËÊ±Í¨µÀÊÇ·ñ¹¤×÷£¬Äú¿ÉÄÜĞèÒªÊ¹ÓÃJConsole²¢Á¬½Óµ½ÕıÔÚÔËĞĞµÄ`JDG1`»ò`JDG2`·şÎñÆ÷¡£µ±ÄúÊ¹ÓÃMBean `jgroups:type=protocol,cluster="cluster",protocol=RELAY2`ºÍ²Ù×÷`printRoutes`Ê±£¬Ó¦¸Ã»á¿´µ½ÈçÏÂÊä³ö:
 
    ```
    site1 --> _jdg1:site1
    site2 --> _jdg2:site2
    ```
 
-   å½“æ‚¨ä½¿ç”¨MBean  `jgroups:type=protocol,cluster="cluster",protocol=GMS` æ—¶ï¼Œæ‚¨åº”è¯¥çœ‹åˆ°å±æ€§æˆå‘˜åªåŒ…å«ä¸€ä¸ªæˆå‘˜:
+   µ±ÄúÊ¹ÓÃMBean  `jgroups:type=protocol,cluster="cluster",protocol=GMS` Ê±£¬ÄúÓ¦¸Ã¿´µ½ÊôĞÔ³ÉÔ±Ö»°üº¬Ò»¸ö³ÉÔ±:
 
-   1. åœ¨`JDG1`ä¸Šåº”è¯¥æ˜¯è¿™æ ·çš„:
+   1. ÔÚ`JDG1`ÉÏÓ¦¸ÃÊÇÕâÑùµÄ:
 
       ```
       (1) jdg1
       ```
 
-   2. åœ¨JDG2ä¸Šæ˜¯è¿™æ ·çš„:
+   2. ÔÚJDG2ÉÏÊÇÕâÑùµÄ:
 
       ```
       (1) jdg2
       ```
 
-      > åœ¨ç”Ÿäº§ä¸­ï¼Œæ‚¨å¯ä»¥åœ¨æ¯ä¸ªæ•°æ®ä¸­å¿ƒæ‹¥æœ‰æ›´å¤šInfinispanæœåŠ¡å™¨ã€‚ æ‚¨åªéœ€è¦ç¡®ä¿åŒä¸€æ•°æ®ä¸­å¿ƒå†…çš„InfinispanæœåŠ¡å™¨ä½¿ç”¨ç›¸åŒçš„å¤šæ’­åœ°å€ï¼ˆæ¢å¥è¯è¯´ï¼Œåœ¨å¯åŠ¨æ—¶ä½¿ç”¨ç›¸åŒçš„ `jboss.default.multicast.address` ï¼‰ã€‚ ç„¶ååœ¨`GMS` åè®®è§†å›¾çš„jconsoleä¸­ï¼Œæ‚¨å°†çœ‹åˆ°å½“å‰é›†ç¾¤çš„æ‰€æœ‰æˆå‘˜ã€‚
+      > ÔÚÉú²úÖĞ£¬Äú¿ÉÒÔÔÚÃ¿¸öÊı¾İÖĞĞÄÓµÓĞ¸ü¶àInfinispan·şÎñÆ÷¡£ ÄúÖ»ĞèÒªÈ·±£Í¬Ò»Êı¾İÖĞĞÄÄÚµÄInfinispan·şÎñÆ÷Ê¹ÓÃÏàÍ¬µÄ¶à²¥µØÖ·£¨»»¾ä»°Ëµ£¬ÔÚÆô¶¯Ê±Ê¹ÓÃÏàÍ¬µÄ `jboss.default.multicast.address` £©¡£ È»ºóÔÚ`GMS` Ğ­ÒéÊÓÍ¼µÄjconsoleÖĞ£¬Äú½«¿´µ½µ±Ç°¼¯ÈºµÄËùÓĞ³ÉÔ±¡£
 
-##### KeycloakæœåŠ¡å™¨è®¾ç½®
+##### Keycloak·şÎñÆ÷ÉèÖÃ {#}
 
-1. å°†KeycloakæœåŠ¡å™¨åˆ†å‘è§£å‹ç¼©åˆ°æ‚¨é€‰æ‹©çš„ä½ç½®ã€‚ å®ƒå°†åœ¨åé¢ç§°ä¸º `NODE11`ã€‚
+1. ½«Keycloak·şÎñÆ÷·Ö·¢½âÑ¹Ëõµ½ÄúÑ¡ÔñµÄÎ»ÖÃ¡£ Ëü½«ÔÚºóÃæ³ÆÎª `NODE11`¡£
 
-2. ä¸ºKeycloakDSæ•°æ®æºé…ç½®å…±äº«æ•°æ®åº“ã€‚ å»ºè®®ä½¿ç”¨MySQLæˆ–MariaDBè¿›è¡Œæµ‹è¯•ã€‚ æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[æ•°æ®åº“](https://www.keycloak.org/docs/latest/server_installation/index.html#database)ã€‚
+2. ÎªKeycloakDSÊı¾İÔ´ÅäÖÃ¹²ÏíÊı¾İ¿â¡£ ½¨ÒéÊ¹ÓÃMySQL»òMariaDB½øĞĞ²âÊÔ¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[Êı¾İ¿â](https://www.keycloak.org/docs/latest/server_installation/index.html#database)¡£
 
-   åœ¨ç”Ÿäº§ä¸­ï¼Œæ‚¨å¯èƒ½éœ€è¦åœ¨æ¯ä¸ªæ•°æ®ä¸­å¿ƒéƒ½æœ‰ä¸€ä¸ªå•ç‹¬çš„æ•°æ®åº“æœåŠ¡å™¨ï¼Œå¹¶ä¸”ä¸¤ä¸ªæ•°æ®åº“æœåŠ¡å™¨åº”è¯¥åŒæ­¥å¤åˆ¶åˆ°å½¼æ­¤ã€‚ åœ¨ç¤ºä¾‹è®¾ç½®ä¸­ï¼Œæˆ‘ä»¬åªä½¿ç”¨ä¸€ä¸ªæ•°æ®åº“å¹¶å°†æ‰€æœ‰4ä¸ªKeycloakæœåŠ¡å™¨è¿æ¥åˆ°å®ƒã€‚
+   ÔÚÉú²úÖĞ£¬Äú¿ÉÄÜĞèÒªÔÚÃ¿¸öÊı¾İÖĞĞÄ¶¼ÓĞÒ»¸öµ¥¶ÀµÄÊı¾İ¿â·şÎñÆ÷£¬²¢ÇÒÁ½¸öÊı¾İ¿â·şÎñÆ÷Ó¦¸ÃÍ¬²½¸´ÖÆµ½±Ë´Ë¡£ ÔÚÊ¾ÀıÉèÖÃÖĞ£¬ÎÒÃÇÖ»Ê¹ÓÃÒ»¸öÊı¾İ¿â²¢½«ËùÓĞ4¸öKeycloak·şÎñÆ÷Á¬½Óµ½Ëü¡£
 
-3. ç¼–è¾‘ `NODE11/standalone/configuration/standalone-ha.xml` :
+3. ±à¼­ `NODE11/standalone/configuration/standalone-ha.xml` :
 
-   1. å°†å±æ€§`site`æ·»åŠ åˆ°JGroups UDPåè®®ï¼š
+   1. ½«ÊôĞÔ`site`Ìí¼Óµ½JGroups UDPĞ­Òé£º
 
       ```xml
                         <stack name="udp">
                             <transport type="UDP" socket-binding="jgroups-udp" site="${jboss.site.name}"/>
       ```
 
-   2. åœ¨åä¸º`keycloak`çš„`cache-container`å…ƒç´ ä¸‹æ·»åŠ è¿™ä¸ª`module`å±æ€§ï¼š
+   2. ÔÚÃûÎª`keycloak`µÄ`cache-container`ÔªËØÏÂÌí¼ÓÕâ¸ö`module`ÊôĞÔ£º
 
       ```xml
        <cache-container name="keycloak" module="org.keycloak.keycloak-model-infinispan">
       ```
 
-   3. åœ¨`work`ç¼“å­˜ä¸‹æ·»åŠ `remote-store`ï¼š
+   3. ÔÚ`work`»º´æÏÂÌí¼Ó`remote-store`£º
 
       ```xml
       <replicated-cache name="work">
@@ -745,7 +745,7 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
       </replicated-cache>
       ```
 
-   4. åœ¨`sessions`ç¼“å­˜ä¸‹æ·»åŠ è¿™æ ·çš„`remote-store`ï¼š
+   4. ÔÚ`sessions`»º´æÏÂÌí¼ÓÕâÑùµÄ`remote-store`£º
 
       ```xml
       <distributed-cache name="sessions" owners="1">
@@ -756,7 +756,7 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
       </distributed-cache>
       ```
 
-   5. å¯¹äº`offlineSessions`ï¼Œ`clientSessions`ï¼Œ`offlineClientSessions`ï¼Œ`loginFailures`å’Œ`actionTokens`ç¼“å­˜æ‰§è¡Œç›¸åŒçš„æ“ä½œï¼ˆä¸`sessions`ç¼“å­˜çš„å”¯ä¸€åŒºåˆ«æ˜¯`cache`å±æ€§å€¼ä¸åŒï¼‰ï¼š
+   5. ¶ÔÓÚ`offlineSessions`£¬`clientSessions`£¬`offlineClientSessions`£¬`loginFailures`ºÍ`actionTokens`»º´æÖ´ĞĞÏàÍ¬µÄ²Ù×÷£¨Óë`sessions`»º´æµÄÎ¨Ò»Çø±ğÊÇ`cache`ÊôĞÔÖµ²»Í¬£©£º
 
       ```xml
       <distributed-cache name="offlineSessions" owners="1">
@@ -797,7 +797,7 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
       </distributed-cache>
       ```
 
-   6. å°†è¿œç¨‹å­˜å‚¨çš„å‡ºç«™å¥—æ¥å­—ç»‘å®šæ·»åŠ åˆ°`socket-binding-group`å…ƒç´ é…ç½®ä¸­ï¼š
+   6. ½«Ô¶³Ì´æ´¢µÄ³öÕ¾Ì×½Ó×Ö°ó¶¨Ìí¼Óµ½`socket-binding-group`ÔªËØÅäÖÃÖĞ£º
 
       ```xml
       <outbound-socket-binding name="remote-cache">
@@ -805,9 +805,9 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
       </outbound-socket-binding>
       ```
 
-   7. åˆ†å¸ƒå¼ç¼“å­˜`authenticationSessions`å’Œå…¶ä»–ç¼“å­˜çš„é…ç½®ä¿æŒä¸å˜ã€‚
+   7. ·Ö²¼Ê½»º´æ`authenticationSessions`ºÍÆäËû»º´æµÄÅäÖÃ±£³Ö²»±ä¡£
 
-   8. ï¼ˆå¯é€‰ï¼‰åœ¨`logging`å­ç³»ç»Ÿä¸‹å¯ç”¨DEBUGæ—¥å¿—è®°å½•ï¼š
+   8. £¨¿ÉÑ¡£©ÔÚ`logging`×ÓÏµÍ³ÏÂÆôÓÃDEBUGÈÕÖ¾¼ÇÂ¼£º
 
       ```xml
       <logger category="org.keycloak.cluster.infinispan">
@@ -824,9 +824,9 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
       </logger>
       ```
 
-4. å°†`NODE11`å¤åˆ¶åˆ°3ä¸ªå…¶ä»–ç›®å½•ï¼Œåé¢ç§°ä¸º`NODE12`ï¼Œ`NODE21`å’Œ`NODE22`ã€‚
+4. ½«`NODE11`¸´ÖÆµ½3¸öÆäËûÄ¿Â¼£¬ºóÃæ³ÆÎª`NODE12`£¬`NODE21`ºÍ`NODE22`¡£
 
-5. å¯åŠ¨ `NODE11` :
+5. Æô¶¯ `NODE11` :
 
    ```bash
    cd NODE11/bin
@@ -835,7 +835,7 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
      -Djava.net.preferIPv4Stack=true -b PUBLIC_IP_ADDRESS
    ```
 
-6. å¯åŠ¨ `NODE12` :
+6. Æô¶¯ `NODE12` :
 
    ```bash
    cd NODE12/bin
@@ -844,15 +844,15 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
      -Djava.net.preferIPv4Stack=true -b PUBLIC_IP_ADDRESS
    ```
 
-   åº”è¯¥è¿æ¥é›†ç¾¤èŠ‚ç‚¹ã€‚ç±»ä¼¼è¿™æ ·çš„ä¸œè¥¿åº”è¯¥åŒæ—¶å‡ºç°åœ¨NODE11å’ŒNODE12çš„æ—¥å¿—ä¸­:
+   Ó¦¸ÃÁ¬½Ó¼¯Èº½Úµã¡£ÀàËÆÕâÑùµÄ¶«Î÷Ó¦¸ÃÍ¬Ê±³öÏÖÔÚNODE11ºÍNODE12µÄÈÕÖ¾ÖĞ:
 
    ```
    Received new cluster view for channel keycloak: [node11|1] (2) [node11, node12]
    ```
 
-   > æ—¥å¿—ä¸­çš„é€šé“åç§°å¯èƒ½ä¸åŒã€‚
+   > ÈÕÖ¾ÖĞµÄÍ¨µÀÃû³Æ¿ÉÄÜ²»Í¬¡£
 
-7. å¯åŠ¨ `NODE21` :
+7. Æô¶¯ `NODE21` :
 
    ```bash
    cd NODE21/bin
@@ -861,13 +861,13 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
      -Djava.net.preferIPv4Stack=true -b PUBLIC_IP_ADDRESS
    ```
 
-   å®ƒä¸åº”è¯¥ä½¿ç”¨`NODE11`å’Œ`NODE12`è¿æ¥åˆ°é›†ç¾¤ï¼Œè€Œæ˜¯åˆ†å¼€ä¸€ä¸ªï¼š
+   Ëü²»Ó¦¸ÃÊ¹ÓÃ`NODE11`ºÍ`NODE12`Á¬½Óµ½¼¯Èº£¬¶øÊÇ·Ö¿ªÒ»¸ö£º
 
    ```
    Received new cluster view for channel keycloak: [node21|0] (1) [node21]
    ```
 
-8. å¯åŠ¨ `NODE22` :
+8. Æô¶¯ `NODE22` :
 
    ```bash
    cd NODE22/bin
@@ -876,200 +876,200 @@ Keycloakç«¯ä¸Šçš„Infinispanç¼“å­˜å¿…é¡»é…ç½®ä¸º[remoteStore](http://infinispan.
      -Djava.net.preferIPv4Stack=true -b PUBLIC_IP_ADDRESS
    ```
 
-   å®ƒåº”è¯¥åœ¨ä¸`NODE21`çš„é›†ç¾¤ä¸­ï¼š
+   ËüÓ¦¸ÃÔÚÓë`NODE21`µÄ¼¯ÈºÖĞ£º
 
    ```
    Received new cluster view for channel keycloak: [node21|1] (2) [node21, node22]
    ```
 
-   > æ—¥å¿—ä¸­çš„é€šé“åç§°å¯èƒ½ä¸åŒã€‚ 
+   > ÈÕÖ¾ÖĞµÄÍ¨µÀÃû³Æ¿ÉÄÜ²»Í¬¡£ 
 
-9. æµ‹è¯•:
+9. ²âÊÔ:
 
-   1. è½¬åˆ° `http://node11:8080/auth/` å¹¶åˆ›å»ºåˆå§‹ç®¡ç†å‘˜ç”¨æˆ·ã€‚
+   1. ×ªµ½ `http://node11:8080/auth/` ²¢´´½¨³õÊ¼¹ÜÀíÔ±ÓÃ»§¡£
 
-   2. è½¬åˆ° `http://node11:8080/auth/admin` å¹¶ä»¥adminèº«ä»½ç™»å½•ç®¡ç†æ§åˆ¶å°ã€‚
+   2. ×ªµ½ `http://node11:8080/auth/admin` ²¢ÒÔadminÉí·İµÇÂ¼¹ÜÀí¿ØÖÆÌ¨¡£
 
-   3. æ‰“å¼€ç¬¬äºŒä¸ªæµè§ˆå™¨å¹¶è½¬åˆ°ä»»ä½•èŠ‚ç‚¹ `http://node12:8080/auth/admin` æˆ–`http://node21:8080/auth/admin` æˆ–  `http://node22:8080/auth/admin` ã€‚ ç™»å½•åï¼Œæ‚¨åº”è¯¥èƒ½å¤Ÿåœ¨æ‰€æœ‰4å°æœåŠ¡å™¨ä¸Šçš„ç‰¹å®šç”¨æˆ·ï¼Œå®¢æˆ·ç«¯æˆ–é¢†åŸŸçš„â€œä¼šè¯â€é€‰é¡¹å¡ä¸­çœ‹åˆ°ç›¸åŒçš„ä¼šè¯ã€‚
+   3. ´ò¿ªµÚ¶ş¸öä¯ÀÀÆ÷²¢×ªµ½ÈÎºÎ½Úµã `http://node12:8080/auth/admin` »ò`http://node21:8080/auth/admin` »ò  `http://node22:8080/auth/admin` ¡£ µÇÂ¼ºó£¬ÄúÓ¦¸ÃÄÜ¹»ÔÚËùÓĞ4Ì¨·şÎñÆ÷ÉÏµÄÌØ¶¨ÓÃ»§£¬¿Í»§¶Ë»òÁìÓòµÄ¡°»á»°¡±Ñ¡Ïî¿¨ÖĞ¿´µ½ÏàÍ¬µÄ»á»°¡£
 
-   4. åœ¨å¯¹Keycloakç®¡ç†æ§åˆ¶å°è¿›è¡Œä»»ä½•æ›´æ”¹åï¼ˆä¾‹å¦‚ï¼Œæ›´æ–°æŸäº›ç”¨æˆ·æˆ–æŸäº›é¢†åŸŸï¼‰ï¼Œæ›´æ–°åº”ç«‹å³åœ¨4ä¸ªèŠ‚ç‚¹ä¸­çš„ä»»ä½•ä¸€ä¸ªä¸Šå¯è§ï¼Œå› ä¸ºç¼“å­˜åº”åœ¨ä»»ä½•åœ°æ–¹æ­£ç¡®æ— æ•ˆã€‚
+   4. ÔÚ¶ÔKeycloak¹ÜÀí¿ØÖÆÌ¨½øĞĞÈÎºÎ¸ü¸Äºó£¨ÀıÈç£¬¸üĞÂÄ³Ğ©ÓÃ»§»òÄ³Ğ©ÁìÓò£©£¬¸üĞÂÓ¦Á¢¼´ÔÚ4¸ö½ÚµãÖĞµÄÈÎºÎÒ»¸öÉÏ¿É¼û£¬ÒòÎª»º´æÓ¦ÔÚÈÎºÎµØ·½ÕıÈ·ÎŞĞ§¡£
 
-   5. å¦‚æœéœ€è¦ï¼Œè¯·æ£€æŸ¥server.logsã€‚ ç™»å½•æˆ–æ³¨é”€åï¼Œè¿™æ ·çš„æ¶ˆæ¯åº”è¯¥åœ¨æ‰€æœ‰èŠ‚ç‚¹ä¸Š `NODEXY/standalone/log/server.log`ï¼š
+   5. Èç¹ûĞèÒª£¬Çë¼ì²éserver.logs¡£ µÇÂ¼»ò×¢Ïúºó£¬ÕâÑùµÄÏûÏ¢Ó¦¸ÃÔÚËùÓĞ½ÚµãÉÏ `NODEXY/standalone/log/server.log`£º
 
       ```
       2017-08-25 17:35:17,737 DEBUG [org.keycloak.models.sessions.infinispan.remotestore.RemoteCacheSessionListener] (Client-Listener-sessions-30012a77422542f5) Received event from remote store.
       Event 'CLIENT_CACHE_ENTRY_REMOVED', key '193489e7-e2bc-4069-afe8-f1dfa73084ea', skip 'false'
       ```
 
-#### 3.4.9. è·¨DCéƒ¨ç½²çš„ç®¡ç†
+#### 3.4.9. ¿çDC²¿ÊğµÄ¹ÜÀí {#}
 
-æœ¬èŠ‚åŒ…å«ä¸è·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶ç›¸å…³çš„ä¸€äº›æç¤ºå’Œé€‰é¡¹ã€‚
+±¾½Ú°üº¬Óë¿çÊı¾İÖĞĞÄ¸´ÖÆÏà¹ØµÄÒ»Ğ©ÌáÊ¾ºÍÑ¡Ïî¡£
 
-- å½“æ‚¨åœ¨æ•°æ®ä¸­å¿ƒå†…è¿è¡ŒKeycloakæœåŠ¡å™¨æ—¶ï¼Œ éœ€è¦åœ¨ `KeycloakDS` æ•°æ®æºä¸­å¼•ç”¨çš„æ•°æ®åº“å·²ç»åœ¨è¯¥æ•°æ®ä¸­å¿ƒä¸­è¿è¡Œå¹¶å¯ç”¨ã€‚ `outbound-socket-binding`å¼•ç”¨çš„InfinispanæœåŠ¡å™¨ä¹Ÿæ˜¯å¿…è¦çš„ï¼Œ ä»Infinispanç¼“å­˜`remote-store`å…ƒç´ å¼•ç”¨çš„,å·²ç»åœ¨è¿è¡Œã€‚å¦åˆ™KeycloakæœåŠ¡å™¨å°†æ— æ³•å¯åŠ¨ã€‚
-- å¦‚æœè¦æ”¯æŒæ•°æ®åº“æ•…éšœè½¬ç§»å’Œæ›´é«˜çš„å¯é æ€§ï¼Œæ¯ä¸ªæ•°æ®ä¸­å¿ƒéƒ½å¯ä»¥æ‹¥æœ‰æ›´å¤šæ•°æ®åº“èŠ‚ç‚¹ã€‚ æœ‰å…³å¦‚ä½•åœ¨æ•°æ®åº“ç«¯è¿›è¡Œè®¾ç½®ä»¥åŠå¦‚ä½•åœ¨Keycloakç«¯é…ç½®`KeycloakDS`æ•°æ®æºçš„è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…æ•°æ®åº“å’ŒJDBCé©±åŠ¨ç¨‹åºçš„æ–‡æ¡£ã€‚
-- æ¯ä¸ªæ•°æ®ä¸­å¿ƒéƒ½å¯ä»¥åœ¨é›†ç¾¤ä¸­è¿è¡Œæ›´å¤šInfinispanæœåŠ¡å™¨ã€‚ å¦‚æœæ‚¨éœ€è¦ä¸€äº›æ•…éšœè½¬ç§»å’Œæ›´å¥½çš„å®¹é”™èƒ½åŠ›ï¼Œè¿™å°†éå¸¸æœ‰ç”¨ã€‚ ç”¨äºInfinispanæœåŠ¡å™¨å’ŒKeycloakæœåŠ¡å™¨ä¹‹é—´é€šä¿¡çš„HotRodåè®®å…·æœ‰ä»¥ä¸‹åŠŸèƒ½ï¼šInfinispanæœåŠ¡å™¨å°†è‡ªåŠ¨å‘KeycloakæœåŠ¡å™¨å‘é€æœ‰å…³Infinispanç¾¤é›†æ›´æ”¹çš„æ–°æ‹“æ‰‘ï¼Œ å› æ­¤ï¼ŒKeycloakç«¯çš„è¿œç¨‹å­˜å‚¨å°†çŸ¥é“å®ƒå¯ä»¥è¿æ¥åˆ°å“ªä¸ªInfinispanæœåŠ¡å™¨ã€‚é˜…è¯»Infinispanå’ŒWildFlyæ–‡æ¡£äº†è§£æ›´å¤šç»†èŠ‚ã€‚
-- å¼ºçƒˆå»ºè®®åœ¨å¯åŠ¨**ä»»ä½•**ç«™ç‚¹ä¸­çš„KeycloakæœåŠ¡å™¨ä¹‹å‰ï¼Œåœ¨æ¯ä¸ªç«™ç‚¹ä¸­è¿è¡Œä¸€ä¸ªä¸»InfinispanæœåŠ¡å™¨ã€‚ åœ¨æˆ‘ä»¬çš„ä¾‹å­ä¸­ï¼Œæˆ‘ä»¬é¦–å…ˆåœ¨æ‰€æœ‰KeycloakæœåŠ¡å™¨ä¹‹å‰å¯åŠ¨äº†`jdg1`å’Œ`jdg2`ã€‚ å¦‚æœæ‚¨ä»ç„¶éœ€è¦è¿è¡ŒKeycloakæœåŠ¡å™¨å¹¶ä¸”å¤‡ä»½ç«™ç‚¹å¤„äºè„±æœºçŠ¶æ€ï¼Œå»ºè®®æ‚¨åœ¨ç«™ç‚¹ä¸Šçš„InfinispanæœåŠ¡å™¨ä¸Šæ‰‹åŠ¨åˆ‡æ¢å¤‡ä»½ç«™ç‚¹ï¼Œå¦‚[ä½¿ç«™ç‚¹è„±æœºå¹¶è”æœº](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline)ä¸­æ‰€è¿°ã€‚ å¦‚æœä¸æ‰‹åŠ¨å°†ä¸å¯ç”¨ç«™ç‚¹è„±æœºï¼Œåˆ™ç¬¬ä¸€æ¬¡å¯åŠ¨å¯èƒ½ä¼šå¤±è´¥ï¼Œæˆ–è€…åœ¨å¯åŠ¨æœŸé—´å¯èƒ½ä¼šå‡ºç°ä¸€äº›å¼‚å¸¸ï¼Œç›´åˆ°å¤‡ä»½ç«™ç‚¹å› é…ç½®çš„å¤±è´¥æ“ä½œè®¡æ•°è€Œè‡ªåŠ¨è„±æœºã€‚
+- µ±ÄúÔÚÊı¾İÖĞĞÄÄÚÔËĞĞKeycloak·şÎñÆ÷Ê±£¬ ĞèÒªÔÚ `KeycloakDS` Êı¾İÔ´ÖĞÒıÓÃµÄÊı¾İ¿âÒÑ¾­ÔÚ¸ÃÊı¾İÖĞĞÄÖĞÔËĞĞ²¢¿ÉÓÃ¡£ `outbound-socket-binding`ÒıÓÃµÄInfinispan·şÎñÆ÷Ò²ÊÇ±ØÒªµÄ£¬ ´ÓInfinispan»º´æ`remote-store`ÔªËØÒıÓÃµÄ,ÒÑ¾­ÔÚÔËĞĞ¡£·ñÔòKeycloak·şÎñÆ÷½«ÎŞ·¨Æô¶¯¡£
+- Èç¹ûÒªÖ§³ÖÊı¾İ¿â¹ÊÕÏ×ªÒÆºÍ¸ü¸ßµÄ¿É¿¿ĞÔ£¬Ã¿¸öÊı¾İÖĞĞÄ¶¼¿ÉÒÔÓµÓĞ¸ü¶àÊı¾İ¿â½Úµã¡£ ÓĞ¹ØÈçºÎÔÚÊı¾İ¿â¶Ë½øĞĞÉèÖÃÒÔ¼°ÈçºÎÔÚKeycloak¶ËÅäÖÃ`KeycloakDS`Êı¾İÔ´µÄÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄÊı¾İ¿âºÍJDBCÇı¶¯³ÌĞòµÄÎÄµµ¡£
+- Ã¿¸öÊı¾İÖĞĞÄ¶¼¿ÉÒÔÔÚ¼¯ÈºÖĞÔËĞĞ¸ü¶àInfinispan·şÎñÆ÷¡£ Èç¹ûÄúĞèÒªÒ»Ğ©¹ÊÕÏ×ªÒÆºÍ¸üºÃµÄÈİ´íÄÜÁ¦£¬Õâ½«·Ç³£ÓĞÓÃ¡£ ÓÃÓÚInfinispan·şÎñÆ÷ºÍKeycloak·şÎñÆ÷Ö®¼äÍ¨ĞÅµÄHotRodĞ­Òé¾ßÓĞÒÔÏÂ¹¦ÄÜ£ºInfinispan·şÎñÆ÷½«×Ô¶¯ÏòKeycloak·şÎñÆ÷·¢ËÍÓĞ¹ØInfinispanÈº¼¯¸ü¸ÄµÄĞÂÍØÆË£¬ Òò´Ë£¬Keycloak¶ËµÄÔ¶³Ì´æ´¢½«ÖªµÀËü¿ÉÒÔÁ¬½Óµ½ÄÄ¸öInfinispan·şÎñÆ÷¡£ÔÄ¶ÁInfinispanºÍWildFlyÎÄµµÁË½â¸ü¶àÏ¸½Ú¡£
+- Ç¿ÁÒ½¨ÒéÔÚÆô¶¯**ÈÎºÎ**Õ¾µãÖĞµÄKeycloak·şÎñÆ÷Ö®Ç°£¬ÔÚÃ¿¸öÕ¾µãÖĞÔËĞĞÒ»¸öÖ÷Infinispan·şÎñÆ÷¡£ ÔÚÎÒÃÇµÄÀı×ÓÖĞ£¬ÎÒÃÇÊ×ÏÈÔÚËùÓĞKeycloak·şÎñÆ÷Ö®Ç°Æô¶¯ÁË`jdg1`ºÍ`jdg2`¡£ Èç¹ûÄúÈÔÈ»ĞèÒªÔËĞĞKeycloak·şÎñÆ÷²¢ÇÒ±¸·İÕ¾µã´¦ÓÚÍÑ»ú×´Ì¬£¬½¨ÒéÄúÔÚÕ¾µãÉÏµÄInfinispan·şÎñÆ÷ÉÏÊÖ¶¯ÇĞ»»±¸·İÕ¾µã£¬Èç[Ê¹Õ¾µãÍÑ»ú²¢Áª»ú](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline)ÖĞËùÊö¡£ Èç¹û²»ÊÖ¶¯½«²»¿ÉÓÃÕ¾µãÍÑ»ú£¬ÔòµÚÒ»´ÎÆô¶¯¿ÉÄÜ»áÊ§°Ü£¬»òÕßÔÚÆô¶¯ÆÚ¼ä¿ÉÄÜ»á³öÏÖÒ»Ğ©Òì³££¬Ö±µ½±¸·İÕ¾µãÒòÅäÖÃµÄÊ§°Ü²Ù×÷¼ÆÊı¶ø×Ô¶¯ÍÑ»ú¡£
 
-#### 3.4.10. ä½¿ç½‘ç«™è„±æœºå’Œåœ¨çº¿
+#### 3.4.10. Ê¹ÍøÕ¾ÍÑ»úºÍÔÚÏß {#}
 
-ä¾‹å¦‚ï¼Œå‡è®¾è¿™ç§æƒ…å†µï¼š
+ÀıÈç£¬¼ÙÉèÕâÖÖÇé¿ö£º
 
-1. ç«™ç‚¹`site2`ä»`site1`è§’åº¦å®Œå…¨è„±æœºã€‚ è¿™æ„å‘³ç€`site2`ä¸Šçš„æ‰€æœ‰InfinispanæœåŠ¡å™¨éƒ½å…³é—­**æˆ–è€…`site1`å’Œ`site2`ä¹‹é—´çš„ç½‘ç»œè¢«ç ´åäº†ã€‚
-2. æ‚¨åœ¨ç«™ç‚¹`site1`ä¸­è¿è¡ŒKeycloakæœåŠ¡å™¨å’ŒInfinispanæœåŠ¡å™¨`jdg1`
-3. æœ‰äººåœ¨`site1`ä¸Šçš„KeycloakæœåŠ¡å™¨ä¸Šç™»å½•ã€‚
-4. æ¥è‡ª`site1`çš„KeycloakæœåŠ¡å™¨å°†å°è¯•å°†ä¼šè¯å†™å…¥`jdg1`æœåŠ¡å™¨ä¸Šçš„è¿œç¨‹ç¼“å­˜ï¼Œè¯¥æœåŠ¡å™¨åº”è¯¥å°†æ•°æ®å¤‡ä»½åˆ°`site2`ä¸­çš„`jdg2`æœåŠ¡å™¨ã€‚ æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[é€šä¿¡è¯¦ç»†ä¿¡æ¯](https://www.keycloak.org/docs/latest/server_installation/index.html#communication)ã€‚
-5. æœåŠ¡å™¨`jdg2`ç¦»çº¿æˆ–æ— æ³•è®¿é—®`jdg1`ã€‚ æ‰€ä»¥ä»`jdg1`åˆ°`jdg2`çš„å¤‡ä»½å°†å¤±è´¥ã€‚
-6. åœ¨`jdg1`æ—¥å¿—ä¸­æŠ›å‡ºå¼‚å¸¸ï¼Œæ•…éšœä¹Ÿå°†ä»`jdg1`æœåŠ¡å™¨ä¼ æ’­åˆ°KeycloakæœåŠ¡å™¨ï¼Œå› ä¸ºé…ç½®äº†é»˜è®¤çš„`FAIL`å¤‡ä»½å¤±è´¥ç­–ç•¥ã€‚ æœ‰å…³å¤‡ä»½ç­–ç•¥çš„è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[å¤‡ä»½å¤±è´¥ç­–ç•¥](https://www.keycloak.org/docs/latest/server_installation/index.html#backupfailure)ã€‚
-7. é”™è¯¯ä¹Ÿä¼šåœ¨Keycloakæ–¹é¢å‘ç”Ÿï¼Œç”¨æˆ·å¯èƒ½æ— æ³•å®Œæˆç™»å½•ã€‚
+1. Õ¾µã`site2`´Ó`site1`½Ç¶ÈÍêÈ«ÍÑ»ú¡£ ÕâÒâÎ¶×Å`site2`ÉÏµÄËùÓĞInfinispan·şÎñÆ÷¶¼¹Ø±Õ**»òÕß`site1`ºÍ`site2`Ö®¼äµÄÍøÂç±»ÆÆ»µÁË¡£
+2. ÄúÔÚÕ¾µã`site1`ÖĞÔËĞĞKeycloak·şÎñÆ÷ºÍInfinispan·şÎñÆ÷`jdg1`
+3. ÓĞÈËÔÚ`site1`ÉÏµÄKeycloak·şÎñÆ÷ÉÏµÇÂ¼¡£
+4. À´×Ô`site1`µÄKeycloak·şÎñÆ÷½«³¢ÊÔ½«»á»°Ğ´Èë`jdg1`·şÎñÆ÷ÉÏµÄÔ¶³Ì»º´æ£¬¸Ã·şÎñÆ÷Ó¦¸Ã½«Êı¾İ±¸·İµ½`site2`ÖĞµÄ`jdg2`·şÎñÆ÷¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[Í¨ĞÅÏêÏ¸ĞÅÏ¢](https://www.keycloak.org/docs/latest/server_installation/index.html#communication)¡£
+5. ·şÎñÆ÷`jdg2`ÀëÏß»òÎŞ·¨·ÃÎÊ`jdg1`¡£ ËùÒÔ´Ó`jdg1`µ½`jdg2`µÄ±¸·İ½«Ê§°Ü¡£
+6. ÔÚ`jdg1`ÈÕÖ¾ÖĞÅ×³öÒì³££¬¹ÊÕÏÒ²½«´Ó`jdg1`·şÎñÆ÷´«²¥µ½Keycloak·şÎñÆ÷£¬ÒòÎªÅäÖÃÁËÄ¬ÈÏµÄ`FAIL`±¸·İÊ§°Ü²ßÂÔ¡£ ÓĞ¹Ø±¸·İ²ßÂÔµÄÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[±¸·İÊ§°Ü²ßÂÔ](https://www.keycloak.org/docs/latest/server_installation/index.html#backupfailure)¡£
+7. ´íÎóÒ²»áÔÚKeycloak·½Ãæ·¢Éú£¬ÓÃ»§¿ÉÄÜÎŞ·¨Íê³ÉµÇÂ¼¡£
 
-æ ¹æ®æ‚¨çš„ç¯å¢ƒï¼Œç«™ç‚¹ä¹‹é—´çš„ç½‘ç»œå¯èƒ½æˆ–å¤šæˆ–å°‘å¯èƒ½ä¸å¯ç”¨æˆ–æš‚æ—¶ä¸­æ–­ï¼ˆè£‚è„‘ï¼‰ã€‚å¦‚æœå‘ç”Ÿè¿™ç§æƒ…å†µï¼Œæœ€å¥½æ˜¯`site1`ä¸Šçš„InfinispanæœåŠ¡å™¨çŸ¥é“`site2`ä¸Šçš„InfinispanæœåŠ¡å™¨ä¸å¯ç”¨ï¼Œå› æ­¤å®ƒä»¬å°†åœæ­¢å°è¯•è®¿é—®`jdg2`ç«™ç‚¹ä¸Šçš„æœåŠ¡å™¨ï¼Œå¹¶ä¸”ä¸ä¼šå‘ç”Ÿå¤‡ä»½æ•…éšœã€‚è¿™å°±æ˜¯æ‰€è°“çš„â€œè®©ç½‘ç«™è„±æœºâ€ã€‚
+¸ù¾İÄúµÄ»·¾³£¬Õ¾µãÖ®¼äµÄÍøÂç¿ÉÄÜ»ò¶à»òÉÙ¿ÉÄÜ²»¿ÉÓÃ»òÔİÊ±ÖĞ¶Ï£¨ÁÑÄÔ£©¡£Èç¹û·¢ÉúÕâÖÖÇé¿ö£¬×îºÃÊÇ`site1`ÉÏµÄInfinispan·şÎñÆ÷ÖªµÀ`site2`ÉÏµÄInfinispan·şÎñÆ÷²»¿ÉÓÃ£¬Òò´ËËüÃÇ½«Í£Ö¹³¢ÊÔ·ÃÎÊ`jdg2`Õ¾µãÉÏµÄ·şÎñÆ÷£¬²¢ÇÒ²»»á·¢Éú±¸·İ¹ÊÕÏ¡£Õâ¾ÍÊÇËùÎ½µÄ¡°ÈÃÍøÕ¾ÍÑ»ú¡±¡£
 
-ä½¿ç½‘ç«™è„±æœº
+Ê¹ÍøÕ¾ÍÑ»ú
 
-æœ‰ä¸¤ç§æ–¹æ³•å¯ä»¥ä½¿ç½‘ç«™è„±æœºã€‚
+ÓĞÁ½ÖÖ·½·¨¿ÉÒÔÊ¹ÍøÕ¾ÍÑ»ú¡£
 
-**ç”±ç®¡ç†å‘˜æ‰‹åŠ¨** - ç®¡ç†å‘˜å¯ä»¥ä½¿ç”¨`jconsole`æˆ–å…¶ä»–å·¥å…·è¿è¡Œä¸€äº›JMXæ“ä½œæ¥æ‰‹åŠ¨ä½¿ç‰¹å®šç«™ç‚¹è„±æœºã€‚ è¿™éå¸¸æœ‰ç”¨ï¼Œå°¤å…¶æ˜¯åœ¨è®¡åˆ’ä¸­æ–­æ—¶ã€‚ä½¿ç”¨`jconsole`æˆ–CLIï¼Œæ‚¨å¯ä»¥è¿æ¥åˆ°`jdg1`æœåŠ¡å™¨å¹¶ä½¿`site2`è„±æœºã€‚ æœ‰å…³è¿™æ–¹é¢çš„æ›´å¤šè¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚è§[JDGæ–‡æ¡£](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication#taking_a_site_offline)ã€‚
+**ÓÉ¹ÜÀíÔ±ÊÖ¶¯** - ¹ÜÀíÔ±¿ÉÒÔÊ¹ÓÃ`jconsole`»òÆäËû¹¤¾ßÔËĞĞÒ»Ğ©JMX²Ù×÷À´ÊÖ¶¯Ê¹ÌØ¶¨Õ¾µãÍÑ»ú¡£ Õâ·Ç³£ÓĞÓÃ£¬ÓÈÆäÊÇÔÚ¼Æ»®ÖĞ¶ÏÊ±¡£Ê¹ÓÃ`jconsole`»òCLI£¬Äú¿ÉÒÔÁ¬½Óµ½`jdg1`·şÎñÆ÷²¢Ê¹`site2`ÍÑ»ú¡£ ÓĞ¹ØÕâ·½ÃæµÄ¸ü¶àÏêÏ¸ĞÅÏ¢£¬Çë²Î¼û[JDGÎÄµµ](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication#taking_a_site_offline)¡£
 
-> é€šå¸¸éœ€è¦å¯¹[SYNCæˆ–ASYNCå¤‡ä»½](https://www.keycloak.org/docs/latest/server_installation/index.html#backups)ä¸­æåˆ°çš„æ‰€æœ‰Keycloakç¼“å­˜æ‰§è¡Œè¿™äº›æ­¥éª¤ã€‚ 
+> Í¨³£ĞèÒª¶Ô[SYNC»òASYNC±¸·İ](https://www.keycloak.org/docs/latest/server_installation/index.html#backups)ÖĞÌáµ½µÄËùÓĞKeycloak»º´æÖ´ĞĞÕâĞ©²½Öè¡£ 
 
-**è‡ªåŠ¨** - ç»è¿‡ä¸€å®šæ•°é‡çš„å¤±è´¥å¤‡ä»½åï¼Œ`site2`é€šå¸¸ä¼šè‡ªåŠ¨è„±æœºã€‚ è¿™æ˜¯é€šè¿‡åœ¨[InfinispanæœåŠ¡å™¨è®¾ç½®](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup)ä¸­é…ç½®çš„ç¼“å­˜é…ç½®ä¸­çš„`take-offline`å…ƒç´ çš„é…ç½®æ¥å®Œæˆçš„ã€‚
+**×Ô¶¯** - ¾­¹ıÒ»¶¨ÊıÁ¿µÄÊ§°Ü±¸·İºó£¬`site2`Í¨³£»á×Ô¶¯ÍÑ»ú¡£ ÕâÊÇÍ¨¹ıÔÚ[Infinispan·şÎñÆ÷ÉèÖÃ](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup)ÖĞÅäÖÃµÄ»º´æÅäÖÃÖĞµÄ`take-offline`ÔªËØµÄÅäÖÃÀ´Íê³ÉµÄ¡£
 
 ```xml
 <take-offline min-wait="60000" after-failures="3" />
 ```
 
-è¿™ä¸ªç¤ºä¾‹æ˜¾ç¤ºï¼Œå¦‚æœåœ¨60ç§’å†…è‡³å°‘æœ‰3ä¸ªåç»­å¤‡ä»½å¤±è´¥ï¼Œå¹¶ä¸”æ²¡æœ‰ä»»ä½•æˆåŠŸå¤‡ä»½ï¼Œé‚£ä¹ˆå¯¹äºç‰¹å®šçš„å•ä¸ªç¼“å­˜ï¼Œç«™ç‚¹å°†è‡ªåŠ¨è„±æœºã€‚
+Õâ¸öÊ¾ÀıÏÔÊ¾£¬Èç¹ûÔÚ60ÃëÄÚÖÁÉÙÓĞ3¸öºóĞø±¸·İÊ§°Ü£¬²¢ÇÒÃ»ÓĞÈÎºÎ³É¹¦±¸·İ£¬ÄÇÃ´¶ÔÓÚÌØ¶¨µÄµ¥¸ö»º´æ£¬Õ¾µã½«×Ô¶¯ÍÑ»ú¡£
 
-è‡ªåŠ¨ä½¿ç«™ç‚¹è„±æœºæ˜¯éå¸¸æœ‰ç”¨çš„ï¼Œç‰¹åˆ«æ˜¯å½“ç«™ç‚¹ä¹‹é—´çš„ç½‘ç»œä¸­æ–­æ˜¯è®¡åˆ’å¤–çš„ã€‚ ç¼ºç‚¹æ˜¯ï¼Œåœ¨æ£€æµ‹åˆ°ç½‘ç»œä¸­æ–­ä¹‹å‰ï¼Œä¼šæœ‰ä¸€äº›å¤±è´¥çš„å¤‡ä»½ï¼Œè¿™ä¹Ÿå¯èƒ½æ„å‘³ç€åº”ç”¨ç¨‹åºç«¯å‡ºç°æ•…éšœã€‚ ä¾‹å¦‚ï¼ŒæŸäº›ç”¨æˆ·çš„ç™»å½•å¤±è´¥æˆ–ç™»å½•è¶…æ—¶å¾ˆé•¿ã€‚ ç‰¹åˆ«æ˜¯å¦‚æœä½¿ç”¨å€¼ä¸º `FAIL` çš„ `failure-policy`ã€‚
+×Ô¶¯Ê¹Õ¾µãÍÑ»úÊÇ·Ç³£ÓĞÓÃµÄ£¬ÌØ±ğÊÇµ±Õ¾µãÖ®¼äµÄÍøÂçÖĞ¶ÏÊÇ¼Æ»®ÍâµÄ¡£ È±µãÊÇ£¬ÔÚ¼ì²âµ½ÍøÂçÖĞ¶ÏÖ®Ç°£¬»áÓĞÒ»Ğ©Ê§°ÜµÄ±¸·İ£¬ÕâÒ²¿ÉÄÜÒâÎ¶×ÅÓ¦ÓÃ³ÌĞò¶Ë³öÏÖ¹ÊÕÏ¡£ ÀıÈç£¬Ä³Ğ©ÓÃ»§µÄµÇÂ¼Ê§°Ü»òµÇÂ¼³¬Ê±ºÜ³¤¡£ ÌØ±ğÊÇÈç¹ûÊ¹ÓÃÖµÎª `FAIL` µÄ `failure-policy`¡£
 
-> æ¯ä¸ªç¼“å­˜éƒ½ä¼šå•ç‹¬è·Ÿè¸ªç«™ç‚¹æ˜¯å¦å¤„äºè„±æœºçŠ¶æ€ã€‚ 
+> Ã¿¸ö»º´æ¶¼»áµ¥¶À¸ú×ÙÕ¾µãÊÇ·ñ´¦ÓÚÍÑ»ú×´Ì¬¡£ 
 
-æŠŠç½‘ç«™åœ¨çº¿
+°ÑÍøÕ¾ÔÚÏß
 
-ä¸€æ—¦ä½ çš„ç½‘ç»œæ¢å¤äº†ï¼Œ`site1` å’Œ `site2` å¯ä»¥äº’ç›¸äº¤è°ˆï¼Œä½ å¯èƒ½éœ€è¦æŠŠç½‘ç«™ä¸Šçº¿ã€‚è¿™éœ€è¦é€šè¿‡JMXæˆ–CLIæ‰‹åŠ¨å®Œæˆï¼Œæ–¹æ³•ç±»ä¼¼äºä½¿ç«™ç‚¹è„±æœºã€‚åŒæ ·ï¼Œæ‚¨å¯èƒ½éœ€è¦æ£€æŸ¥æ‰€æœ‰ç¼“å­˜å¹¶å°†å®ƒä»¬è”æœºã€‚
+Ò»µ©ÄãµÄÍøÂç»Ö¸´ÁË£¬`site1` ºÍ `site2` ¿ÉÒÔ»¥Ïà½»Ì¸£¬Äã¿ÉÄÜĞèÒª°ÑÍøÕ¾ÉÏÏß¡£ÕâĞèÒªÍ¨¹ıJMX»òCLIÊÖ¶¯Íê³É£¬·½·¨ÀàËÆÓÚÊ¹Õ¾µãÍÑ»ú¡£Í¬Ñù£¬Äú¿ÉÄÜĞèÒª¼ì²éËùÓĞ»º´æ²¢½«ËüÃÇÁª»ú¡£
 
-ä¸€æ—¦ç½‘ç«™ä¸Šçº¿ï¼Œé€šå¸¸æœ€å¥½:
+Ò»µ©ÍøÕ¾ÉÏÏß£¬Í¨³£×îºÃ:
 
-- åš[çŠ¶æ€è½¬ç§»](https://www.keycloak.org/docs/latest/server_installation/index.html#statetransfer)ã€‚
-- æ‰‹åŠ¨[æ¸…é™¤ç¼“å­˜](https://www.keycloak.org/docs/latest/server_installation/index.html#clearcache)ã€‚
+- ×ö[×´Ì¬×ªÒÆ](https://www.keycloak.org/docs/latest/server_installation/index.html#statetransfer)¡£
+- ÊÖ¶¯[Çå³ı»º´æ](https://www.keycloak.org/docs/latest/server_installation/index.html#clearcache)¡£
 
-#### 3.4.11. çŠ¶æ€è½¬ç§»
+#### 3.4.11. ×´Ì¬×ªÒÆ {#}
 
-å›½å®¶è½¬ç§»æ˜¯å¿…éœ€çš„æ‰‹åŠ¨æ­¥éª¤ã€‚ InfinispanæœåŠ¡å™¨ä¸ä¼šè‡ªåŠ¨æ‰§è¡Œæ­¤æ“ä½œï¼Œä¾‹å¦‚åœ¨è£‚è„‘æœŸé—´ï¼Œåªæœ‰ç®¡ç†å‘˜å¯ä»¥å†³å®šå“ªä¸ªç«™ç‚¹å…·æœ‰é¦–é€‰é¡¹ï¼Œå› æ­¤æ˜¯å¦éœ€è¦åœ¨ä¸¤ä¸ªç«™ç‚¹ä¹‹é—´åŒå‘è¿›è¡ŒçŠ¶æ€è½¬ç§»ï¼Œæˆ–è€…åªæ˜¯å•å‘è¿›è¡Œï¼Œå¦‚åŒä»…æ¥è‡ª`site1 `åˆ°`site2`ï¼Œä½†ä¸æ˜¯ä»`site2`åˆ°`site1`ã€‚
+¹ú¼Ò×ªÒÆÊÇ±ØĞèµÄÊÖ¶¯²½Öè¡£ Infinispan·şÎñÆ÷²»»á×Ô¶¯Ö´ĞĞ´Ë²Ù×÷£¬ÀıÈçÔÚÁÑÄÔÆÚ¼ä£¬Ö»ÓĞ¹ÜÀíÔ±¿ÉÒÔ¾ö¶¨ÄÄ¸öÕ¾µã¾ßÓĞÊ×Ñ¡Ïî£¬Òò´ËÊÇ·ñĞèÒªÔÚÁ½¸öÕ¾µãÖ®¼äË«Ïò½øĞĞ×´Ì¬×ªÒÆ£¬»òÕßÖ»ÊÇµ¥Ïò½øĞĞ£¬ÈçÍ¬½öÀ´×Ô`site1 `µ½`site2`£¬µ«²»ÊÇ´Ó`site2`µ½`site1`¡£
 
-åŒå‘çŠ¶æ€è½¬ç§»å°†ç¡®ä¿`site1`ä¸Šçš„è£‚è„‘**å**åˆ›å»ºçš„å®ä½“è¢«è½¬ç§»åˆ°`site2`ä¸Šã€‚ è¿™ä¸æ˜¯é—®é¢˜ï¼Œå› ä¸ºå®ƒä»¬åœ¨`site2`ä¸Šè¿˜ä¸å­˜åœ¨ã€‚ ç±»ä¼¼åœ°ï¼Œåœ¨`site2`ä¸Šè£‚è„‘**å**åˆ›å»ºçš„å®ä½“å°†è¢«è½¬ç§»åˆ°`site1`ä¸Šã€‚ å¯èƒ½æœ‰é—®é¢˜çš„éƒ¨åˆ†æ˜¯é‚£äº›åœ¨ä¸¤ä¸ªç«™ç‚¹ä¸Šçš„è£‚è„‘**ä¹‹å‰**å­˜åœ¨å¹¶ä¸”åœ¨ä¸¤ä¸ªç«™ç‚¹ä¸Šçš„è£‚è„‘æœŸé—´æ›´æ–°çš„å®ä½“ã€‚ å½“è¿™ç§æƒ…å†µå‘ç”Ÿæ—¶ï¼Œå…¶ä¸­ä¸€ä¸ªç«™ç‚¹å°†**èƒœå‡º**ï¼Œå¹¶è¦†ç›–ç¬¬äºŒä¸ªç«™ç‚¹åœ¨è„‘è£‚æœŸé—´å®Œæˆçš„æ›´æ–°ã€‚
+Ë«Ïò×´Ì¬×ªÒÆ½«È·±£`site1`ÉÏµÄÁÑÄÔ**ºó**´´½¨µÄÊµÌå±»×ªÒÆµ½`site2`ÉÏ¡£ Õâ²»ÊÇÎÊÌâ£¬ÒòÎªËüÃÇÔÚ`site2`ÉÏ»¹²»´æÔÚ¡£ ÀàËÆµØ£¬ÔÚ`site2`ÉÏÁÑÄÔ**ºó**´´½¨µÄÊµÌå½«±»×ªÒÆµ½`site1`ÉÏ¡£ ¿ÉÄÜÓĞÎÊÌâµÄ²¿·ÖÊÇÄÇĞ©ÔÚÁ½¸öÕ¾µãÉÏµÄÁÑÄÔ**Ö®Ç°**´æÔÚ²¢ÇÒÔÚÁ½¸öÕ¾µãÉÏµÄÁÑÄÔÆÚ¼ä¸üĞÂµÄÊµÌå¡£ µ±ÕâÖÖÇé¿ö·¢ÉúÊ±£¬ÆäÖĞÒ»¸öÕ¾µã½«**Ê¤³ö**£¬²¢¸²¸ÇµÚ¶ş¸öÕ¾µãÔÚÄÔÁÑÆÚ¼äÍê³ÉµÄ¸üĞÂ¡£
 
-ä¸å¹¸çš„æ˜¯ï¼Œæ²¡æœ‰ä»»ä½•é€šç”¨çš„è§£å†³æ–¹æ¡ˆã€‚ è„‘è£‚å’Œç½‘ç»œä¸­æ–­åªæ˜¯çŠ¶æ€ï¼Œé€šå¸¸ä¸å¯èƒ½100%æ­£ç¡®åœ°å¤„ç†ç«™ç‚¹ä¹‹é—´100%ä¸€è‡´çš„æ•°æ®ã€‚ å°±Keycloakè€Œè¨€ï¼Œå®ƒé€šå¸¸ä¸æ˜¯ä¸€ä¸ªå…³é”®é—®é¢˜ã€‚ åœ¨æœ€åçš„æƒ…å†µä¸‹ï¼Œç”¨æˆ·éœ€è¦é‡æ–°ç™»å½•åˆ°ä»–ä»¬çš„å®¢æˆ·ç«¯ï¼Œæˆ–è€…æœ‰ä¸æ­£ç¡®çš„loginFailuresè®¡æ•°ç”¨äºå¼ºåŠ›ä¿æŠ¤ã€‚ æœ‰å…³å¦‚ä½•å¤„ç†è£‚è„‘çš„æ›´å¤šæç¤ºï¼Œè¯·å‚é˜…Infinispan/JGroupsæ–‡æ¡£ã€‚
+²»ĞÒµÄÊÇ£¬Ã»ÓĞÈÎºÎÍ¨ÓÃµÄ½â¾ö·½°¸¡£ ÄÔÁÑºÍÍøÂçÖĞ¶ÏÖ»ÊÇ×´Ì¬£¬Í¨³£²»¿ÉÄÜ100%ÕıÈ·µØ´¦ÀíÕ¾µãÖ®¼ä100%Ò»ÖÂµÄÊı¾İ¡£ ¾ÍKeycloak¶øÑÔ£¬ËüÍ¨³£²»ÊÇÒ»¸ö¹Ø¼üÎÊÌâ¡£ ÔÚ×î»µµÄÇé¿öÏÂ£¬ÓÃ»§ĞèÒªÖØĞÂµÇÂ¼µ½ËûÃÇµÄ¿Í»§¶Ë£¬»òÕßÓĞ²»ÕıÈ·µÄloginFailures¼ÆÊıÓÃÓÚÇ¿Á¦±£»¤¡£ ÓĞ¹ØÈçºÎ´¦ÀíÁÑÄÔµÄ¸ü¶àÌáÊ¾£¬Çë²ÎÔÄInfinispan/JGroupsÎÄµµ¡£
 
-çŠ¶æ€è½¬ç§»ä¹Ÿå¯ä»¥é€šè¿‡JMXåœ¨InfinispanæœåŠ¡å™¨ç«¯å®Œæˆã€‚ æ“ä½œåç§°æ˜¯`pushState`ã€‚ å‡ ä¹æ²¡æœ‰å…¶ä»–æ“ä½œæ¥ç›‘è§†çŠ¶æ€ï¼Œå–æ¶ˆæ¨é€çŠ¶æ€ç­‰ã€‚ æœ‰å…³çŠ¶æ€è½¬ç§»çš„æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚é˜…[Infinispan docs](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication#pushing_state_transfer_to_sites)ã€‚
+×´Ì¬×ªÒÆÒ²¿ÉÒÔÍ¨¹ıJMXÔÚInfinispan·şÎñÆ÷¶ËÍê³É¡£ ²Ù×÷Ãû³ÆÊÇ`pushState`¡£ ¼¸ºõÃ»ÓĞÆäËû²Ù×÷À´¼àÊÓ×´Ì¬£¬È¡ÏûÍÆËÍ×´Ì¬µÈ¡£ ÓĞ¹Ø×´Ì¬×ªÒÆµÄ¸ü¶àĞÅÏ¢£¬Çë²ÎÔÄ[Infinispan docs](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication#pushing_state_transfer_to_sites)¡£
 
-#### 3.4.12. æ¸…é™¤ç¼“å­˜
+#### 3.4.12. Çå³ı»º´æ {#}
 
-åœ¨è„‘è£‚ä¹‹åï¼Œå¯ä»¥å®‰å…¨åœ°åœ¨Keycloakç®¡ç†æ§åˆ¶å°ä¸­æ‰‹åŠ¨æ¸…é™¤ç¼“å­˜ã€‚ è¿™æ˜¯å› ä¸ºåœ¨`site1`ä¸Šçš„æ•°æ®åº“ä¸­å¯èƒ½å­˜åœ¨ä¸€äº›æ•°æ®å‘ç”Ÿäº†å˜åŒ–ï¼Œå¹¶ä¸”ç”±äºè¯¥äº‹ä»¶ï¼Œç¼“å­˜åº”è¯¥è¢«æ— æ•ˆï¼Œå¹¶ä¸”åœ¨è„‘è£‚æœŸé—´æ²¡æœ‰è¢«è½¬ç§»åˆ°`site2`ã€‚ å› æ­¤ï¼Œ`site2`ä¸Šçš„KeycloakèŠ‚ç‚¹å¯èƒ½ä»ç„¶åœ¨å…¶ç¼“å­˜ä¸­æœ‰ä¸€äº›é™ˆæ—§çš„æ•°æ®ã€‚
+ÔÚÄÔÁÑÖ®ºó£¬¿ÉÒÔ°²È«µØÔÚKeycloak¹ÜÀí¿ØÖÆÌ¨ÖĞÊÖ¶¯Çå³ı»º´æ¡£ ÕâÊÇÒòÎªÔÚ`site1`ÉÏµÄÊı¾İ¿âÖĞ¿ÉÄÜ´æÔÚÒ»Ğ©Êı¾İ·¢ÉúÁË±ä»¯£¬²¢ÇÒÓÉÓÚ¸ÃÊÂ¼ş£¬»º´æÓ¦¸Ã±»ÎŞĞ§£¬²¢ÇÒÔÚÄÔÁÑÆÚ¼äÃ»ÓĞ±»×ªÒÆµ½`site2`¡£ Òò´Ë£¬`site2`ÉÏµÄKeycloak½Úµã¿ÉÄÜÈÔÈ»ÔÚÆä»º´æÖĞÓĞÒ»Ğ©³Â¾ÉµÄÊı¾İ¡£
 
-è¦æ¸…é™¤ç¼“å­˜ï¼Œè¯·å‚é˜…[æ¸…é™¤æœåŠ¡å™¨ç¼“å­˜](https://www.keycloak.org/docs/6.0/server_admin/#_clear-cache)ã€‚
+ÒªÇå³ı»º´æ£¬Çë²ÎÔÄ[Çå³ı·şÎñÆ÷»º´æ](https://www.keycloak.org/docs/6.0/server_admin/#_clear-cache)¡£
 
-å½“ç½‘ç»œæ¢å¤æ—¶ï¼Œä»…åœ¨ä»»ä½•éšæœºç«™ç‚¹ä¸Šçš„ä¸€ä¸ªKeycloakèŠ‚ç‚¹ä¸Šæ¸…é™¤ç¼“å­˜å°±è¶³å¤Ÿäº†ã€‚ ç¼“å­˜å¤±æ•ˆäº‹ä»¶å°†å‘é€åˆ°æ‰€æœ‰ç«™ç‚¹ä¸­çš„æ‰€æœ‰å…¶ä»–KeycloakèŠ‚ç‚¹ã€‚ ä½†æ˜¯ï¼Œéœ€è¦å¯¹æ‰€æœ‰ç¼“å­˜ï¼ˆé¢†åŸŸï¼Œç”¨æˆ·ï¼Œå¯†é’¥ï¼‰æ‰§è¡Œæ­¤æ“ä½œã€‚ æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[æ¸…é™¤æœåŠ¡å™¨ç¼“å­˜](https://www.keycloak.org/docs/6.0/server_admin/#_clear-cache)ã€‚
+µ±ÍøÂç»Ö¸´Ê±£¬½öÔÚÈÎºÎËæ»úÕ¾µãÉÏµÄÒ»¸öKeycloak½ÚµãÉÏÇå³ı»º´æ¾Í×ã¹»ÁË¡£ »º´æÊ§Ğ§ÊÂ¼ş½«·¢ËÍµ½ËùÓĞÕ¾µãÖĞµÄËùÓĞÆäËûKeycloak½Úµã¡£ µ«ÊÇ£¬ĞèÒª¶ÔËùÓĞ»º´æ£¨ÁìÓò£¬ÓÃ»§£¬ÃÜÔ¿£©Ö´ĞĞ´Ë²Ù×÷¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[Çå³ı·şÎñÆ÷»º´æ](https://www.keycloak.org/docs/6.0/server_admin/#_clear-cache)¡£
 
-#### 3.4.13. è°ƒæ•´JDGç¼“å­˜é…ç½®
+#### 3.4.13. µ÷ÕûJDG»º´æÅäÖÃ {#}
 
-æœ¬èŠ‚åŒ…å«é…ç½®JDGç¼“å­˜çš„æŠ€å·§å’Œé€‰é¡¹ã€‚
+±¾½Ú°üº¬ÅäÖÃJDG»º´æµÄ¼¼ÇÉºÍÑ¡Ïî¡£
 
-å¤‡ä»½å¤±è´¥ç­–ç•¥
+±¸·İÊ§°Ü²ßÂÔ
 
-é»˜è®¤æƒ…å†µä¸‹ï¼ŒJDGçš„`clustered.xml`æ–‡ä»¶ä¸­Infinispanç¼“å­˜é…ç½®ä¸­çš„å¤‡ä»½`failure-policy`é…ç½®çº§åˆ«ä¸º`FAIL`ã€‚ æ‚¨å¯ä»¥æ ¹æ®éœ€è¦å°†å…¶æ›´æ”¹ä¸º`WARN`æˆ–`IGNORE`ã€‚
+Ä¬ÈÏÇé¿öÏÂ£¬JDGµÄ`clustered.xml`ÎÄ¼şÖĞInfinispan»º´æÅäÖÃÖĞµÄ±¸·İ`failure-policy`ÅäÖÃ¼¶±ğÎª`FAIL`¡£ Äú¿ÉÒÔ¸ù¾İĞèÒª½«Æä¸ü¸ÄÎª`WARN`»ò`IGNORE`¡£
 
-`FAIL`å’Œ`WARN`ä¹‹é—´çš„åŒºåˆ«åœ¨äºï¼Œå½“ä½¿ç”¨`FAIL`å¹¶ä¸”InfinispanæœåŠ¡å™¨å°è¯•å°†æ•°æ®å¤‡ä»½åˆ°å¦ä¸€ä¸ªç«™ç‚¹å¹¶ä¸”å¤‡ä»½å¤±è´¥æ—¶ï¼Œå¤±è´¥å°†ä¼ æ’­å›è°ƒç”¨è€…ï¼ˆKeycloakæœåŠ¡å™¨ï¼‰ã€‚ å¤‡ä»½å¯èƒ½ä¼šå¤±è´¥ï¼Œå› ä¸ºç¬¬äºŒä¸ªç«™ç‚¹æš‚æ—¶æ— æ³•è®¿é—®ï¼Œæˆ–è€…å­˜åœ¨å°è¯•æ›´æ–°åŒä¸€å®ä½“çš„å¹¶å‘äº‹åŠ¡ã€‚ åœ¨è¿™ç§æƒ…å†µä¸‹ï¼ŒKeycloakæœåŠ¡å™¨å°†é‡è¯•è¯¥æ“ä½œå‡ æ¬¡ã€‚ ä½†æ˜¯ï¼Œå¦‚æœé‡è¯•å¤±è´¥ï¼Œåˆ™ç”¨æˆ·å¯èƒ½ä¼šåœ¨æ›´é•¿çš„è¶…æ—¶åçœ‹åˆ°é”™è¯¯ã€‚
+`FAIL`ºÍ`WARN`Ö®¼äµÄÇø±ğÔÚÓÚ£¬µ±Ê¹ÓÃ`FAIL`²¢ÇÒInfinispan·şÎñÆ÷³¢ÊÔ½«Êı¾İ±¸·İµ½ÁíÒ»¸öÕ¾µã²¢ÇÒ±¸·İÊ§°ÜÊ±£¬Ê§°Ü½«´«²¥»Øµ÷ÓÃÕß£¨Keycloak·şÎñÆ÷£©¡£ ±¸·İ¿ÉÄÜ»áÊ§°Ü£¬ÒòÎªµÚ¶ş¸öÕ¾µãÔİÊ±ÎŞ·¨·ÃÎÊ£¬»òÕß´æÔÚ³¢ÊÔ¸üĞÂÍ¬Ò»ÊµÌåµÄ²¢·¢ÊÂÎñ¡£ ÔÚÕâÖÖÇé¿öÏÂ£¬Keycloak·şÎñÆ÷½«ÖØÊÔ¸Ã²Ù×÷¼¸´Î¡£ µ«ÊÇ£¬Èç¹ûÖØÊÔÊ§°Ü£¬ÔòÓÃ»§¿ÉÄÜ»áÔÚ¸ü³¤µÄ³¬Ê±ºó¿´µ½´íÎó¡£
 
-ä½¿ç”¨`WARN`æ—¶ï¼Œå¤±è´¥çš„å¤‡ä»½ä¸ä¼šä»InfinispanæœåŠ¡å™¨ä¼ æ’­åˆ°KeycloakæœåŠ¡å™¨ã€‚ ç”¨æˆ·å°†çœ‹ä¸åˆ°é”™è¯¯ï¼Œå°†å¿½ç•¥å¤±è´¥çš„å¤‡ä»½ã€‚ å°†æœ‰ä¸€ä¸ªè¾ƒçŸ­çš„è¶…æ—¶ï¼Œé€šå¸¸ä¸º10ç§’ï¼Œå› ä¸ºè¿™æ˜¯å¤‡ä»½çš„é»˜è®¤è¶…æ—¶ã€‚ å®ƒå¯ä»¥é€šè¿‡`backup`å…ƒç´ çš„å±æ€§`timeout`æ¥æ”¹å˜ã€‚ ä¸ä¼šé‡è¯•ã€‚ InfinispanæœåŠ¡å™¨æ—¥å¿—ä¸­åªä¼šå‡ºç°ä¸€æ¡WARNINGæ¶ˆæ¯ã€‚
+Ê¹ÓÃ`WARN`Ê±£¬Ê§°ÜµÄ±¸·İ²»»á´ÓInfinispan·şÎñÆ÷´«²¥µ½Keycloak·şÎñÆ÷¡£ ÓÃ»§½«¿´²»µ½´íÎó£¬½«ºöÂÔÊ§°ÜµÄ±¸·İ¡£ ½«ÓĞÒ»¸ö½Ï¶ÌµÄ³¬Ê±£¬Í¨³£Îª10Ãë£¬ÒòÎªÕâÊÇ±¸·İµÄÄ¬ÈÏ³¬Ê±¡£ Ëü¿ÉÒÔÍ¨¹ı`backup`ÔªËØµÄÊôĞÔ`timeout`À´¸Ä±ä¡£ ²»»áÖØÊÔ¡£ Infinispan·şÎñÆ÷ÈÕÖ¾ÖĞÖ»»á³öÏÖÒ»ÌõWARNINGÏûÏ¢¡£
 
-æ½œåœ¨çš„é—®é¢˜æ˜¯ï¼Œåœ¨æŸäº›æƒ…å†µä¸‹ï¼Œç«™ç‚¹ä¹‹é—´å¯èƒ½åªæœ‰ä¸€äº›çŸ­æš‚çš„ç½‘ç»œä¸­æ–­ï¼Œå…¶ä¸­é‡è¯•ï¼ˆä½¿ç”¨`FAIL`ç­–ç•¥ï¼‰å¯èƒ½æœ‰æ‰€å¸®åŠ©ï¼Œå› æ­¤ä½¿ç”¨`WARN`ï¼ˆä¸é‡è¯•ï¼‰ï¼Œå°†ä¼šæœ‰ ç«™ç‚¹é—´çš„ä¸€äº›æ•°æ®ä¸ä¸€è‡´ã€‚ å¦‚æœå°è¯•åœ¨ä¸¤ä¸ªç«™ç‚¹ä¸ŠåŒæ—¶æ›´æ–°åŒä¸€å®ä½“ï¼Œä¹Ÿä¼šå‘ç”Ÿè¿™ç§æƒ…å†µã€‚
+Ç±ÔÚµÄÎÊÌâÊÇ£¬ÔÚÄ³Ğ©Çé¿öÏÂ£¬Õ¾µãÖ®¼ä¿ÉÄÜÖ»ÓĞÒ»Ğ©¶ÌÔİµÄÍøÂçÖĞ¶Ï£¬ÆäÖĞÖØÊÔ£¨Ê¹ÓÃ`FAIL`²ßÂÔ£©¿ÉÄÜÓĞËù°ïÖú£¬Òò´ËÊ¹ÓÃ`WARN`£¨²»ÖØÊÔ£©£¬½«»áÓĞ Õ¾µã¼äµÄÒ»Ğ©Êı¾İ²»Ò»ÖÂ¡£ Èç¹û³¢ÊÔÔÚÁ½¸öÕ¾µãÉÏÍ¬Ê±¸üĞÂÍ¬Ò»ÊµÌå£¬Ò²»á·¢ÉúÕâÖÖÇé¿ö¡£
 
-è¿™äº›ä¸ä¸€è‡´æœ‰å¤šç³Ÿç³•ï¼Ÿ é€šå¸¸åªè¡¨ç¤ºç”¨æˆ·éœ€è¦é‡æ–°è¿›è¡Œèº«ä»½éªŒè¯ã€‚
+ÕâĞ©²»Ò»ÖÂÓĞ¶àÔã¸â£¿ Í¨³£Ö»±íÊ¾ÓÃ»§ĞèÒªÖØĞÂ½øĞĞÉí·İÑéÖ¤¡£
 
-å½“ä½¿ç”¨`WARN`ç­–ç•¥æ—¶ï¼Œå¯èƒ½ä¼šå‘ç”Ÿç”±`actionTokens`ç¼“å­˜æä¾›å¹¶å¤„ç†è¯¥ç‰¹å®šå¯†é’¥çš„ä¸€æ¬¡æ€§ç¼“å­˜å®é™…ä¸Šæ˜¯å•ç‹¬ä½¿ç”¨ï¼Œä½†å¯èƒ½â€œæˆåŠŸâ€ä¸¤æ¬¡å†™å…¥ç›¸åŒçš„å¯†é’¥ã€‚ ä½†æ˜¯ï¼Œä¾‹å¦‚ï¼ŒOAuth2è§„èŒƒ[æåŠ](https://tools.ietf.org/html/rfc6749#section-10.5)è¯¥ä»£ç å¿…é¡»æ˜¯å•ä¸€ä½¿ç”¨çš„ã€‚ ä½¿ç”¨`WARN`ç­–ç•¥ï¼Œå¯èƒ½æ— æ³•ä¸¥æ ¼ä¿è¯ï¼Œå¦‚æœå°è¯•åœ¨ä¸¤ä¸ªç«™ç‚¹ä¸­åŒæ—¶å†™å…¥ç›¸åŒçš„ä»£ç ï¼Œåˆ™å¯ä»¥å†™ä¸¤æ¬¡ç›¸åŒçš„ä»£ç ã€‚
+µ±Ê¹ÓÃ`WARN`²ßÂÔÊ±£¬¿ÉÄÜ»á·¢ÉúÓÉ`actionTokens`»º´æÌá¹©²¢´¦Àí¸ÃÌØ¶¨ÃÜÔ¿µÄÒ»´ÎĞÔ»º´æÊµ¼ÊÉÏÊÇµ¥¶ÀÊ¹ÓÃ£¬µ«¿ÉÄÜ¡°³É¹¦¡±Á½´ÎĞ´ÈëÏàÍ¬µÄÃÜÔ¿¡£ µ«ÊÇ£¬ÀıÈç£¬OAuth2¹æ·¶[Ìá¼°](https://tools.ietf.org/html/rfc6749#section-10.5)¸Ã´úÂë±ØĞëÊÇµ¥Ò»Ê¹ÓÃµÄ¡£ Ê¹ÓÃ`WARN`²ßÂÔ£¬¿ÉÄÜÎŞ·¨ÑÏ¸ñ±£Ö¤£¬Èç¹û³¢ÊÔÔÚÁ½¸öÕ¾µãÖĞÍ¬Ê±Ğ´ÈëÏàÍ¬µÄ´úÂë£¬Ôò¿ÉÒÔĞ´Á½´ÎÏàÍ¬µÄ´úÂë¡£
 
-å¦‚æœæœ‰è¾ƒé•¿çš„ç½‘ç»œä¸­æ–­æˆ–è£‚è„‘ï¼Œé‚£ä¹ˆåŒæ—¶ä½¿ç”¨`FAIL`å’Œ`WARN`ï¼Œå…¶ä»–ç«™ç‚¹å°†åœ¨ä¸€æ®µæ—¶é—´åå¤±æ•ˆï¼Œå¦‚[ä½¿ç«™ç‚¹ç¦»çº¿å’Œè”æœº](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline)ä¸­æ‰€è¿°ã€‚ ä½¿ç”¨é»˜è®¤çš„1åˆ†é’Ÿè¶…æ—¶ï¼Œé€šå¸¸éœ€è¦1-3åˆ†é’Ÿæ‰èƒ½ä½¿æ‰€æœ‰ç›¸å…³çš„ç¼“å­˜è„±æœºã€‚ ä¹‹åï¼Œä»æœ€ç»ˆç”¨æˆ·çš„è§’åº¦æ¥çœ‹ï¼Œæ‰€æœ‰æ“ä½œéƒ½å¯ä»¥æ­£å¸¸å·¥ä½œã€‚ å¦‚[ç½‘ç«™ç¦»çº¿å’Œåœ¨çº¿](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline)ä¸­æ‰€è¿°ï¼Œæ‚¨åªéœ€åœ¨ç½‘ç«™é‡æ–°è”æœºæ—¶æ‰‹åŠ¨æ¢å¤è¯¥ç½‘ç«™ã€‚
+Èç¹ûÓĞ½Ï³¤µÄÍøÂçÖĞ¶Ï»òÁÑÄÔ£¬ÄÇÃ´Í¬Ê±Ê¹ÓÃ`FAIL`ºÍ`WARN`£¬ÆäËûÕ¾µã½«ÔÚÒ»¶ÎÊ±¼äºóÊ§Ğ§£¬Èç[Ê¹Õ¾µãÀëÏßºÍÁª»ú](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline)ÖĞËùÊö¡£ Ê¹ÓÃÄ¬ÈÏµÄ1·ÖÖÓ³¬Ê±£¬Í¨³£ĞèÒª1-3·ÖÖÓ²ÅÄÜÊ¹ËùÓĞÏà¹ØµÄ»º´æÍÑ»ú¡£ Ö®ºó£¬´Ó×îÖÕÓÃ»§µÄ½Ç¶ÈÀ´¿´£¬ËùÓĞ²Ù×÷¶¼¿ÉÒÔÕı³£¹¤×÷¡£ Èç[ÍøÕ¾ÀëÏßºÍÔÚÏß](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline)ÖĞËùÊö£¬ÄúÖ»ĞèÔÚÍøÕ¾ÖØĞÂÁª»úÊ±ÊÖ¶¯»Ö¸´¸ÃÍøÕ¾¡£
 
-æ€»ä¹‹ï¼Œå¦‚æœæ‚¨å¸Œæœ›ç«™ç‚¹ä¹‹é—´é¢‘ç¹ï¼Œæ›´é•¿æ—¶é—´çš„ä¸­æ–­ï¼Œå¹¶ä¸”æ‚¨å¯ä»¥æ¥å—ä¸€äº›æ•°æ®ä¸ä¸€è‡´ä¸”ä¸æ˜¯100ï¼…å‡†ç¡®çš„ä¸€æ¬¡æ€§ç¼“å­˜ï¼Œä½†æ‚¨ç»ä¸å¸Œæœ›æœ€ç»ˆç”¨æˆ·çœ‹åˆ°é”™è¯¯å’Œé•¿æ—¶é—´è¶…æ—¶ï¼Œé‚£ä¹ˆ åˆ‡æ¢åˆ°`WARN`ã€‚
+×ÜÖ®£¬Èç¹ûÄúÏ£ÍûÕ¾µãÖ®¼äÆµ·±£¬¸ü³¤Ê±¼äµÄÖĞ¶Ï£¬²¢ÇÒÄú¿ÉÒÔ½ÓÊÜÒ»Ğ©Êı¾İ²»Ò»ÖÂÇÒ²»ÊÇ100£¥×¼È·µÄÒ»´ÎĞÔ»º´æ£¬µ«Äú¾ø²»Ï£Íû×îÖÕÓÃ»§¿´µ½´íÎóºÍ³¤Ê±¼ä³¬Ê±£¬ÄÇÃ´ ÇĞ»»µ½`WARN`¡£
 
-`WARN`å’Œ`IGNORE`ä¹‹é—´çš„åŒºåˆ«åœ¨äºï¼Œ`IGNORE`è­¦å‘Šä¸ä¼šå†™å…¥JDGæ—¥å¿—ä¸­ã€‚ è¯·å‚é˜…Infinispanæ–‡æ¡£ä¸­çš„æ›´å¤šè¯¦ç»†ä¿¡æ¯ã€‚
+`WARN`ºÍ`IGNORE`Ö®¼äµÄÇø±ğÔÚÓÚ£¬`IGNORE`¾¯¸æ²»»áĞ´ÈëJDGÈÕÖ¾ÖĞ¡£ Çë²ÎÔÄInfinispanÎÄµµÖĞµÄ¸ü¶àÏêÏ¸ĞÅÏ¢¡£
 
-Lock acquisition timeout (é”å®šè·å–è¶…æ—¶)
+Lock acquisition timeout (Ëø¶¨»ñÈ¡³¬Ê±)
 
-é»˜è®¤é…ç½®æ˜¯åœ¨NON_DURABLE_XAæ¨¡å¼ä¸‹ä½¿ç”¨äº‹åŠ¡ï¼Œè·å–è¶…æ—¶ä¸º0.è¿™æ„å‘³ç€å¦‚æœåŒä¸€ä¸ªå¯†é’¥æ­£åœ¨è¿›è¡Œå¦ä¸€ä¸ªäº‹åŠ¡ï¼Œåˆ™äº‹åŠ¡å°†å¿«é€Ÿå¤±è´¥ã€‚
+Ä¬ÈÏÅäÖÃÊÇÔÚNON_DURABLE_XAÄ£Ê½ÏÂÊ¹ÓÃÊÂÎñ£¬»ñÈ¡³¬Ê±Îª0.ÕâÒâÎ¶×ÅÈç¹ûÍ¬Ò»¸öÃÜÔ¿ÕıÔÚ½øĞĞÁíÒ»¸öÊÂÎñ£¬ÔòÊÂÎñ½«¿ìËÙÊ§°Ü¡£
 
-å°†å…¶åˆ‡æ¢ä¸º0è€Œä¸æ˜¯é»˜è®¤10ç§’çš„åŸå› æ˜¯ä¸ºäº†é¿å…å¯èƒ½çš„æ­»é”é—®é¢˜ã€‚ ä½¿ç”¨Keycloakï¼Œå¯èƒ½ä¼šå‘ç”ŸåŒä¸€å®ä½“ï¼ˆé€šå¸¸æ˜¯ä¼šè¯å®ä½“æˆ–loginFailureï¼‰ä»ä¸¤ä¸ªç«™ç‚¹åŒæ—¶æ›´æ–°ã€‚ è¿™å¯èƒ½ä¼šåœ¨æŸäº›æƒ…å†µä¸‹å¯¼è‡´æ­»é”ï¼Œè¿™å°†å¯¼è‡´äº‹åŠ¡è¢«é˜»æ­¢10ç§’ã€‚ æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[æ­¤JIRAæŠ¥å‘Š](https://issues.jboss.org/browse/JDG-1318)ã€‚
+½«ÆäÇĞ»»Îª0¶ø²»ÊÇÄ¬ÈÏ10ÃëµÄÔ­ÒòÊÇÎªÁË±ÜÃâ¿ÉÄÜµÄËÀËøÎÊÌâ¡£ Ê¹ÓÃKeycloak£¬¿ÉÄÜ»á·¢ÉúÍ¬Ò»ÊµÌå£¨Í¨³£ÊÇ»á»°ÊµÌå»òloginFailure£©´ÓÁ½¸öÕ¾µãÍ¬Ê±¸üĞÂ¡£ Õâ¿ÉÄÜ»áÔÚÄ³Ğ©Çé¿öÏÂµ¼ÖÂËÀËø£¬Õâ½«µ¼ÖÂÊÂÎñ±»×èÖ¹10Ãë¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[´ËJIRA±¨¸æ](https://issues.jboss.org/browse/JDG-1318)¡£
 
-å¦‚æœè¶…æ—¶ä¸º0ï¼Œåˆ™äº‹åŠ¡å°†ç«‹å³å¤±è´¥ï¼Œå¦‚æœé…ç½®äº†å…·æœ‰å€¼`FAIL`çš„å¤‡ä»½`failure-policy`ï¼Œåˆ™å°†ä»Keycloaké‡è¯•è¯¥äº‹åŠ¡ã€‚ åªè¦ç¬¬äºŒä¸ªå¹¶å‘äº‹åŠ¡å®Œæˆï¼Œé‡è¯•é€šå¸¸å°±ä¼šæˆåŠŸï¼Œå¹¶ä¸”å®ä½“å°†ä»ä¸¤ä¸ªå¹¶å‘äº‹åŠ¡ä¸­åº”ç”¨æ›´æ–°ã€‚
+Èç¹û³¬Ê±Îª0£¬ÔòÊÂÎñ½«Á¢¼´Ê§°Ü£¬Èç¹ûÅäÖÃÁË¾ßÓĞÖµ`FAIL`µÄ±¸·İ`failure-policy`£¬Ôò½«´ÓKeycloakÖØÊÔ¸ÃÊÂÎñ¡£ Ö»ÒªµÚ¶ş¸ö²¢·¢ÊÂÎñÍê³É£¬ÖØÊÔÍ¨³£¾Í»á³É¹¦£¬²¢ÇÒÊµÌå½«´ÓÁ½¸ö²¢·¢ÊÂÎñÖĞÓ¦ÓÃ¸üĞÂ¡£
 
-æˆ‘ä»¬çœ‹åˆ°ä½¿ç”¨æ­¤é…ç½®è¿›è¡Œå¹¶å‘äº‹åŠ¡çš„ä¸€è‡´æ€§å’Œç»“æœéå¸¸å¥½ï¼Œå»ºè®®ä¿ç•™å®ƒã€‚
+ÎÒÃÇ¿´µ½Ê¹ÓÃ´ËÅäÖÃ½øĞĞ²¢·¢ÊÂÎñµÄÒ»ÖÂĞÔºÍ½á¹û·Ç³£ºÃ£¬½¨Òé±£ÁôËü¡£
 
-å”¯ä¸€ï¼ˆéåŠŸèƒ½ï¼‰é—®é¢˜æ˜¯InfinispanæœåŠ¡å™¨æ—¥å¿—ä¸­çš„å¼‚å¸¸ï¼Œæ¯æ¬¡é”å®šä¸å¯ç”¨æ—¶éƒ½ä¼šå‘ç”Ÿã€‚
+Î¨Ò»£¨·Ç¹¦ÄÜ£©ÎÊÌâÊÇInfinispan·şÎñÆ÷ÈÕÖ¾ÖĞµÄÒì³££¬Ã¿´ÎËø¶¨²»¿ÉÓÃÊ±¶¼»á·¢Éú¡£
 
-#### 3.4.14. åŒæ­¥æˆ–å¼‚æ­¥å¤‡ä»½
+#### 3.4.14. Í¬²½»òÒì²½±¸·İ {#}
 
-`backup`å…ƒç´ çš„ä¸€ä¸ªé‡è¦éƒ¨åˆ†æ˜¯`strategy`å±æ€§ã€‚ æ‚¨å¿…é¡»å†³å®šæ˜¯å¦éœ€è¦`SYNC`æˆ–`ASYNC`ã€‚ æˆ‘ä»¬æœ‰7ä¸ªå¯èƒ½æ”¯æŒè·¨æ•°æ®ä¸­å¿ƒå¤åˆ¶çš„ç¼“å­˜ï¼Œè¿™äº›ç¼“å­˜å¯ä»¥é…ç½®ä¸º3ç§ä¸åŒçš„äº¤å‰ç›´æµæ¨¡å¼ï¼š
+`backup`ÔªËØµÄÒ»¸öÖØÒª²¿·ÖÊÇ`strategy`ÊôĞÔ¡£ Äú±ØĞë¾ö¶¨ÊÇ·ñĞèÒª`SYNC`»ò`ASYNC`¡£ ÎÒÃÇÓĞ7¸ö¿ÉÄÜÖ§³Ö¿çÊı¾İÖĞĞÄ¸´ÖÆµÄ»º´æ£¬ÕâĞ©»º´æ¿ÉÒÔÅäÖÃÎª3ÖÖ²»Í¬µÄ½»²æÖ±Á÷Ä£Ê½£º
 
-1. åŒæ­¥ å¤‡ä»½
-2. å¼‚æ­¥ å¤‡ä»½
-3. ä¸å¤‡ä»½
+1. Í¬²½ ±¸·İ
+2. Òì²½ ±¸·İ
+3. ²»±¸·İ
 
-å¦‚æœä½¿ç”¨`SYNC`å¤‡ä»½ï¼Œåˆ™å¤‡ä»½æ˜¯åŒæ­¥çš„ï¼Œå¹¶ä¸”åœ¨ç¬¬äºŒä¸ªç«™ç‚¹ä¸Šå¤„ç†å¤‡ä»½åï¼Œè°ƒç”¨è€…ï¼ˆKeycloakæœåŠ¡å™¨ï¼‰ç«¯çš„æ“ä½œå°†è¢«è§†ä¸ºå·²å®Œæˆã€‚ è¿™æ¯”`ASYNC`çš„æ€§èƒ½æ›´å·®ï¼Œä½†å¦ä¸€æ–¹é¢ï¼Œæ‚¨ç¡®ä¿¡åœ¨`site2`ä¸Šå¯¹ç‰¹å®šå®ä½“ï¼ˆå¦‚ç”¨æˆ·ä¼šè¯ï¼‰çš„åç»­è¯»å–å°†ä»`site1`ä¸­çœ‹åˆ°æ›´æ–°ã€‚ æ­¤å¤–ï¼Œå¦‚æœæ‚¨æƒ³è¦æ•°æ®ä¸€è‡´æ€§ï¼Œåˆ™éœ€è¦å®ƒã€‚ ä¸`ASYNC`ä¸€æ ·ï¼Œå¦‚æœå¤‡ä»½åˆ°å…¶ä»–ç«™ç‚¹å¤±è´¥ï¼Œåˆ™ä¸ä¼šé€šçŸ¥å‘¼å«è€…ã€‚
+Èç¹ûÊ¹ÓÃ`SYNC`±¸·İ£¬Ôò±¸·İÊÇÍ¬²½µÄ£¬²¢ÇÒÔÚµÚ¶ş¸öÕ¾µãÉÏ´¦Àí±¸·İºó£¬µ÷ÓÃÕß£¨Keycloak·şÎñÆ÷£©¶ËµÄ²Ù×÷½«±»ÊÓÎªÒÑÍê³É¡£ Õâ±È`ASYNC`µÄĞÔÄÜ¸ü²î£¬µ«ÁíÒ»·½Ãæ£¬ÄúÈ·ĞÅÔÚ`site2`ÉÏ¶ÔÌØ¶¨ÊµÌå£¨ÈçÓÃ»§»á»°£©µÄºóĞø¶ÁÈ¡½«´Ó`site1`ÖĞ¿´µ½¸üĞÂ¡£ ´ËÍâ£¬Èç¹ûÄúÏëÒªÊı¾İÒ»ÖÂĞÔ£¬ÔòĞèÒªËü¡£ Óë`ASYNC`Ò»Ñù£¬Èç¹û±¸·İµ½ÆäËûÕ¾µãÊ§°Ü£¬Ôò²»»áÍ¨Öªºô½ĞÕß¡£
 
-å¯¹äºæŸäº›ç¼“å­˜ï¼Œç”šè‡³å¯èƒ½æ ¹æœ¬ä¸è¿›è¡Œå¤‡ä»½å¹¶å®Œå…¨è·³è¿‡å°†æ•°æ®å†™å…¥InfinispanæœåŠ¡å™¨ã€‚ è¦è¿›è¡Œæ­¤è®¾ç½®ï¼Œè¯·ä¸è¦å°†`remote-store`å…ƒç´ ç”¨äºKeycloakç«¯çš„ç‰¹å®šç¼“å­˜ (æ–‡ä»¶ `KEYCLOAK_HOME/standalone/configuration/standalone-ha.xml`) ï¼Œç„¶åä½¿ç”¨ç‰¹å®šçš„`replicated-cache`å…ƒç´ ã€‚ åœ¨InfinispanæœåŠ¡å™¨ç«¯ä¹Ÿä¸éœ€è¦ã€‚
+¶ÔÓÚÄ³Ğ©»º´æ£¬ÉõÖÁ¿ÉÄÜ¸ù±¾²»½øĞĞ±¸·İ²¢ÍêÈ«Ìø¹ı½«Êı¾İĞ´ÈëInfinispan·şÎñÆ÷¡£ Òª½øĞĞ´ËÉèÖÃ£¬Çë²»Òª½«`remote-store`ÔªËØÓÃÓÚKeycloak¶ËµÄÌØ¶¨»º´æ (ÎÄ¼ş `KEYCLOAK_HOME/standalone/configuration/standalone-ha.xml`) £¬È»ºóÊ¹ÓÃÌØ¶¨µÄ`replicated-cache`ÔªËØ¡£ ÔÚInfinispan·şÎñÆ÷¶ËÒ²²»ĞèÒª¡£
 
-é»˜è®¤æƒ…å†µä¸‹ï¼Œæ‰€æœ‰7ä¸ªç¼“å­˜éƒ½é…ç½®äº†`SYNC`å¤‡ä»½ï¼Œè¿™æ˜¯æœ€å®‰å…¨çš„é€‰é¡¹ã€‚ ä»¥ä¸‹æ˜¯ä¸€äº›éœ€è¦è€ƒè™‘çš„äº‹é¡¹ï¼š
+Ä¬ÈÏÇé¿öÏÂ£¬ËùÓĞ7¸ö»º´æ¶¼ÅäÖÃÁË`SYNC`±¸·İ£¬ÕâÊÇ×î°²È«µÄÑ¡Ïî¡£ ÒÔÏÂÊÇÒ»Ğ©ĞèÒª¿¼ÂÇµÄÊÂÏî£º
 
-- å¦‚æœæ‚¨ä½¿ç”¨çš„æ˜¯ä¸»åŠ¨/è¢«åŠ¨æ¨¡å¼ï¼ˆæ‰€æœ‰KeycloakæœåŠ¡å™¨éƒ½åœ¨å•ç«™ç‚¹`site1`ä¸­ï¼Œè€Œ`site2`ä¸­çš„InfinispanæœåŠ¡å™¨ä»…ç”¨ä½œå¤‡ä»½ã€‚è¯·å‚é˜…[æ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#modes)ä»¥è·å–æ›´å¤šè¯¦ç»†ä¿¡æ¯ï¼‰ï¼Œç„¶åé€šå¸¸å¯ä»¥ä½¿ç”¨æ‰€æœ‰ç¼“å­˜çš„`ASYNC`ç­–ç•¥æ¥ä¿å­˜æ€§èƒ½ã€‚
-- `work`ç¼“å­˜ä¸»è¦ç”¨äºå‘å…¶ä»–ç«™ç‚¹å‘é€ä¸€äº›æ¶ˆæ¯ï¼Œä¾‹å¦‚ç¼“å­˜å¤±æ•ˆäº‹ä»¶ã€‚ å®ƒè¿˜ç”¨äºç¡®ä¿æŸäº›ç‰¹æ®Šäº‹ä»¶,ä¾‹å¦‚userStorageåŒæ­¥;ä»…åœ¨å•ä¸ªç«™ç‚¹ä¸Šå‘ç”Ÿã€‚ å»ºè®®å°†æ­¤è®¾ç½®ä¿æŒä¸º`SYNCã€‚
-- `actionTokens`ç¼“å­˜ç”¨ä½œä¸€æ¬¡æ€§ç¼“å­˜ï¼Œç”¨äºè·Ÿè¸ªæŸäº›ä»¤ç‰Œ/ç¥¨è¯ä»…ä½¿ç”¨ä¸€æ¬¡ã€‚ ä¾‹å¦‚ï¼ŒåŠ¨ä½œä»¤ç‰Œæˆ–OAuth2ä»£ç ã€‚ å¯ä»¥å°†å…¶è®¾ç½®ä¸º`ASYNC`ä»¥ç•¥å¾®æé«˜æ€§èƒ½ï¼Œä½†æ˜¯ä¸èƒ½ä¿è¯ç‰¹å®šç¥¨è¯çœŸçš„æ˜¯å•æ¬¡ä½¿ç”¨ã€‚ ä¾‹å¦‚ï¼Œå¦‚æœä¸¤ä¸ªç«™ç‚¹ä¸­åŒæ—¶å­˜åœ¨åŒä¸€ç¥¨è¯è¯·æ±‚ï¼Œé‚£ä¹ˆä¸¤ä¸ªè¯·æ±‚éƒ½å¯èƒ½æˆåŠŸä½¿ç”¨`ASYNC`ç­–ç•¥ã€‚ æ‰€ä»¥ä½ åœ¨è¿™é‡Œè®¾ç½®çš„å°†å–å†³äºä½ æ˜¯å¦æ›´å–œæ¬¢æ›´å¥½çš„å®‰å…¨æ€§ï¼ˆ`SYNC`ç­–ç•¥ï¼‰æˆ–æ›´å¥½çš„æ€§èƒ½ï¼ˆ`ASYNC`ç­–ç•¥ï¼‰ã€‚
-- `loginFailures`ç¼“å­˜å¯ä»¥åœ¨3ç§æ¨¡å¼ä¸­çš„ä»»ä½•ä¸€ç§ä¸­ä½¿ç”¨ã€‚ å¦‚æœæ ¹æœ¬æ²¡æœ‰å¤‡ä»½ï¼Œåˆ™æ„å‘³ç€æ¯ä¸ªç«™ç‚¹å°†å•ç‹¬è®¡ç®—ç”¨æˆ·çš„ç™»å½•å¤±è´¥æ¬¡æ•°ï¼ˆè¯·å‚é˜…[Infinispanç¼“å­˜](https://www.keycloak.org/docs/latest/server_installation/index.html#cache)äº†è§£è¯¦æƒ…ï¼‰ã€‚ è¿™å…·æœ‰ä¸€äº›å®‰å…¨éšæ‚£ï¼Œä½†å®ƒå…·æœ‰ä¸€äº›æ€§èƒ½ä¼˜åŠ¿ã€‚ æ­¤å¤–ï¼Œå®ƒè¿˜å¯ä»¥é™ä½æ‹’ç»æœåŠ¡ï¼ˆDoSï¼‰æ”»å‡»çš„é£é™©ã€‚ ä¾‹å¦‚ï¼Œå¦‚æœæ”»å‡»è€…ä½¿ç”¨ä¸¤ä¸ªç«™ç‚¹ä¸Šçš„ç”¨æˆ·çš„ç”¨æˆ·åå’Œå¯†ç æ¨¡æ‹Ÿ1000ä¸ªå¹¶å‘è¯·æ±‚ï¼Œåˆ™æ„å‘³ç€åœ¨ç«™ç‚¹ä¹‹é—´ä¼ é€’å¤§é‡æ¶ˆæ¯ï¼Œè¿™å¯èƒ½å¯¼è‡´ç½‘ç»œæ‹¥å¡ã€‚ `ASYNC`ç­–ç•¥å¯èƒ½æ›´ç³Ÿç³•ï¼Œå› ä¸ºç­‰å¾…å¤‡ä»½åˆ°å…¶ä»–ç«™ç‚¹ä¸ä¼šé˜»æ­¢æ”»å‡»è€…è¯·æ±‚ï¼Œä»è€Œå¯¼è‡´å¯èƒ½æ›´åŠ æ‹¥æŒ¤çš„ç½‘ç»œæµé‡ã€‚ ä½¿ç”¨`ASYNC`ç­–ç•¥ï¼Œç™»å½•å¤±è´¥çš„æ¬¡æ•°ä¹Ÿä¸å‡†ç¡®ã€‚
+- Èç¹ûÄúÊ¹ÓÃµÄÊÇÖ÷¶¯/±»¶¯Ä£Ê½£¨ËùÓĞKeycloak·şÎñÆ÷¶¼ÔÚµ¥Õ¾µã`site1`ÖĞ£¬¶ø`site2`ÖĞµÄInfinispan·şÎñÆ÷½öÓÃ×÷±¸·İ¡£Çë²ÎÔÄ[Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#modes)ÒÔ»ñÈ¡¸ü¶àÏêÏ¸ĞÅÏ¢£©£¬È»ºóÍ¨³£¿ÉÒÔÊ¹ÓÃËùÓĞ»º´æµÄ`ASYNC`²ßÂÔÀ´±£´æĞÔÄÜ¡£
+- `work`»º´æÖ÷ÒªÓÃÓÚÏòÆäËûÕ¾µã·¢ËÍÒ»Ğ©ÏûÏ¢£¬ÀıÈç»º´æÊ§Ğ§ÊÂ¼ş¡£ Ëü»¹ÓÃÓÚÈ·±£Ä³Ğ©ÌØÊâÊÂ¼ş,ÀıÈçuserStorageÍ¬²½;½öÔÚµ¥¸öÕ¾µãÉÏ·¢Éú¡£ ½¨Òé½«´ËÉèÖÃ±£³ÖÎª`SYNC¡£
+- `actionTokens`»º´æÓÃ×÷Ò»´ÎĞÔ»º´æ£¬ÓÃÓÚ¸ú×ÙÄ³Ğ©ÁîÅÆ/Æ±Ö¤½öÊ¹ÓÃÒ»´Î¡£ ÀıÈç£¬¶¯×÷ÁîÅÆ»òOAuth2´úÂë¡£ ¿ÉÒÔ½«ÆäÉèÖÃÎª`ASYNC`ÒÔÂÔÎ¢Ìá¸ßĞÔÄÜ£¬µ«ÊÇ²»ÄÜ±£Ö¤ÌØ¶¨Æ±Ö¤ÕæµÄÊÇµ¥´ÎÊ¹ÓÃ¡£ ÀıÈç£¬Èç¹ûÁ½¸öÕ¾µãÖĞÍ¬Ê±´æÔÚÍ¬Ò»Æ±Ö¤ÇëÇó£¬ÄÇÃ´Á½¸öÇëÇó¶¼¿ÉÄÜ³É¹¦Ê¹ÓÃ`ASYNC`²ßÂÔ¡£ ËùÒÔÄãÔÚÕâÀïÉèÖÃµÄ½«È¡¾öÓÚÄãÊÇ·ñ¸üÏ²»¶¸üºÃµÄ°²È«ĞÔ£¨`SYNC`²ßÂÔ£©»ò¸üºÃµÄĞÔÄÜ£¨`ASYNC`²ßÂÔ£©¡£
+- `loginFailures`»º´æ¿ÉÒÔÔÚ3ÖÖÄ£Ê½ÖĞµÄÈÎºÎÒ»ÖÖÖĞÊ¹ÓÃ¡£ Èç¹û¸ù±¾Ã»ÓĞ±¸·İ£¬ÔòÒâÎ¶×ÅÃ¿¸öÕ¾µã½«µ¥¶À¼ÆËãÓÃ»§µÄµÇÂ¼Ê§°Ü´ÎÊı£¨Çë²ÎÔÄ[Infinispan»º´æ](https://www.keycloak.org/docs/latest/server_installation/index.html#cache)ÁË½âÏêÇé£©¡£ Õâ¾ßÓĞÒ»Ğ©°²È«Òş»¼£¬µ«Ëü¾ßÓĞÒ»Ğ©ĞÔÄÜÓÅÊÆ¡£ ´ËÍâ£¬Ëü»¹¿ÉÒÔ½µµÍ¾Ü¾ø·şÎñ£¨DoS£©¹¥»÷µÄ·çÏÕ¡£ ÀıÈç£¬Èç¹û¹¥»÷ÕßÊ¹ÓÃÁ½¸öÕ¾µãÉÏµÄÓÃ»§µÄÓÃ»§ÃûºÍÃÜÂëÄ£Äâ1000¸ö²¢·¢ÇëÇó£¬ÔòÒâÎ¶×ÅÔÚÕ¾µãÖ®¼ä´«µİ´óÁ¿ÏûÏ¢£¬Õâ¿ÉÄÜµ¼ÖÂÍøÂçÓµÈû¡£ `ASYNC`²ßÂÔ¿ÉÄÜ¸üÔã¸â£¬ÒòÎªµÈ´ı±¸·İµ½ÆäËûÕ¾µã²»»á×èÖ¹¹¥»÷ÕßÇëÇó£¬´Ó¶øµ¼ÖÂ¿ÉÄÜ¸ü¼ÓÓµ¼·µÄÍøÂçÁ÷Á¿¡£ Ê¹ÓÃ`ASYNC`²ßÂÔ£¬µÇÂ¼Ê§°ÜµÄ´ÎÊıÒ²²»×¼È·¡£
 
-å¯¹äºæ•°æ®ä¸­å¿ƒä¹‹é—´ç½‘ç»œé€Ÿåº¦è¾ƒæ…¢ä¸”DoSæ¦‚ç‡è¾ƒä½çš„ç¯å¢ƒï¼Œå»ºè®®ä¸è¦å¤‡ä»½`loginFailures`ç¼“å­˜ã€‚
+¶ÔÓÚÊı¾İÖĞĞÄÖ®¼äÍøÂçËÙ¶È½ÏÂıÇÒDoS¸ÅÂÊ½ÏµÍµÄ»·¾³£¬½¨Òé²»Òª±¸·İ`loginFailures`»º´æ¡£
 
-- å»ºè®®åœ¨`SYNC`ä¸­ä¿ç•™`sessions`å’Œ`clientSessions`ç¼“å­˜ã€‚ åªæœ‰å½“æ‚¨ç¡®å®šç”¨æˆ·è¯·æ±‚å’Œåå‘é€šé“è¯·æ±‚ï¼ˆä»[è¯·æ±‚å¤„ç†](https://www.keycloak.org/docs/latest/server_installation/index.html#requestprocessing)ä¸­æè¿°çš„å®¢æˆ·ç«¯åº”ç”¨ç¨‹åºåˆ°Keycloakçš„è¯·æ±‚ï¼‰æ—¶ï¼Œæ‰å¯ä»¥å°†å®ƒä»¬åˆ‡æ¢ä¸º`ASYNC`ï¼‰å°†å§‹ç»ˆåœ¨åŒä¸€ç«™ç‚¹ä¸Šå¤„ç†ã€‚ ä¾‹å¦‚ï¼Œå¦‚æœï¼š
+- ½¨ÒéÔÚ`SYNC`ÖĞ±£Áô`sessions`ºÍ`clientSessions`»º´æ¡£ Ö»ÓĞµ±ÄúÈ·¶¨ÓÃ»§ÇëÇóºÍ·´ÏòÍ¨µÀÇëÇó£¨´Ó[ÇëÇó´¦Àí](https://www.keycloak.org/docs/latest/server_installation/index.html#requestprocessing)ÖĞÃèÊöµÄ¿Í»§¶ËÓ¦ÓÃ³ÌĞòµ½KeycloakµÄÇëÇó£©Ê±£¬²Å¿ÉÒÔ½«ËüÃÇÇĞ»»Îª`ASYNC`£©½«Ê¼ÖÕÔÚÍ¬Ò»Õ¾µãÉÏ´¦Àí¡£ ÀıÈç£¬Èç¹û£º
 
-  - æ‚¨ä½¿ç”¨ä¸»åŠ¨/è¢«åŠ¨æ¨¡å¼ï¼Œå¦‚[æ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#modes)æ‰€è¿°ã€‚
+  - ÄúÊ¹ÓÃÖ÷¶¯/±»¶¯Ä£Ê½£¬Èç[Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#modes)ËùÊö¡£
 
-  - æ‚¨çš„æ‰€æœ‰å®¢æˆ·ç«¯åº”ç”¨ç¨‹åºéƒ½ä½¿ç”¨Keycloak [JavaScript Adapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter)ã€‚ JavaScripté€‚é…å™¨åœ¨æµè§ˆå™¨ä¸­å‘é€åå‘é€šé“è¯·æ±‚ï¼Œå› æ­¤å®ƒä»¬å‚ä¸æµè§ˆå™¨ç²˜æ€§ä¼šè¯ï¼Œå¹¶å°†åœ¨ä¸è¯¥ç”¨æˆ·çš„å…¶ä»–æµè§ˆå™¨è¯·æ±‚ç›¸åŒçš„ç¾¤é›†èŠ‚ç‚¹ï¼ˆå› æ­¤åœ¨åŒä¸€ç«™ç‚¹ä¸Šï¼‰ç»“æŸã€‚
+  - ÄúµÄËùÓĞ¿Í»§¶ËÓ¦ÓÃ³ÌĞò¶¼Ê¹ÓÃKeycloak [JavaScript Adapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter)¡£ JavaScriptÊÊÅäÆ÷ÔÚä¯ÀÀÆ÷ÖĞ·¢ËÍ·´ÏòÍ¨µÀÇëÇó£¬Òò´ËËüÃÇ²ÎÓëä¯ÀÀÆ÷Õ³ĞÔ»á»°£¬²¢½«ÔÚÓë¸ÃÓÃ»§µÄÆäËûä¯ÀÀÆ÷ÇëÇóÏàÍ¬µÄÈº¼¯½Úµã£¨Òò´ËÔÚÍ¬Ò»Õ¾µãÉÏ£©½áÊø¡£
 
-  - æ‚¨çš„è´Ÿè½½å‡è¡¡å™¨èƒ½å¤Ÿæ ¹æ®å®¢æˆ·ç«¯IPåœ°å€ï¼ˆä½ç½®ï¼‰æä¾›è¯·æ±‚ï¼Œå¹¶åœ¨ä¸¤ä¸ªç«™ç‚¹ä¸Šéƒ¨ç½²å®¢æˆ·ç«¯åº”ç”¨ç¨‹åºã€‚
+  - ÄúµÄ¸ºÔØ¾ùºâÆ÷ÄÜ¹»¸ù¾İ¿Í»§¶ËIPµØÖ·£¨Î»ÖÃ£©Ìá¹©ÇëÇó£¬²¢ÔÚÁ½¸öÕ¾µãÉÏ²¿Êğ¿Í»§¶ËÓ¦ÓÃ³ÌĞò¡£
 
-    ä¾‹å¦‚ï¼Œæ‚¨æœ‰2ä¸ªç«™ç‚¹LONå’ŒNYCã€‚ åªè¦æ‚¨çš„åº”ç”¨ç¨‹åºä¹Ÿéƒ¨ç½²åœ¨LONå’ŒNYCç«™ç‚¹ä¸­ï¼Œæ‚¨å°±å¯ä»¥ç¡®ä¿æ¥è‡ªä¼¦æ•¦ç”¨æˆ·çš„æ‰€æœ‰ç”¨æˆ·è¯·æ±‚å°†è¢«é‡å®šå‘åˆ°LONç«™ç‚¹ä¸­çš„åº”ç”¨ç¨‹åºä»¥åŠLONç«™ç‚¹ä¸­çš„KeycloakæœåŠ¡å™¨ã€‚ æ¥è‡ªLONç«™ç‚¹å®¢æˆ·ç«¯éƒ¨ç½²çš„Backchannelè¯·æ±‚ä¹Ÿå°†åœ¨LONç«™ç‚¹ä¸­çš„KeycloakæœåŠ¡å™¨ä¸Šç»“æŸã€‚ å¦ä¸€æ–¹é¢ï¼Œå¯¹äºç¾å›½ç”¨æˆ·ï¼Œæ‰€æœ‰Keycloakè¯·æ±‚ï¼Œåº”ç”¨ç¨‹åºè¯·æ±‚å’Œåå‘é€šé“è¯·æ±‚å°†åœ¨NYCç«™ç‚¹ä¸Šå¤„ç†ã€‚
+    ÀıÈç£¬ÄúÓĞ2¸öÕ¾µãLONºÍNYC¡£ Ö»ÒªÄúµÄÓ¦ÓÃ³ÌĞòÒ²²¿ÊğÔÚLONºÍNYCÕ¾µãÖĞ£¬Äú¾Í¿ÉÒÔÈ·±£À´×ÔÂ×¶ØÓÃ»§µÄËùÓĞÓÃ»§ÇëÇó½«±»ÖØ¶¨Ïòµ½LONÕ¾µãÖĞµÄÓ¦ÓÃ³ÌĞòÒÔ¼°LONÕ¾µãÖĞµÄKeycloak·şÎñÆ÷¡£ À´×ÔLONÕ¾µã¿Í»§¶Ë²¿ÊğµÄBackchannelÇëÇóÒ²½«ÔÚLONÕ¾µãÖĞµÄKeycloak·şÎñÆ÷ÉÏ½áÊø¡£ ÁíÒ»·½Ãæ£¬¶ÔÓÚÃÀ¹úÓÃ»§£¬ËùÓĞKeycloakÇëÇó£¬Ó¦ÓÃ³ÌĞòÇëÇóºÍ·´ÏòÍ¨µÀÇëÇó½«ÔÚNYCÕ¾µãÉÏ´¦Àí¡£
 
-- å¯¹äº`offlineSessions`å’Œ`offlineClientSessions`ï¼Œå®ƒæ˜¯ç›¸ä¼¼çš„ï¼Œä¸åŒä¹‹å¤„åœ¨äºï¼Œå¦‚æœæ‚¨ä»æœªè®¡åˆ’ä¸ºä»»ä½•å®¢æˆ·ç«¯åº”ç”¨ç¨‹åºä½¿ç”¨è„±æœºä»¤ç‰Œï¼Œåˆ™æ ¹æœ¬ä¸éœ€è¦å¤‡ä»½å®ƒä»¬ã€‚
+- ¶ÔÓÚ`offlineSessions`ºÍ`offlineClientSessions`£¬ËüÊÇÏàËÆµÄ£¬²»Í¬Ö®´¦ÔÚÓÚ£¬Èç¹ûÄú´ÓÎ´¼Æ»®ÎªÈÎºÎ¿Í»§¶ËÓ¦ÓÃ³ÌĞòÊ¹ÓÃÍÑ»úÁîÅÆ£¬Ôò¸ù±¾²»ĞèÒª±¸·İËüÃÇ¡£
 
-ä¸€èˆ¬æ¥è¯´ï¼Œå¦‚æœæ‚¨æœ‰ç–‘é—®å¹¶ä¸”æ€§èƒ½ä¸é€‚åˆæ‚¨ï¼Œé‚£ä¹ˆå°†ç¼“å­˜ä¿æŒåœ¨`SYNC`ç­–ç•¥ä¸­ä¼šæ›´å®‰å…¨ã€‚
+Ò»°ãÀ´Ëµ£¬Èç¹ûÄúÓĞÒÉÎÊ²¢ÇÒĞÔÄÜ²»ÊÊºÏÄú£¬ÄÇÃ´½«»º´æ±£³ÖÔÚ`SYNC`²ßÂÔÖĞ»á¸ü°²È«¡£
 
-> å…³äºåˆ‡æ¢åˆ°SYNC/ASYNCå¤‡ä»½ï¼Œè¯·ç¡®ä¿ç¼–è¾‘`backup`å…ƒç´ çš„`strategy`å±æ€§ã€‚ ä¾‹å¦‚è¿™æ ·ï¼š 
+> ¹ØÓÚÇĞ»»µ½SYNC/ASYNC±¸·İ£¬ÇëÈ·±£±à¼­`backup`ÔªËØµÄ`strategy`ÊôĞÔ¡£ ÀıÈçÕâÑù£º 
 
 ```xml
 <backup site="site2" failure-policy="FAIL" strategy="ASYNC" enabled="true">
 ```
 
-æ³¨æ„cache-configurationå…ƒç´ çš„`mode`å±æ€§ã€‚
+×¢Òâcache-configurationÔªËØµÄ`mode`ÊôĞÔ¡£
 
-#### 3.4.15. æ•…éšœæ’é™¤
+#### 3.4.15. ¹ÊÕÏÅÅ³ı {#}
 
-ä»¥ä¸‹æç¤ºæ—¨åœ¨å¸®åŠ©æ‚¨è§£å†³é—®é¢˜ï¼š
+ÒÔÏÂÌáÊ¾Ö¼ÔÚ°ïÖúÄú½â¾öÎÊÌâ£º
 
-- å»ºè®®é€šè¿‡[åŸºæœ¬è®¾ç½®](https://www.keycloak.org/docs/latest/server_installation/index.html#setup)å¹¶é¦–å…ˆä½¿ç”¨æ­¤å·¥å…·ï¼Œä»¥ä¾¿æ‚¨å¯¹äº‹æƒ…æœ‰æ‰€äº†è§£ å·¥ä½œã€‚ é˜…è¯»æ•´ç¯‡æ–‡æ¡£ä»¥äº†è§£äº‹ç‰©ä¹Ÿæ˜¯æ˜æ™ºä¹‹ä¸¾ã€‚
+- ½¨ÒéÍ¨¹ı[»ù±¾ÉèÖÃ](https://www.keycloak.org/docs/latest/server_installation/index.html#setup)²¢Ê×ÏÈÊ¹ÓÃ´Ë¹¤¾ß£¬ÒÔ±ãÄú¶ÔÊÂÇéÓĞËùÁË½â ¹¤×÷¡£ ÔÄ¶ÁÕûÆªÎÄµµÒÔÁË½âÊÂÎïÒ²ÊÇÃ÷ÖÇÖ®¾Ù¡£
 
-- æŒ‰ç…§[InfinispanæœåŠ¡å™¨è®¾ç½®](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup)ä¸­çš„è¯´æ˜æ£€å…¥Infinispançš„jconsoleé›†ç¾¤çŠ¶æ€ï¼ˆGMSï¼‰å’ŒJGroupsçŠ¶æ€ï¼ˆRELAYï¼‰ã€‚ å¦‚æœäº‹æƒ…çœ‹èµ·æ¥ä¸åƒé¢„æœŸï¼Œé‚£ä¹ˆé—®é¢˜å¾ˆå¯èƒ½å‡ºåœ¨InfinispanæœåŠ¡å™¨çš„è®¾ç½®ä¸Šã€‚
+- °´ÕÕ[Infinispan·şÎñÆ÷ÉèÖÃ](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup)ÖĞµÄËµÃ÷¼ìÈëInfinispanµÄjconsole¼¯Èº×´Ì¬£¨GMS£©ºÍJGroups×´Ì¬£¨RELAY£©¡£ Èç¹ûÊÂÇé¿´ÆğÀ´²»ÏñÔ¤ÆÚ£¬ÄÇÃ´ÎÊÌâºÜ¿ÉÄÜ³öÔÚInfinispan·şÎñÆ÷µÄÉèÖÃÉÏ¡£
 
-- å¯¹äºKeycloakæœåŠ¡å™¨ï¼Œæ‚¨åº”è¯¥åœ¨æœåŠ¡å™¨å¯åŠ¨æœŸé—´çœ‹åˆ°è¿™æ ·çš„æ¶ˆæ¯ï¼š
+- ¶ÔÓÚKeycloak·şÎñÆ÷£¬ÄúÓ¦¸ÃÔÚ·şÎñÆ÷Æô¶¯ÆÚ¼ä¿´µ½ÕâÑùµÄÏûÏ¢£º
 
   ```
   18:09:30,156 INFO  [org.keycloak.connections.infinispan.DefaultInfinispanConnectionProviderFactory] (ServerService Thread Pool -- 54)
   Node name: node11, Site name: site1
   ```
 
-  åœ¨KeycloakæœåŠ¡å™¨å¯åŠ¨æœŸé—´æ£€æŸ¥ç«™ç‚¹åç§°å’ŒèŠ‚ç‚¹åç§°æ˜¯å¦ä¸é¢„æœŸä¸€è‡´ã€‚
+  ÔÚKeycloak·şÎñÆ÷Æô¶¯ÆÚ¼ä¼ì²éÕ¾µãÃû³ÆºÍ½ÚµãÃû³ÆÊÇ·ñÓëÔ¤ÆÚÒ»ÖÂ¡£
 
-- æ£€æŸ¥KeycloakæœåŠ¡å™¨æ˜¯å¦æŒ‰é¢„æœŸä½äºé›†ç¾¤ä¸­ï¼ŒåŒ…æ‹¬åªæœ‰æ¥è‡ªåŒä¸€æ•°æ®ä¸­å¿ƒçš„KeycloakæœåŠ¡å™¨å½¼æ­¤åœ¨é›†ç¾¤ä¸­ã€‚ è¿™ä¹Ÿå¯ä»¥é€šè¿‡GMSè§†å›¾åœ¨JConsoleä¸­è¿›è¡Œæ£€æŸ¥ã€‚ æœ‰å…³å…¶ä»–è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[é›†ç¾¤ç–‘éš¾è§£ç­”](https://www.keycloak.org/docs/6.0/server_installation/#troubleshooting)ã€‚
+- ¼ì²éKeycloak·şÎñÆ÷ÊÇ·ñ°´Ô¤ÆÚÎ»ÓÚ¼¯ÈºÖĞ£¬°üÀ¨Ö»ÓĞÀ´×ÔÍ¬Ò»Êı¾İÖĞĞÄµÄKeycloak·şÎñÆ÷±Ë´ËÔÚ¼¯ÈºÖĞ¡£ ÕâÒ²¿ÉÒÔÍ¨¹ıGMSÊÓÍ¼ÔÚJConsoleÖĞ½øĞĞ¼ì²é¡£ ÓĞ¹ØÆäËûÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[¼¯ÈºÒÉÄÑ½â´ğ](https://www.keycloak.org/docs/6.0/server_installation/#troubleshooting)¡£
 
-- å¦‚æœåœ¨å¯åŠ¨KeycloakæœåŠ¡å™¨æœŸé—´æœ‰å¼‚å¸¸ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
+- Èç¹ûÔÚÆô¶¯Keycloak·şÎñÆ÷ÆÚ¼äÓĞÒì³££¬ÈçÏÂËùÊ¾£º
 
   ```
   17:33:58,605 ERROR [org.infinispan.client.hotrod.impl.operations.RetryOnFailureOperation] (ServerService Thread Pool -- 59) ISPN004007: Exception encountered. Retry 10 out of 10: org.infinispan.client.hotrod.exceptions.TransportException:: Could not fetch transport
@@ -1078,24 +1078,24 @@ Lock acquisition timeout (é”å®šè·å–è¶…æ—¶)
   	at org.infinispan.client.hotrod.impl.transport.tcp.TcpTransport.<init>(TcpTransport.java:82)
   ```
 
-  å®ƒé€šå¸¸æ„å‘³ç€KeycloakæœåŠ¡å™¨æ— æ³•è®¿é—®è‡ªå·±çš„æ•°æ®ä¸­å¿ƒçš„InfinispanæœåŠ¡å™¨ã€‚ ç¡®ä¿æŒ‰é¢„æœŸè®¾ç½®é˜²ç«å¢™ï¼Œå¹¶ä¸”å¯ä»¥è¿æ¥InfinispanæœåŠ¡å™¨ã€‚
+  ËüÍ¨³£ÒâÎ¶×ÅKeycloak·şÎñÆ÷ÎŞ·¨·ÃÎÊ×Ô¼ºµÄÊı¾İÖĞĞÄµÄInfinispan·şÎñÆ÷¡£ È·±£°´Ô¤ÆÚÉèÖÃ·À»ğÇ½£¬²¢ÇÒ¿ÉÒÔÁ¬½ÓInfinispan·şÎñÆ÷¡£
 
-- å¦‚æœåœ¨å¯åŠ¨KeycloakæœåŠ¡å™¨æœŸé—´æœ‰å¼‚å¸¸ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
+- Èç¹ûÔÚÆô¶¯Keycloak·şÎñÆ÷ÆÚ¼äÓĞÒì³££¬ÈçÏÂËùÊ¾£º
 
   ```
   16:44:18,321 WARN  [org.infinispan.client.hotrod.impl.protocol.Codec21] (ServerService Thread Pool -- 57) ISPN004005: Error received from the server: javax.transaction.RollbackException: ARJUNA016053: Could not commit transaction.
    ...
   ```
 
-  ç„¶åæ£€æŸ¥æ‚¨ç«™ç‚¹çš„ç›¸åº”InfinispanæœåŠ¡å™¨çš„æ—¥å¿—ï¼Œå¹¶æ£€æŸ¥æ˜¯å¦æœªèƒ½å¤‡ä»½åˆ°å…¶ä»–ç«™ç‚¹ã€‚ å¦‚æœå¤‡ä»½ç«™ç‚¹ä¸å¯ç”¨ï¼Œåˆ™å»ºè®®å°†å…¶åˆ‡æ¢ä¸ºè„±æœºï¼Œä»¥ä¾¿InfinispanæœåŠ¡å™¨ä¸ä¼šå°è¯•å¤‡ä»½åˆ°è„±æœºç«™ç‚¹ï¼Œä»è€Œå¯¼è‡´æ“ä½œä¹Ÿåœ¨KeycloakæœåŠ¡å™¨ç«¯æˆåŠŸé€šè¿‡ã€‚ æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[äº¤å‰DCéƒ¨ç½²ç®¡ç†](https://www.keycloak.org/docs/latest/server_installation/index.html#administration)ã€‚
+  È»ºó¼ì²éÄúÕ¾µãµÄÏàÓ¦Infinispan·şÎñÆ÷µÄÈÕÖ¾£¬²¢¼ì²éÊÇ·ñÎ´ÄÜ±¸·İµ½ÆäËûÕ¾µã¡£ Èç¹û±¸·İÕ¾µã²»¿ÉÓÃ£¬Ôò½¨Òé½«ÆäÇĞ»»ÎªÍÑ»ú£¬ÒÔ±ãInfinispan·şÎñÆ÷²»»á³¢ÊÔ±¸·İµ½ÍÑ»úÕ¾µã£¬´Ó¶øµ¼ÖÂ²Ù×÷Ò²ÔÚKeycloak·şÎñÆ÷¶Ë³É¹¦Í¨¹ı¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[½»²æDC²¿Êğ¹ÜÀí](https://www.keycloak.org/docs/latest/server_installation/index.html#administration)¡£
 
-- æ£€æŸ¥å¯é€šè¿‡JMXè·å¾—çš„Infinispanç»Ÿè®¡ä¿¡æ¯ã€‚ ä¾‹å¦‚ï¼Œå°è¯•ç™»å½•ï¼Œç„¶åæŸ¥çœ‹æ–°ä¼šè¯æ˜¯å¦å·²æˆåŠŸå†™å…¥ä¸¤ä¸ªInfinispanæœåŠ¡å™¨ï¼Œå¹¶åœ¨é‚£é‡Œçš„`sessions`ç¼“å­˜ä¸­å¯ç”¨ã€‚ è¿™å¯ä»¥é€šè¿‡æ£€æŸ¥MBeançš„`sessions`ç¼“å­˜ä¸­çš„å…ƒç´ æ•°æ¥é—´æ¥å®Œæˆ`jboss.datagrid-infinispan:type=Cache,name="sessions(repl_sync)",manager="clustered",component=Statistics`å’Œå±æ€§`numberOfEntries`ã€‚ ç™»å½•åï¼Œä¸¤ä¸ªç«™ç‚¹ä¸Šçš„ä¸¤ä¸ªInfinispanæœåŠ¡å™¨ä¸Šéƒ½åº”è¯¥æœ‰ä¸€ä¸ª`numberOfEntries`æ¡ç›®ã€‚
+- ¼ì²é¿ÉÍ¨¹ıJMX»ñµÃµÄInfinispanÍ³¼ÆĞÅÏ¢¡£ ÀıÈç£¬³¢ÊÔµÇÂ¼£¬È»ºó²é¿´ĞÂ»á»°ÊÇ·ñÒÑ³É¹¦Ğ´ÈëÁ½¸öInfinispan·şÎñÆ÷£¬²¢ÔÚÄÇÀïµÄ`sessions`»º´æÖĞ¿ÉÓÃ¡£ Õâ¿ÉÒÔÍ¨¹ı¼ì²éMBeanµÄ`sessions`»º´æÖĞµÄÔªËØÊıÀ´¼ä½ÓÍê³É`jboss.datagrid-infinispan:type=Cache,name="sessions(repl_sync)",manager="clustered",component=Statistics`ºÍÊôĞÔ`numberOfEntries`¡£ µÇÂ¼ºó£¬Á½¸öÕ¾µãÉÏµÄÁ½¸öInfinispan·şÎñÆ÷ÉÏ¶¼Ó¦¸ÃÓĞÒ»¸ö`numberOfEntries`ÌõÄ¿¡£
 
-- æŒ‰ç…§[KeycloakæœåŠ¡å™¨è®¾ç½®](https://www.keycloak.org/docs/latest/server_installation/index.html#serversetup)æ‰€è¿°å¯ç”¨DEBUGæ—¥å¿—è®°å½•ã€‚ ä¾‹å¦‚ï¼Œå¦‚æœæ‚¨ç™»å½•å¹¶ä¸”è®¤ä¸ºæ–°ä¼šè¯åœ¨ç¬¬äºŒä¸ªç«™ç‚¹ä¸Šä¸å¯ç”¨ï¼Œåˆ™æœ€å¥½æ£€æŸ¥KeycloakæœåŠ¡å™¨æ—¥å¿—å¹¶æ£€æŸ¥æ˜¯å¦æŒ‰ç…§[KeycloakæœåŠ¡å™¨è®¾ç½®](https://www.keycloak.org/docs/latest/server_installation/index.html#serversetup)ä¸­çš„è¯´æ˜è§¦å‘äº†ä¾¦å¬å™¨ã€‚ å¦‚æœæ‚¨ä¸çŸ¥é“å¹¶æƒ³è¦åœ¨keycloak-useré‚®ä»¶åˆ—è¡¨ä¸Šè¯¢é—®ï¼Œé‚£ä¹ˆä»ç”µå­é‚®ä»¶ä¸­çš„ä¸¤ä¸ªæ•°æ®ä¸­å¿ƒçš„KeycloakæœåŠ¡å™¨å‘é€æ—¥å¿—æ–‡ä»¶ä¼šå¾ˆæœ‰å¸®åŠ©ã€‚ å°†æ—¥å¿—ç‰‡æ®µæ·»åŠ åˆ°é‚®ä»¶æˆ–å°†æ—¥å¿—æ”¾åœ¨æŸå¤„å¹¶åœ¨ç”µå­é‚®ä»¶ä¸­å¼•ç”¨å®ƒä»¬ã€‚
+- °´ÕÕ[Keycloak·şÎñÆ÷ÉèÖÃ](https://www.keycloak.org/docs/latest/server_installation/index.html#serversetup)ËùÊöÆôÓÃDEBUGÈÕÖ¾¼ÇÂ¼¡£ ÀıÈç£¬Èç¹ûÄúµÇÂ¼²¢ÇÒÈÏÎªĞÂ»á»°ÔÚµÚ¶ş¸öÕ¾µãÉÏ²»¿ÉÓÃ£¬Ôò×îºÃ¼ì²éKeycloak·şÎñÆ÷ÈÕÖ¾²¢¼ì²éÊÇ·ñ°´ÕÕ[Keycloak·şÎñÆ÷ÉèÖÃ](https://www.keycloak.org/docs/latest/server_installation/index.html#serversetup)ÖĞµÄËµÃ÷´¥·¢ÁËÕìÌıÆ÷¡£ Èç¹ûÄú²»ÖªµÀ²¢ÏëÒªÔÚkeycloak-userÓÊ¼şÁĞ±íÉÏÑ¯ÎÊ£¬ÄÇÃ´´Óµç×ÓÓÊ¼şÖĞµÄÁ½¸öÊı¾İÖĞĞÄµÄKeycloak·şÎñÆ÷·¢ËÍÈÕÖ¾ÎÄ¼ş»áºÜÓĞ°ïÖú¡£ ½«ÈÕÖ¾Æ¬¶ÎÌí¼Óµ½ÓÊ¼ş»ò½«ÈÕÖ¾·ÅÔÚÄ³´¦²¢ÔÚµç×ÓÓÊ¼şÖĞÒıÓÃËüÃÇ¡£
 
-- å¦‚æœæ‚¨åœ¨`site1`ä¸Šçš„KeycloakæœåŠ¡å™¨ä¸Šæ›´æ–°äº†å®ä½“ï¼Œä¾‹å¦‚`user`ï¼Œå¹¶ä¸”æ‚¨æ²¡æœ‰åœ¨`site2`ä¸Šçš„KeycloakæœåŠ¡å™¨ä¸Šçœ‹åˆ°è¯¥å®ä½“æ›´æ–°ï¼Œé‚£ä¹ˆé—®é¢˜å¯èƒ½åœ¨äºå¤åˆ¶åŒæ­¥æ•°æ®åº“æœ¬èº« æˆ–Keycloakç¼“å­˜æœªæ­£ç¡®æ— æ•ˆã€‚ æ‚¨å¯ä»¥å°è¯•æš‚æ—¶ç¦ç”¨Keycloakç¼“å­˜ï¼Œå¦‚[here](https://www.keycloak.org/docs/6.0/server_installation/#disabling-caching)æ‰€è¿°ï¼Œä»¥ç¡®å®šé—®é¢˜æ˜¯å¦åœ¨æ•°æ®åº“å¤åˆ¶çº§åˆ«ã€‚ æ­¤å¤–ï¼Œæ‰‹åŠ¨è¿æ¥åˆ°æ•°æ®åº“å¹¶æ£€æŸ¥æ•°æ®æ˜¯å¦æŒ‰é¢„æœŸæ›´æ–°å¯èƒ½ä¼šæœ‰æ‰€å¸®åŠ©ã€‚ è¿™æ˜¯ç‰¹å®šäºæ¯ä¸ªæ•°æ®åº“çš„ï¼Œå› æ­¤æ‚¨éœ€è¦æŸ¥é˜…æ•°æ®åº“çš„æ–‡æ¡£ã€‚
+- Èç¹ûÄúÔÚ`site1`ÉÏµÄKeycloak·şÎñÆ÷ÉÏ¸üĞÂÁËÊµÌå£¬ÀıÈç`user`£¬²¢ÇÒÄúÃ»ÓĞÔÚ`site2`ÉÏµÄKeycloak·şÎñÆ÷ÉÏ¿´µ½¸ÃÊµÌå¸üĞÂ£¬ÄÇÃ´ÎÊÌâ¿ÉÄÜÔÚÓÚ¸´ÖÆÍ¬²½Êı¾İ¿â±¾Éí »òKeycloak»º´æÎ´ÕıÈ·ÎŞĞ§¡£ Äú¿ÉÒÔ³¢ÊÔÔİÊ±½ûÓÃKeycloak»º´æ£¬Èç[here](https://www.keycloak.org/docs/6.0/server_installation/#disabling-caching)ËùÊö£¬ÒÔÈ·¶¨ÎÊÌâÊÇ·ñÔÚÊı¾İ¿â¸´ÖÆ¼¶±ğ¡£ ´ËÍâ£¬ÊÖ¶¯Á¬½Óµ½Êı¾İ¿â²¢¼ì²éÊı¾İÊÇ·ñ°´Ô¤ÆÚ¸üĞÂ¿ÉÄÜ»áÓĞËù°ïÖú¡£ ÕâÊÇÌØ¶¨ÓÚÃ¿¸öÊı¾İ¿âµÄ£¬Òò´ËÄúĞèÒª²éÔÄÊı¾İ¿âµÄÎÄµµ¡£
 
-- æœ‰æ—¶æ‚¨å¯èƒ½ä¼šåœ¨InfinispanæœåŠ¡å™¨æ—¥å¿—ä¸­çœ‹åˆ°ä¸æ­¤ç±»é”ç›¸å…³çš„å¼‚å¸¸ï¼š
+- ÓĞÊ±Äú¿ÉÄÜ»áÔÚInfinispan·şÎñÆ÷ÈÕÖ¾ÖĞ¿´µ½Óë´ËÀàËøÏà¹ØµÄÒì³££º
 
   ```
   (HotRodServerHandler-6-35) ISPN000136: Error executing command ReplaceCommand,
@@ -1103,16 +1103,16 @@ Lock acquisition timeout (é”å®šè·å–è¶…æ—¶)
   0 milliseconds for key [B0x033E243034396234..[39] and requestor GlobalTx:jdg1:4353. Lock is held by GlobalTx:jdg1:4352
   ```
 
-  è¿™äº›ä¾‹å¤–ä¸ä¸€å®šæ˜¯ä¸ªé—®é¢˜ã€‚ å®ƒä»¬å¯èƒ½åœ¨ä»»ä½•æ—¶å€™åœ¨ä¸¤ä¸ªDCä¸Šè§¦å‘åŒä¸€å®ä½“çš„å¹¶å‘ç¼–è¾‘æ—¶å‘ç”Ÿã€‚ è¿™åœ¨éƒ¨ç½²ä¸­å¾ˆå¸¸è§ã€‚ é€šå¸¸ï¼ŒKeycloakæœåŠ¡å™¨ä¼šæ”¶åˆ°æœ‰å…³å¤±è´¥æ“ä½œçš„é€šçŸ¥ï¼Œå¹¶ä¼šé‡è¯•ï¼Œå› æ­¤ä»ç”¨æˆ·çš„è§’åº¦æ¥çœ‹ï¼Œé€šå¸¸æ²¡æœ‰ä»»ä½•é—®é¢˜ã€‚
+  ÕâĞ©ÀıÍâ²»Ò»¶¨ÊÇ¸öÎÊÌâ¡£ ËüÃÇ¿ÉÄÜÔÚÈÎºÎÊ±ºòÔÚÁ½¸öDCÉÏ´¥·¢Í¬Ò»ÊµÌåµÄ²¢·¢±à¼­Ê±·¢Éú¡£ ÕâÔÚ²¿ÊğÖĞºÜ³£¼û¡£ Í¨³££¬Keycloak·şÎñÆ÷»áÊÕµ½ÓĞ¹ØÊ§°Ü²Ù×÷µÄÍ¨Öª£¬²¢»áÖØÊÔ£¬Òò´Ë´ÓÓÃ»§µÄ½Ç¶ÈÀ´¿´£¬Í¨³£Ã»ÓĞÈÎºÎÎÊÌâ¡£
 
-- å¦‚æœKeycloakæœåŠ¡å™¨å¯åŠ¨æœŸé—´æœ‰å¼‚å¸¸ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
+- Èç¹ûKeycloak·şÎñÆ÷Æô¶¯ÆÚ¼äÓĞÒì³££¬ÈçÏÂËùÊ¾£º
 
   ```
   16:44:18,321 WARN  [org.infinispan.client.hotrod.impl.protocol.Codec21] (ServerService Thread Pool -- 55) ISPN004005: Error received from the server: java.lang.SecurityException: ISPN000287: Unauthorized access: subject 'Subject with principal(s): []' lacks 'READ' permission
    ...
   ```
 
-  è¿™äº›æ—¥å¿—æ¡ç›®æ˜¯Keycloakè‡ªåŠ¨æ£€æµ‹Infinispanæ˜¯å¦éœ€è¦èº«ä»½éªŒè¯çš„ç»“æœï¼Œå¹¶ä¸”æ„å‘³ç€éœ€è¦è¿›è¡Œèº«ä»½éªŒè¯ã€‚ æ­¤æ—¶æ‚¨å°†æ³¨æ„åˆ°æœåŠ¡å™¨æˆåŠŸå¯åŠ¨å¹¶ä¸”æ‚¨å¯ä»¥å®‰å…¨åœ°å¿½ç•¥è¿™äº›æˆ–æœåŠ¡å™¨æ— æ³•å¯åŠ¨ã€‚ å¦‚æœæœåŠ¡å™¨æ— æ³•å¯åŠ¨ï¼Œè¯·ç¡®ä¿å·²æŒ‰ç…§[InfinispanæœåŠ¡å™¨è®¾ç½®](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup)ä¸­çš„è¯´æ˜æ­£ç¡®é…ç½®Infinispanè¿›è¡Œèº«ä»½éªŒè¯ã€‚ è¦é˜²æ­¢åŒ…å«æ­¤æ—¥å¿—æ¡ç›®ï¼Œå¯ä»¥é€šè¿‡åœ¨`spi=connectionsInfinispan/provider=default`é…ç½®ä¸­å°†`remoteStoreSecurityEnabled`å±æ€§è®¾ç½®ä¸º`true`æ¥å¼ºåˆ¶è¿›è¡Œèº«ä»½éªŒè¯ï¼š
+  ÕâĞ©ÈÕÖ¾ÌõÄ¿ÊÇKeycloak×Ô¶¯¼ì²âInfinispanÊÇ·ñĞèÒªÉí·İÑéÖ¤µÄ½á¹û£¬²¢ÇÒÒâÎ¶×ÅĞèÒª½øĞĞÉí·İÑéÖ¤¡£ ´ËÊ±Äú½«×¢Òâµ½·şÎñÆ÷³É¹¦Æô¶¯²¢ÇÒÄú¿ÉÒÔ°²È«µØºöÂÔÕâĞ©»ò·şÎñÆ÷ÎŞ·¨Æô¶¯¡£ Èç¹û·şÎñÆ÷ÎŞ·¨Æô¶¯£¬ÇëÈ·±£ÒÑ°´ÕÕ[Infinispan·şÎñÆ÷ÉèÖÃ](https://www.keycloak.org/docs/latest/server_installation/index.html#jdgsetup)ÖĞµÄËµÃ÷ÕıÈ·ÅäÖÃInfinispan½øĞĞÉí·İÑéÖ¤¡£ Òª·ÀÖ¹°üº¬´ËÈÕÖ¾ÌõÄ¿£¬¿ÉÒÔÍ¨¹ıÔÚ`spi=connectionsInfinispan/provider=default`ÅäÖÃÖĞ½«`remoteStoreSecurityEnabled`ÊôĞÔÉèÖÃÎª`true`À´Ç¿ÖÆ½øĞĞÉí·İÑéÖ¤£º
 
   ```xml
   <subsystem xmlns="urn:jboss:domain:keycloak-server:1.1">
@@ -1128,15 +1128,15 @@ Lock acquisition timeout (é”å®šè·å–è¶…æ—¶)
       </spi>
   ```
 
-- å¦‚æœæ‚¨å°è¯•ä½¿ç”¨Keycloakå¯¹æ‚¨çš„åº”ç”¨ç¨‹åºè¿›è¡Œèº«ä»½éªŒè¯ï¼Œä½†èº«ä»½éªŒè¯å¤±è´¥å¹¶ä¸”æµè§ˆå™¨ä¸­å­˜åœ¨æ— é™æ¬¡é‡å®šå‘ï¼Œå¹¶ä¸”æ‚¨åœ¨KeycloakæœåŠ¡å™¨æ—¥å¿—ä¸­çœ‹åˆ°å¦‚ä¸‹é”™è¯¯ï¼š
+- Èç¹ûÄú³¢ÊÔÊ¹ÓÃKeycloak¶ÔÄúµÄÓ¦ÓÃ³ÌĞò½øĞĞÉí·İÑéÖ¤£¬µ«Éí·İÑéÖ¤Ê§°Ü²¢ÇÒä¯ÀÀÆ÷ÖĞ´æÔÚÎŞÏŞ´ÎÖØ¶¨Ïò£¬²¢ÇÒÄúÔÚKeycloak·şÎñÆ÷ÈÕÖ¾ÖĞ¿´µ½ÈçÏÂ´íÎó£º
 
   ```
   2017-11-27 14:50:31,587 WARN  [org.keycloak.events] (default task-17) type=LOGIN_ERROR, realmId=master, clientId=null, userId=null, ipAddress=aa.bb.cc.dd, error=expired_code, restart_after_timeout=true
   ```
 
-  è¿™å¯èƒ½æ„å‘³ç€æ‚¨çš„è´Ÿè½½å‡è¡¡å™¨éœ€è¦è®¾ç½®ä¸ºæ”¯æŒç²˜æ€§ä¼šè¯ã€‚ ç¡®ä¿åœ¨å¯åŠ¨KeycloakæœåŠ¡å™¨ï¼ˆProperty`jboss.node.name`ï¼‰æœŸé—´ä½¿ç”¨çš„æä¾›çš„è·¯ç”±åç§°åŒ…å«è´Ÿè½½å‡è¡¡å™¨æœåŠ¡å™¨ç”¨äºæ ‡è¯†å½“å‰æœåŠ¡å™¨çš„æ­£ç¡®åç§°ã€‚
+  Õâ¿ÉÄÜÒâÎ¶×ÅÄúµÄ¸ºÔØ¾ùºâÆ÷ĞèÒªÉèÖÃÎªÖ§³ÖÕ³ĞÔ»á»°¡£ È·±£ÔÚÆô¶¯Keycloak·şÎñÆ÷£¨Property`jboss.node.name`£©ÆÚ¼äÊ¹ÓÃµÄÌá¹©µÄÂ·ÓÉÃû³Æ°üº¬¸ºÔØ¾ùºâÆ÷·şÎñÆ÷ÓÃÓÚ±êÊ¶µ±Ç°·şÎñÆ÷µÄÕıÈ·Ãû³Æ¡£
 
-- å¦‚æœInfinispan`work`ç¼“å­˜æ— é™å¢é•¿ï¼Œæ‚¨å¯èƒ½ä¼šé‡åˆ°[æ­¤Infinispané—®é¢˜](https://issues.jboss.org/browse/JDG-987)ï¼Œè¿™æ˜¯ç”±ç¼“å­˜é¡¹æœªæ­£ç¡®è¿‡æœŸå¼•èµ·çš„ã€‚ åœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œä½¿ç”¨ç©ºçš„`<expiration />`æ ‡è®°æ›´æ–°ç¼“å­˜å£°æ˜ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
+- Èç¹ûInfinispan`work`»º´æÎŞÏŞÔö³¤£¬Äú¿ÉÄÜ»áÓöµ½[´ËInfinispanÎÊÌâ](https://issues.jboss.org/browse/JDG-987)£¬ÕâÊÇÓÉ»º´æÏîÎ´ÕıÈ·¹ıÆÚÒıÆğµÄ¡£ ÔÚÕâÖÖÇé¿öÏÂ£¬Ê¹ÓÃ¿ÕµÄ`<expiration />`±ê¼Ç¸üĞÂ»º´æÉùÃ÷£¬ÈçÏÂËùÊ¾£º
 
   ```xml
       <replicated-cache name="work" configuration="sessions-cfg">
@@ -1144,7 +1144,7 @@ Lock acquisition timeout (é”å®šè·å–è¶…æ—¶)
       </replicated-cache>
   ```
 
-- å¦‚æœæ‚¨åœ¨InfinispanæœåŠ¡å™¨æ—¥å¿—ä¸­çœ‹åˆ°è­¦å‘Šï¼Œä¾‹å¦‚ï¼š
+- Èç¹ûÄúÔÚInfinispan·şÎñÆ÷ÈÕÖ¾ÖĞ¿´µ½¾¯¸æ£¬ÀıÈç£º
 
   ```
   18:06:19,687 WARN  [org.infinispan.server.hotrod.Decoder2x] (HotRod-ServerWorker-7-12) ISPN006011: Operation 'PUT_IF_ABSENT' forced to
@@ -1153,9 +1153,9 @@ Lock acquisition timeout (é”å®šè·å–è¶…æ—¶)
     be used with transactional caches, otherwise data inconsistency issues could arise under failure situations
   ```
 
-  ä½ å¯ä»¥å¿½ç•¥å®ƒä»¬ã€‚ ä¸ºäº†é¿å…è­¦å‘Šï¼ŒInfinispanæœåŠ¡å™¨ç«¯çš„ç¼“å­˜å¯ä»¥æ›´æ”¹ä¸ºäº‹åŠ¡ç¼“å­˜ï¼Œä½†ä¸æ¨èè¿™æ ·åšï¼Œå› ä¸ºå®ƒå¯èƒ½å¯¼è‡´ç”±bugå¼•èµ·çš„å…¶ä»–ä¸€äº›é—®é¢˜<https://issues.jboss.org/browse/ISPN-9323>ã€‚ æ‰€ä»¥ç°åœ¨ï¼Œè­¦å‘Šåªéœ€è¦è¢«å¿½ç•¥ã€‚
+  Äã¿ÉÒÔºöÂÔËüÃÇ¡£ ÎªÁË±ÜÃâ¾¯¸æ£¬Infinispan·şÎñÆ÷¶ËµÄ»º´æ¿ÉÒÔ¸ü¸ÄÎªÊÂÎñ»º´æ£¬µ«²»ÍÆ¼öÕâÑù×ö£¬ÒòÎªËü¿ÉÄÜµ¼ÖÂÓÉbugÒıÆğµÄÆäËûÒ»Ğ©ÎÊÌâ<https://issues.jboss.org/browse/ISPN-9323>¡£ ËùÒÔÏÖÔÚ£¬¾¯¸æÖ»ĞèÒª±»ºöÂÔ¡£
 
-- å¦‚æœæ‚¨åœ¨InfinispanæœåŠ¡å™¨æ—¥å¿—ä¸­çœ‹åˆ°é”™è¯¯ï¼Œä¾‹å¦‚ï¼š
+- Èç¹ûÄúÔÚInfinispan·şÎñÆ÷ÈÕÖ¾ÖĞ¿´µ½´íÎó£¬ÀıÈç£º
 
   ```
   12:08:32,921 ERROR [org.infinispan.server.hotrod.CacheDecodeContext] (HotRod-ServerWorker-7-11) ISPN005003: Exception reported: org.infinispan.server.hotrod.InvalidMagicIdException: Error reading magic byte or message id: 7
@@ -1166,19 +1166,19 @@ Lock acquisition timeout (é”å®šè·å–è¶…æ—¶)
   	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:248)
   ```
 
-  å¹¶ä¸”æ‚¨åœ¨Keycloakæ—¥å¿—ä¸­çœ‹åˆ°ä¸€äº›ç±»ä¼¼çš„é”™è¯¯ï¼Œå®ƒå¯ä»¥è¡¨æ˜æ­£åœ¨ä½¿ç”¨çš„HotRodåè®®çš„ç‰ˆæœ¬ä¸å…¼å®¹ã€‚ å½“æ‚¨å°è¯•å°†Keycloakä¸JDG 7.2æœåŠ¡å™¨æˆ–æ—§ç‰ˆæœ¬çš„InfinispanæœåŠ¡å™¨ä¸€èµ·ä½¿ç”¨æ—¶ï¼Œå¯èƒ½ä¼šå‘ç”Ÿè¿™ç§æƒ…å†µã€‚ å¦‚æœå°†`protocolVersion`å±æ€§ä½œä¸ºé™„åŠ å±æ€§æ·»åŠ åˆ°Keycloaké…ç½®æ–‡ä»¶ä¸­çš„`remote-store`å…ƒç´ ï¼Œå°†ä¼šæœ‰æ‰€å¸®åŠ©ã€‚ ä¾‹å¦‚ï¼š
+  ²¢ÇÒÄúÔÚKeycloakÈÕÖ¾ÖĞ¿´µ½Ò»Ğ©ÀàËÆµÄ´íÎó£¬Ëü¿ÉÒÔ±íÃ÷ÕıÔÚÊ¹ÓÃµÄHotRodĞ­ÒéµÄ°æ±¾²»¼æÈİ¡£ µ±Äú³¢ÊÔ½«KeycloakÓëJDG 7.2·şÎñÆ÷»ò¾É°æ±¾µÄInfinispan·şÎñÆ÷Ò»ÆğÊ¹ÓÃÊ±£¬¿ÉÄÜ»á·¢ÉúÕâÖÖÇé¿ö¡£ Èç¹û½«`protocolVersion`ÊôĞÔ×÷Îª¸½¼ÓÊôĞÔÌí¼Óµ½KeycloakÅäÖÃÎÄ¼şÖĞµÄ`remote-store`ÔªËØ£¬½«»áÓĞËù°ïÖú¡£ ÀıÈç£º
 
   ```
   <property name="protocolVersion">2.6</property>
   ```
 
-## 4. ç®¡ç†å­ç³»ç»Ÿé…ç½®
+## 4. ¹ÜÀí×ÓÏµÍ³ÅäÖÃ {#}
 
-Keycloakçš„ä½çº§é…ç½®æ˜¯é€šè¿‡ç¼–è¾‘å‘è¡Œç‰ˆä¸­çš„`standalone.xml`ï¼Œ`standalone-ha.xml`æˆ–`domain.xml`æ–‡ä»¶æ¥å®Œæˆçš„ã€‚ æ­¤æ–‡ä»¶çš„ä½ç½®å–å†³äºæ‚¨çš„[æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)ã€‚
+KeycloakµÄµÍ¼¶ÅäÖÃÊÇÍ¨¹ı±à¼­·¢ĞĞ°æÖĞµÄ`standalone.xml`£¬`standalone-ha.xml`»ò`domain.xml`ÎÄ¼şÀ´Íê³ÉµÄ¡£ ´ËÎÄ¼şµÄÎ»ÖÃÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)¡£
 
-è™½ç„¶æ‚¨å¯ä»¥åœ¨æ­¤é…ç½®æ— é™è®¾ç½®ï¼Œä½†æœ¬èŠ‚å°†é‡ç‚¹ä»‹ç» *keycloak-server* å­ç³»ç»Ÿçš„é…ç½®ã€‚ æ— è®ºæ‚¨ä½¿ç”¨å“ªä¸ªé…ç½®æ–‡ä»¶ï¼Œ*keycloak-server* å­ç³»ç»Ÿçš„é…ç½®éƒ½æ˜¯ç›¸åŒçš„ã€‚
+ËäÈ»Äú¿ÉÒÔÔÚ´ËÅäÖÃÎŞÏŞÉèÖÃ£¬µ«±¾½Ú½«ÖØµã½éÉÜ *keycloak-server* ×ÓÏµÍ³µÄÅäÖÃ¡£ ÎŞÂÛÄúÊ¹ÓÃÄÄ¸öÅäÖÃÎÄ¼ş£¬*keycloak-server* ×ÓÏµÍ³µÄÅäÖÃ¶¼ÊÇÏàÍ¬µÄ¡£
 
-keycloak-serverå­ç³»ç»Ÿé€šå¸¸åœ¨æ–‡ä»¶æœ«å°¾å£°æ˜ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
+keycloak-server×ÓÏµÍ³Í¨³£ÔÚÎÄ¼şÄ©Î²ÉùÃ÷£¬ÈçÏÂËùÊ¾£º
 
 ```xml
 <subsystem xmlns="urn:jboss:domain:keycloak-server:1.1">
@@ -1187,15 +1187,15 @@ keycloak-serverå­ç³»ç»Ÿé€šå¸¸åœ¨æ–‡ä»¶æœ«å°¾å£°æ˜ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
 </subsystem>
 ```
 
-è¯·æ³¨æ„ï¼Œåœ¨é‡æ–°å¯åŠ¨æœåŠ¡å™¨ä¹‹å‰ï¼Œæ­¤å­ç³»ç»Ÿä¸­çš„ä»»ä½•æ›´æ”¹éƒ½ä¸ä¼šç”Ÿæ•ˆã€‚
+Çë×¢Òâ£¬ÔÚÖØĞÂÆô¶¯·şÎñÆ÷Ö®Ç°£¬´Ë×ÓÏµÍ³ÖĞµÄÈÎºÎ¸ü¸Ä¶¼²»»áÉúĞ§¡£
 
-### 4.1. é…ç½®SPIæä¾›ç¨‹åº
+### 4.1. ÅäÖÃSPIÌá¹©³ÌĞò {#}
 
-æ¯ä¸ªé…ç½®è®¾ç½®çš„ç»†èŠ‚åœ¨è¯¥è®¾ç½®çš„ä¸Šä¸‹æ–‡ä¸­çš„å…¶ä»–åœ°æ–¹è®¨è®ºã€‚ ä½†æ˜¯ï¼Œäº†è§£ç”¨äºåœ¨SPIæä¾›ç¨‹åºä¸Šå£°æ˜è®¾ç½®çš„æ ¼å¼å¾ˆæœ‰ç”¨ã€‚
+Ã¿¸öÅäÖÃÉèÖÃµÄÏ¸½ÚÔÚ¸ÃÉèÖÃµÄÉÏÏÂÎÄÖĞµÄÆäËûµØ·½ÌÖÂÛ¡£ µ«ÊÇ£¬ÁË½âÓÃÓÚÔÚSPIÌá¹©³ÌĞòÉÏÉùÃ÷ÉèÖÃµÄ¸ñÊ½ºÜÓĞÓÃ¡£
 
-Keycloakæ˜¯ä¸€ä¸ªé«˜åº¦æ¨¡å—åŒ–çš„ç³»ç»Ÿï¼Œå…·æœ‰å¾ˆå¤§çš„çµæ´»æ€§ã€‚ æœ‰è¶…è¿‡50ä¸ªæœåŠ¡æä¾›ç¨‹åºæ¥å£ï¼ˆSPIï¼‰ï¼Œæ‚¨å¯ä»¥äº¤æ¢æ¯ä¸ªSPIçš„å®ç°ã€‚ SPIçš„å®ç°ç§°ä¸º*æä¾›è€…*ã€‚
+KeycloakÊÇÒ»¸ö¸ß¶ÈÄ£¿é»¯µÄÏµÍ³£¬¾ßÓĞºÜ´óµÄÁé»îĞÔ¡£ ÓĞ³¬¹ı50¸ö·şÎñÌá¹©³ÌĞò½Ó¿Ú£¨SPI£©£¬Äú¿ÉÒÔ½»»»Ã¿¸öSPIµÄÊµÏÖ¡£ SPIµÄÊµÏÖ³ÆÎª*Ìá¹©Õß*¡£
 
-SPIå£°æ˜ä¸­çš„æ‰€æœ‰å…ƒç´ éƒ½æ˜¯å¯é€‰çš„ï¼Œä½†å®Œæ•´çš„SPIå£°æ˜å¦‚ä¸‹æ‰€ç¤ºï¼š
+SPIÉùÃ÷ÖĞµÄËùÓĞÔªËØ¶¼ÊÇ¿ÉÑ¡µÄ£¬µ«ÍêÕûµÄSPIÉùÃ÷ÈçÏÂËùÊ¾£º
 
 ```xml
 <spi name="myspi">
@@ -1213,11 +1213,11 @@ SPIå£°æ˜ä¸­çš„æ‰€æœ‰å…ƒç´ éƒ½æ˜¯å¯é€‰çš„ï¼Œä½†å®Œæ•´çš„SPIå£°æ˜å¦‚ä¸‹æ‰€ç¤ºï¼
 </spi>
 ```
 
-è¿™é‡Œæˆ‘ä»¬ä¸ºSPI`myspi`å®šä¹‰äº†ä¸¤ä¸ªæä¾›ç¨‹åºã€‚ `default-provider`è¢«åˆ—ä¸º`myprovider`ã€‚ ä½†æ˜¯ç”±SPIæ¥å†³å®šå¦‚ä½•å¤„ç†è¿™ä¸ªè®¾ç½®ã€‚ æœ‰äº›SPIå…è®¸å¤šä¸ªæä¾›å•†ï¼Œæœ‰äº›åˆ™ä¸å…è®¸ã€‚ æ‰€ä»¥`default-provider`å¯ä»¥å¸®åŠ©SPIé€‰æ‹©ã€‚
+ÕâÀïÎÒÃÇÎªSPI`myspi`¶¨ÒåÁËÁ½¸öÌá¹©³ÌĞò¡£ `default-provider`±»ÁĞÎª`myprovider`¡£ µ«ÊÇÓÉSPIÀ´¾ö¶¨ÈçºÎ´¦ÀíÕâ¸öÉèÖÃ¡£ ÓĞĞ©SPIÔÊĞí¶à¸öÌá¹©ÉÌ£¬ÓĞĞ©Ôò²»ÔÊĞí¡£ ËùÒÔ`default-provider`¿ÉÒÔ°ïÖúSPIÑ¡Ôñ¡£
 
-å¦è¯·æ³¨æ„ï¼Œæ¯ä¸ªæä¾›ç¨‹åºéƒ½å®šä¹‰äº†è‡ªå·±çš„ä¸€ç»„é…ç½®å±æ€§ã€‚ ä¸Šé¢ä¸¤ä¸ªæä¾›å•†éƒ½æœ‰ä¸€ä¸ªåä¸º`foo`çš„å±æ€§è¿™ä¸€äº‹å®åªæ˜¯å·§åˆã€‚
+ÁíÇë×¢Òâ£¬Ã¿¸öÌá¹©³ÌĞò¶¼¶¨ÒåÁË×Ô¼ºµÄÒ»×éÅäÖÃÊôĞÔ¡£ ÉÏÃæÁ½¸öÌá¹©ÉÌ¶¼ÓĞÒ»¸öÃûÎª`foo`µÄÊôĞÔÕâÒ»ÊÂÊµÖ»ÊÇÇÉºÏ¡£
 
-æ¯ä¸ªå±æ€§å€¼çš„ç±»å‹ç”±æä¾›ç¨‹åºè§£é‡Šã€‚ ä½†æ˜¯ï¼Œæœ‰ä¸€ä¸ªä¾‹å¤–ã€‚ è€ƒè™‘`eventsStore`  SPI çš„ `jpa` æä¾›ç¨‹åºï¼š
+Ã¿¸öÊôĞÔÖµµÄÀàĞÍÓÉÌá¹©³ÌĞò½âÊÍ¡£ µ«ÊÇ£¬ÓĞÒ»¸öÀıÍâ¡£ ¿¼ÂÇ`eventsStore`  SPI µÄ `jpa` Ìá¹©³ÌĞò£º
 
 ```xml
 <spi name="eventsStore">
@@ -1230,13 +1230,13 @@ SPIå£°æ˜ä¸­çš„æ‰€æœ‰å…ƒç´ éƒ½æ˜¯å¯é€‰çš„ï¼Œä½†å®Œæ•´çš„SPIå£°æ˜å¦‚ä¸‹æ‰€ç¤ºï¼
 </spi>
 ```
 
-æˆ‘ä»¬çœ‹åˆ°å€¼ä»¥æ–¹æ‹¬å·å¼€å¤´å’Œç»“å°¾ã€‚ è¿™æ„å‘³ç€è¯¥å€¼å°†ä½œä¸ºåˆ—è¡¨ä¼ é€’ç»™æä¾›ç¨‹åºã€‚ åœ¨æ­¤ç¤ºä¾‹ä¸­ï¼Œç³»ç»Ÿå°†å‘æä¾›ç¨‹åºä¼ é€’ä¸€ä¸ªåŒ…å«ä¸¤ä¸ªå…ƒç´ å€¼ *EVENT1* å’Œ *EVENT2* çš„åˆ—è¡¨ã€‚ è¦å‘åˆ—è¡¨ä¸­æ·»åŠ æ›´å¤šå€¼ï¼Œåªéœ€ä½¿ç”¨é€—å·åˆ†éš”æ¯ä¸ªåˆ—è¡¨å…ƒç´ å³å¯ã€‚ ä¸å¹¸çš„æ˜¯ï¼Œä½ éœ€è¦ä½¿ç”¨ `ï¼†quot;` æ¥è½¬ä¹‰æ¯ä¸ªåˆ—è¡¨å…ƒç´ å‘¨å›´çš„å¼•å·ã€‚
+ÎÒÃÇ¿´µ½ÖµÒÔ·½À¨ºÅ¿ªÍ·ºÍ½áÎ²¡£ ÕâÒâÎ¶×Å¸ÃÖµ½«×÷ÎªÁĞ±í´«µİ¸øÌá¹©³ÌĞò¡£ ÔÚ´ËÊ¾ÀıÖĞ£¬ÏµÍ³½«ÏòÌá¹©³ÌĞò´«µİÒ»¸ö°üº¬Á½¸öÔªËØÖµ *EVENT1* ºÍ *EVENT2* µÄÁĞ±í¡£ ÒªÏòÁĞ±íÖĞÌí¼Ó¸ü¶àÖµ£¬Ö»ĞèÊ¹ÓÃ¶ººÅ·Ö¸ôÃ¿¸öÁĞ±íÔªËØ¼´¿É¡£ ²»ĞÒµÄÊÇ£¬ÄãĞèÒªÊ¹ÓÃ `£¦quot;` À´×ªÒåÃ¿¸öÁĞ±íÔªËØÖÜÎ§µÄÒıºÅ¡£
 
-### 4.2. å¯åŠ¨WildFly CLI
+### 4.2. Æô¶¯WildFly CLI {#}
 
-é™¤äº†æ‰‹åŠ¨ç¼–è¾‘é…ç½®å¤–ï¼Œæ‚¨è¿˜å¯ä»¥é€šè¿‡ *jboss-cli* å·¥å…·å‘å‡ºå‘½ä»¤æ¥æ›´æ”¹é…ç½®ã€‚ CLIå…è®¸æ‚¨åœ¨æœ¬åœ°æˆ–è¿œç¨‹é…ç½®æœåŠ¡å™¨ã€‚ å½“ä¸è„šæœ¬ç»“åˆä½¿ç”¨æ—¶ï¼Œå®ƒå°¤å…¶æœ‰ç”¨ã€‚
+³ıÁËÊÖ¶¯±à¼­ÅäÖÃÍâ£¬Äú»¹¿ÉÒÔÍ¨¹ı *jboss-cli* ¹¤¾ß·¢³öÃüÁîÀ´¸ü¸ÄÅäÖÃ¡£ CLIÔÊĞíÄúÔÚ±¾µØ»òÔ¶³ÌÅäÖÃ·şÎñÆ÷¡£ µ±Óë½Å±¾½áºÏÊ¹ÓÃÊ±£¬ËüÓÈÆäÓĞÓÃ¡£
 
-è¦å¯åŠ¨WildFly CLIï¼Œæ‚¨éœ€è¦è¿è¡Œ`jboss-cli`ã€‚
+ÒªÆô¶¯WildFly CLI£¬ÄúĞèÒªÔËĞĞ`jboss-cli`¡£
 
 Linux/Unix
 
@@ -1250,17 +1250,17 @@ Windows
 > ...\bin\jboss-cli.bat
 ```
 
-è¿™å°†å¸¦æ‚¨åˆ°è¿™æ ·çš„æç¤ºï¼š
+Õâ½«´øÄúµ½ÕâÑùµÄÌáÊ¾£º
 
-æç¤º
+ÌáÊ¾
 
 ```
 [disconnected /]
 ```
 
-å¦‚æœæ‚¨å¸Œæœ›åœ¨æ­£åœ¨è¿è¡Œçš„æœåŠ¡å™¨ä¸Šæ‰§è¡Œå‘½ä»¤ï¼Œåˆ™é¦–å…ˆæ‰§è¡Œ`connect`å‘½ä»¤ã€‚
+Èç¹ûÄúÏ£ÍûÔÚÕıÔÚÔËĞĞµÄ·şÎñÆ÷ÉÏÖ´ĞĞÃüÁî£¬ÔòÊ×ÏÈÖ´ĞĞ`connect`ÃüÁî¡£
 
-è¿æ¥
+Á¬½Ó
 
 ```
 [disconnected /] connect
@@ -1268,38 +1268,38 @@ connect
 [standalone@localhost:9990 /]
 ```
 
-ä½ å¯èƒ½ä¼šæƒ³ï¼Œâ€œæˆ‘æ²¡æœ‰è¾“å…¥ä»»ä½•ç”¨æˆ·åæˆ–å¯†ç ï¼â€ã€‚ å¦‚æœæ‚¨åœ¨è¿è¡Œç‹¬ç«‹æœåŠ¡å™¨æˆ–åŸŸæ§åˆ¶å™¨çš„åŒä¸€å°è®¡ç®—æœºä¸Šè¿è¡Œ`jboss-cli`ï¼Œå¹¶ä¸”æ‚¨çš„å¸æˆ·å…·æœ‰é€‚å½“çš„æ–‡ä»¶æƒé™ï¼Œåˆ™æ— éœ€è®¾ç½®æˆ–è¾“å…¥ç®¡ç†å‘˜ç”¨æˆ·åå’Œå¯†ç ã€‚ è¯·å‚é˜…[* WildFly 16æ–‡æ¡£*](http://docs.wildfly.org/16/Admin_Guide.html)ï¼Œäº†è§£å¦‚æœæ‚¨å¯¹è¯¥è®¾ç½®æ„Ÿåˆ°ä¸èˆ’æœæ—¶å¦‚ä½•ä½¿äº‹æƒ…æ›´å®‰å…¨çš„æ›´å¤šè¯¦ç»†ä¿¡æ¯ã€‚
+Äã¿ÉÄÜ»áÏë£¬¡°ÎÒÃ»ÓĞÊäÈëÈÎºÎÓÃ»§Ãû»òÃÜÂë£¡¡±¡£ Èç¹ûÄúÔÚÔËĞĞ¶ÀÁ¢·şÎñÆ÷»òÓò¿ØÖÆÆ÷µÄÍ¬Ò»Ì¨¼ÆËã»úÉÏÔËĞĞ`jboss-cli`£¬²¢ÇÒÄúµÄÕÊ»§¾ßÓĞÊÊµ±µÄÎÄ¼şÈ¨ÏŞ£¬ÔòÎŞĞèÉèÖÃ»òÊäÈë¹ÜÀíÔ±ÓÃ»§ÃûºÍÃÜÂë¡£ Çë²ÎÔÄ[* WildFly 16ÎÄµµ*](http://docs.wildfly.org/16/Admin_Guide.html)£¬ÁË½âÈç¹ûÄú¶Ô¸ÃÉèÖÃ¸Ğµ½²»Êæ·şÊ±ÈçºÎÊ¹ÊÂÇé¸ü°²È«µÄ¸ü¶àÏêÏ¸ĞÅÏ¢¡£
 
-### 4.3. CLIåµŒå…¥å¼æ¨¡å¼
+### 4.3. CLIÇ¶ÈëÊ½Ä£Ê½ {#}
 
-å¦‚æœæ‚¨ç¢°å·§ä¸ç‹¬ç«‹æœåŠ¡å™¨ä½äºåŒä¸€å°è®¡ç®—æœºä¸Šï¼Œå¹¶ä¸”æ‚¨å¸Œæœ›åœ¨æœåŠ¡å™¨æœªå¤„äºæ´»åŠ¨çŠ¶æ€æ—¶å‘å‡ºå‘½ä»¤ï¼Œåˆ™å¯ä»¥å°†æœåŠ¡å™¨åµŒå…¥CLIå¹¶åœ¨ä¸å…è®¸ä¼ å…¥è¯·æ±‚çš„ç‰¹æ®Šæ¨¡å¼ä¸‹è¿›è¡Œæ›´æ”¹ã€‚ ä¸ºæ­¤ï¼Œé¦–å…ˆä½¿ç”¨æ‚¨è¦æ›´æ”¹çš„é…ç½®æ–‡ä»¶æ‰§è¡Œ`embed-server`å‘½ä»¤ã€‚
+Èç¹ûÄúÅöÇÉÓë¶ÀÁ¢·şÎñÆ÷Î»ÓÚÍ¬Ò»Ì¨¼ÆËã»úÉÏ£¬²¢ÇÒÄúÏ£ÍûÔÚ·şÎñÆ÷Î´´¦ÓÚ»î¶¯×´Ì¬Ê±·¢³öÃüÁî£¬Ôò¿ÉÒÔ½«·şÎñÆ÷Ç¶ÈëCLI²¢ÔÚ²»ÔÊĞí´«ÈëÇëÇóµÄÌØÊâÄ£Ê½ÏÂ½øĞĞ¸ü¸Ä¡£ Îª´Ë£¬Ê×ÏÈÊ¹ÓÃÄúÒª¸ü¸ÄµÄÅäÖÃÎÄ¼şÖ´ĞĞ`embed-server`ÃüÁî¡£
 
-embed-server (åµŒå…¥æœåŠ¡å™¨)
+embed-server (Ç¶Èë·şÎñÆ÷)
 
 ```
 [disconnected /] embed-server --server-config=standalone.xml
 [standalone@embedded /]
 ```
 
-### 4.4. CLI GUIæ¨¡å¼
+### 4.4. CLI GUIÄ£Ê½ {#}
 
-CLIä¹Ÿå¯ä»¥åœ¨GUIæ¨¡å¼ä¸‹è¿è¡Œã€‚ GUIæ¨¡å¼å¯åŠ¨Swingåº”ç”¨ç¨‹åºï¼Œå…è®¸æ‚¨ä»¥å›¾å½¢æ–¹å¼æŸ¥çœ‹å’Œç¼–è¾‘ *running* æœåŠ¡å™¨çš„æ•´ä¸ªç®¡ç†æ¨¡å‹ã€‚ å½“æ‚¨éœ€è¦å¸®åŠ©æ ¼å¼åŒ–CLIå‘½ä»¤å¹¶äº†è§£å¯ç”¨é€‰é¡¹æ—¶ï¼ŒGUIæ¨¡å¼ç‰¹åˆ«æœ‰ç”¨ã€‚ GUIè¿˜å¯ä»¥ä»æœ¬åœ°æˆ–è¿œç¨‹æœåŠ¡å™¨æ£€ç´¢æœåŠ¡å™¨æ—¥å¿—ã€‚
+CLIÒ²¿ÉÒÔÔÚGUIÄ£Ê½ÏÂÔËĞĞ¡£ GUIÄ£Ê½Æô¶¯SwingÓ¦ÓÃ³ÌĞò£¬ÔÊĞíÄúÒÔÍ¼ĞÎ·½Ê½²é¿´ºÍ±à¼­ *running* ·şÎñÆ÷µÄÕû¸ö¹ÜÀíÄ£ĞÍ¡£ µ±ÄúĞèÒª°ïÖú¸ñÊ½»¯CLIÃüÁî²¢ÁË½â¿ÉÓÃÑ¡ÏîÊ±£¬GUIÄ£Ê½ÌØ±ğÓĞÓÃ¡£ GUI»¹¿ÉÒÔ´Ó±¾µØ»òÔ¶³Ì·şÎñÆ÷¼ìË÷·şÎñÆ÷ÈÕÖ¾¡£
 
-ä»GUIæ¨¡å¼å¼€å§‹
+´ÓGUIÄ£Ê½¿ªÊ¼
 
 ```bash
 $ .../bin/jboss-cli.sh --gui
 ```
 
-*æ³¨æ„: è¦è¿æ¥åˆ°è¿œç¨‹æœåŠ¡å™¨ï¼Œè¿˜è¦ä¼ é€’--connecté€‰é¡¹ã€‚ ä½¿ç”¨--helpé€‰é¡¹å¯è·å–æ›´å¤šè¯¦ç»†ä¿¡æ¯ã€‚*
+*×¢Òâ: ÒªÁ¬½Óµ½Ô¶³Ì·şÎñÆ÷£¬»¹Òª´«µİ--connectÑ¡Ïî¡£ Ê¹ÓÃ--helpÑ¡Ïî¿É»ñÈ¡¸ü¶àÏêÏ¸ĞÅÏ¢¡£*
 
-å¯åŠ¨GUIæ¨¡å¼åï¼Œæ‚¨å¯èƒ½éœ€è¦å‘ä¸‹æ»šåŠ¨æ‰èƒ½æ‰¾åˆ°èŠ‚ç‚¹ `subsystem=keycloak-server` ã€‚ å¦‚æœå³é”®å•å‡»è¯¥èŠ‚ç‚¹å¹¶å•å‡»  `Explore subsystem=keycloak-server` ï¼Œæ‚¨å°†è·å¾—ä¸€ä¸ªä»…æ˜¾ç¤ºkeycloak-serverå­ç³»ç»Ÿçš„æ–°é€‰é¡¹å¡ã€‚
+Æô¶¯GUIÄ£Ê½ºó£¬Äú¿ÉÄÜĞèÒªÏòÏÂ¹ö¶¯²ÅÄÜÕÒµ½½Úµã `subsystem=keycloak-server` ¡£ Èç¹ûÓÒ¼üµ¥»÷¸Ã½Úµã²¢µ¥»÷  `Explore subsystem=keycloak-server` £¬Äú½«»ñµÃÒ»¸ö½öÏÔÊ¾keycloak-server×ÓÏµÍ³µÄĞÂÑ¡Ïî¿¨¡£
 
 ![cli gui](assets/cli-gui.png)
 
-### 4.5. CLIè„šæœ¬
+### 4.5. CLI½Å±¾ {#}
 
-CLIå…·æœ‰å¹¿æ³›çš„è„šæœ¬åŠŸèƒ½ã€‚ è„šæœ¬åªæ˜¯ä¸€ä¸ªåŒ…å«CLIå‘½ä»¤çš„æ–‡æœ¬æ–‡ä»¶ã€‚ è€ƒè™‘ä¸€ä¸ªå…³é—­ä¸»é¢˜å’Œæ¨¡æ¿ç¼“å­˜çš„ç®€å•è„šæœ¬ã€‚
+CLI¾ßÓĞ¹ã·ºµÄ½Å±¾¹¦ÄÜ¡£ ½Å±¾Ö»ÊÇÒ»¸ö°üº¬CLIÃüÁîµÄÎÄ±¾ÎÄ¼ş¡£ ¿¼ÂÇÒ»¸ö¹Ø±ÕÖ÷ÌâºÍÄ£°å»º´æµÄ¼òµ¥½Å±¾¡£
 
 turn-off-caching.cli
 
@@ -1308,91 +1308,91 @@ turn-off-caching.cli
 /subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheTemplates,value=false)
 ```
 
-è¦æ‰§è¡Œè„šæœ¬ï¼Œæˆ‘å¯ä»¥æŒ‰ç…§CLI GUIä¸­çš„`Scripts`èœå•ï¼Œæˆ–è€…ä»å‘½ä»¤è¡Œæ‰§è¡Œè„šæœ¬ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
+ÒªÖ´ĞĞ½Å±¾£¬ÎÒ¿ÉÒÔ°´ÕÕCLI GUIÖĞµÄ`Scripts`²Ëµ¥£¬»òÕß´ÓÃüÁîĞĞÖ´ĞĞ½Å±¾£¬ÈçÏÂËùÊ¾£º
 
 ```bash
 $ .../bin/jboss-cli.sh --file=turn-off-caching.cli
 ```
 
-### 4.6. CLIé£Ÿè°±
+### 4.6. CLIÊ³Æ× {#}
 
-ä»¥ä¸‹æ˜¯ä¸€äº›é…ç½®ä»»åŠ¡ä»¥åŠå¦‚ä½•ä½¿ç”¨CLIå‘½ä»¤æ‰§è¡Œå®ƒä»¬ã€‚ è¯·æ³¨æ„ï¼Œåœ¨ç¬¬ä¸€ä¸ªç¤ºä¾‹ä¸­çš„æ‰€æœ‰ç¤ºä¾‹ä¸­ï¼Œæˆ‘ä»¬ä½¿ç”¨é€šé…ç¬¦è·¯å¾„ `**` è¡¨ç¤ºæ‚¨åº”è¯¥æ›¿æ¢keycloak-serverå­ç³»ç»Ÿçš„è·¯å¾„ã€‚
+ÒÔÏÂÊÇÒ»Ğ©ÅäÖÃÈÎÎñÒÔ¼°ÈçºÎÊ¹ÓÃCLIÃüÁîÖ´ĞĞËüÃÇ¡£ Çë×¢Òâ£¬ÔÚµÚÒ»¸öÊ¾ÀıÖĞµÄËùÓĞÊ¾ÀıÖĞ£¬ÎÒÃÇÊ¹ÓÃÍ¨Åä·ûÂ·¾¶ `**` ±íÊ¾ÄúÓ¦¸ÃÌæ»»keycloak-server×ÓÏµÍ³µÄÂ·¾¶¡£
 
-å¯¹äºç‹¬ç«‹æ¨¡å¼ï¼Œè¿™æ„å‘³ç€:
+¶ÔÓÚ¶ÀÁ¢Ä£Ê½£¬ÕâÒâÎ¶×Å:
 
 ```
 **` = `/subsystem=keycloak-server
 ```
 
-å¯¹äºåŸŸæ¨¡å¼ï¼Œè¿™æ„å‘³ç€ï¼š
+¶ÔÓÚÓòÄ£Ê½£¬ÕâÒâÎ¶×Å£º
 
 ```
 **` = `/profile=auth-server-clustered/subsystem=keycloak-server
 ```
 
-#### 4.6.1. æ›´æ”¹æœåŠ¡å™¨çš„Webä¸Šä¸‹æ–‡
+#### 4.6.1. ¸ü¸Ä·şÎñÆ÷µÄWebÉÏÏÂÎÄ {#}
 
 ```
 /subsystem=keycloak-server/:write-attribute(name=web-context,value=myContext)
 ```
 
-#### 4.6.2. è®¾ç½®å…¨å±€é»˜è®¤ä¸»é¢˜
+#### 4.6.2. ÉèÖÃÈ«¾ÖÄ¬ÈÏÖ÷Ìâ {#}
 
 ```
 **/theme=defaults/:write-attribute(name=default,value=myTheme)
 ```
 
-#### 4.6.3. æ·»åŠ æ–°çš„SPIå’Œæä¾›ç¨‹åº
+#### 4.6.3. Ìí¼ÓĞÂµÄSPIºÍÌá¹©³ÌĞò {#}
 
 ```
 **/spi=mySPI/:add
 **/spi=mySPI/provider=myProvider/:add(enabled=true)
 ```
 
-#### 4.6.4. ç¦ç”¨æä¾›å•†
+#### 4.6.4. ½ûÓÃÌá¹©ÉÌ {#}
 
 ```
 **/spi=mySPI/provider=myProvider/:write-attribute(name=enabled,value=false)
 ```
 
-#### 4.6.5. æ›´æ”¹SPIçš„é»˜è®¤æä¾›ç¨‹åº
+#### 4.6.5. ¸ü¸ÄSPIµÄÄ¬ÈÏÌá¹©³ÌĞò {#}
 
 ```
 **/spi=mySPI/:write-attribute(name=default-provider,value=myProvider)
 ```
 
-#### 4.6.6. é…ç½®dblock SPI
+#### 4.6.6. ÅäÖÃdblock SPI {#}
 
 ```
 **/spi=dblock/:add(default-provider=jpa)
 **/spi=dblock/provider=jpa/:add(properties={lockWaitTimeout => "900"},enabled=true)
 ```
 
-#### 4.6.7. ä¸ºæä¾›è€…æ·»åŠ æˆ–æ›´æ”¹å•ä¸ªå±æ€§å€¼
+#### 4.6.7. ÎªÌá¹©ÕßÌí¼Ó»ò¸ü¸Äµ¥¸öÊôĞÔÖµ {#}
 
 ```
 **/spi=dblock/provider=jpa/:map-put(name=properties,key=lockWaitTimeout,value=3)
 ```
 
-#### 4.6.8. ä»æä¾›ç¨‹åºä¸­åˆ é™¤å•ä¸ªå±æ€§
+#### 4.6.8. ´ÓÌá¹©³ÌĞòÖĞÉ¾³ıµ¥¸öÊôĞÔ {#}
 
 ```
 **/spi=dblock/provider=jpa/:map-remove(name=properties,key=lockRecheckTime)
 ```
 
-#### 4.6.9. åœ¨ç±»å‹ä¸º`List`çš„æä¾›ç¨‹åºå±æ€§ä¸Šè®¾ç½®å€¼
+#### 4.6.9. ÔÚÀàĞÍÎª`List`µÄÌá¹©³ÌĞòÊôĞÔÉÏÉèÖÃÖµ {#}
 
 ```
 **/spi=eventsStore/provider=jpa/:map-put(name=properties,key=exclude-events,value=[EVENT1,EVENT2])
 ```
 
-## 5. Profiles (ç‰¹å¾æ–‡ä»¶)
+## 5. Profiles (ÌØÕ÷ÎÄ¼ş) {#}
 
-Keycloakä¸­çš„æŸäº›åŠŸèƒ½é»˜è®¤æƒ…å†µä¸‹æœªå¯ç”¨ï¼Œè¿™äº›åŠŸèƒ½åŒ…æ‹¬ä¸å®Œå…¨æ”¯æŒçš„åŠŸèƒ½ã€‚ æ­¤å¤–ï¼Œé»˜è®¤æƒ…å†µä¸‹ä¼šå¯ç”¨ä¸€äº›åŠŸèƒ½ï¼Œä½†å¯ä»¥ç¦ç”¨è¿™äº›åŠŸèƒ½ã€‚
+KeycloakÖĞµÄÄ³Ğ©¹¦ÄÜÄ¬ÈÏÇé¿öÏÂÎ´ÆôÓÃ£¬ÕâĞ©¹¦ÄÜ°üÀ¨²»ÍêÈ«Ö§³ÖµÄ¹¦ÄÜ¡£ ´ËÍâ£¬Ä¬ÈÏÇé¿öÏÂ»áÆôÓÃÒ»Ğ©¹¦ÄÜ£¬µ«¿ÉÒÔ½ûÓÃÕâĞ©¹¦ÄÜ¡£
 
-å¯ä»¥å¯ç”¨å’Œç¦ç”¨çš„åŠŸèƒ½åŒ…æ‹¬ï¼š
+¿ÉÒÔÆôÓÃºÍ½ûÓÃµÄ¹¦ÄÜ°üÀ¨£º
 
-| åç§°                     | æè¿°                                  | é»˜è®¤å¯ç”¨ | æ”¯æŒçº§åˆ« |
+| Ãû³Æ                     | ÃèÊö                                  | Ä¬ÈÏÆôÓÃ | Ö§³Ö¼¶±ğ |
 | :----------------------- | :------------------------------------------- | :----------------- | :------------ |
 | account2                 | New Account Management Console               | No                 | Experimental  |
 | account_api              | Account Management REST API                  | No                 | Preview       |
@@ -1404,81 +1404,81 @@ Keycloakä¸­çš„æŸäº›åŠŸèƒ½é»˜è®¤æƒ…å†µä¸‹æœªå¯ç”¨ï¼Œè¿™äº›åŠŸèƒ½åŒ…æ‹¬ä¸å®Œå…¨
 | script                   | Write custom authenticators using JavaScript | Yes                | Preview       |
 | token_exchange           | Token Exchange Service                       | No                 | Preview       |
 
-è¦å¯ç”¨æ‰€æœ‰é¢„è§ˆåŠŸèƒ½ï¼Œè¯·å¯åŠ¨æœåŠ¡å™¨ï¼š
+ÒªÆôÓÃËùÓĞÔ¤ÀÀ¹¦ÄÜ£¬ÇëÆô¶¯·şÎñÆ÷£º
 
 ```bash
 bin/standalone.sh|bat -Dkeycloak.profile=preview
 ```
 
-æ‚¨å¯ä»¥é€šè¿‡åœ¨åŸŸæ¨¡å¼ä¸‹ä¸º`server-one`åˆ›å»ºæ–‡ä»¶`standalone/configuration/profile.properties`ï¼ˆæˆ–`domain/servers/server-one/configuration/profile.properties`ï¼‰æ¥æ°¸ä¹…è®¾ç½®å®ƒã€‚ å°†ä»¥ä¸‹å†…å®¹æ·»åŠ åˆ°æ–‡ä»¶ä¸­ï¼š
+Äú¿ÉÒÔÍ¨¹ıÔÚÓòÄ£Ê½ÏÂÎª`server-one`´´½¨ÎÄ¼ş`standalone/configuration/profile.properties`£¨»ò`domain/servers/server-one/configuration/profile.properties`£©À´ÓÀ¾ÃÉèÖÃËü¡£ ½«ÒÔÏÂÄÚÈİÌí¼Óµ½ÎÄ¼şÖĞ£º
 
 ```properties
 profile=preview
 ```
 
-è¦å¯ç”¨ç‰¹å®šåŠŸèƒ½ï¼Œè¯·å¯åŠ¨æœåŠ¡å™¨ï¼š
+ÒªÆôÓÃÌØ¶¨¹¦ÄÜ£¬ÇëÆô¶¯·şÎñÆ÷£º
 
 ```bash
 bin/standalone.sh|bat -Dkeycloak.profile.feature.<feature name>=enabled
 ```
 
-ä¾‹å¦‚ï¼Œè¦å¯ç”¨Dockerï¼Œè¯·ä½¿ç”¨`-Dkeycloak.profile.feature.docker=enabled`ã€‚
+ÀıÈç£¬ÒªÆôÓÃDocker£¬ÇëÊ¹ÓÃ`-Dkeycloak.profile.feature.docker=enabled`¡£
 
-æ‚¨å¯ä»¥é€šè¿‡æ·»åŠ ä»¥ä¸‹å†…å®¹åœ¨`profile.properties`æ–‡ä»¶ä¸­æ°¸ä¹…è®¾ç½®å®ƒï¼š
+Äú¿ÉÒÔÍ¨¹ıÌí¼ÓÒÔÏÂÄÚÈİÔÚ`profile.properties`ÎÄ¼şÖĞÓÀ¾ÃÉèÖÃËü£º
 
 ```properties
 feature.docker=enabled
 ```
 
-è¦ç¦ç”¨ç‰¹å®šåŠŸèƒ½ï¼Œè¯·å¯åŠ¨æœåŠ¡å™¨ï¼š
+Òª½ûÓÃÌØ¶¨¹¦ÄÜ£¬ÇëÆô¶¯·şÎñÆ÷£º
 
 ```bash
 bin/standalone.sh|bat -Dkeycloak.profile.feature.<feature name>=disabled
 ```
 
-ä¾‹å¦‚ï¼Œè¦ç¦ç”¨æ¨¡æ‹Ÿï¼Œè¯·ä½¿ç”¨`-Dkeycloak.profile.feature.impersonation=disabled`ã€‚
+ÀıÈç£¬Òª½ûÓÃÄ£Äâ£¬ÇëÊ¹ÓÃ`-Dkeycloak.profile.feature.impersonation=disabled`¡£
 
-æ‚¨å¯ä»¥é€šè¿‡æ·»åŠ ä»¥ä¸‹å†…å®¹åœ¨`profile.properties`æ–‡ä»¶ä¸­æ°¸ä¹…è®¾ç½®å®ƒï¼š
+Äú¿ÉÒÔÍ¨¹ıÌí¼ÓÒÔÏÂÄÚÈİÔÚ`profile.properties`ÎÄ¼şÖĞÓÀ¾ÃÉèÖÃËü£º
 
 ```properties
 feature.impersonation=disabled
 ```
 
-## 6. å…³ç³»æ•°æ®åº“è®¾ç½®
+## 6. ¹ØÏµÊı¾İ¿âÉèÖÃ {#}
 
-Keycloaké™„å¸¦äº†è‡ªå·±çš„åŸºäºJavaçš„åµŒå…¥å¼å…³ç³»æ•°æ®åº“H2ã€‚ è¿™æ˜¯Keycloakç”¨äºä¿å­˜æ•°æ®çš„é»˜è®¤æ•°æ®åº“ï¼Œä»¥ä¾¿æ‚¨å¯ä»¥å¼€ç®±å³ç”¨åœ°è¿è¡Œèº«ä»½éªŒè¯æœåŠ¡å™¨ã€‚ æˆ‘ä»¬å¼ºçƒˆå»ºè®®æ‚¨ä½¿ç”¨æ›´å¤šç”Ÿäº§å°±ç»ªçš„å¤–éƒ¨æ•°æ®åº“æ›¿æ¢å®ƒã€‚ H2æ•°æ®åº“åœ¨é«˜å¹¶å‘æƒ…å†µä¸‹ä¸æ˜¯å¾ˆå¯è¡Œï¼Œä¹Ÿä¸åº”è¯¥åœ¨é›†ç¾¤ä¸­ä½¿ç”¨ã€‚ æœ¬ç« çš„ç›®çš„æ˜¯å‘æ‚¨å±•ç¤ºå¦‚ä½•å°†Keycloakè¿æ¥åˆ°æ›´æˆç†Ÿçš„æ•°æ®åº“ã€‚
+Keycloak¸½´øÁË×Ô¼ºµÄ»ùÓÚJavaµÄÇ¶ÈëÊ½¹ØÏµÊı¾İ¿âH2¡£ ÕâÊÇKeycloakÓÃÓÚ±£´æÊı¾İµÄÄ¬ÈÏÊı¾İ¿â£¬ÒÔ±ãÄú¿ÉÒÔ¿ªÏä¼´ÓÃµØÔËĞĞÉí·İÑéÖ¤·şÎñÆ÷¡£ ÎÒÃÇÇ¿ÁÒ½¨ÒéÄúÊ¹ÓÃ¸ü¶àÉú²ú¾ÍĞ÷µÄÍâ²¿Êı¾İ¿âÌæ»»Ëü¡£ H2Êı¾İ¿âÔÚ¸ß²¢·¢Çé¿öÏÂ²»ÊÇºÜ¿ÉĞĞ£¬Ò²²»Ó¦¸ÃÔÚ¼¯ÈºÖĞÊ¹ÓÃ¡£ ±¾ÕÂµÄÄ¿µÄÊÇÏòÄúÕ¹Ê¾ÈçºÎ½«KeycloakÁ¬½Óµ½¸ü³ÉÊìµÄÊı¾İ¿â¡£
 
-Keycloakä½¿ç”¨ä¸¤ç§åˆ†å±‚æŠ€æœ¯æ¥æŒä¹…ä¿å­˜å…¶å…³ç³»æ•°æ®ã€‚ åº•å±‚æŠ€æœ¯æ˜¯JDBCã€‚ JDBCæ˜¯ä¸€ç§ç”¨äºè¿æ¥åˆ°RDBMSçš„Java APIã€‚ æ¯ç§æ•°æ®åº“ç±»å‹éƒ½æœ‰ä¸åŒçš„JDBCé©±åŠ¨ç¨‹åºï¼Œç”±æ•°æ®åº“ä¾›åº”å•†æä¾›ã€‚ æœ¬ç« è®¨è®ºå¦‚ä½•é…ç½®Keycloakä»¥ä½¿ç”¨è¿™äº›ç‰¹å®šäºä¾›åº”å•†çš„é©±åŠ¨ç¨‹åºä¹‹ä¸€ã€‚
+KeycloakÊ¹ÓÃÁ½ÖÖ·Ö²ã¼¼ÊõÀ´³Ö¾Ã±£´æÆä¹ØÏµÊı¾İ¡£ µ×²ã¼¼ÊõÊÇJDBC¡£ JDBCÊÇÒ»ÖÖÓÃÓÚÁ¬½Óµ½RDBMSµÄJava API¡£ Ã¿ÖÖÊı¾İ¿âÀàĞÍ¶¼ÓĞ²»Í¬µÄJDBCÇı¶¯³ÌĞò£¬ÓÉÊı¾İ¿â¹©Ó¦ÉÌÌá¹©¡£ ±¾ÕÂÌÖÂÛÈçºÎÅäÖÃKeycloakÒÔÊ¹ÓÃÕâĞ©ÌØ¶¨ÓÚ¹©Ó¦ÉÌµÄÇı¶¯³ÌĞòÖ®Ò»¡£
 
-ç”¨äºæŒä¹…æ€§çš„é¡¶å±‚æŠ€æœ¯æ˜¯Hibernate JPAã€‚ è¿™æ˜¯å°†Javaå¯¹è±¡æ˜ å°„åˆ°å…³ç³»æ•°æ®çš„å…³ç³»æ˜ å°„APIçš„å¯¹è±¡ã€‚ Keycloakçš„å¤§éƒ¨åˆ†éƒ¨ç½²æ°¸è¿œä¸ä¼šè§¦åŠHibernateçš„é…ç½®æ–¹é¢ï¼Œä½†æˆ‘ä»¬å°†è®¨è®ºå¦‚æœé‡åˆ°è¿™ç§ç½•è§çš„æƒ…å†µï¼Œå¦‚ä½•åšåˆ°è¿™ä¸€ç‚¹ã€‚
+ÓÃÓÚ³Ö¾ÃĞÔµÄ¶¥²ã¼¼ÊõÊÇHibernate JPA¡£ ÕâÊÇ½«Java¶ÔÏóÓ³Éäµ½¹ØÏµÊı¾İµÄ¹ØÏµÓ³ÉäAPIµÄ¶ÔÏó¡£ KeycloakµÄ´ó²¿·Ö²¿ÊğÓÀÔ¶²»»á´¥¼°HibernateµÄÅäÖÃ·½Ãæ£¬µ«ÎÒÃÇ½«ÌÖÂÛÈç¹ûÓöµ½ÕâÖÖº±¼ûµÄÇé¿ö£¬ÈçºÎ×öµ½ÕâÒ»µã¡£
 
-> åœ¨ *WildFly 16æ–‡æ¡£* çš„[æ•°æ®æºé…ç½®ç« èŠ‚](http://docs.wildfly.org/16/Admin_Guide.html#DataSource)ä¸­æ›´å…¨é¢åœ°ä»‹ç»äº†æ•°æ®æºé…ç½®ã€‚
+> ÔÚ *WildFly 16ÎÄµµ* µÄ[Êı¾İÔ´ÅäÖÃÕÂ½Ú](http://docs.wildfly.org/16/Admin_Guide.html#DataSource)ÖĞ¸üÈ«ÃæµØ½éÉÜÁËÊı¾İÔ´ÅäÖÃ¡£
 
-### 6.1. RDBMSè®¾ç½®æ¸…å•
+### 6.1. RDBMSÉèÖÃÇåµ¥ {#}
 
-ä»¥ä¸‹æ˜¯ä¸ºKeycloaké…ç½®RDBMSæ‰€éœ€æ‰§è¡Œçš„æ­¥éª¤ã€‚
+ÒÔÏÂÊÇÎªKeycloakÅäÖÃRDBMSËùĞèÖ´ĞĞµÄ²½Öè¡£
 
-1. æ‰¾åˆ°å¹¶ä¸‹è½½æ•°æ®åº“çš„JDBCé©±åŠ¨ç¨‹åº
-2. å°†é©±åŠ¨ç¨‹åºJARæ‰“åŒ…åˆ°æ¨¡å—ä¸­å¹¶å°†æ­¤æ¨¡å—å®‰è£…åˆ°æœåŠ¡å™¨ä¸­
-3. åœ¨æœåŠ¡å™¨çš„é…ç½®æ–‡ä»¶ä¸­å£°æ˜JDBCé©±åŠ¨ç¨‹åº
-4. ä¿®æ”¹æ•°æ®æºé…ç½®ä»¥ä½¿ç”¨æ•°æ®åº“çš„JDBCé©±åŠ¨ç¨‹åº
-5. ä¿®æ”¹æ•°æ®æºé…ç½®ä»¥å®šä¹‰æ•°æ®åº“çš„è¿æ¥å‚æ•°
+1. ÕÒµ½²¢ÏÂÔØÊı¾İ¿âµÄJDBCÇı¶¯³ÌĞò
+2. ½«Çı¶¯³ÌĞòJAR´ò°üµ½Ä£¿éÖĞ²¢½«´ËÄ£¿é°²×°µ½·şÎñÆ÷ÖĞ
+3. ÔÚ·şÎñÆ÷µÄÅäÖÃÎÄ¼şÖĞÉùÃ÷JDBCÇı¶¯³ÌĞò
+4. ĞŞ¸ÄÊı¾İÔ´ÅäÖÃÒÔÊ¹ÓÃÊı¾İ¿âµÄJDBCÇı¶¯³ÌĞò
+5. ĞŞ¸ÄÊı¾İÔ´ÅäÖÃÒÔ¶¨ÒåÊı¾İ¿âµÄÁ¬½Ó²ÎÊı
 
-æœ¬ç« å°†ä½¿ç”¨PostgresQLä½œä¸ºå…¶æ‰€æœ‰ç¤ºä¾‹ã€‚ å…¶ä»–æ•°æ®åº“éµå¾ªç›¸åŒçš„å®‰è£…æ­¥éª¤ã€‚
+±¾ÕÂ½«Ê¹ÓÃPostgresQL×÷ÎªÆäËùÓĞÊ¾Àı¡£ ÆäËûÊı¾İ¿â×ñÑ­ÏàÍ¬µÄ°²×°²½Öè¡£
 
-### 6.2. æ‰“åŒ…JDBCé©±åŠ¨ç¨‹åº
+### 6.2. ´ò°üJDBCÇı¶¯³ÌĞò {#}
 
-æŸ¥æ‰¾å¹¶ä¸‹è½½RDBMSçš„JDBCé©±åŠ¨ç¨‹åºJARã€‚ åœ¨ä½¿ç”¨æ­¤é©±åŠ¨ç¨‹åºä¹‹å‰ï¼Œå¿…é¡»å°†å…¶æ‰“åŒ…åˆ°æ¨¡å—ä¸­å¹¶å°†å…¶å®‰è£…åˆ°æœåŠ¡å™¨ä¸­ã€‚ æ¨¡å—å®šä¹‰åŠ è½½åˆ°Keycloakç±»è·¯å¾„ä¸­çš„JARä»¥åŠè¿™äº›JARå¯¹å…¶ä»–æ¨¡å—çš„ä¾èµ–å…³ç³»ã€‚ å®ƒä»¬è®¾ç½®èµ·æ¥éå¸¸ç®€å•ã€‚
+²éÕÒ²¢ÏÂÔØRDBMSµÄJDBCÇı¶¯³ÌĞòJAR¡£ ÔÚÊ¹ÓÃ´ËÇı¶¯³ÌĞòÖ®Ç°£¬±ØĞë½«Æä´ò°üµ½Ä£¿éÖĞ²¢½«Æä°²×°µ½·şÎñÆ÷ÖĞ¡£ Ä£¿é¶¨Òå¼ÓÔØµ½KeycloakÀàÂ·¾¶ÖĞµÄJARÒÔ¼°ÕâĞ©JAR¶ÔÆäËûÄ£¿éµÄÒÀÀµ¹ØÏµ¡£ ËüÃÇÉèÖÃÆğÀ´·Ç³£¼òµ¥¡£
 
-åœ¨Keycloakå‘è¡Œç‰ˆçš„ *â€¦/modules/* ç›®å½•ä¸­ï¼Œæ‚¨éœ€è¦åˆ›å»ºä¸€ä¸ªç›®å½•ç»“æ„æ¥ä¿å­˜æ¨¡å—å®šä¹‰ã€‚ çº¦å®šæ˜¯ä½¿ç”¨JDBCé©±åŠ¨ç¨‹åºçš„JavaåŒ…åç§°ä½œä¸ºç›®å½•ç»“æ„çš„åç§°ã€‚ å¯¹äºPostgreSQLï¼Œåˆ›å»ºç›®å½• *org/postgresql/main* ã€‚ å°†æ•°æ®åº“é©±åŠ¨ç¨‹åºJARå¤åˆ¶åˆ°æ­¤ç›®å½•ä¸­ï¼Œå¹¶åœ¨å…¶ä¸­åˆ›å»ºä¸€ä¸ªç©ºçš„ *module.xml* æ–‡ä»¶ã€‚
+ÔÚKeycloak·¢ĞĞ°æµÄ *¡­/modules/* Ä¿Â¼ÖĞ£¬ÄúĞèÒª´´½¨Ò»¸öÄ¿Â¼½á¹¹À´±£´æÄ£¿é¶¨Òå¡£ Ô¼¶¨ÊÇÊ¹ÓÃJDBCÇı¶¯³ÌĞòµÄJava°üÃû³Æ×÷ÎªÄ¿Â¼½á¹¹µÄÃû³Æ¡£ ¶ÔÓÚPostgreSQL£¬´´½¨Ä¿Â¼ *org/postgresql/main* ¡£ ½«Êı¾İ¿âÇı¶¯³ÌĞòJAR¸´ÖÆµ½´ËÄ¿Â¼ÖĞ£¬²¢ÔÚÆäÖĞ´´½¨Ò»¸ö¿ÕµÄ *module.xml* ÎÄ¼ş¡£
 
-æ¨¡å—ç›®å½•
+Ä£¿éÄ¿Â¼
 
 ![db module](assets/db-module.png)
 
-å®Œæˆæ­¤æ“ä½œåï¼Œæ‰“å¼€ *module.xml* æ–‡ä»¶å¹¶åˆ›å»ºä»¥ä¸‹XMLï¼š
+Íê³É´Ë²Ù×÷ºó£¬´ò¿ª *module.xml* ÎÄ¼ş²¢´´½¨ÒÔÏÂXML£º
 
-æ¨¡å— XML
+Ä£¿é XML
 
 ```xml
 <?xml version="1.0" ?>
@@ -1495,15 +1495,15 @@ Keycloakä½¿ç”¨ä¸¤ç§åˆ†å±‚æŠ€æœ¯æ¥æŒä¹…ä¿å­˜å…¶å…³ç³»æ•°æ®ã€‚ åº•å±‚æŠ€æœ¯æ˜
 </module>
 ```
 
-æ¨¡å—åç§°åº”ä¸æ¨¡å—çš„ç›®å½•ç»“æ„åŒ¹é…ã€‚ æ‰€ä»¥ï¼Œ*org/postgresql* æ˜ å°„åˆ°`org.postgresql`ã€‚ `resource-root path`å±æ€§åº”æŒ‡å®šé©±åŠ¨ç¨‹åºçš„JARæ–‡ä»¶åã€‚ å…¶ä½™çš„åªæ˜¯ä»»ä½•JDBCé©±åŠ¨ç¨‹åºJARæ‰€å…·æœ‰çš„æ­£å¸¸ä¾èµ–å…³ç³»ã€‚
+Ä£¿éÃû³ÆÓ¦ÓëÄ£¿éµÄÄ¿Â¼½á¹¹Æ¥Åä¡£ ËùÒÔ£¬*org/postgresql* Ó³Éäµ½`org.postgresql`¡£ `resource-root path`ÊôĞÔÓ¦Ö¸¶¨Çı¶¯³ÌĞòµÄJARÎÄ¼şÃû¡£ ÆäÓàµÄÖ»ÊÇÈÎºÎJDBCÇı¶¯³ÌĞòJARËù¾ßÓĞµÄÕı³£ÒÀÀµ¹ØÏµ¡£
 
-### 6.3. å£°æ˜å¹¶åŠ è½½JDBCé©±åŠ¨ç¨‹åº
+### 6.3. ÉùÃ÷²¢¼ÓÔØJDBCÇı¶¯³ÌĞò {#}
 
-æ¥ä¸‹æ¥è¦åšçš„æ˜¯å°†æ–°æ‰“åŒ…çš„JDBCé©±åŠ¨ç¨‹åºå£°æ˜åˆ°éƒ¨ç½²é…ç½®æ–‡ä»¶ä¸­ï¼Œä»¥ä¾¿åœ¨æœåŠ¡å™¨å¯åŠ¨æ—¶åŠ è½½å¹¶å˜ä¸ºå¯ç”¨ã€‚ æ‰§è¡Œæ­¤æ“ä½œçš„ä½ç½®å–å†³äºæ‚¨çš„[æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)ã€‚ å¦‚æœè¦åœ¨æ ‡å‡†æ¨¡å¼ä¸‹éƒ¨ç½²ï¼Œè¯·ç¼–è¾‘*â€¦/standalone/configuration/standalone.xml*ã€‚ å¦‚æœè¦ä»¥æ ‡å‡†ç¾¤é›†æ¨¡å¼è¿›è¡Œéƒ¨ç½²ï¼Œè¯·ç¼–è¾‘*.../standalone/configuration/ standalone-ha.xml*ã€‚ å¦‚æœè¦åœ¨åŸŸæ¨¡å¼ä¸‹éƒ¨ç½²ï¼Œè¯·ç¼–è¾‘*.../domain/configuration/domain.xml*ã€‚ åœ¨åŸŸæ¨¡å¼ä¸‹ï¼Œæ‚¨éœ€è¦ç¡®ä¿ç¼–è¾‘æ­£åœ¨ä½¿ç”¨çš„é…ç½®æ–‡ä»¶ï¼š`auth-server-standalone`æˆ–`auth-server-clustered`
+½ÓÏÂÀ´Òª×öµÄÊÇ½«ĞÂ´ò°üµÄJDBCÇı¶¯³ÌĞòÉùÃ÷µ½²¿ÊğÅäÖÃÎÄ¼şÖĞ£¬ÒÔ±ãÔÚ·şÎñÆ÷Æô¶¯Ê±¼ÓÔØ²¢±äÎª¿ÉÓÃ¡£ Ö´ĞĞ´Ë²Ù×÷µÄÎ»ÖÃÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)¡£ Èç¹ûÒªÔÚ±ê×¼Ä£Ê½ÏÂ²¿Êğ£¬Çë±à¼­*¡­/standalone/configuration/standalone.xml*¡£ Èç¹ûÒªÒÔ±ê×¼Èº¼¯Ä£Ê½½øĞĞ²¿Êğ£¬Çë±à¼­*.../standalone/configuration/ standalone-ha.xml*¡£ Èç¹ûÒªÔÚÓòÄ£Ê½ÏÂ²¿Êğ£¬Çë±à¼­*.../domain/configuration/domain.xml*¡£ ÔÚÓòÄ£Ê½ÏÂ£¬ÄúĞèÒªÈ·±£±à¼­ÕıÔÚÊ¹ÓÃµÄÅäÖÃÎÄ¼ş£º`auth-server-standalone`»ò`auth-server-clustered`
 
-åœ¨é…ç½®æ–‡ä»¶ä¸­ï¼Œæœç´¢`datasources`å­ç³»ç»Ÿä¸­çš„`drivers` XMLå—ã€‚ æ‚¨åº”è¯¥çœ‹åˆ°ä¸ºH2 JDBCé©±åŠ¨ç¨‹åºå£°æ˜çš„é¢„å®šä¹‰é©±åŠ¨ç¨‹åºã€‚ è¿™æ˜¯æ‚¨ä¸ºå¤–éƒ¨æ•°æ®åº“å£°æ˜JDBCé©±åŠ¨ç¨‹åºçš„åœ°æ–¹ã€‚
+ÔÚÅäÖÃÎÄ¼şÖĞ£¬ËÑË÷`datasources`×ÓÏµÍ³ÖĞµÄ`drivers` XML¿é¡£ ÄúÓ¦¸Ã¿´µ½ÎªH2 JDBCÇı¶¯³ÌĞòÉùÃ÷µÄÔ¤¶¨ÒåÇı¶¯³ÌĞò¡£ ÕâÊÇÄúÎªÍâ²¿Êı¾İ¿âÉùÃ÷JDBCÇı¶¯³ÌĞòµÄµØ·½¡£
 
-JDBC é©±åŠ¨
+JDBC Çı¶¯
 
 ```xml
   <subsystem xmlns="urn:jboss:domain:datasources:5.0">
@@ -1518,9 +1518,9 @@ JDBC é©±åŠ¨
   </subsystem>
 ```
 
-åœ¨`drivers` XMLå—ä¸­ï¼Œæ‚¨éœ€è¦å£°æ˜ä¸€ä¸ªé¢å¤–çš„JDBCé©±åŠ¨ç¨‹åºã€‚ å®ƒéœ€è¦ä¸€ä¸ª`name`ï¼Œä½ å¯ä»¥é€‰æ‹©ä»»ä½•ä½ æƒ³è¦çš„ã€‚ æ‚¨æŒ‡å®š`module`å±æ€§ï¼Œè¯¥å±æ€§æŒ‡å‘æ‚¨ä¹‹å‰ä¸ºé©±åŠ¨ç¨‹åºJARåˆ›å»ºçš„`module`åŒ…ã€‚ æœ€åï¼Œæ‚¨å¿…é¡»æŒ‡å®šé©±åŠ¨ç¨‹åºçš„Javaç±»ã€‚ ä¸‹é¢æ˜¯å®‰è£…PostgreSQLé©±åŠ¨ç¨‹åºçš„ç¤ºä¾‹ï¼Œè¯¥é©±åŠ¨ç¨‹åºä½äºæœ¬ç« å‰é¢å®šä¹‰çš„æ¨¡å—ç¤ºä¾‹ä¸­ã€‚
+ÔÚ`drivers` XML¿éÖĞ£¬ÄúĞèÒªÉùÃ÷Ò»¸ö¶îÍâµÄJDBCÇı¶¯³ÌĞò¡£ ËüĞèÒªÒ»¸ö`name`£¬Äã¿ÉÒÔÑ¡ÔñÈÎºÎÄãÏëÒªµÄ¡£ ÄúÖ¸¶¨`module`ÊôĞÔ£¬¸ÃÊôĞÔÖ¸ÏòÄúÖ®Ç°ÎªÇı¶¯³ÌĞòJAR´´½¨µÄ`module`°ü¡£ ×îºó£¬Äú±ØĞëÖ¸¶¨Çı¶¯³ÌĞòµÄJavaÀà¡£ ÏÂÃæÊÇ°²×°PostgreSQLÇı¶¯³ÌĞòµÄÊ¾Àı£¬¸ÃÇı¶¯³ÌĞòÎ»ÓÚ±¾ÕÂÇ°Ãæ¶¨ÒåµÄÄ£¿éÊ¾ÀıÖĞ¡£
 
-å£°æ˜æ‚¨çš„JDBCé©±åŠ¨ç¨‹åº
+ÉùÃ÷ÄúµÄJDBCÇı¶¯³ÌĞò
 
 ```
   <subsystem xmlns="urn:jboss:domain:datasources:5.0">
@@ -1538,11 +1538,11 @@ JDBC é©±åŠ¨
   </subsystem>
 ```
 
-### 6.4. ä¿®æ”¹Keycloakæ•°æ®æº
+### 6.4. ĞŞ¸ÄKeycloakÊı¾İÔ´ {#}
 
-å£°æ˜JDBCé©±åŠ¨ç¨‹åºåï¼Œå¿…é¡»ä¿®æ”¹Keycloakç”¨äºå°†å…¶è¿æ¥åˆ°æ–°å¤–éƒ¨æ•°æ®åº“çš„ç°æœ‰æ•°æ®æºé…ç½®ã€‚ æ‚¨å°†åœ¨æ³¨å†ŒJDBCé©±åŠ¨ç¨‹åºçš„ç›¸åŒé…ç½®æ–‡ä»¶å’ŒXMLå—ä¸­æ‰§è¡Œæ­¤æ“ä½œã€‚ä»¥ä¸‹æ˜¯è®¾ç½®ä¸æ–°æ•°æ®åº“çš„è¿æ¥çš„ç¤ºä¾‹ï¼š
+ÉùÃ÷JDBCÇı¶¯³ÌĞòºó£¬±ØĞëĞŞ¸ÄKeycloakÓÃÓÚ½«ÆäÁ¬½Óµ½ĞÂÍâ²¿Êı¾İ¿âµÄÏÖÓĞÊı¾İÔ´ÅäÖÃ¡£ Äú½«ÔÚ×¢²áJDBCÇı¶¯³ÌĞòµÄÏàÍ¬ÅäÖÃÎÄ¼şºÍXML¿éÖĞÖ´ĞĞ´Ë²Ù×÷¡£ÒÔÏÂÊÇÉèÖÃÓëĞÂÊı¾İ¿âµÄÁ¬½ÓµÄÊ¾Àı£º
 
-å£°æ˜æ‚¨çš„JDBCé©±åŠ¨ç¨‹åº
+ÉùÃ÷ÄúµÄJDBCÇı¶¯³ÌĞò
 
 ```xml
   <subsystem xmlns="urn:jboss:domain:datasources:5.0">
@@ -1564,21 +1564,21 @@ JDBC é©±åŠ¨
   </subsystem>
 ```
 
-æœç´¢`KeycloakDS`çš„`datasource`å®šä¹‰ã€‚ æ‚¨é¦–å…ˆéœ€è¦ä¿®æ”¹`connection-url`ã€‚ ä¾›åº”å•†çš„JDBCå®ç°çš„æ–‡æ¡£åº”æŒ‡å®šæ­¤è¿æ¥URLå€¼çš„æ ¼å¼ã€‚
+ËÑË÷`KeycloakDS`µÄ`datasource`¶¨Òå¡£ ÄúÊ×ÏÈĞèÒªĞŞ¸Ä`connection-url`¡£ ¹©Ó¦ÉÌµÄJDBCÊµÏÖµÄÎÄµµÓ¦Ö¸¶¨´ËÁ¬½ÓURLÖµµÄ¸ñÊ½¡£
 
-æ¥ä¸‹æ¥å®šä¹‰ä½ å°†ä½¿ç”¨çš„`driver`ã€‚ è¿™æ˜¯æ‚¨åœ¨æœ¬ç« ä¸Šä¸€èŠ‚ä¸­å£°æ˜çš„JDBCé©±åŠ¨ç¨‹åºçš„é€»è¾‘åç§°ã€‚
+½ÓÏÂÀ´¶¨ÒåÄã½«Ê¹ÓÃµÄ`driver`¡£ ÕâÊÇÄúÔÚ±¾ÕÂÉÏÒ»½ÚÖĞÉùÃ÷µÄJDBCÇı¶¯³ÌĞòµÄÂß¼­Ãû³Æ¡£
 
-æ¯æ¬¡è¦æ‰§è¡Œäº‹åŠ¡æ—¶ï¼Œæ‰“å¼€ä¸æ•°æ®åº“çš„æ–°è¿æ¥éƒ½å¾ˆæ˜‚è´µã€‚ ä¸ºäº†è¡¥å¿ï¼Œæ•°æ®æºå®ç°ç»´æŠ¤äº†ä¸€ä¸ªæ‰“å¼€çš„è¿æ¥æ± ã€‚ `max-pool-size`æŒ‡å®šå®ƒå°†å…è®¸çš„æœ€å¤§è¿æ¥æ•°ã€‚ æ‚¨å¯èƒ½å¸Œæœ›æ ¹æ®ç³»ç»Ÿè´Ÿè½½æ›´æ”¹æ­¤å€¼ã€‚
+Ã¿´ÎÒªÖ´ĞĞÊÂÎñÊ±£¬´ò¿ªÓëÊı¾İ¿âµÄĞÂÁ¬½Ó¶¼ºÜ°º¹ó¡£ ÎªÁË²¹³¥£¬Êı¾İÔ´ÊµÏÖÎ¬»¤ÁËÒ»¸ö´ò¿ªµÄÁ¬½Ó³Ø¡£ `max-pool-size`Ö¸¶¨Ëü½«ÔÊĞíµÄ×î´óÁ¬½ÓÊı¡£ Äú¿ÉÄÜÏ£Íû¸ù¾İÏµÍ³¸ºÔØ¸ü¸Ä´ËÖµ¡£
 
-æœ€åï¼Œè‡³å°‘ä½¿ç”¨PostgreSQLï¼Œæ‚¨éœ€è¦å®šä¹‰è¿æ¥åˆ°æ•°æ®åº“æ‰€éœ€çš„æ•°æ®åº“ç”¨æˆ·åå’Œå¯†ç ã€‚ æ‚¨å¯èƒ½ä¼šæ‹…å¿ƒç¤ºä¾‹ä¸­çš„æ˜æ–‡æ˜¯æ˜æ–‡ã€‚ æœ‰ä¸€äº›æ–¹æ³•å¯ä»¥å¯¹æ­¤è¿›è¡Œæ¨¡ç³Šå¤„ç†ï¼Œä½†è¿™è¶…å‡ºäº†æœ¬æŒ‡å—çš„èŒƒå›´ã€‚
+×îºó£¬ÖÁÉÙÊ¹ÓÃPostgreSQL£¬ÄúĞèÒª¶¨ÒåÁ¬½Óµ½Êı¾İ¿âËùĞèµÄÊı¾İ¿âÓÃ»§ÃûºÍÃÜÂë¡£ Äú¿ÉÄÜ»áµ£ĞÄÊ¾ÀıÖĞµÄÃ÷ÎÄÊÇÃ÷ÎÄ¡£ ÓĞÒ»Ğ©·½·¨¿ÉÒÔ¶Ô´Ë½øĞĞÄ£ºı´¦Àí£¬µ«Õâ³¬³öÁË±¾Ö¸ÄÏµÄ·¶Î§¡£
 
-> æœ‰å…³æ•°æ®æºåŠŸèƒ½çš„æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚é˜…* WildFly 16æ–‡æ¡£*ä¸­çš„[æ•°æ®æºé…ç½®ç« èŠ‚](http://docs.wildfly.org/16/Admin_Guide.html#DataSource)ã€‚ 
+> ÓĞ¹ØÊı¾İÔ´¹¦ÄÜµÄ¸ü¶àĞÅÏ¢£¬Çë²ÎÔÄ* WildFly 16ÎÄµµ*ÖĞµÄ[Êı¾İÔ´ÅäÖÃÕÂ½Ú](http://docs.wildfly.org/16/Admin_Guide.html#DataSource)¡£ 
 
-### 6.5. æ•°æ®åº“é…ç½®
+### 6.5. Êı¾İ¿âÅäÖÃ {#}
 
-æ­¤ç»„ä»¶çš„é…ç½®ä½äºå‘è¡Œç‰ˆä¸­çš„`standalone.xml`ï¼Œ`standalone-ha.xml`æˆ–`domain.xml`æ–‡ä»¶ä¸­ã€‚ æ­¤æ–‡ä»¶çš„ä½ç½®å–å†³äºæ‚¨çš„[æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)ã€‚
+´Ë×é¼şµÄÅäÖÃÎ»ÓÚ·¢ĞĞ°æÖĞµÄ`standalone.xml`£¬`standalone-ha.xml`»ò`domain.xml`ÎÄ¼şÖĞ¡£ ´ËÎÄ¼şµÄÎ»ÖÃÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)¡£
 
-æ•°æ®åº“é…ç½®
+Êı¾İ¿âÅäÖÃ
 
 ```xml
 <subsystem xmlns="urn:jboss:domain:keycloak-server:1.1">
@@ -1597,104 +1597,104 @@ JDBC é©±åŠ¨
 </subsystem>
 ```
 
-å¯èƒ½çš„é…ç½®é€‰é¡¹æ˜¯ï¼š
+¿ÉÄÜµÄÅäÖÃÑ¡ÏîÊÇ£º
 
 - dataSource
 
-  DataSourceçš„JNDIåç§°
+  DataSourceµÄJNDIÃû³Æ
 
 - jta
 
-  booleanå±æ€§ï¼Œç”¨äºæŒ‡å®šdatasourceæ˜¯å¦æ”¯æŒJTA
+  booleanÊôĞÔ£¬ÓÃÓÚÖ¸¶¨datasourceÊÇ·ñÖ§³ÖJTA
 
 - driverDialect
 
-  æ•°æ®åº“æ–¹è¨€çš„å€¼ã€‚åœ¨å¤§å¤šæ•°æƒ…å†µä¸‹ï¼Œæ‚¨ä¸éœ€è¦æŒ‡å®šæ­¤å±æ€§ï¼Œå› ä¸ºHibernateå°†è‡ªåŠ¨æ£€æµ‹æ–¹è¨€ã€‚
+  Êı¾İ¿â·½ÑÔµÄÖµ¡£ÔÚ´ó¶àÊıÇé¿öÏÂ£¬Äú²»ĞèÒªÖ¸¶¨´ËÊôĞÔ£¬ÒòÎªHibernate½«×Ô¶¯¼ì²â·½ÑÔ¡£
 
 - initializeEmpty
 
-  å¦‚æœä¸ºç©ºåˆ™åˆå§‹åŒ–æ•°æ®åº“ã€‚ å¦‚æœè®¾ç½®ä¸ºfalseï¼Œåˆ™å¿…é¡»æ‰‹åŠ¨åˆå§‹åŒ–æ•°æ®åº“ã€‚ å¦‚æœè¦æ‰‹åŠ¨å°†æ•°æ®åº“é›†migrationStrategyåˆå§‹åŒ–ä¸º`manual`ï¼Œå®ƒå°†åˆ›å»ºä¸€ä¸ªå¸¦æœ‰SQLå‘½ä»¤çš„æ–‡ä»¶æ¥åˆå§‹åŒ–æ•°æ®åº“ã€‚ é»˜è®¤ä¸ºtrueã€‚
+  Èç¹ûÎª¿ÕÔò³õÊ¼»¯Êı¾İ¿â¡£ Èç¹ûÉèÖÃÎªfalse£¬Ôò±ØĞëÊÖ¶¯³õÊ¼»¯Êı¾İ¿â¡£ Èç¹ûÒªÊÖ¶¯½«Êı¾İ¿â¼¯migrationStrategy³õÊ¼»¯Îª`manual`£¬Ëü½«´´½¨Ò»¸ö´øÓĞSQLÃüÁîµÄÎÄ¼şÀ´³õÊ¼»¯Êı¾İ¿â¡£ Ä¬ÈÏÎªtrue¡£
 
 - migrationStrategy
 
-  ç”¨äºè¿ç§»æ•°æ®åº“çš„ç­–ç•¥ã€‚ æœ‰æ•ˆå€¼ä¸º`update`ï¼Œ`manual`å’Œ`validate`ã€‚ Updateå°†è‡ªåŠ¨è¿ç§»æ•°æ®åº“æ¶æ„ã€‚ æ‰‹åŠ¨å°†ä½¿ç”¨å¯åœ¨æ•°æ®åº“ä¸Šæ‰‹åŠ¨æ‰§è¡Œçš„SQLå‘½ä»¤å°†æ‰€éœ€æ›´æ”¹å¯¼å‡ºåˆ°æ–‡ä»¶ã€‚ éªŒè¯å°†åªæ£€æŸ¥æ•°æ®åº“æ˜¯å¦æ˜¯æœ€æ–°çš„ã€‚
+  ÓÃÓÚÇ¨ÒÆÊı¾İ¿âµÄ²ßÂÔ¡£ ÓĞĞ§ÖµÎª`update`£¬`manual`ºÍ`validate`¡£ Update½«×Ô¶¯Ç¨ÒÆÊı¾İ¿â¼Ü¹¹¡£ ÊÖ¶¯½«Ê¹ÓÃ¿ÉÔÚÊı¾İ¿âÉÏÊÖ¶¯Ö´ĞĞµÄSQLÃüÁî½«ËùĞè¸ü¸Äµ¼³öµ½ÎÄ¼ş¡£ ÑéÖ¤½«Ö»¼ì²éÊı¾İ¿âÊÇ·ñÊÇ×îĞÂµÄ¡£
 
 - migrationExport
 
-  ç¼–å†™æ‰‹åŠ¨æ•°æ®åº“åˆå§‹åŒ–/è¿ç§»æ–‡ä»¶çš„ä½ç½®çš„è·¯å¾„ã€‚
+  ±àĞ´ÊÖ¶¯Êı¾İ¿â³õÊ¼»¯/Ç¨ÒÆÎÄ¼şµÄÎ»ÖÃµÄÂ·¾¶¡£
 
 - showSql
 
-  æŒ‡å®šHibernateæ˜¯å¦åº”åœ¨æ§åˆ¶å°ä¸­æ˜¾ç¤ºæ‰€æœ‰SQLå‘½ä»¤ï¼ˆé»˜è®¤ä¸ºfalseï¼‰ã€‚ è¿™éå¸¸å†—é•¿ï¼
+  Ö¸¶¨HibernateÊÇ·ñÓ¦ÔÚ¿ØÖÆÌ¨ÖĞÏÔÊ¾ËùÓĞSQLÃüÁî£¨Ä¬ÈÏÎªfalse£©¡£ Õâ·Ç³£Èß³¤£¡
 
 - formatSql
 
-  æŒ‡å®šHibernateæ˜¯å¦åº”æ ¼å¼åŒ–SQLå‘½ä»¤ï¼ˆé»˜è®¤ä¸ºtrueï¼‰
+  Ö¸¶¨HibernateÊÇ·ñÓ¦¸ñÊ½»¯SQLÃüÁî£¨Ä¬ÈÏÎªtrue£©
 
 - globalStatsInterval
 
-  å°†ä»Hibernateè®°å½•å…³äºæ‰§è¡Œçš„æ•°æ®åº“æŸ¥è¯¢å’Œå…¶ä»–äº‹æƒ…çš„å…¨å±€ç»Ÿè®¡ä¿¡æ¯ã€‚ ç»Ÿè®¡ä¿¡æ¯å§‹ç»ˆä»¥æŒ‡å®šçš„æ—¶é—´é—´éš”ï¼ˆä»¥ç§’ä¸ºå•ä½ï¼‰æŠ¥å‘Šç»™æœåŠ¡å™¨æ—¥å¿—ï¼Œå¹¶åœ¨æ¯æ¬¡æŠ¥å‘Šåæ¸…é™¤ã€‚
+  ½«´ÓHibernate¼ÇÂ¼¹ØÓÚÖ´ĞĞµÄÊı¾İ¿â²éÑ¯ºÍÆäËûÊÂÇéµÄÈ«¾ÖÍ³¼ÆĞÅÏ¢¡£ Í³¼ÆĞÅÏ¢Ê¼ÖÕÒÔÖ¸¶¨µÄÊ±¼ä¼ä¸ô£¨ÒÔÃëÎªµ¥Î»£©±¨¸æ¸ø·şÎñÆ÷ÈÕÖ¾£¬²¢ÔÚÃ¿´Î±¨¸æºóÇå³ı¡£
 
 - schema
 
-  æŒ‡å®šè¦ä½¿ç”¨çš„æ•°æ®åº“çš„schema
+  Ö¸¶¨ÒªÊ¹ÓÃµÄÊı¾İ¿âµÄschema
 
-> è¿™äº›é…ç½®å¼€å…³ç­‰åœ¨[* WildFly 16å¼€å‘æŒ‡å—*](http://docs.wildfly.org/16/Developer_Guide.html#hibernate-properties)ä¸­æœ‰æ‰€æè¿°ã€‚ 
+> ÕâĞ©ÅäÖÃ¿ª¹ØµÈÔÚ[* WildFly 16¿ª·¢Ö¸ÄÏ*](http://docs.wildfly.org/16/Developer_Guide.html#hibernate-properties)ÖĞÓĞËùÃèÊö¡£ 
 
-### 6.6. æ•°æ®åº“çš„Unicodeæ³¨æ„äº‹é¡¹
+### 6.6. Êı¾İ¿âµÄUnicode×¢ÒâÊÂÏî {#}
 
-Keycloakä¸­çš„æ•°æ®åº“æ¨¡å¼ä»…è€ƒè™‘ä»¥ä¸‹ç‰¹æ®Šå­—æ®µä¸­çš„Unicodeå­—ç¬¦ä¸²ï¼š
+KeycloakÖĞµÄÊı¾İ¿âÄ£Ê½½ö¿¼ÂÇÒÔÏÂÌØÊâ×Ö¶ÎÖĞµÄUnicode×Ö·û´®£º
 
-- Realms: æ˜¾ç¤ºåç§°ï¼ŒHTMLæ˜¾ç¤ºåç§°
-- Federation Providers: æ˜¾ç¤ºåç§°
-- Users: ç”¨æˆ·åï¼Œç»™å®šåç§°ï¼Œå§“æ°ï¼Œå±æ€§åç§°å’Œå€¼
-- Groups: åç§°ï¼Œå±æ€§åç§°å’Œå€¼
-- Roles: åå­—
-- Descriptions of objects: å¯¹è±¡çš„æè¿°
+- Realms: ÏÔÊ¾Ãû³Æ£¬HTMLÏÔÊ¾Ãû³Æ
+- Federation Providers: ÏÔÊ¾Ãû³Æ
+- Users: ÓÃ»§Ãû£¬¸ø¶¨Ãû³Æ£¬ĞÕÊÏ£¬ÊôĞÔÃû³ÆºÍÖµ
+- Groups: Ãû³Æ£¬ÊôĞÔÃû³ÆºÍÖµ
+- Roles: Ãû×Ö
+- Descriptions of objects: ¶ÔÏóµÄÃèÊö
 
-å¦åˆ™ï¼Œå­—ç¬¦ä»…é™äºæ•°æ®åº“ç¼–ç ä¸­åŒ…å«çš„å­—ç¬¦ï¼Œé€šå¸¸ä¸º8ä½ã€‚ ä½†æ˜¯ï¼Œå¯¹äºæŸäº›æ•°æ®åº“ç³»ç»Ÿï¼Œå¯ä»¥å¯ç”¨Unicodeå­—ç¬¦çš„UTF-8ç¼–ç ï¼Œå¹¶åœ¨æ‰€æœ‰æ–‡æœ¬å­—æ®µä¸­ä½¿ç”¨å®Œæ•´çš„Unicodeå­—ç¬¦é›†ã€‚ é€šå¸¸ï¼Œä¸8ä½ç¼–ç çš„æƒ…å†µç›¸æ¯”ï¼Œè¿™é€šè¿‡è¾ƒçŸ­çš„å­—ç¬¦ä¸²æœ€å¤§é•¿åº¦æ¥æŠµæ¶ˆã€‚
+·ñÔò£¬×Ö·û½öÏŞÓÚÊı¾İ¿â±àÂëÖĞ°üº¬µÄ×Ö·û£¬Í¨³£Îª8Î»¡£ µ«ÊÇ£¬¶ÔÓÚÄ³Ğ©Êı¾İ¿âÏµÍ³£¬¿ÉÒÔÆôÓÃUnicode×Ö·ûµÄUTF-8±àÂë£¬²¢ÔÚËùÓĞÎÄ±¾×Ö¶ÎÖĞÊ¹ÓÃÍêÕûµÄUnicode×Ö·û¼¯¡£ Í¨³££¬Óë8Î»±àÂëµÄÇé¿öÏà±È£¬ÕâÍ¨¹ı½Ï¶ÌµÄ×Ö·û´®×î´ó³¤¶ÈÀ´µÖÏû¡£
 
-æŸäº›æ•°æ®åº“éœ€è¦å¯¹æ•°æ®åº“å’Œ/æˆ–JDBCé©±åŠ¨ç¨‹åºè¿›è¡Œç‰¹æ®Šè®¾ç½®æ‰èƒ½å¤„ç†Unicodeå­—ç¬¦ã€‚ è¯·åœ¨ä¸‹é¢æ‰¾åˆ°æ‚¨çš„æ•°æ®åº“çš„è®¾ç½®ã€‚ è¯·æ³¨æ„ï¼Œå¦‚æœæ­¤å¤„åˆ—å‡ºäº†æ•°æ®åº“ï¼Œåªè¦å®ƒåœ¨æ•°æ®åº“çº§åˆ«å’ŒJDBCé©±åŠ¨ç¨‹åºä¸Šæ­£ç¡®å¤„ç†UTF-8ç¼–ç ï¼Œå®ƒä»ç„¶å¯ä»¥æ­£å¸¸å·¥ä½œã€‚
+Ä³Ğ©Êı¾İ¿âĞèÒª¶ÔÊı¾İ¿âºÍ/»òJDBCÇı¶¯³ÌĞò½øĞĞÌØÊâÉèÖÃ²ÅÄÜ´¦ÀíUnicode×Ö·û¡£ ÇëÔÚÏÂÃæÕÒµ½ÄúµÄÊı¾İ¿âµÄÉèÖÃ¡£ Çë×¢Òâ£¬Èç¹û´Ë´¦ÁĞ³öÁËÊı¾İ¿â£¬Ö»ÒªËüÔÚÊı¾İ¿â¼¶±ğºÍJDBCÇı¶¯³ÌĞòÉÏÕıÈ·´¦ÀíUTF-8±àÂë£¬ËüÈÔÈ»¿ÉÒÔÕı³£¹¤×÷¡£
 
-ä»æŠ€æœ¯ä¸Šè®²ï¼ŒUnicodeæ”¯æŒæ‰€æœ‰å­—æ®µçš„å…³é”®æ ‡å‡†æ˜¯æ•°æ®åº“æ˜¯å¦å…è®¸ä¸º`VARCHAR`å’Œ`CHAR`å­—æ®µè®¾ç½®Unicodeå­—ç¬¦é›†ã€‚ å¦‚æœæ˜¯ï¼Œé‚£ä¹ˆUnicodeå¾ˆå¯èƒ½æ˜¯åˆç†çš„ï¼Œé€šå¸¸ä»¥å­—æ®µé•¿åº¦ä¸ºä»£ä»·ã€‚ å¦‚æœå®ƒåªæ”¯æŒ`NVARCHAR`å’Œ`NCHAR`å­—æ®µä¸­çš„Unicodeï¼Œåˆ™ä¸å¤ªå¯èƒ½æ”¯æŒæ‰€æœ‰æ–‡æœ¬å­—æ®µï¼Œå› ä¸ºKeycloakæ¨¡å¼å¹¿æ³›ä½¿ç”¨`VARCHAR`å’Œ`CHAR`å­—æ®µã€‚
+´Ó¼¼ÊõÉÏ½²£¬UnicodeÖ§³ÖËùÓĞ×Ö¶ÎµÄ¹Ø¼ü±ê×¼ÊÇÊı¾İ¿âÊÇ·ñÔÊĞíÎª`VARCHAR`ºÍ`CHAR`×Ö¶ÎÉèÖÃUnicode×Ö·û¼¯¡£ Èç¹ûÊÇ£¬ÄÇÃ´UnicodeºÜ¿ÉÄÜÊÇºÏÀíµÄ£¬Í¨³£ÒÔ×Ö¶Î³¤¶ÈÎª´ú¼Û¡£ Èç¹ûËüÖ»Ö§³Ö`NVARCHAR`ºÍ`NCHAR`×Ö¶ÎÖĞµÄUnicode£¬Ôò²»Ì«¿ÉÄÜÖ§³ÖËùÓĞÎÄ±¾×Ö¶Î£¬ÒòÎªKeycloakÄ£Ê½¹ã·ºÊ¹ÓÃ`VARCHAR`ºÍ`CHAR`×Ö¶Î¡£
 
-#### 6.6.1. Oracle æ•°æ®åº“
+#### 6.6.1. Oracle Êı¾İ¿â {#}
 
-å¦‚æœæ•°æ®åº“æ˜¯åœ¨`VARCHAR`å’Œ`CHAR`å­—æ®µä¸­ä½¿ç”¨Unicodeæ”¯æŒåˆ›å»ºçš„ï¼ˆä¾‹å¦‚ï¼Œä½¿ç”¨`AL32UTF8`å­—ç¬¦é›†ä½œä¸ºæ•°æ®åº“å­—ç¬¦é›†ï¼‰ï¼Œåˆ™å¯ä»¥æ­£ç¡®å¤„ç†Unicodeå­—ç¬¦ã€‚ JDBCé©±åŠ¨ç¨‹åºæ— éœ€ç‰¹æ®Šè®¾ç½®ã€‚
+Èç¹ûÊı¾İ¿âÊÇÔÚ`VARCHAR`ºÍ`CHAR`×Ö¶ÎÖĞÊ¹ÓÃUnicodeÖ§³Ö´´½¨µÄ£¨ÀıÈç£¬Ê¹ÓÃ`AL32UTF8`×Ö·û¼¯×÷ÎªÊı¾İ¿â×Ö·û¼¯£©£¬Ôò¿ÉÒÔÕıÈ·´¦ÀíUnicode×Ö·û¡£ JDBCÇı¶¯³ÌĞòÎŞĞèÌØÊâÉèÖÃ¡£
 
-å¦‚æœæ•°æ®åº“å­—ç¬¦é›†ä¸æ˜¯Unicodeï¼Œé‚£ä¹ˆè¦åœ¨ç‰¹æ®Šå­—æ®µä¸­ä½¿ç”¨Unicodeå­—ç¬¦ï¼Œéœ€è¦ä½¿ç”¨è¿æ¥å±æ€§`oracle.jdbc.defaultNChar`è®¾ç½®ä¸º`true`æ¥é…ç½®JDBCé©±åŠ¨ç¨‹åºã€‚ å°†`oracle.jdbc.convertNcharLiterals`è¿æ¥å±æ€§è®¾ç½®ä¸º`true`å¯èƒ½æ˜¯æ˜æ™ºçš„ï¼Œå°½ç®¡ä¸æ˜¯ç»å¯¹å¿…è¦çš„ã€‚ å¯ä»¥å°†è¿™äº›å±æ€§è®¾ç½®ä¸ºç³»ç»Ÿå±æ€§æˆ–è¿æ¥å±æ€§ã€‚ è¯·æ³¨æ„ï¼Œè®¾ç½®`oracle.jdbc.defaultNChar`å¯èƒ½ä¼šå¯¹æ€§èƒ½äº§ç”Ÿè´Ÿé¢å½±å“ã€‚ æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…Oracle JDBCé©±åŠ¨ç¨‹åºé…ç½®æ–‡æ¡£ã€‚
+Èç¹ûÊı¾İ¿â×Ö·û¼¯²»ÊÇUnicode£¬ÄÇÃ´ÒªÔÚÌØÊâ×Ö¶ÎÖĞÊ¹ÓÃUnicode×Ö·û£¬ĞèÒªÊ¹ÓÃÁ¬½ÓÊôĞÔ`oracle.jdbc.defaultNChar`ÉèÖÃÎª`true`À´ÅäÖÃJDBCÇı¶¯³ÌĞò¡£ ½«`oracle.jdbc.convertNcharLiterals`Á¬½ÓÊôĞÔÉèÖÃÎª`true`¿ÉÄÜÊÇÃ÷ÖÇµÄ£¬¾¡¹Ü²»ÊÇ¾ø¶Ô±ØÒªµÄ¡£ ¿ÉÒÔ½«ÕâĞ©ÊôĞÔÉèÖÃÎªÏµÍ³ÊôĞÔ»òÁ¬½ÓÊôĞÔ¡£ Çë×¢Òâ£¬ÉèÖÃ`oracle.jdbc.defaultNChar`¿ÉÄÜ»á¶ÔĞÔÄÜ²úÉú¸ºÃæÓ°Ïì¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄOracle JDBCÇı¶¯³ÌĞòÅäÖÃÎÄµµ¡£
 
-#### 6.6.2. Microsoft SQL Server æ•°æ®åº“
+#### 6.6.2. Microsoft SQL Server Êı¾İ¿â {#}
 
-åªä¸ºç‰¹æ®Šå­—æ®µæ­£ç¡®å¤„ç†Unicodeå­—ç¬¦ã€‚ ä¸éœ€è¦JDBCé©±åŠ¨ç¨‹åºæˆ–æ•°æ®åº“çš„ç‰¹æ®Šè®¾ç½®ã€‚
+Ö»ÎªÌØÊâ×Ö¶ÎÕıÈ·´¦ÀíUnicode×Ö·û¡£ ²»ĞèÒªJDBCÇı¶¯³ÌĞò»òÊı¾İ¿âµÄÌØÊâÉèÖÃ¡£
 
-#### 6.6.3. MySQL æ•°æ®åº“
+#### 6.6.3. MySQL Êı¾İ¿â {#}
 
-å¦‚æœåœ¨`CREATE DATABASE`å‘½ä»¤ä¸­çš„`VARCHAR`å’Œ`CHAR`fieldsä¸­ä½¿ç”¨Unicodeæ”¯æŒåˆ›å»ºæ•°æ®åº“ï¼Œåˆ™å¯ä»¥æ­£ç¡®å¤„ç†Unicodeå­—ç¬¦ï¼ˆä¾‹å¦‚ï¼Œä½¿ç”¨`utf8`å­—ç¬¦é›†ä½œä¸ºMySQL 5.5ä¸­çš„é»˜è®¤æ•°æ®åº“å­—ç¬¦é›†ã€‚è¯·æ³¨æ„ ç”±äºå¯¹`utf8`å­—ç¬¦é›†[[1](https://www.keycloak.org/docs/latest/server_installation/index.html#_footnote_1)]çš„å­˜å‚¨è¦æ±‚ä¸åŒï¼Œ`utf8mb4`å­—ç¬¦é›†ä¸èµ·ä½œç”¨ã€‚ è¯·æ³¨æ„ï¼Œåœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œå¯¹éç‰¹æ®Šå­—æ®µçš„é•¿åº¦é™åˆ¶ä¸é€‚ç”¨ï¼Œå› ä¸ºåˆ›å»ºåˆ—ä»¥å®¹çº³ç»™å®šæ•°é‡çš„å­—ç¬¦ï¼Œè€Œä¸æ˜¯å­—èŠ‚ã€‚ å¦‚æœæ•°æ®åº“ç¼ºçœå­—ç¬¦é›†ä¸å…è®¸å­˜å‚¨Unicodeï¼Œåˆ™åªæœ‰ç‰¹æ®Šå­—æ®µå…è®¸å­˜å‚¨Unicodeå€¼ã€‚
+Èç¹ûÔÚ`CREATE DATABASE`ÃüÁîÖĞµÄ`VARCHAR`ºÍ`CHAR`fieldsÖĞÊ¹ÓÃUnicodeÖ§³Ö´´½¨Êı¾İ¿â£¬Ôò¿ÉÒÔÕıÈ·´¦ÀíUnicode×Ö·û£¨ÀıÈç£¬Ê¹ÓÃ`utf8`×Ö·û¼¯×÷ÎªMySQL 5.5ÖĞµÄÄ¬ÈÏÊı¾İ¿â×Ö·û¼¯¡£Çë×¢Òâ ÓÉÓÚ¶Ô`utf8`×Ö·û¼¯[[1](https://www.keycloak.org/docs/latest/server_installation/index.html#_footnote_1)]µÄ´æ´¢ÒªÇó²»Í¬£¬`utf8mb4`×Ö·û¼¯²»Æğ×÷ÓÃ¡£ Çë×¢Òâ£¬ÔÚÕâÖÖÇé¿öÏÂ£¬¶Ô·ÇÌØÊâ×Ö¶ÎµÄ³¤¶ÈÏŞÖÆ²»ÊÊÓÃ£¬ÒòÎª´´½¨ÁĞÒÔÈİÄÉ¸ø¶¨ÊıÁ¿µÄ×Ö·û£¬¶ø²»ÊÇ×Ö½Ú¡£ Èç¹ûÊı¾İ¿âÈ±Ê¡×Ö·û¼¯²»ÔÊĞí´æ´¢Unicode£¬ÔòÖ»ÓĞÌØÊâ×Ö¶ÎÔÊĞí´æ´¢UnicodeÖµ¡£
 
-åœ¨JDBCé©±åŠ¨ç¨‹åºè®¾ç½®æ–¹é¢ï¼Œéœ€è¦åœ¨JDBCè¿æ¥è®¾ç½®ä¸­æ·»åŠ è¿æ¥å±æ€§`characterEncoding = UTF-8`ã€‚
+ÔÚJDBCÇı¶¯³ÌĞòÉèÖÃ·½Ãæ£¬ĞèÒªÔÚJDBCÁ¬½ÓÉèÖÃÖĞÌí¼ÓÁ¬½ÓÊôĞÔ`characterEncoding = UTF-8`¡£
 
-#### 6.6.4. PostgreSQL æ•°æ®åº“
+#### 6.6.4. PostgreSQL Êı¾İ¿â {#}
 
-å½“æ•°æ®åº“å­—ç¬¦é›†ä¸º`UTF8`æ—¶ï¼Œæ”¯æŒUnicodeã€‚ åœ¨è¿™ç§æƒ…å†µä¸‹ï¼ŒUnicodeå­—ç¬¦å¯ä»¥åœ¨ä»»ä½•å­—æ®µä¸­ä½¿ç”¨ï¼Œéç‰¹æ®Šå­—æ®µçš„å­—æ®µé•¿åº¦ä¸ä¼šå‡å°‘ã€‚ ä¸éœ€è¦JDBCé©±åŠ¨ç¨‹åºçš„ç‰¹æ®Šè®¾ç½®ã€‚
+µ±Êı¾İ¿â×Ö·û¼¯Îª`UTF8`Ê±£¬Ö§³ÖUnicode¡£ ÔÚÕâÖÖÇé¿öÏÂ£¬Unicode×Ö·û¿ÉÒÔÔÚÈÎºÎ×Ö¶ÎÖĞÊ¹ÓÃ£¬·ÇÌØÊâ×Ö¶ÎµÄ×Ö¶Î³¤¶È²»»á¼õÉÙ¡£ ²»ĞèÒªJDBCÇı¶¯³ÌĞòµÄÌØÊâÉèÖÃ¡£
 
-## 7. ç½‘ç»œè®¾ç½®
+## 7. ÍøÂçÉèÖÃ {#}
 
-keycoverå¯èƒ½ä¼šå› ä¸ºä¸€äº›ç½‘ç»œé™åˆ¶è€Œæ— æ³•ä½¿ç”¨ã€‚é¦–å…ˆï¼Œæ‰€æœ‰ç½‘ç»œç«¯ç‚¹éƒ½ç»‘å®šåˆ°`localhost`ï¼Œå› æ­¤authæœåŠ¡å™¨å®é™…ä¸Šåªèƒ½åœ¨ä¸€å°æœ¬åœ°æœºå™¨ä¸Šä½¿ç”¨ã€‚å¯¹äºåŸºäºHTTPçš„è¿æ¥ï¼Œå®ƒä¸ä½¿ç”¨80å’Œ443ä¹‹ç±»çš„é»˜è®¤ç«¯å£ã€‚HTTPS/SSLä¸æ˜¯å¼€ç®±å³ç”¨é…ç½®çš„ï¼Œå¦‚æœæ²¡æœ‰å®ƒï¼Œkeycoveræœ‰è®¸å¤šå®‰å…¨æ¼æ´ã€‚æœ€åï¼Œkeyshieldå¯èƒ½ç»å¸¸éœ€è¦ä¸å¤–éƒ¨æœåŠ¡å™¨å»ºç«‹å®‰å…¨çš„SSLå’ŒHTTPSè¿æ¥ï¼Œå› æ­¤éœ€è¦å»ºç«‹ä¿¡ä»»å­˜å‚¨ï¼Œä»¥ä¾¿æ­£ç¡®éªŒè¯ç«¯ç‚¹ã€‚æœ¬ç« å°†è®¨è®ºæ‰€æœ‰è¿™äº›å†…å®¹ã€‚
+keycover¿ÉÄÜ»áÒòÎªÒ»Ğ©ÍøÂçÏŞÖÆ¶øÎŞ·¨Ê¹ÓÃ¡£Ê×ÏÈ£¬ËùÓĞÍøÂç¶Ëµã¶¼°ó¶¨µ½`localhost`£¬Òò´Ëauth·şÎñÆ÷Êµ¼ÊÉÏÖ»ÄÜÔÚÒ»Ì¨±¾µØ»úÆ÷ÉÏÊ¹ÓÃ¡£¶ÔÓÚ»ùÓÚHTTPµÄÁ¬½Ó£¬Ëü²»Ê¹ÓÃ80ºÍ443Ö®ÀàµÄÄ¬ÈÏ¶Ë¿Ú¡£HTTPS/SSL²»ÊÇ¿ªÏä¼´ÓÃÅäÖÃµÄ£¬Èç¹ûÃ»ÓĞËü£¬keycoverÓĞĞí¶à°²È«Â©¶´¡£×îºó£¬keyshield¿ÉÄÜ¾­³£ĞèÒªÓëÍâ²¿·şÎñÆ÷½¨Á¢°²È«µÄSSLºÍHTTPSÁ¬½Ó£¬Òò´ËĞèÒª½¨Á¢ĞÅÈÎ´æ´¢£¬ÒÔ±ãÕıÈ·ÑéÖ¤¶Ëµã¡£±¾ÕÂ½«ÌÖÂÛËùÓĞÕâĞ©ÄÚÈİ¡£
 
-### 7.1. ç»‘å®šåœ°å€
+### 7.1. °ó¶¨µØÖ· {#}
 
-é»˜è®¤æƒ…å†µä¸‹ï¼Œkeycoverç»‘å®šåˆ°æœ¬åœ°ä¸»æœºç¯å›åœ°å€`127.0.0.1`ã€‚å¦‚æœæ‚¨å¸Œæœ›ç½‘ç»œä¸Šçš„èº«ä»½éªŒè¯æœåŠ¡å™¨å¯ç”¨ï¼Œé‚£ä¹ˆè¿™ä¸æ˜¯ä¸€ä¸ªéå¸¸æœ‰ç”¨çš„ç¼ºçœå€¼ã€‚é€šå¸¸ï¼Œæˆ‘ä»¬å»ºè®®åœ¨å…¬å…±ç½‘ç»œä¸Šéƒ¨ç½²åå‘ä»£ç†æˆ–è´Ÿè½½å¹³è¡¡å™¨ï¼Œå¹¶å°†æµé‡è·¯ç”±åˆ°ç§æœ‰ç½‘ç»œä¸Šçš„å„ä¸ªKeycloakæœåŠ¡å™¨å®ä¾‹ã€‚æ— è®ºå“ªç§æƒ…å†µï¼Œæ‚¨ä»ç„¶éœ€è¦è®¾ç½®ç½‘ç»œæ¥å£æ¥ç»‘å®šåˆ°`localhost`ä¹‹å¤–çš„å…¶ä»–ä¸œè¥¿ã€‚
+Ä¬ÈÏÇé¿öÏÂ£¬keycover°ó¶¨µ½±¾µØÖ÷»ú»·»ØµØÖ·`127.0.0.1`¡£Èç¹ûÄúÏ£ÍûÍøÂçÉÏµÄÉí·İÑéÖ¤·şÎñÆ÷¿ÉÓÃ£¬ÄÇÃ´Õâ²»ÊÇÒ»¸ö·Ç³£ÓĞÓÃµÄÈ±Ê¡Öµ¡£Í¨³££¬ÎÒÃÇ½¨ÒéÔÚ¹«¹²ÍøÂçÉÏ²¿Êğ·´Ïò´úÀí»ò¸ºÔØÆ½ºâÆ÷£¬²¢½«Á÷Á¿Â·ÓÉµ½Ë½ÓĞÍøÂçÉÏµÄ¸÷¸öKeycloak·şÎñÆ÷ÊµÀı¡£ÎŞÂÛÄÄÖÖÇé¿ö£¬ÄúÈÔÈ»ĞèÒªÉèÖÃÍøÂç½Ó¿ÚÀ´°ó¶¨µ½`localhost`Ö®ÍâµÄÆäËû¶«Î÷¡£
 
-è®¾ç½®ç»‘å®šåœ°å€éå¸¸ç®€å•ï¼Œå¯ä»¥åœ¨å‘½ä»¤è¡Œä¸Šä½¿ç”¨[é€‰æ‹©æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)ç« èŠ‚ ä¸­è®¨è®ºçš„ *standalone.sh* æˆ– *domain.sh* å¯åŠ¨è„šæœ¬æ¥å®Œæˆã€‚
+ÉèÖÃ°ó¶¨µØÖ··Ç³£¼òµ¥£¬¿ÉÒÔÔÚÃüÁîĞĞÉÏÊ¹ÓÃ[Ñ¡Ôñ²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)ÕÂ½Ú ÖĞÌÖÂÛµÄ *standalone.sh* »ò *domain.sh* Æô¶¯½Å±¾À´Íê³É¡£
 
 ```bash
 $ standalone.sh -b 192.168.0.5
 ```
 
-`-b`å¼€å…³ä¸ºä»»ä½•å…¬å…±æ¥å£è®¾ç½®IPç»‘å®šåœ°å€ã€‚
+`-b`¿ª¹ØÎªÈÎºÎ¹«¹²½Ó¿ÚÉèÖÃIP°ó¶¨µØÖ·¡£
 
-æˆ–è€…ï¼Œå¦‚æœæ‚¨ä¸æƒ³åœ¨å‘½ä»¤è¡Œè®¾ç½®ç»‘å®šåœ°å€ï¼Œåˆ™å¯ä»¥ç¼–è¾‘éƒ¨ç½²çš„é…ç½®æ–‡ä»¶é…ç½®ã€‚ æ‰“å¼€é…ç½®æ–‡ä»¶é…ç½®æ–‡ä»¶ï¼ˆ*standalone.xml* æˆ– *domain.xml*ï¼Œå…·ä½“å–å†³äºæ‚¨çš„[æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode) ï¼‰å¹¶å¯»æ‰¾`interfaces` XMLå—ã€‚
+»òÕß£¬Èç¹ûÄú²»ÏëÔÚÃüÁîĞĞÉèÖÃ°ó¶¨µØÖ·£¬Ôò¿ÉÒÔ±à¼­²¿ÊğµÄÅäÖÃÎÄ¼şÅäÖÃ¡£ ´ò¿ªÅäÖÃÎÄ¼şÅäÖÃÎÄ¼ş£¨*standalone.xml* »ò *domain.xml*£¬¾ßÌåÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode) £©²¢Ñ°ÕÒ`interfaces` XML¿é¡£
 
 ```xml
     <interfaces>
@@ -1707,21 +1707,21 @@ $ standalone.sh -b 192.168.0.5
     </interfaces>
 ```
 
-`public`æ¥å£å¯¹åº”äºåˆ›å»ºå¯å…¬å¼€ä½¿ç”¨çš„å¥—æ¥å­—çš„å­ç³»ç»Ÿã€‚ å…¶ä¸­ä¸€ä¸ªå­ç³»ç»Ÿçš„ç¤ºä¾‹æ˜¯Webå±‚ï¼Œå®ƒæä¾›Keycloakçš„èº«ä»½éªŒè¯ç«¯ç‚¹ã€‚ `management`æ¥å£å¯¹åº”äºWildFlyç®¡ç†å±‚æ‰“å¼€çš„å¥—æ¥å­—ã€‚ ç‰¹åˆ«æ˜¯å…è®¸æ‚¨ä½¿ç”¨`jboss-cli.sh`å‘½ä»¤è¡Œç•Œé¢å’ŒWildFly Webæ§åˆ¶å°çš„å¥—æ¥å­—ã€‚
+`public`½Ó¿Ú¶ÔÓ¦ÓÚ´´½¨¿É¹«¿ªÊ¹ÓÃµÄÌ×½Ó×ÖµÄ×ÓÏµÍ³¡£ ÆäÖĞÒ»¸ö×ÓÏµÍ³µÄÊ¾ÀıÊÇWeb²ã£¬ËüÌá¹©KeycloakµÄÉí·İÑéÖ¤¶Ëµã¡£ `management`½Ó¿Ú¶ÔÓ¦ÓÚWildFly¹ÜÀí²ã´ò¿ªµÄÌ×½Ó×Ö¡£ ÌØ±ğÊÇÔÊĞíÄúÊ¹ÓÃ`jboss-cli.sh`ÃüÁîĞĞ½çÃæºÍWildFly Web¿ØÖÆÌ¨µÄÌ×½Ó×Ö¡£
 
-åœ¨æŸ¥çœ‹`public`æ¥å£æ—¶ï¼Œæ‚¨ä¼šçœ‹åˆ°å®ƒæœ‰ä¸€ä¸ªç‰¹æ®Šå­—ç¬¦ä¸²`${jboss.bind.address:127.0.0.1}`ã€‚ æ­¤å­—ç¬¦ä¸²è¡¨ç¤ºå€¼`127.0.0.1`ï¼Œå¯ä»¥é€šè¿‡è®¾ç½®Javaç³»ç»Ÿå±æ€§åœ¨å‘½ä»¤è¡Œä¸Šè¦†ç›–ï¼Œå³ï¼š
+ÔÚ²é¿´`public`½Ó¿ÚÊ±£¬Äú»á¿´µ½ËüÓĞÒ»¸öÌØÊâ×Ö·û´®`${jboss.bind.address:127.0.0.1}`¡£ ´Ë×Ö·û´®±íÊ¾Öµ`127.0.0.1`£¬¿ÉÒÔÍ¨¹ıÉèÖÃJavaÏµÍ³ÊôĞÔÔÚÃüÁîĞĞÉÏ¸²¸Ç£¬¼´£º
 
 ```bash
 $ domain.sh -Djboss.bind.address=192.168.0.5
 ```
 
-`-b`åªæ˜¯è¿™ä¸ªå‘½ä»¤çš„ç®€å†™ç¬¦å·ã€‚ å› æ­¤ï¼Œæ‚¨å¯ä»¥ç›´æ¥åœ¨é…ç½®æ–‡ä»¶é…ç½®ä¸­æ›´æ”¹ç»‘å®šåœ°å€å€¼ï¼Œä¹Ÿå¯ä»¥åœ¨å¯åŠ¨æ—¶åœ¨å‘½ä»¤è¡Œä¸Šæ›´æ”¹å®ƒã€‚
+`-b`Ö»ÊÇÕâ¸öÃüÁîµÄ¼òĞ´·ûºÅ¡£ Òò´Ë£¬Äú¿ÉÒÔÖ±½ÓÔÚÅäÖÃÎÄ¼şÅäÖÃÖĞ¸ü¸Ä°ó¶¨µØÖ·Öµ£¬Ò²¿ÉÒÔÔÚÆô¶¯Ê±ÔÚÃüÁîĞĞÉÏ¸ü¸ÄËü¡£
 
-> è®¾ç½®`interface`å®šä¹‰æ—¶ï¼Œè¿˜æœ‰æ›´å¤šé€‰é¡¹å¯ç”¨ã€‚ æœ‰å…³æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚é˜… *WildFly 16æ–‡æ¡£* ä¸­çš„[ç½‘ç»œæ¥å£](http://docs.wildfly.org/16/Admin_Guide.html#Interfaces_and_ports)ã€‚
+> ÉèÖÃ`interface`¶¨ÒåÊ±£¬»¹ÓĞ¸ü¶àÑ¡Ïî¿ÉÓÃ¡£ ÓĞ¹Ø¸ü¶àĞÅÏ¢£¬Çë²ÎÔÄ *WildFly 16ÎÄµµ* ÖĞµÄ[ÍøÂç½Ó¿Ú](http://docs.wildfly.org/16/Admin_Guide.html#Interfaces_and_ports)¡£
 
-### 7.2. å¥—æ¥å­—ç«¯å£ç»‘å®š
+### 7.2. Ì×½Ó×Ö¶Ë¿Ú°ó¶¨ {#}
 
-ä¸ºæ¯ä¸ªå¥—æ¥å­—æ‰“å¼€çš„ç«¯å£å…·æœ‰é¢„å®šä¹‰çš„é»˜è®¤å€¼ï¼Œå¯ä»¥åœ¨å‘½ä»¤è¡Œæˆ–é…ç½®ä¸­è¦†ç›–ã€‚ ä¸ºäº†è¯´æ˜è¿™ç§é…ç½®ï¼Œè®©æˆ‘ä»¬å‡è£…ä½ åœ¨[ç‹¬ç«‹æ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_standalone-mode)ä¸­è¿è¡Œå¹¶æ‰“å¼€*â€¦/standalone/configuration/standalone.xml*ã€‚ æœç´¢`socket-binding-group`ã€‚
+ÎªÃ¿¸öÌ×½Ó×Ö´ò¿ªµÄ¶Ë¿Ú¾ßÓĞÔ¤¶¨ÒåµÄÄ¬ÈÏÖµ£¬¿ÉÒÔÔÚÃüÁîĞĞ»òÅäÖÃÖĞ¸²¸Ç¡£ ÎªÁËËµÃ÷ÕâÖÖÅäÖÃ£¬ÈÃÎÒÃÇ¼Ù×°ÄãÔÚ[¶ÀÁ¢Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_standalone-mode)ÖĞÔËĞĞ²¢´ò¿ª*¡­/standalone/configuration/standalone.xml*¡£ ËÑË÷`socket-binding-group`¡£
 
 ```xml
     <socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
@@ -1738,27 +1738,27 @@ $ domain.sh -Djboss.bind.address=192.168.0.5
     </socket-binding-group>
 ```
 
-`socket-bindings`å®šä¹‰å°†ç”±æœåŠ¡å™¨æ‰“å¼€çš„å¥—æ¥å­—è¿æ¥ã€‚ è¿™äº›ç»‘å®šæŒ‡å®šäº†å®ƒä»¬ä½¿ç”¨çš„`interface`ï¼ˆç»‘å®šåœ°å€ï¼‰ä»¥åŠå®ƒä»¬å°†æ‰“å¼€çš„ç«¯å£å·ã€‚ ä½ æœ€æ„Ÿå…´è¶£çš„æ˜¯ï¼š
+`socket-bindings`¶¨Òå½«ÓÉ·şÎñÆ÷´ò¿ªµÄÌ×½Ó×ÖÁ¬½Ó¡£ ÕâĞ©°ó¶¨Ö¸¶¨ÁËËüÃÇÊ¹ÓÃµÄ`interface`£¨°ó¶¨µØÖ·£©ÒÔ¼°ËüÃÇ½«´ò¿ªµÄ¶Ë¿ÚºÅ¡£ Äã×î¸ĞĞËÈ¤µÄÊÇ£º
 
 - http
 
-  å®šä¹‰ç”¨äºKeycloak HTTPè¿æ¥çš„ç«¯å£
+  ¶¨ÒåÓÃÓÚKeycloak HTTPÁ¬½ÓµÄ¶Ë¿Ú
 
 - https
 
-  å®šä¹‰ç”¨äºKeycloak HTTPSè¿æ¥çš„ç«¯å£
+  ¶¨ÒåÓÃÓÚKeycloak HTTPSÁ¬½ÓµÄ¶Ë¿Ú
 
 - ajp
 
-  æ­¤å¥—æ¥å­—ç»‘å®šå®šä¹‰ç”¨äºAJPåè®®çš„ç«¯å£ã€‚ å½“æ‚¨ä½¿ç”¨Apache HTTPDä½œä¸ºè´Ÿè½½å‡è¡¡å™¨æ—¶ï¼ŒApache HTTPDæœåŠ¡å™¨å°†æ­¤åè®®ä¸`mod-cluster`ç»“åˆä½¿ç”¨ã€‚
+  ´ËÌ×½Ó×Ö°ó¶¨¶¨ÒåÓÃÓÚAJPĞ­ÒéµÄ¶Ë¿Ú¡£ µ±ÄúÊ¹ÓÃApache HTTPD×÷Îª¸ºÔØ¾ùºâÆ÷Ê±£¬Apache HTTPD·şÎñÆ÷½«´ËĞ­ÒéÓë`mod-cluster`½áºÏÊ¹ÓÃ¡£
 
 - management-http
 
-  å®šä¹‰WildFly CLIå’ŒWebæ§åˆ¶å°ä½¿ç”¨çš„HTTPè¿æ¥ã€‚
+  ¶¨ÒåWildFly CLIºÍWeb¿ØÖÆÌ¨Ê¹ÓÃµÄHTTPÁ¬½Ó¡£
 
-åœ¨[åŸŸæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_domain-mode)ä¸­è¿è¡Œæ—¶ï¼Œè®¾ç½®å¥—æ¥å­—é…ç½®æœ‰ç‚¹æ£˜æ‰‹ï¼Œå› ä¸ºç¤ºä¾‹ *domain.xml*æ–‡ä»¶å…·æœ‰ å¤šä¸ª`socket-binding-groups`å®šä¹‰ã€‚ å¦‚æœå‘ä¸‹æ»šåŠ¨åˆ°`server-group`å®šä¹‰ï¼Œä½ å¯ä»¥çœ‹åˆ°`socket-binding-group`ç”¨äºæ¯ä¸ª`server-group`ã€‚
+ÔÚ[ÓòÄ£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_domain-mode)ÖĞÔËĞĞÊ±£¬ÉèÖÃÌ×½Ó×ÖÅäÖÃÓĞµã¼¬ÊÖ£¬ÒòÎªÊ¾Àı *domain.xml*ÎÄ¼ş¾ßÓĞ ¶à¸ö`socket-binding-groups`¶¨Òå¡£ Èç¹ûÏòÏÂ¹ö¶¯µ½`server-group`¶¨Òå£¬Äã¿ÉÒÔ¿´µ½`socket-binding-group`ÓÃÓÚÃ¿¸ö`server-group`¡£
 
-åŸŸå¥—æ¥å­—ç»‘å®š
+ÓòÌ×½Ó×Ö°ó¶¨
 
 ```xml
     <server-groups>
@@ -1773,42 +1773,42 @@ $ domain.sh -Djboss.bind.address=192.168.0.5
     </server-groups>
 ```
 
-> è®¾ç½®`socket-binding-group`å®šä¹‰æ—¶ï¼Œè¿˜æœ‰æ›´å¤šé€‰é¡¹å¯ç”¨ã€‚ æœ‰å…³æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚é˜… *WildFly 16æ–‡æ¡£* ä¸­çš„[å¥—æ¥å­—ç»‘å®šç»„](http://docs.wildfly.org/16/Admin_Guide.html#Interfaces_and_ports)ã€‚
+> ÉèÖÃ`socket-binding-group`¶¨ÒåÊ±£¬»¹ÓĞ¸ü¶àÑ¡Ïî¿ÉÓÃ¡£ ÓĞ¹Ø¸ü¶àĞÅÏ¢£¬Çë²ÎÔÄ *WildFly 16ÎÄµµ* ÖĞµÄ[Ì×½Ó×Ö°ó¶¨×é](http://docs.wildfly.org/16/Admin_Guide.html#Interfaces_and_ports)¡£
 
-### 7.3. è®¾ç½® HTTPS/SSL
+### 7.3. ÉèÖÃ HTTPS/SSL {#}
 
-> é»˜è®¤æƒ…å†µä¸‹ï¼ŒKeycloakæœªè®¾ç½®ä¸ºå¤„ç†SSL/HTTPSã€‚ å¼ºçƒˆå»ºè®®æ‚¨åœ¨KeycloakæœåŠ¡å™¨æœ¬èº«æˆ–KeycloakæœåŠ¡å™¨å‰é¢çš„åå‘ä»£ç†ä¸Šå¯ç”¨SSLã€‚ 
+> Ä¬ÈÏÇé¿öÏÂ£¬KeycloakÎ´ÉèÖÃÎª´¦ÀíSSL/HTTPS¡£ Ç¿ÁÒ½¨ÒéÄúÔÚKeycloak·şÎñÆ÷±¾Éí»òKeycloak·şÎñÆ÷Ç°ÃæµÄ·´Ïò´úÀíÉÏÆôÓÃSSL¡£ 
 
-æ­¤é»˜è®¤è¡Œä¸ºç”±æ¯ä¸ªKeycloaké¢†åŸŸçš„SSL/HTTPSæ¨¡å¼å®šä¹‰ã€‚ è¿™åœ¨[æœåŠ¡å™¨ç®¡ç†æŒ‡å—](https://www.keycloak.org/docs/6.0/server_admin/)ä¸­æœ‰æ›´è¯¦ç»†çš„è®¨è®ºï¼Œä½†è®©æˆ‘ä»¬ç»™å‡ºä¸€äº›ä¸Šä¸‹æ–‡å’Œè¿™äº›æ¨¡å¼çš„ç®€è¦æ¦‚è¿°ã€‚
+´ËÄ¬ÈÏĞĞÎªÓÉÃ¿¸öKeycloakÁìÓòµÄSSL/HTTPSÄ£Ê½¶¨Òå¡£ ÕâÔÚ[·şÎñÆ÷¹ÜÀíÖ¸ÄÏ](https://www.keycloak.org/docs/6.0/server_admin/)ÖĞÓĞ¸üÏêÏ¸µÄÌÖÂÛ£¬µ«ÈÃÎÒÃÇ¸ø³öÒ»Ğ©ÉÏÏÂÎÄºÍÕâĞ©Ä£Ê½µÄ¼òÒª¸ÅÊö¡£
 
-- å¤–éƒ¨è¯·æ±‚
+- Íâ²¿ÇëÇó
 
-  åªè¦æ‚¨åšæŒä½¿ç”¨`localhost`ï¼Œ`127.0.0.1`ï¼Œ`10.0.x.x`ï¼Œ`192.168.x.x`å’Œ`172.16.x.x`ç­‰ç§æœ‰IPåœ°å€ï¼ŒKeycloakå°±å¯ä»¥åœ¨æ²¡æœ‰SSLçš„æƒ…å†µä¸‹è¿è¡Œã€‚ å¦‚æœæ‚¨æ²¡æœ‰åœ¨æœåŠ¡å™¨ä¸Šé…ç½®SSL/HTTPSï¼Œæˆ–è€…æ‚¨å°è¯•é€šè¿‡HTTPä»éç§æœ‰IPåœ°å€è®¿é—®Keycloakï¼Œåˆ™ä¼šæ”¶åˆ°é”™è¯¯æ¶ˆæ¯ã€‚
+  Ö»ÒªÄú¼á³ÖÊ¹ÓÃ`localhost`£¬`127.0.0.1`£¬`10.0.x.x`£¬`192.168.x.x`ºÍ`172.16.x.x`µÈË½ÓĞIPµØÖ·£¬Keycloak¾Í¿ÉÒÔÔÚÃ»ÓĞSSLµÄÇé¿öÏÂÔËĞĞ¡£ Èç¹ûÄúÃ»ÓĞÔÚ·şÎñÆ÷ÉÏÅäÖÃSSL/HTTPS£¬»òÕßÄú³¢ÊÔÍ¨¹ıHTTP´Ó·ÇË½ÓĞIPµØÖ··ÃÎÊKeycloak£¬Ôò»áÊÕµ½´íÎóÏûÏ¢¡£
 
-- none (æ²¡æœ‰)
+- none (Ã»ÓĞ)
 
-  Keycloakä¸éœ€è¦SSLã€‚å½“ä½ ç©å¼„ä¸œè¥¿æ—¶,è¿™åº”è¯¥åªç”¨äºå¼€å‘ã€‚
+  Keycloak²»ĞèÒªSSL¡£µ±ÄãÍæÅª¶«Î÷Ê±,ÕâÓ¦¸ÃÖ»ÓÃÓÚ¿ª·¢¡£
 
-- æ‰€æœ‰è¯·æ±‚
+- ËùÓĞÇëÇó
 
-  Keycloakè¦æ±‚æ‰€æœ‰IPåœ°å€éƒ½ä½¿ç”¨SSLã€‚
+  KeycloakÒªÇóËùÓĞIPµØÖ·¶¼Ê¹ÓÃSSL¡£
 
-å¯ä»¥åœ¨Keycloakç®¡ç†æ§åˆ¶å°ä¸­é…ç½®æ¯ä¸ªé¢†åŸŸçš„SSLæ¨¡å¼ã€‚
+¿ÉÒÔÔÚKeycloak¹ÜÀí¿ØÖÆÌ¨ÖĞÅäÖÃÃ¿¸öÁìÓòµÄSSLÄ£Ê½¡£
 
-#### 7.3.1. ä¸ºKeycloak Serverå¯ç”¨SSL/HTTPS
+#### 7.3.1. ÎªKeycloak ServerÆôÓÃSSL/HTTPS {#}
 
-å¦‚æœæ‚¨æ²¡æœ‰ä½¿ç”¨åå‘ä»£ç†æˆ–è´Ÿè½½å¹³è¡¡å™¨æ¥å¤„ç†HTTPSæµé‡ï¼Œåˆ™éœ€è¦ä¸ºKeycloakæœåŠ¡å™¨å¯ç”¨HTTPSã€‚ è¿™æ¶‰åŠåˆ°
+Èç¹ûÄúÃ»ÓĞÊ¹ÓÃ·´Ïò´úÀí»ò¸ºÔØÆ½ºâÆ÷À´´¦ÀíHTTPSÁ÷Á¿£¬ÔòĞèÒªÎªKeycloak·şÎñÆ÷ÆôÓÃHTTPS¡£ ÕâÉæ¼°µ½
 
-1. è·å–æˆ–ç”ŸæˆåŒ…å«SSL/HTTPæµé‡çš„ç§é’¥å’Œè¯ä¹¦çš„å¯†é’¥åº“
-2. é…ç½®KeycloakæœåŠ¡å™¨ä»¥ä½¿ç”¨æ­¤å¯†é’¥å¯¹å’Œè¯ä¹¦ã€‚
+1. »ñÈ¡»òÉú³É°üº¬SSL/HTTPÁ÷Á¿µÄË½Ô¿ºÍÖ¤ÊéµÄÃÜÔ¿¿â
+2. ÅäÖÃKeycloak·şÎñÆ÷ÒÔÊ¹ÓÃ´ËÃÜÔ¿¶ÔºÍÖ¤Êé¡£
 
-##### åˆ›å»ºè¯ä¹¦å’ŒJavaå¯†é’¥åº“
+##### ´´½¨Ö¤ÊéºÍJavaÃÜÔ¿¿â {#}
 
-ä¸ºäº†å…è®¸HTTPSè¿æ¥ï¼Œæ‚¨éœ€è¦è·å–è‡ªç­¾åæˆ–ç¬¬ä¸‰æ–¹ç­¾åè¯ä¹¦å¹¶å°†å…¶å¯¼å…¥Javaå¯†é’¥åº“ï¼Œç„¶åæ‰èƒ½åœ¨è¦éƒ¨ç½²Keycloak Serverçš„Webå®¹å™¨ä¸­å¯ç”¨HTTPSã€‚
+ÎªÁËÔÊĞíHTTPSÁ¬½Ó£¬ÄúĞèÒª»ñÈ¡×ÔÇ©Ãû»òµÚÈı·½Ç©ÃûÖ¤Êé²¢½«Æäµ¼ÈëJavaÃÜÔ¿¿â£¬È»ºó²ÅÄÜÔÚÒª²¿ÊğKeycloak ServerµÄWebÈİÆ÷ÖĞÆôÓÃHTTPS¡£
 
-###### è‡ªç­¾åè¯ä¹¦
+###### ×ÔÇ©ÃûÖ¤Êé {#}
 
-åœ¨å¼€å‘è¿‡ç¨‹ä¸­ï¼Œæ‚¨å¯èƒ½æ²¡æœ‰ç¬¬ä¸‰æ–¹ç­¾åè¯ä¹¦å¯ç”¨äºæµ‹è¯•Keycloakéƒ¨ç½²ï¼Œå› æ­¤æ‚¨éœ€è¦ä½¿ç”¨Java JDKé™„å¸¦çš„`keytool`å®ç”¨ç¨‹åºç”Ÿæˆè‡ªç­¾åè¯ä¹¦ã€‚
+ÔÚ¿ª·¢¹ı³ÌÖĞ£¬Äú¿ÉÄÜÃ»ÓĞµÚÈı·½Ç©ÃûÖ¤Êé¿ÉÓÃÓÚ²âÊÔKeycloak²¿Êğ£¬Òò´ËÄúĞèÒªÊ¹ÓÃJava JDK¸½´øµÄ`keytool`ÊµÓÃ³ÌĞòÉú³É×ÔÇ©ÃûÖ¤Êé¡£
 
 ```bash
 $ keytool -genkey -alias localhost -keyalg RSA -keystore keycloak.jks -validity 10950
@@ -1830,17 +1830,17 @@ $ keytool -genkey -alias localhost -keyalg RSA -keystore keycloak.jks -validity 
     [no]:  yes
 ```
 
-æ‚¨åº”è¯¥ä½¿ç”¨æ‚¨æ­£åœ¨å®‰è£…æœåŠ¡å™¨çš„è®¡ç®—æœºçš„DNSåç§°æ¥å›ç­”`æ‚¨çš„åå­—å’Œå§“æ°æ˜¯ä»€ä¹ˆï¼Ÿ`é—®é¢˜ã€‚ å‡ºäºæµ‹è¯•ç›®çš„ï¼Œåº”ä½¿ç”¨`localhost`ã€‚ æ‰§è¡Œæ­¤å‘½ä»¤åï¼Œ`keycloak.jks`æ–‡ä»¶å°†åœ¨æ‚¨æ‰§è¡Œ`keytool`å‘½ä»¤çš„åŒä¸€ç›®å½•ä¸­ç”Ÿæˆã€‚
+ÄúÓ¦¸ÃÊ¹ÓÃÄúÕıÔÚ°²×°·şÎñÆ÷µÄ¼ÆËã»úµÄDNSÃû³ÆÀ´»Ø´ğ`ÄúµÄÃû×ÖºÍĞÕÊÏÊÇÊ²Ã´£¿`ÎÊÌâ¡£ ³öÓÚ²âÊÔÄ¿µÄ£¬Ó¦Ê¹ÓÃ`localhost`¡£ Ö´ĞĞ´ËÃüÁîºó£¬`keycloak.jks`ÎÄ¼ş½«ÔÚÄúÖ´ĞĞ`keytool`ÃüÁîµÄÍ¬Ò»Ä¿Â¼ÖĞÉú³É¡£
 
-å¦‚æœæ‚¨éœ€è¦ç¬¬ä¸‰æ–¹ç­¾åè¯ä¹¦ï¼Œä½†æ²¡æœ‰ç¬¬ä¸‰æ–¹ç­¾åè¯ä¹¦ï¼Œå¯ä»¥åœ¨[cacert.org](http://www.cacert.org/)å…è´¹è·å–ã€‚ åœ¨è¿™ä¹‹å‰ä½ å¿…é¡»å…ˆåšä¸€ç‚¹è®¾ç½®ã€‚
+Èç¹ûÄúĞèÒªµÚÈı·½Ç©ÃûÖ¤Êé£¬µ«Ã»ÓĞµÚÈı·½Ç©ÃûÖ¤Êé£¬¿ÉÒÔÔÚ[cacert.org](http://www.cacert.org/)Ãâ·Ñ»ñÈ¡¡£ ÔÚÕâÖ®Ç°Äã±ØĞëÏÈ×öÒ»µãÉèÖÃ¡£
 
-é¦–å…ˆè¦åšçš„æ˜¯ç”Ÿæˆè¯ä¹¦ç”³è¯·ï¼š
+Ê×ÏÈÒª×öµÄÊÇÉú³ÉÖ¤ÊéÉêÇë£º
 
 ```bash
 $ keytool -certreq -alias yourdomain -keystore keycloak.jks > keycloak.careq
 ```
 
-å…¶ä¸­`yourdomain`æ˜¯ä¸ºå…¶ç”Ÿæˆæ­¤è¯ä¹¦çš„DNSåç§°ã€‚ Keytoolç”Ÿæˆè¯·æ±‚ï¼š
+ÆäÖĞ`yourdomain`ÊÇÎªÆäÉú³É´ËÖ¤ÊéµÄDNSÃû³Æ¡£ KeytoolÉú³ÉÇëÇó£º
 
 ```
 -----BEGIN NEW CERTIFICATE REQUEST-----
@@ -1860,23 +1860,23 @@ vqIFQeuLL3BaHwpl3t7j2lMWcK1p80laAxEASib/fAwrRHpLHBXRcq6uALUOZl4Alt8=
 -----END NEW CERTIFICATE REQUEST-----
 ```
 
-å°†æ­¤caè¯·æ±‚å‘é€ç»™æ‚¨çš„CA. CAå°†å‘æ‚¨ç­¾å‘ç­¾åè¯ä¹¦å¹¶å°†å…¶å‘é€ç»™æ‚¨ã€‚ åœ¨å¯¼å…¥æ–°è¯ä¹¦ä¹‹å‰ï¼Œå¿…é¡»è·å–å¹¶å¯¼å…¥CAçš„æ ¹è¯ä¹¦ã€‚ æ‚¨å¯ä»¥ä»CAä¸‹è½½è¯ä¹¦ï¼ˆå³ï¼šroot.crtï¼‰å¹¶å¯¼å…¥å¦‚ä¸‹ï¼š
+½«´ËcaÇëÇó·¢ËÍ¸øÄúµÄCA. CA½«ÏòÄúÇ©·¢Ç©ÃûÖ¤Êé²¢½«Æä·¢ËÍ¸øÄú¡£ ÔÚµ¼ÈëĞÂÖ¤ÊéÖ®Ç°£¬±ØĞë»ñÈ¡²¢µ¼ÈëCAµÄ¸ùÖ¤Êé¡£ Äú¿ÉÒÔ´ÓCAÏÂÔØÖ¤Êé£¨¼´£ºroot.crt£©²¢µ¼ÈëÈçÏÂ£º
 
 ```
 $ keytool -import -keystore keycloak.jks -file root.crt -alias root
 ```
 
-æœ€åä¸€æ­¥æ˜¯å°†æ–°çš„CAç”Ÿæˆçš„è¯ä¹¦å¯¼å…¥å¯†é’¥åº“ï¼š
+×îºóÒ»²½ÊÇ½«ĞÂµÄCAÉú³ÉµÄÖ¤Êéµ¼ÈëÃÜÔ¿¿â£º
 
 ```
 $ keytool -import -alias yourdomain -keystore keycloak.jks -file your-certificate.cer
 ```
 
-##### é…ç½®Keycloakä»¥ä½¿ç”¨å¯†é’¥åº“
+##### ÅäÖÃKeycloakÒÔÊ¹ÓÃÃÜÔ¿¿â {#}
 
-ç°åœ¨æ‚¨å·²æ‹¥æœ‰å…·æœ‰ç›¸åº”è¯ä¹¦çš„Javaå¯†é’¥åº“ï¼Œæ‚¨éœ€è¦é…ç½®Keycloakå®‰è£…ä»¥ä½¿ç”¨å®ƒã€‚ é¦–å…ˆï¼Œæ‚¨å¿…é¡»ç¼–è¾‘*standalone.xml*ï¼Œ*standalone-ha.xml* æˆ– *host.xml*æ–‡ä»¶ä»¥ä½¿ç”¨å¯†é’¥åº“å¹¶å¯ç”¨HTTPSã€‚ç„¶åï¼Œæ‚¨å¯ä»¥å°†å¯†é’¥åº“æ–‡ä»¶ç§»åŠ¨åˆ°éƒ¨ç½²çš„ *configuration/* ç›®å½•æˆ–æ‚¨é€‰æ‹©çš„ä½ç½®ä¸­çš„æ–‡ä»¶ï¼Œå¹¶æä¾›å®ƒçš„ç»å¯¹è·¯å¾„ã€‚ å¦‚æœä½¿ç”¨ç»å¯¹è·¯å¾„ï¼Œè¯·ä»é…ç½®ä¸­åˆ é™¤å¯é€‰çš„`relative-to`å‚æ•°ï¼ˆå‚è§[æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)ï¼‰ã€‚
+ÏÖÔÚÄúÒÑÓµÓĞ¾ßÓĞÏàÓ¦Ö¤ÊéµÄJavaÃÜÔ¿¿â£¬ÄúĞèÒªÅäÖÃKeycloak°²×°ÒÔÊ¹ÓÃËü¡£ Ê×ÏÈ£¬Äú±ØĞë±à¼­*standalone.xml*£¬*standalone-ha.xml* »ò *host.xml*ÎÄ¼şÒÔÊ¹ÓÃÃÜÔ¿¿â²¢ÆôÓÃHTTPS¡£È»ºó£¬Äú¿ÉÒÔ½«ÃÜÔ¿¿âÎÄ¼şÒÆ¶¯µ½²¿ÊğµÄ *configuration/* Ä¿Â¼»òÄúÑ¡ÔñµÄÎ»ÖÃÖĞµÄÎÄ¼ş£¬²¢Ìá¹©ËüµÄ¾ø¶ÔÂ·¾¶¡£ Èç¹ûÊ¹ÓÃ¾ø¶ÔÂ·¾¶£¬Çë´ÓÅäÖÃÖĞÉ¾³ı¿ÉÑ¡µÄ`relative-to`²ÎÊı£¨²Î¼û[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)£©¡£
 
-ä½¿ç”¨CLIæ·»åŠ æ–°çš„`security-realm`å…ƒç´ ï¼š
+Ê¹ÓÃCLIÌí¼ÓĞÂµÄ`security-realm`ÔªËØ£º
 
 ```bash
 $ /core-service=management/security-realm=UndertowRealm:add()
@@ -1884,13 +1884,13 @@ $ /core-service=management/security-realm=UndertowRealm:add()
 $ /core-service=management/security-realm=UndertowRealm/server-identity=ssl:add(keystore-path=keycloak.jks, keystore-relative-to=jboss.server.config.dir, keystore-password=secret)
 ```
 
-å¦‚æœä½¿ç”¨åŸŸæ¨¡å¼ï¼Œå‘½ä»¤åº”è¯¥åœ¨æ¯ä¸ªä¸»æœºä¸­ä½¿ç”¨`/host=<host_name>/`å‰ç¼€æ‰§è¡Œï¼ˆä¸ºäº†åœ¨æ‰€æœ‰ä¸»æœºä¸­åˆ›å»º`security-realm`ï¼‰ï¼Œå°±åƒè¿™æ ·ï¼Œä½ ä¼šé‡å¤ æ¯ä¸ªä¸»æœºï¼š
+Èç¹ûÊ¹ÓÃÓòÄ£Ê½£¬ÃüÁîÓ¦¸ÃÔÚÃ¿¸öÖ÷»úÖĞÊ¹ÓÃ`/host=<host_name>/`Ç°×ºÖ´ĞĞ£¨ÎªÁËÔÚËùÓĞÖ÷»úÖĞ´´½¨`security-realm`£©£¬¾ÍÏñÕâÑù£¬Äã»áÖØ¸´ Ã¿¸öÖ÷»ú£º
 
 ```
 $ /host=<host_name>/core-service=management/security-realm=UndertowRealm/server-identity=ssl:add(keystore-path=keycloak.jks, keystore-relative-to=jboss.server.config.dir, keystore-password=secret)
 ```
 
-åœ¨ç‹¬ç«‹æˆ–ä¸»æœºé…ç½®æ–‡ä»¶ä¸­ï¼Œ`security-realms`å…ƒç´ åº”å¦‚ä¸‹æ‰€ç¤ºï¼š
+ÔÚ¶ÀÁ¢»òÖ÷»úÅäÖÃÎÄ¼şÖĞ£¬`security-realms`ÔªËØÓ¦ÈçÏÂËùÊ¾£º
 
 ```xml
 <security-realm name="UndertowRealm">
@@ -1902,15 +1902,15 @@ $ /host=<host_name>/core-service=management/security-realm=UndertowRealm/server-
 </security-realm>
 ```
 
-æ¥ä¸‹æ¥ï¼Œåœ¨ç‹¬ç«‹æˆ–æ¯ä¸ªåŸŸé…ç½®æ–‡ä»¶ä¸­ï¼Œæœç´¢`security-realm`çš„ä»»ä½•å®ä¾‹ã€‚ ä¿®æ”¹`https-listener`ä»¥ä½¿ç”¨åˆ›å»ºçš„é¢†åŸŸï¼š
+½ÓÏÂÀ´£¬ÔÚ¶ÀÁ¢»òÃ¿¸öÓòÅäÖÃÎÄ¼şÖĞ£¬ËÑË÷`security-realm`µÄÈÎºÎÊµÀı¡£ ĞŞ¸Ä`https-listener`ÒÔÊ¹ÓÃ´´½¨µÄÁìÓò£º
 
 ```
 $ /subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=security-realm, value=UndertowRealm)
 ```
 
-å¦‚æœä½¿ç”¨åŸŸæ¨¡å¼ï¼Œè¯·åœ¨å‘½ä»¤å‰åŠ ä¸Šæ­£åœ¨ä½¿ç”¨çš„é…ç½®æ–‡ä»¶ï¼š`/profile=<profile_name>/`ã€‚
+Èç¹ûÊ¹ÓÃÓòÄ£Ê½£¬ÇëÔÚÃüÁîÇ°¼ÓÉÏÕıÔÚÊ¹ÓÃµÄÅäÖÃÎÄ¼ş£º`/profile=<profile_name>/`¡£
 
-ç»“æœå…ƒç´ `server name="default-server"`æ˜¯`subsystem xmlns="urn:jboss:domain:undertow:8.0"`çš„å­å…ƒç´ ï¼Œåº”è¯¥åŒ…å«ä»¥ä¸‹èŠ‚ï¼š
+½á¹ûÔªËØ`server name="default-server"`ÊÇ`subsystem xmlns="urn:jboss:domain:undertow:8.0"`µÄ×ÓÔªËØ£¬Ó¦¸Ã°üº¬ÒÔÏÂ½Ú£º
 
 ```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
@@ -1921,11 +1921,11 @@ $ /subsystem=undertow/server=default-server/https-listener=https:write-attribute
 </subsystem>
 ```
 
-### 7.4. ä¼ å‡ºHTTPè¯·æ±‚
+### 7.4. ´«³öHTTPÇëÇó {#}
 
-KeycloakæœåŠ¡å™¨é€šå¸¸éœ€è¦å‘å…¶ä¿æŠ¤çš„åº”ç”¨ç¨‹åºå’ŒæœåŠ¡å‘å‡ºéæµè§ˆå™¨HTTPè¯·æ±‚ã€‚ authæœåŠ¡å™¨é€šè¿‡ç»´æŠ¤HTTPå®¢æˆ·ç«¯è¿æ¥æ± æ¥ç®¡ç†è¿™äº›ä¼ å‡ºè¿æ¥ã€‚ æ‚¨éœ€è¦åœ¨`standalone.xml`ï¼Œ`standalone-ha.xml`æˆ–`domain.xml`ä¸­é…ç½®ä¸€äº›å†…å®¹ã€‚ æ­¤æ–‡ä»¶çš„ä½ç½®å–å†³äºæ‚¨çš„[æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)ã€‚
+Keycloak·şÎñÆ÷Í¨³£ĞèÒªÏòÆä±£»¤µÄÓ¦ÓÃ³ÌĞòºÍ·şÎñ·¢³ö·Çä¯ÀÀÆ÷HTTPÇëÇó¡£ auth·şÎñÆ÷Í¨¹ıÎ¬»¤HTTP¿Í»§¶ËÁ¬½Ó³ØÀ´¹ÜÀíÕâĞ©´«³öÁ¬½Ó¡£ ÄúĞèÒªÔÚ`standalone.xml`£¬`standalone-ha.xml`»ò`domain.xml`ÖĞÅäÖÃÒ»Ğ©ÄÚÈİ¡£ ´ËÎÄ¼şµÄÎ»ÖÃÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)¡£
 
-HTTPå®¢æˆ·ç«¯é…ç½®ç¤ºä¾‹
+HTTP¿Í»§¶ËÅäÖÃÊ¾Àı
 
 ```xml
 <spi name="connectionsHttpClient">
@@ -1937,90 +1937,90 @@ HTTPå®¢æˆ·ç«¯é…ç½®ç¤ºä¾‹
 </spi>
 ```
 
-å¯èƒ½çš„é…ç½®é€‰é¡¹æ˜¯ï¼š
+¿ÉÄÜµÄÅäÖÃÑ¡ÏîÊÇ£º
 
 - establish-connection-timeout-millis
 
-  å»ºç«‹å¥—æ¥å­—è¿æ¥çš„è¶…æ—¶æ—¶é—´ã€‚
+  ½¨Á¢Ì×½Ó×ÖÁ¬½ÓµÄ³¬Ê±Ê±¼ä¡£
 
 - socket-timeout-millis
 
-  å¦‚æœä¼ å‡ºè¯·æ±‚æœªåœ¨æ­¤æ—¶é—´å†…æ”¶åˆ°æ•°æ®ï¼Œåˆ™è¶…æ—¶è¿æ¥ã€‚
+  Èç¹û´«³öÇëÇóÎ´ÔÚ´ËÊ±¼äÄÚÊÕµ½Êı¾İ£¬Ôò³¬Ê±Á¬½Ó¡£
 
 - connection-pool-size
 
-  æ± ä¸­å¯ä»¥æœ‰å¤šå°‘ä¸ªè¿æ¥ï¼ˆé»˜è®¤ä¸º128ï¼‰ã€‚
+  ³ØÖĞ¿ÉÒÔÓĞ¶àÉÙ¸öÁ¬½Ó£¨Ä¬ÈÏÎª128£©¡£
 
 - max-pooled-per-route
 
-  æ¯ä¸ªä¸»æœºå¯ä»¥åˆå¹¶å¤šå°‘ä¸ªè¿æ¥ï¼ˆé»˜è®¤ä¸º64ä¸ªï¼‰ã€‚
+  Ã¿¸öÖ÷»ú¿ÉÒÔºÏ²¢¶àÉÙ¸öÁ¬½Ó£¨Ä¬ÈÏÎª64¸ö£©¡£
 
 - connection-ttl-millis
 
-  æœ€é•¿è¿æ¥æ—¶é—´ï¼ˆä»¥æ¯«ç§’ä¸ºå•ä½ï¼‰ã€‚ é»˜è®¤æƒ…å†µä¸‹æœªè®¾ç½®ã€‚
+  ×î³¤Á¬½ÓÊ±¼ä£¨ÒÔºÁÃëÎªµ¥Î»£©¡£ Ä¬ÈÏÇé¿öÏÂÎ´ÉèÖÃ¡£
 
 - max-connection-idle-time-millis
 
-  è¿æ¥å¯èƒ½åœ¨è¿æ¥æ± ä¸­ä¿æŒç©ºé—²çš„æœ€é•¿æ—¶é—´ï¼ˆé»˜è®¤ä¸º900ç§’ï¼‰ã€‚ å°†å¯åŠ¨Apache HTTPå®¢æˆ·ç«¯çš„åå°æ¸…ç†çº¿ç¨‹ã€‚ è®¾ç½®ä¸º-`1`ä»¥ç¦ç”¨æ­¤æ£€æŸ¥å’Œåå°çº¿ç¨‹ã€‚
+  Á¬½Ó¿ÉÄÜÔÚÁ¬½Ó³ØÖĞ±£³Ö¿ÕÏĞµÄ×î³¤Ê±¼ä£¨Ä¬ÈÏÎª900Ãë£©¡£ ½«Æô¶¯Apache HTTP¿Í»§¶ËµÄºóÌ¨ÇåÀíÏß³Ì¡£ ÉèÖÃÎª-`1`ÒÔ½ûÓÃ´Ë¼ì²éºÍºóÌ¨Ïß³Ì¡£
 
 - disable-cookies
 
-  é»˜è®¤ä¸º`true`ã€‚ è®¾ç½®ä¸ºtrueæ—¶ï¼Œè¿™å°†ç¦ç”¨ä»»ä½•cookieç¼“å­˜ã€‚
+  Ä¬ÈÏÎª`true`¡£ ÉèÖÃÎªtrueÊ±£¬Õâ½«½ûÓÃÈÎºÎcookie»º´æ¡£
 
 - client-keystore
 
-  è¿™æ˜¯Javaå¯†é’¥åº“æ–‡ä»¶çš„æ–‡ä»¶è·¯å¾„ã€‚ æ­¤å¯†é’¥åº“åŒ…å«åŒå‘SSLçš„å®¢æˆ·ç«¯è¯ä¹¦ã€‚
+  ÕâÊÇJavaÃÜÔ¿¿âÎÄ¼şµÄÎÄ¼şÂ·¾¶¡£ ´ËÃÜÔ¿¿â°üº¬Ë«ÏòSSLµÄ¿Í»§¶ËÖ¤Êé¡£
 
 - client-keystore-password
 
-  å®¢æˆ·ç«¯å¯†é’¥åº“çš„å¯†ç ã€‚ å¦‚æœè®¾ç½®äº†`client-keystore`ï¼Œè¿™æ˜¯ *REQUIRED* ã€‚
+  ¿Í»§¶ËÃÜÔ¿¿âµÄÃÜÂë¡£ Èç¹ûÉèÖÃÁË`client-keystore`£¬ÕâÊÇ *REQUIRED* ¡£
 
 - client-key-password
 
-  å®¢æˆ·å¯†é’¥çš„å¯†ç ã€‚ å¦‚æœè®¾ç½®äº†`client-keystore`ï¼Œè¿™æ˜¯ *REQUIRED* ã€‚
+  ¿Í»§ÃÜÔ¿µÄÃÜÂë¡£ Èç¹ûÉèÖÃÁË`client-keystore`£¬ÕâÊÇ *REQUIRED* ¡£
 
 - proxy-mappings
 
-  æ³¨æ„ä¼ å‡ºHTTPè¯·æ±‚çš„ä»£ç†é…ç½®ã€‚ æœ‰å…³æ›´å¤šè¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[ä¼ å‡ºHTTPè¯·æ±‚çš„ä»£ç†æ˜ å°„](https://www.keycloak.org/docs/latest/server_installation/index.html#_proxymappings)éƒ¨åˆ†ã€‚
+  ×¢Òâ´«³öHTTPÇëÇóµÄ´úÀíÅäÖÃ¡£ ÓĞ¹Ø¸ü¶àÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[´«³öHTTPÇëÇóµÄ´úÀíÓ³Éä](https://www.keycloak.org/docs/latest/server_installation/index.html#_proxymappings)²¿·Ö¡£
 
-#### 7.4.1. ä¼ å‡ºHTTPè¯·æ±‚çš„ä»£ç†æ˜ å°„
+#### 7.4.1. ´«³öHTTPÇëÇóµÄ´úÀíÓ³Éä {#}
 
-Keycloakå‘é€çš„ä¼ å‡ºHTTPè¯·æ±‚å¯ä»¥é€‰æ‹©ä½¿ç”¨åŸºäºé€—å·åˆ†éš”çš„ä»£ç†æ˜ å°„åˆ—è¡¨çš„ä»£ç†æœåŠ¡å™¨ã€‚ ä»£ç†æ˜ å°„è¡¨ç¤ºåŸºäºæ­£åˆ™è¡¨è¾¾å¼çš„ä¸»æœºåæ¨¡å¼å’Œ`hostnamePattern;proxyUri`å½¢å¼çš„proxy-uriçš„ç»„åˆï¼Œä¾‹å¦‚ï¼š
+Keycloak·¢ËÍµÄ´«³öHTTPÇëÇó¿ÉÒÔÑ¡ÔñÊ¹ÓÃ»ùÓÚ¶ººÅ·Ö¸ôµÄ´úÀíÓ³ÉäÁĞ±íµÄ´úÀí·şÎñÆ÷¡£ ´úÀíÓ³Éä±íÊ¾»ùÓÚÕıÔò±í´ïÊ½µÄÖ÷»úÃûÄ£Ê½ºÍ`hostnamePattern;proxyUri`ĞÎÊ½µÄproxy-uriµÄ×éºÏ£¬ÀıÈç£º
 
 ```
 .*\.(google|googleapis)\.com;http://www-proxy.acme.com:8080
 ```
 
-è¦ç¡®å®šä¼ å‡ºHTTPè¯·æ±‚çš„ä»£ç†ï¼Œéœ€è¦æ ¹æ®é…ç½®çš„ä¸»æœºåæ¨¡å¼åŒ¹é…ç›®æ ‡ä¸»æœºåã€‚ç¬¬ä¸€ä¸ªåŒ¹é…æ¨¡å¼ç¡®å®šè¦ä½¿ç”¨çš„ä»£ç†uriã€‚å¦‚æœé…ç½®çš„æ¨¡å¼éƒ½ä¸åŒ¹é…ç»™å®šçš„ä¸»æœºåï¼Œåˆ™ä¸ä½¿ç”¨ä»£ç†ã€‚
+ÒªÈ·¶¨´«³öHTTPÇëÇóµÄ´úÀí£¬ĞèÒª¸ù¾İÅäÖÃµÄÖ÷»úÃûÄ£Ê½Æ¥ÅäÄ¿±êÖ÷»úÃû¡£µÚÒ»¸öÆ¥ÅäÄ£Ê½È·¶¨ÒªÊ¹ÓÃµÄ´úÀíuri¡£Èç¹ûÅäÖÃµÄÄ£Ê½¶¼²»Æ¥Åä¸ø¶¨µÄÖ÷»úÃû£¬Ôò²»Ê¹ÓÃ´úÀí¡£
 
-ä»£ç†uriçš„ç‰¹æ®Šå€¼ `NO_PROXY` å¯ç”¨äºæŒ‡ç¤ºä¸åº”å°†ä»»ä½•ä»£ç†ç”¨äºåŒ¹é…å…³è”ä¸»æœºåæ¨¡å¼çš„ä¸»æœºã€‚å¯ä»¥åœ¨ä»£ç†æ˜ å°„çš„æœ«å°¾æŒ‡å®šä¸€ä¸ªcatch-allæ¨¡å¼ï¼Œä¸ºæ‰€æœ‰å‘å‡ºçš„è¯·æ±‚å®šä¹‰ä¸€ä¸ªé»˜è®¤ä»£ç†ã€‚
+´úÀíuriµÄÌØÊâÖµ `NO_PROXY` ¿ÉÓÃÓÚÖ¸Ê¾²»Ó¦½«ÈÎºÎ´úÀíÓÃÓÚÆ¥Åä¹ØÁªÖ÷»úÃûÄ£Ê½µÄÖ÷»ú¡£¿ÉÒÔÔÚ´úÀíÓ³ÉäµÄÄ©Î²Ö¸¶¨Ò»¸öcatch-allÄ£Ê½£¬ÎªËùÓĞ·¢³öµÄÇëÇó¶¨ÒåÒ»¸öÄ¬ÈÏ´úÀí¡£
 
-ä»¥ä¸‹ç¤ºä¾‹æ¼”ç¤ºäº†ä»£ç†æ˜ å°„é…ç½®ã€‚
+ÒÔÏÂÊ¾ÀıÑİÊ¾ÁË´úÀíÓ³ÉäÅäÖÃ¡£
 
 ```
-# All requests to Google APIs should use http://www-proxy.acme.com:8080 as proxy
+#All requests to Google APIs should use http://www-proxy.acme.com:8080 as proxy
 .*\.(google|googleapis)\.com;http://www-proxy.acme.com:8080
 
-# All requests to internal systems should use no proxy
+#All requests to internal systems should use no proxy
 .*\.acme\.com;NO_PROXY
 
-# All other requests should use http://fallback:8080 as proxy
+#All other requests should use http://fallback:8080 as proxy
 .*;http://fallback:8080
 ```
 
-è¿™å¯ä»¥é€šè¿‡ä»¥ä¸‹`jboss-cli`å‘½ä»¤é…ç½®ã€‚ è¯·æ³¨æ„ï¼Œæ‚¨éœ€è¦æ­£ç¡®åœ°è½¬ä¹‰æ­£åˆ™è¡¨è¾¾å¼æ¨¡å¼ï¼Œå¦‚ä¸‹æ‰€ç¤ºã€‚
+Õâ¿ÉÒÔÍ¨¹ıÒÔÏÂ`jboss-cli`ÃüÁîÅäÖÃ¡£ Çë×¢Òâ£¬ÄúĞèÒªÕıÈ·µØ×ªÒåÕıÔò±í´ïÊ½Ä£Ê½£¬ÈçÏÂËùÊ¾¡£
 
 ```
 echo SETUP: Configure proxy routes for HttpClient SPI
 
-# In case there is no connectionsHttpClient definition yet
+# In case there is no connectionsHttpClient definition yet {#}
 /subsystem=keycloak-server/spi=connectionsHttpClient/provider=default:add(enabled=true)
 
-# Configure the proxy-mappings
+# Configure the proxy-mappings {#}
 /subsystem=keycloak-server/spi=connectionsHttpClient/provider=default:write-attribute(name=properties.proxy-mappings,value=[".*\\.(google|googleapis)\\.com;http://www-proxy.acme.com:8080",".*\\.acme\\.com;NO_PROXY",".*;http://fallback:8080"])
 ```
 
-`jboss-cli` å‘½ä»¤å°†å¯¼è‡´ä»¥ä¸‹å­ç³»ç»Ÿé…ç½®ã€‚æ³¨æ„ï¼Œéœ€è¦ç”¨ `"` æ¥ç¼–ç  `"` å­—ç¬¦ã€‚
+`jboss-cli` ÃüÁî½«µ¼ÖÂÒÔÏÂ×ÓÏµÍ³ÅäÖÃ¡£×¢Òâ£¬ĞèÒªÓÃ `"` À´±àÂë `"` ×Ö·û¡£
 
 ```xml
 <spi name="connectionsHttpClient">
@@ -2034,21 +2034,21 @@ echo SETUP: Configure proxy routes for HttpClient SPI
 </spi>
 ```
 
-#### 7.4.2. ä¼ å‡ºHTTPSè¯·æ±‚ä¿¡ä»»åº“
+#### 7.4.2. ´«³öHTTPSÇëÇóĞÅÈÎ¿â {#}
 
-å½“Keycloakåœ¨è¿œç¨‹HTTPSç«¯ç‚¹ä¸Šè°ƒç”¨æ—¶ï¼Œå®ƒå¿…é¡»éªŒè¯è¿œç¨‹æœåŠ¡å™¨çš„è¯ä¹¦ï¼Œä»¥ç¡®ä¿å®ƒè¿æ¥åˆ°å—ä¿¡ä»»çš„æœåŠ¡å™¨ã€‚ è¿™å¯¹äºé˜²æ­¢ä¸­é—´äººæ”»å‡»æ˜¯å¿…è¦çš„ã€‚ å¿…é¡»å°†è¿™äº›è¿œç¨‹æœåŠ¡å™¨çš„è¯ä¹¦æˆ–ç­¾ç½²è¿™äº›è¯ä¹¦çš„CAæ”¾åœ¨ä¿¡ä»»åº“ä¸­ã€‚ æ­¤ä¿¡ä»»åº“ç”±KeycloakæœåŠ¡å™¨ç®¡ç†ã€‚
+µ±KeycloakÔÚÔ¶³ÌHTTPS¶ËµãÉÏµ÷ÓÃÊ±£¬Ëü±ØĞëÑéÖ¤Ô¶³Ì·şÎñÆ÷µÄÖ¤Êé£¬ÒÔÈ·±£ËüÁ¬½Óµ½ÊÜĞÅÈÎµÄ·şÎñÆ÷¡£ Õâ¶ÔÓÚ·ÀÖ¹ÖĞ¼äÈË¹¥»÷ÊÇ±ØÒªµÄ¡£ ±ØĞë½«ÕâĞ©Ô¶³Ì·şÎñÆ÷µÄÖ¤Êé»òÇ©ÊğÕâĞ©Ö¤ÊéµÄCA·ÅÔÚĞÅÈÎ¿âÖĞ¡£ ´ËĞÅÈÎ¿âÓÉKeycloak·şÎñÆ÷¹ÜÀí¡£
 
-åœ¨å®‰å…¨åœ°è¿æ¥åˆ°èº«ä»½ä»£ç†ï¼ŒLDAPèº«ä»½æä¾›ç¨‹åºï¼Œå‘é€ç”µå­é‚®ä»¶ä»¥åŠä¸å®¢æˆ·ç«¯åº”ç”¨ç¨‹åºè¿›è¡Œåå‘é€šé“é€šä¿¡æ—¶ï¼Œå°†ä½¿ç”¨ä¿¡ä»»åº“ã€‚
+ÔÚ°²È«µØÁ¬½Óµ½Éí·İ´úÀí£¬LDAPÉí·İÌá¹©³ÌĞò£¬·¢ËÍµç×ÓÓÊ¼şÒÔ¼°Óë¿Í»§¶ËÓ¦ÓÃ³ÌĞò½øĞĞ·´ÏòÍ¨µÀÍ¨ĞÅÊ±£¬½«Ê¹ÓÃĞÅÈÎ¿â¡£
 
-> é»˜è®¤æƒ…å†µä¸‹ï¼Œæœªé…ç½®ä¿¡ä»»åº“æä¾›ç¨‹åºï¼Œå¹¶ä¸”ä»»ä½•httpsè¿æ¥éƒ½å›é€€åˆ°æ ‡å‡†javaä¿¡ä»»åº“é…ç½®ï¼Œå¦‚[Javaçš„JSSEå‚è€ƒæŒ‡å—](https://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html)ä¸­æ‰€è¿°ã€‚ å¦‚æœæ²¡æœ‰å»ºç«‹ä¿¡ä»»ï¼Œåˆ™è¿™äº›ä¼ å‡ºçš„HTTPSè¯·æ±‚å°†å¤±è´¥ã€‚ 
+> Ä¬ÈÏÇé¿öÏÂ£¬Î´ÅäÖÃĞÅÈÎ¿âÌá¹©³ÌĞò£¬²¢ÇÒÈÎºÎhttpsÁ¬½Ó¶¼»ØÍËµ½±ê×¼javaĞÅÈÎ¿âÅäÖÃ£¬Èç[JavaµÄJSSE²Î¿¼Ö¸ÄÏ](https://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html)ÖĞËùÊö¡£ Èç¹ûÃ»ÓĞ½¨Á¢ĞÅÈÎ£¬ÔòÕâĞ©´«³öµÄHTTPSÇëÇó½«Ê§°Ü¡£ 
 
-æ‚¨å¯ä»¥ä½¿ç”¨ *keytool* åˆ›å»ºæ–°çš„ä¿¡ä»»åº“æ–‡ä»¶æˆ–å°†å¯ä¿¡ä¸»æœºè¯ä¹¦æ·»åŠ åˆ°ç°æœ‰æ–‡ä»¶ï¼š
+Äú¿ÉÒÔÊ¹ÓÃ *keytool* ´´½¨ĞÂµÄĞÅÈÎ¿âÎÄ¼ş»ò½«¿ÉĞÅÖ÷»úÖ¤ÊéÌí¼Óµ½ÏÖÓĞÎÄ¼ş£º
 
 ```bash
 $ keytool -import -alias HOSTDOMAIN -keystore truststore.jks -file host-certificate.cer
 ```
 
-ä¿¡ä»»åº“åœ¨æ‚¨çš„å‘è¡Œç‰ˆä¸­çš„`standalone.xml`ï¼Œ`standalone-ha.xml`æˆ–`domain.xml`æ–‡ä»¶ä¸­é…ç½®ã€‚ æ­¤æ–‡ä»¶çš„ä½ç½®å–å†³äºæ‚¨çš„[æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)ã€‚ æ‚¨å¯ä»¥ä½¿ç”¨ä»¥ä¸‹æ¨¡æ¿æ·»åŠ ä¿¡ä»»åº“é…ç½®ï¼š
+ĞÅÈÎ¿âÔÚÄúµÄ·¢ĞĞ°æÖĞµÄ`standalone.xml`£¬`standalone-ha.xml`»ò`domain.xml`ÎÄ¼şÖĞÅäÖÃ¡£ ´ËÎÄ¼şµÄÎ»ÖÃÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)¡£ Äú¿ÉÒÔÊ¹ÓÃÒÔÏÂÄ£°åÌí¼ÓĞÅÈÎ¿âÅäÖÃ£º
 
 ```xml
 <spi name="truststore">
@@ -2063,72 +2063,72 @@ $ keytool -import -alias HOSTDOMAIN -keystore truststore.jks -file host-certific
 </spi>
 ```
 
-æ­¤è®¾ç½®çš„å¯èƒ½é…ç½®é€‰é¡¹åŒ…æ‹¬ï¼š
+´ËÉèÖÃµÄ¿ÉÄÜÅäÖÃÑ¡Ïî°üÀ¨£º
 
 - file
 
-  Javaå¯†é’¥åº“æ–‡ä»¶çš„è·¯å¾„ã€‚ HTTPSè¯·æ±‚éœ€è¦ä¸€ç§æ–¹æ³•æ¥éªŒè¯ä»–ä»¬æ­£åœ¨ä¸ä¹‹é€šä¿¡çš„æœåŠ¡å™¨çš„ä¸»æœºã€‚ è¿™å°±æ˜¯å§”æ‰˜äººæ‰€åšçš„ã€‚ å¯†é’¥åº“åŒ…å«ä¸€ä¸ªæˆ–å¤šä¸ªå¯ä¿¡ä¸»æœºè¯ä¹¦æˆ–è¯ä¹¦é¢å‘æœºæ„ã€‚ æ­¤ä¿¡ä»»åº“æ–‡ä»¶åº”ä»…åŒ…å«å®‰å…¨ä¸»æœºçš„å…¬å…±è¯ä¹¦ã€‚ å¦‚æœ`disabled`ä¸æˆç«‹ï¼Œè¿™æ˜¯ *REQUIRED* ã€‚
+  JavaÃÜÔ¿¿âÎÄ¼şµÄÂ·¾¶¡£ HTTPSÇëÇóĞèÒªÒ»ÖÖ·½·¨À´ÑéÖ¤ËûÃÇÕıÔÚÓëÖ®Í¨ĞÅµÄ·şÎñÆ÷µÄÖ÷»ú¡£ Õâ¾ÍÊÇÎ¯ÍĞÈËËù×öµÄ¡£ ÃÜÔ¿¿â°üº¬Ò»¸ö»ò¶à¸ö¿ÉĞÅÖ÷»úÖ¤Êé»òÖ¤Êé°ä·¢»ú¹¹¡£ ´ËĞÅÈÎ¿âÎÄ¼şÓ¦½ö°üº¬°²È«Ö÷»úµÄ¹«¹²Ö¤Êé¡£ Èç¹û`disabled`²»³ÉÁ¢£¬ÕâÊÇ *REQUIRED* ¡£
 
 - password
 
-  ä¿¡ä»»åº“çš„å¯†ç ã€‚ å¦‚æœ`disabled`ä¸æˆç«‹ï¼Œè¿™æ˜¯ *REQUIRED* ã€‚
+  ĞÅÈÎ¿âµÄÃÜÂë¡£ Èç¹û`disabled`²»³ÉÁ¢£¬ÕâÊÇ *REQUIRED* ¡£
 
 - hostname-verification-policy
 
-  `WILDCARD`é»˜è®¤æƒ…å†µä¸‹ã€‚ å¯¹äºHTTPSè¯·æ±‚ï¼Œè¿™å°†éªŒè¯æœåŠ¡å™¨è¯ä¹¦çš„ä¸»æœºåã€‚ `ANY`è¡¨ç¤ºæœªéªŒè¯ä¸»æœºåã€‚ `WILDCARD` å…è®¸å­åŸŸåä¸­çš„é€šé…ç¬¦ï¼Œå³*.foo.comã€‚ `STRICT` CNå¿…é¡»ä¸ä¸»æœºåå®Œå…¨åŒ¹é…ã€‚
+  `WILDCARD`Ä¬ÈÏÇé¿öÏÂ¡£ ¶ÔÓÚHTTPSÇëÇó£¬Õâ½«ÑéÖ¤·şÎñÆ÷Ö¤ÊéµÄÖ÷»úÃû¡£ `ANY`±íÊ¾Î´ÑéÖ¤Ö÷»úÃû¡£ `WILDCARD` ÔÊĞí×ÓÓòÃûÖĞµÄÍ¨Åä·û£¬¼´*.foo.com¡£ `STRICT` CN±ØĞëÓëÖ÷»úÃûÍêÈ«Æ¥Åä¡£
 
 - disabled
 
-  å¦‚æœä¸ºtrueï¼ˆé»˜è®¤å€¼ï¼‰ï¼Œåˆ™å°†å¿½ç•¥ä¿¡ä»»åº“é…ç½®ï¼Œå¹¶ä¸”è¯ä¹¦æ£€æŸ¥å°†å›é€€åˆ°JSSEé…ç½®ï¼Œå¦‚ä¸Šæ‰€è¿°ã€‚ å¦‚æœè®¾ç½®ä¸ºfalseï¼Œåˆ™å¿…é¡»ä¸ºtruststoreé…ç½®`file`å’Œ`password`ã€‚
+  Èç¹ûÎªtrue£¨Ä¬ÈÏÖµ£©£¬Ôò½«ºöÂÔĞÅÈÎ¿âÅäÖÃ£¬²¢ÇÒÖ¤Êé¼ì²é½«»ØÍËµ½JSSEÅäÖÃ£¬ÈçÉÏËùÊö¡£ Èç¹ûÉèÖÃÎªfalse£¬Ôò±ØĞëÎªtruststoreÅäÖÃ`file`ºÍ`password`¡£
 
-## 8. é›†ç¾¤
+## 8. ¼¯Èº {#}
 
 
-  æœ¬èŠ‚ä»‹ç»å¦‚ä½•é…ç½®è¦åœ¨é›†ç¾¤ä¸­è¿è¡Œçš„Keycloakã€‚ è®¾ç½®é›†ç¾¤æ—¶ï¼Œæ‚¨éœ€è¦åšå¾ˆå¤šäº‹æƒ…ï¼Œå…·ä½“æ¥è¯´ï¼š
+  ±¾½Ú½éÉÜÈçºÎÅäÖÃÒªÔÚ¼¯ÈºÖĞÔËĞĞµÄKeycloak¡£ ÉèÖÃ¼¯ÈºÊ±£¬ÄúĞèÒª×öºÜ¶àÊÂÇé£¬¾ßÌåÀ´Ëµ£º
 
-- [é€‰æ‹©ä¸€ç§æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)
-- [é…ç½®å…±äº«å¤–éƒ¨æ•°æ®åº“](https://www.keycloak.org/docs/latest/server_installation/index.html#_database)
-- è®¾ç½®è´Ÿè½½å‡è¡¡å™¨
-- æä¾›æ”¯æŒIPå¤šæ’­çš„ä¸“ç”¨ç½‘ç»œ
+- [Ñ¡ÔñÒ»ÖÖ²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)
+- [ÅäÖÃ¹²ÏíÍâ²¿Êı¾İ¿â](https://www.keycloak.org/docs/latest/server_installation/index.html#_database)
+- ÉèÖÃ¸ºÔØ¾ùºâÆ÷
+- Ìá¹©Ö§³ÖIP¶à²¥µÄ×¨ÓÃÍøÂç
 
-æœ¬æŒ‡å—å‰é¢å·²è®¨è®ºè¿‡é€‰æ‹©æ“ä½œæ¨¡å¼å’Œé…ç½®å…±äº«æ•°æ®åº“ã€‚ åœ¨æœ¬ç« ä¸­ï¼Œæˆ‘ä»¬å°†è®¨è®ºè®¾ç½®è´Ÿè½½å‡è¡¡å™¨å’Œæä¾›ä¸“ç”¨ç½‘ç»œã€‚ æˆ‘ä»¬è¿˜å°†è®¨è®ºåœ¨é›†ç¾¤ä¸­å¯åŠ¨ä¸»æœºæ—¶éœ€è¦æ³¨æ„çš„ä¸€äº›é—®é¢˜ã€‚
+±¾Ö¸ÄÏÇ°ÃæÒÑÌÖÂÛ¹ıÑ¡Ôñ²Ù×÷Ä£Ê½ºÍÅäÖÃ¹²ÏíÊı¾İ¿â¡£ ÔÚ±¾ÕÂÖĞ£¬ÎÒÃÇ½«ÌÖÂÛÉèÖÃ¸ºÔØ¾ùºâÆ÷ºÍÌá¹©×¨ÓÃÍøÂç¡£ ÎÒÃÇ»¹½«ÌÖÂÛÔÚ¼¯ÈºÖĞÆô¶¯Ö÷»úÊ±ĞèÒª×¢ÒâµÄÒ»Ğ©ÎÊÌâ¡£
 
-> å¯ä»¥åœ¨æ²¡æœ‰IPå¤šæ’­çš„æƒ…å†µä¸‹å¯¹Keycloakè¿›è¡Œç¾¤é›†ï¼Œä½†æ­¤ä¸»é¢˜è¶…å‡ºäº†æœ¬æŒ‡å—çš„èŒƒå›´ã€‚ æœ‰å…³æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚é˜… *WildFly 16 æ–‡æ¡£* çš„[JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem) ç« èŠ‚ã€‚ 
+> ¿ÉÒÔÔÚÃ»ÓĞIP¶à²¥µÄÇé¿öÏÂ¶ÔKeycloak½øĞĞÈº¼¯£¬µ«´ËÖ÷Ìâ³¬³öÁË±¾Ö¸ÄÏµÄ·¶Î§¡£ ÓĞ¹Ø¸ü¶àĞÅÏ¢£¬Çë²ÎÔÄ *WildFly 16 ÎÄµµ* µÄ[JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem) ÕÂ½Ú¡£ 
 
-### 8.1. æ¨èçš„ç½‘ç»œæ¶æ„
+### 8.1. ÍÆ¼öµÄÍøÂç¼Ü¹¹ {#}
 
-ç”¨äºéƒ¨ç½²Keycloakçš„æ¨èç½‘ç»œä½“ç³»ç»“æ„æ˜¯åœ¨å…¬å…±IPåœ°å€ä¸Šè®¾ç½®HTTP/HTTPSè´Ÿè½½å‡è¡¡å™¨ï¼Œä»¥å°†è¯·æ±‚è·¯ç”±åˆ°ä½äºä¸“ç”¨ç½‘ç»œä¸Šçš„KeycloakæœåŠ¡å™¨ã€‚ è¿™éš”ç¦»äº†æ‰€æœ‰é›†ç¾¤è¿æ¥ï¼Œå¹¶æä¾›äº†ä¿æŠ¤æœåŠ¡å™¨çš„å¥½æ–¹æ³•ã€‚
+ÓÃÓÚ²¿ÊğKeycloakµÄÍÆ¼öÍøÂçÌåÏµ½á¹¹ÊÇÔÚ¹«¹²IPµØÖ·ÉÏÉèÖÃHTTP/HTTPS¸ºÔØ¾ùºâÆ÷£¬ÒÔ½«ÇëÇóÂ·ÓÉµ½Î»ÓÚ×¨ÓÃÍøÂçÉÏµÄKeycloak·şÎñÆ÷¡£ Õâ¸ôÀëÁËËùÓĞ¼¯ÈºÁ¬½Ó£¬²¢Ìá¹©ÁË±£»¤·şÎñÆ÷µÄºÃ·½·¨¡£
 
-> é»˜è®¤æƒ…å†µä¸‹ï¼Œæ²¡æœ‰ä»€ä¹ˆå¯ä»¥é˜»æ­¢æœªç»æˆæƒçš„èŠ‚ç‚¹åŠ å…¥é›†ç¾¤å’Œå¹¿æ’­å¤šæ’­æ¶ˆæ¯ã€‚ è¿™å°±æ˜¯é›†ç¾¤èŠ‚ç‚¹åº”è¯¥åœ¨ä¸“ç”¨ç½‘ç»œä¸­çš„åŸå› ï¼Œé˜²ç«å¢™å¯ä»¥ä¿æŠ¤å®ƒä»¬å…å—å¤–éƒ¨æ”»å‡»ã€‚ 
+> Ä¬ÈÏÇé¿öÏÂ£¬Ã»ÓĞÊ²Ã´¿ÉÒÔ×èÖ¹Î´¾­ÊÚÈ¨µÄ½Úµã¼ÓÈë¼¯ÈººÍ¹ã²¥¶à²¥ÏûÏ¢¡£ Õâ¾ÍÊÇ¼¯Èº½ÚµãÓ¦¸ÃÔÚ×¨ÓÃÍøÂçÖĞµÄÔ­Òò£¬·À»ğÇ½¿ÉÒÔ±£»¤ËüÃÇÃâÊÜÍâ²¿¹¥»÷¡£ 
 
-### 8.2. é›†ç¾¤ç¤ºä¾‹
+### 8.2. ¼¯ÈºÊ¾Àı {#}
 
-Keycloakç¡®å®é™„å¸¦äº†ä¸€ä¸ªåˆ©ç”¨åŸŸæ¨¡å¼çš„å¼€ç®±å³ç”¨é›†ç¾¤æ¼”ç¤ºã€‚ æœ‰å…³è¯¦ç»†ä¿¡æ¯ï¼Œè¯·æŸ¥çœ‹[ç¾¤é›†åŸŸç¤ºä¾‹](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)ä¸€ç« ã€‚
+KeycloakÈ·Êµ¸½´øÁËÒ»¸öÀûÓÃÓòÄ£Ê½µÄ¿ªÏä¼´ÓÃ¼¯ÈºÑİÊ¾¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²é¿´[Èº¼¯ÓòÊ¾Àı](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)Ò»ÕÂ¡£
 
-### 8.3. è®¾ç½®è´Ÿè½½å‡è¡¡å™¨æˆ–ä»£ç†
+### 8.3. ÉèÖÃ¸ºÔØ¾ùºâÆ÷»ò´úÀí {#}
 
-æœ¬èŠ‚è®¨è®ºåœ¨å°†åå‘ä»£ç†æˆ–è´Ÿè½½å‡è¡¡å™¨æ”¾åœ¨ç¾¤é›†Keycloakéƒ¨ç½²ä¹‹å‰éœ€è¦é…ç½®çš„ä¸€äº›äº‹é¡¹ã€‚ å®ƒè¿˜åŒ…æ‹¬é…ç½®å†…ç½®è´Ÿè½½å‡è¡¡å™¨[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)ã€‚
+±¾½ÚÌÖÂÛÔÚ½«·´Ïò´úÀí»ò¸ºÔØ¾ùºâÆ÷·ÅÔÚÈº¼¯Keycloak²¿ÊğÖ®Ç°ĞèÒªÅäÖÃµÄÒ»Ğ©ÊÂÏî¡£ Ëü»¹°üÀ¨ÅäÖÃÄÚÖÃ¸ºÔØ¾ùºâÆ÷[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)¡£
 
-#### 8.3.1. è¯†åˆ«å®¢æˆ·ç«¯IPåœ°å€
+#### 8.3.1. Ê¶±ğ¿Í»§¶ËIPµØÖ· {#}
 
-Keycloakä¸­çš„ä¸€äº›åŠŸèƒ½ä¾èµ–äºè¿æ¥åˆ°èº«ä»½éªŒè¯æœåŠ¡å™¨çš„HTTPå®¢æˆ·ç«¯çš„è¿œç¨‹åœ°å€æ˜¯å®¢æˆ·ç«¯è®¡ç®—æœºçš„çœŸå®IPåœ°å€ã€‚ ä¾‹å­åŒ…æ‹¬ï¼š
+KeycloakÖĞµÄÒ»Ğ©¹¦ÄÜÒÀÀµÓÚÁ¬½Óµ½Éí·İÑéÖ¤·şÎñÆ÷µÄHTTP¿Í»§¶ËµÄÔ¶³ÌµØÖ·ÊÇ¿Í»§¶Ë¼ÆËã»úµÄÕæÊµIPµØÖ·¡£ Àı×Ó°üÀ¨£º
 
-- äº‹ä»¶æ—¥å¿— - å°†ä½¿ç”¨é”™è¯¯çš„æºIPåœ°å€è®°å½•å¤±è´¥çš„ç™»å½•å°è¯•
-- éœ€è¦SSL - å¦‚æœæ‰€éœ€çš„SSLè®¾ç½®ä¸ºå¤–éƒ¨ï¼ˆé»˜è®¤å€¼ï¼‰ï¼Œåˆ™æ‰€æœ‰å¤–éƒ¨è¯·æ±‚éƒ½éœ€è¦SSL
-- è®¤è¯æµç¨‹ - ä½¿ç”¨IPåœ°å€çš„è‡ªå®šä¹‰èº«ä»½éªŒè¯æµï¼Œä¾‹å¦‚ä»…é’ˆå¯¹å¤–éƒ¨è¯·æ±‚æ˜¾ç¤ºOTP
-- åŠ¨æ€å®¢æˆ·ç«¯æ³¨å†Œ
+- ÊÂ¼şÈÕÖ¾ - ½«Ê¹ÓÃ´íÎóµÄÔ´IPµØÖ·¼ÇÂ¼Ê§°ÜµÄµÇÂ¼³¢ÊÔ
+- ĞèÒªSSL - Èç¹ûËùĞèµÄSSLÉèÖÃÎªÍâ²¿£¨Ä¬ÈÏÖµ£©£¬ÔòËùÓĞÍâ²¿ÇëÇó¶¼ĞèÒªSSL
+- ÈÏÖ¤Á÷³Ì - Ê¹ÓÃIPµØÖ·µÄ×Ô¶¨ÒåÉí·İÑéÖ¤Á÷£¬ÀıÈç½öÕë¶ÔÍâ²¿ÇëÇóÏÔÊ¾OTP
+- ¶¯Ì¬¿Í»§¶Ë×¢²á
 
-å½“æ‚¨åœ¨Keycloakèº«ä»½éªŒè¯æœåŠ¡å™¨å‰é¢æœ‰åå‘ä»£ç†æˆ–è´Ÿè½½å‡è¡¡å™¨æ—¶ï¼Œè¿™å¯èƒ½ä¼šæœ‰é—®é¢˜ã€‚ é€šå¸¸çš„è®¾ç½®æ˜¯ï¼Œæ‚¨æœ‰ä¸€ä¸ªä½äºå…¬å…±ç½‘ç»œä¸Šçš„å‰ç«¯ä»£ç†ï¼Œè´Ÿè½½å¹³è¡¡å¹¶å°†è¯·æ±‚è½¬å‘ç»™ä½äºä¸“ç”¨ç½‘ç»œä¸­çš„åç«¯KeycloakæœåŠ¡å™¨å®ä¾‹ã€‚ åœ¨æ­¤æ–¹æ¡ˆä¸­æ‚¨éœ€è¦æ‰§è¡Œä¸€äº›é¢å¤–é…ç½®ï¼Œä»¥ä¾¿å°†å®é™…çš„å®¢æˆ·ç«¯IPåœ°å€è½¬å‘åˆ°KeycloakæœåŠ¡å™¨å®ä¾‹å¹¶ç”±å…¶å¤„ç†ã€‚ ç‰¹åˆ«ï¼š
+µ±ÄúÔÚKeycloakÉí·İÑéÖ¤·şÎñÆ÷Ç°ÃæÓĞ·´Ïò´úÀí»ò¸ºÔØ¾ùºâÆ÷Ê±£¬Õâ¿ÉÄÜ»áÓĞÎÊÌâ¡£ Í¨³£µÄÉèÖÃÊÇ£¬ÄúÓĞÒ»¸öÎ»ÓÚ¹«¹²ÍøÂçÉÏµÄÇ°¶Ë´úÀí£¬¸ºÔØÆ½ºâ²¢½«ÇëÇó×ª·¢¸øÎ»ÓÚ×¨ÓÃÍøÂçÖĞµÄºó¶ËKeycloak·şÎñÆ÷ÊµÀı¡£ ÔÚ´Ë·½°¸ÖĞÄúĞèÒªÖ´ĞĞÒ»Ğ©¶îÍâÅäÖÃ£¬ÒÔ±ã½«Êµ¼ÊµÄ¿Í»§¶ËIPµØÖ·×ª·¢µ½Keycloak·şÎñÆ÷ÊµÀı²¢ÓÉÆä´¦Àí¡£ ÌØ±ğ£º
 
-- é…ç½®åå‘ä»£ç†æˆ–è´Ÿè½½å‡è¡¡å™¨ä»¥æ­£ç¡®è®¾ç½® `X-Forwarded-For` å’Œ `X-Forwarded-Proto` HTTPå¤´ã€‚
-- é…ç½®åå‘ä»£ç†æˆ–è´Ÿè½½å‡è¡¡å™¨ä»¥ä¿ç•™åŸå§‹ `Host`HTTPå¤´ã€‚
-- é…ç½®èº«ä»½éªŒè¯æœåŠ¡å™¨ä»¥ä» `X-Forwarded-For` å¤´è¯»å–å®¢æˆ·ç«¯çš„IPåœ°å€ã€‚
+- ÅäÖÃ·´Ïò´úÀí»ò¸ºÔØ¾ùºâÆ÷ÒÔÕıÈ·ÉèÖÃ `X-Forwarded-For` ºÍ `X-Forwarded-Proto` HTTPÍ·¡£
+- ÅäÖÃ·´Ïò´úÀí»ò¸ºÔØ¾ùºâÆ÷ÒÔ±£ÁôÔ­Ê¼ `Host`HTTPÍ·¡£
+- ÅäÖÃÉí·İÑéÖ¤·şÎñÆ÷ÒÔ´Ó `X-Forwarded-For` Í·¶ÁÈ¡¿Í»§¶ËµÄIPµØÖ·¡£
 
-é…ç½®ä»£ç†ä»¥ç”Ÿæˆ`X-Forwarded-For`å’Œ`X-Forwarded-Proto`HTTPå¤´å¹¶ä¿ç•™åŸå§‹çš„`Host`HTTPå¤´è¶…å‡ºäº†æœ¬æŒ‡å—çš„èŒƒå›´ã€‚ é‡‡å–é¢å¤–çš„é¢„é˜²æªæ–½ï¼Œä»¥ç¡®ä¿æ‚¨çš„ä»£ç†è®¾ç½®`X-Forwared-For`å¤´ã€‚ å¦‚æœæ‚¨çš„ä»£ç†é…ç½®ä¸æ­£ç¡®ï¼Œé‚£ä¹ˆ *rogue* å®¢æˆ·ç«¯å¯ä»¥è‡ªå·±è®¾ç½®æ­¤æ ‡å¤´ï¼Œå¹¶è¯±ä½¿Keycloakè®¤ä¸ºå®¢æˆ·ç«¯ä»ä¸åŒçš„IPåœ°å€è¿æ¥è€Œä¸æ˜¯å®é™…è¿æ¥ã€‚ å¦‚æœæ‚¨æ­£åœ¨è¿›è¡Œä»»ä½•é»‘åå•æˆ–ç™½åå•çš„IPåœ°å€ï¼Œè¿™å°†å˜å¾—éå¸¸é‡è¦ã€‚
+ÅäÖÃ´úÀíÒÔÉú³É`X-Forwarded-For`ºÍ`X-Forwarded-Proto`HTTPÍ·²¢±£ÁôÔ­Ê¼µÄ`Host`HTTPÍ·³¬³öÁË±¾Ö¸ÄÏµÄ·¶Î§¡£ ²ÉÈ¡¶îÍâµÄÔ¤·À´ëÊ©£¬ÒÔÈ·±£ÄúµÄ´úÀíÉèÖÃ`X-Forwared-For`Í·¡£ Èç¹ûÄúµÄ´úÀíÅäÖÃ²»ÕıÈ·£¬ÄÇÃ´ *rogue* ¿Í»§¶Ë¿ÉÒÔ×Ô¼ºÉèÖÃ´Ë±êÍ·£¬²¢ÓÕÊ¹KeycloakÈÏÎª¿Í»§¶Ë´Ó²»Í¬µÄIPµØÖ·Á¬½Ó¶ø²»ÊÇÊµ¼ÊÁ¬½Ó¡£ Èç¹ûÄúÕıÔÚ½øĞĞÈÎºÎºÚÃûµ¥»ò°×Ãûµ¥µÄIPµØÖ·£¬Õâ½«±äµÃ·Ç³£ÖØÒª¡£
 
-é™¤äº†ä»£ç†æœ¬èº«ä¹‹å¤–ï¼Œè¿˜éœ€è¦åœ¨Keycloakæ–¹é¢é…ç½®ä¸€äº›ä¸œè¥¿ã€‚ å¦‚æœæ‚¨çš„ä»£ç†é€šè¿‡HTTPåè®®è½¬å‘è¯·æ±‚ï¼Œé‚£ä¹ˆæ‚¨éœ€è¦é…ç½®Keycloakä»¥ä» `X-Forwarded-For` å¤´è€Œä¸æ˜¯ä»ç½‘ç»œæ•°æ®åŒ…ä¸­æå–å®¢æˆ·ç«¯çš„IPåœ°å€ã€‚ è¦æ‰§è¡Œæ­¤æ“ä½œï¼Œè¯·æ‰“å¼€é…ç½®æ–‡ä»¶é…ç½®æ–‡ä»¶ï¼ˆ*standalone.xml*ï¼Œ*standalone-ha.xml* æˆ– *domain.xml*ï¼Œå…·ä½“å–å†³äºæ‚¨çš„[æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)ï¼‰å¹¶æŸ¥æ‰¾ `urn:jboss:domain:undertow:8.0` XMLå—ã€‚
+³ıÁË´úÀí±¾ÉíÖ®Íâ£¬»¹ĞèÒªÔÚKeycloak·½ÃæÅäÖÃÒ»Ğ©¶«Î÷¡£ Èç¹ûÄúµÄ´úÀíÍ¨¹ıHTTPĞ­Òé×ª·¢ÇëÇó£¬ÄÇÃ´ÄúĞèÒªÅäÖÃKeycloakÒÔ´Ó `X-Forwarded-For` Í·¶ø²»ÊÇ´ÓÍøÂçÊı¾İ°üÖĞÌáÈ¡¿Í»§¶ËµÄIPµØÖ·¡£ ÒªÖ´ĞĞ´Ë²Ù×÷£¬Çë´ò¿ªÅäÖÃÎÄ¼şÅäÖÃÎÄ¼ş£¨*standalone.xml*£¬*standalone-ha.xml* »ò *domain.xml*£¬¾ßÌåÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)£©²¢²éÕÒ `urn:jboss:domain:undertow:8.0` XML¿é¡£
 
-`X-Forwarded-For` HTTP é…ç½®
+`X-Forwarded-For` HTTP ÅäÖÃ
 
 ```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
@@ -2143,11 +2143,11 @@ Keycloakä¸­çš„ä¸€äº›åŠŸèƒ½ä¾èµ–äºè¿æ¥åˆ°èº«ä»½éªŒè¯æœåŠ¡å™¨çš„HTTPå®¢æˆ·ç«
 </subsystem>
 ```
 
-å°†`proxy-address-forwarding`å±æ€§æ·»åŠ åˆ°`http-listener`å…ƒç´ ã€‚ å°†å€¼è®¾ç½®ä¸º`true`ã€‚
+½«`proxy-address-forwarding`ÊôĞÔÌí¼Óµ½`http-listener`ÔªËØ¡£ ½«ÖµÉèÖÃÎª`true`¡£
 
-å¦‚æœæ‚¨çš„ä»£ç†ä½¿ç”¨AJPåè®®è€Œä¸æ˜¯HTTPæ¥è½¬å‘è¯·æ±‚ï¼ˆå³Apache HTTPD + mod-clusterï¼‰ï¼Œé‚£ä¹ˆæ‚¨å¿…é¡»ä»¥ä¸åŒçš„æ–¹å¼é…ç½®ã€‚ æ‚¨éœ€è¦æ·»åŠ ä¸€ä¸ªè¿‡æ»¤å™¨æ¥ä»AJPæ•°æ®åŒ…ä¸­æå–æ­¤ä¿¡æ¯ï¼Œè€Œä¸æ˜¯ä¿®æ”¹`http-listener`ã€‚
+Èç¹ûÄúµÄ´úÀíÊ¹ÓÃAJPĞ­Òé¶ø²»ÊÇHTTPÀ´×ª·¢ÇëÇó£¨¼´Apache HTTPD + mod-cluster£©£¬ÄÇÃ´Äú±ØĞëÒÔ²»Í¬µÄ·½Ê½ÅäÖÃ¡£ ÄúĞèÒªÌí¼ÓÒ»¸ö¹ıÂËÆ÷À´´ÓAJPÊı¾İ°üÖĞÌáÈ¡´ËĞÅÏ¢£¬¶ø²»ÊÇĞŞ¸Ä`http-listener`¡£
 
-`X-Forwarded-For` AJP é…ç½®
+`X-Forwarded-For` AJP ÅäÖÃ
 
 ```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
@@ -2170,9 +2170,9 @@ Keycloakä¸­çš„ä¸€äº›åŠŸèƒ½ä¾èµ–äºè¿æ¥åˆ°èº«ä»½éªŒè¯æœåŠ¡å™¨çš„HTTPå®¢æˆ·ç«
  </subsystem>
 ```
 
-#### 8.3.2. ä½¿åå‘ä»£ç†å¯ç”¨HTTPS/SSL
+#### 8.3.2. Ê¹·´Ïò´úÀíÆôÓÃHTTPS/SSL {#}
 
-å‡è®¾æ‚¨çš„åå‘ä»£ç†ä¸ä½¿ç”¨ç«¯å£8443è¿›è¡ŒSSLï¼Œæ‚¨è¿˜éœ€è¦é…ç½®é‡å®šå‘åˆ°HTTPSæµé‡çš„ç«¯å£ã€‚
+¼ÙÉèÄúµÄ·´Ïò´úÀí²»Ê¹ÓÃ¶Ë¿Ú8443½øĞĞSSL£¬Äú»¹ĞèÒªÅäÖÃÖØ¶¨Ïòµ½HTTPSÁ÷Á¿µÄ¶Ë¿Ú¡£
 
 ```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
@@ -2183,9 +2183,9 @@ Keycloakä¸­çš„ä¸€äº›åŠŸèƒ½ä¾èµ–äºè¿æ¥åˆ°èº«ä»½éªŒè¯æœåŠ¡å™¨çš„HTTPå®¢æˆ·ç«
 </subsystem>
 ```
 
-å°†`redirect-socket`å±æ€§æ·»åŠ åˆ°`http-listener`å…ƒç´ ã€‚ å€¼åº”ä¸º`proxy-https`ï¼Œå®ƒæŒ‡å‘æ‚¨è¿˜éœ€è¦å®šä¹‰çš„å¥—æ¥å­—ç»‘å®šã€‚
+½«`redirect-socket`ÊôĞÔÌí¼Óµ½`http-listener`ÔªËØ¡£ ÖµÓ¦Îª`proxy-https`£¬ËüÖ¸ÏòÄú»¹ĞèÒª¶¨ÒåµÄÌ×½Ó×Ö°ó¶¨¡£
 
-ç„¶ååœ¨`socket-binding-group`å…ƒç´ ä¸­æ·»åŠ ä¸€ä¸ªæ–°çš„`socket-binding`å…ƒç´ ï¼š
+È»ºóÔÚ`socket-binding-group`ÔªËØÖĞÌí¼ÓÒ»¸öĞÂµÄ`socket-binding`ÔªËØ£º
 
 ```xml
 <socket-binding-group name="standard-sockets" default-interface="public"
@@ -2196,33 +2196,33 @@ Keycloakä¸­çš„ä¸€äº›åŠŸèƒ½ä¾èµ–äºè¿æ¥åˆ°èº«ä»½éªŒè¯æœåŠ¡å™¨çš„HTTPå®¢æˆ·ç«
 </socket-binding-group>
 ```
 
-#### 8.3.3. éªŒè¯é…ç½®
+#### 8.3.3. ÑéÖ¤ÅäÖÃ {#}
 
-æ‚¨å¯ä»¥é€šè¿‡åå‘ä»£ç†æ‰“å¼€è·¯å¾„ `/auth/realms/master/.well-known/openid-configuration` æ¥éªŒè¯åå‘ä»£ç†æˆ–è´Ÿè½½å‡è¡¡å™¨é…ç½®ã€‚ ä¾‹å¦‚ï¼Œå¦‚æœåå‘ä»£ç†åœ°å€æ˜¯ `https://acme.com/`ï¼Œåˆ™æ‰“å¼€URL `https://acme.com/auth/realms/master/.well-known/openid-configuration`ã€‚ è¿™å°†æ˜¾ç¤ºä¸€ä¸ªJSONæ–‡æ¡£ï¼Œå…¶ä¸­åˆ—å‡ºäº†Keycloakçš„è®¸å¤šç«¯ç‚¹ã€‚ ç¡®ä¿ç«¯ç‚¹ä»¥åå‘ä»£ç†æˆ–è´Ÿè½½å‡è¡¡å™¨çš„åœ°å€ï¼ˆscheme, domain and portï¼‰å¼€å¤´ã€‚ é€šè¿‡è¿™æ ·åšï¼Œæ‚¨å¯ä»¥ç¡®ä¿Keycloakæ­£åœ¨ä½¿ç”¨æ­£ç¡®çš„ç«¯ç‚¹ã€‚
+Äú¿ÉÒÔÍ¨¹ı·´Ïò´úÀí´ò¿ªÂ·¾¶ `/auth/realms/master/.well-known/openid-configuration` À´ÑéÖ¤·´Ïò´úÀí»ò¸ºÔØ¾ùºâÆ÷ÅäÖÃ¡£ ÀıÈç£¬Èç¹û·´Ïò´úÀíµØÖ·ÊÇ `https://acme.com/`£¬Ôò´ò¿ªURL `https://acme.com/auth/realms/master/.well-known/openid-configuration`¡£ Õâ½«ÏÔÊ¾Ò»¸öJSONÎÄµµ£¬ÆäÖĞÁĞ³öÁËKeycloakµÄĞí¶à¶Ëµã¡£ È·±£¶ËµãÒÔ·´Ïò´úÀí»ò¸ºÔØ¾ùºâÆ÷µÄµØÖ·£¨scheme, domain and port£©¿ªÍ·¡£ Í¨¹ıÕâÑù×ö£¬Äú¿ÉÒÔÈ·±£KeycloakÕıÔÚÊ¹ÓÃÕıÈ·µÄ¶Ëµã¡£
 
-æ‚¨è¿˜åº”éªŒè¯Keycloakæ˜¯å¦çœ‹åˆ°äº†è¯·æ±‚çš„æ­£ç¡®æºIPåœ°å€ã€‚ è¯·æ£€æŸ¥æ­¤é¡¹ï¼Œæ‚¨å¯ä»¥å°è¯•ä½¿ç”¨æ— æ•ˆçš„ç”¨æˆ·åå’Œ/æˆ–å¯†ç ç™»å½•ç®¡ç†æ§åˆ¶å°ã€‚ è¿™åº”è¯¥åœ¨æœåŠ¡å™¨æ—¥å¿—ä¸­æ˜¾ç¤ºå¦‚ä¸‹è­¦å‘Šï¼š
+Äú»¹Ó¦ÑéÖ¤KeycloakÊÇ·ñ¿´µ½ÁËÇëÇóµÄÕıÈ·Ô´IPµØÖ·¡£ Çë¼ì²é´ËÏî£¬Äú¿ÉÒÔ³¢ÊÔÊ¹ÓÃÎŞĞ§µÄÓÃ»§ÃûºÍ/»òÃÜÂëµÇÂ¼¹ÜÀí¿ØÖÆÌ¨¡£ ÕâÓ¦¸ÃÔÚ·şÎñÆ÷ÈÕÖ¾ÖĞÏÔÊ¾ÈçÏÂ¾¯¸æ£º
 
 ```
 08:14:21,287 WARN  XNIO-1 task-45 [org.keycloak.events] type=LOGIN_ERROR, realmId=master, clientId=security-admin-console, userId=8f20d7ba-4974-4811-a695-242c8fbd1bf8, ipAddress=X.X.X.X, error=invalid_user_credentials, auth_method=openid-connect, auth_type=code, redirect_uri=http://localhost:8080/auth/admin/master/console/?redirect_fragment=%2Frealms%2Fmaster%2Fevents-settings, code_id=a3d48b67-a439-4546-b992-e93311d6493e, username=admin
 ```
 
-æ£€æŸ¥`ipAddress`çš„å€¼æ˜¯æ‚¨å°è¯•ç™»å½•çš„è®¡ç®—æœºçš„IPåœ°å€ï¼Œè€Œä¸æ˜¯åå‘ä»£ç†æˆ–è´Ÿè½½å¹³è¡¡å™¨çš„IPåœ°å€ã€‚
+¼ì²é`ipAddress`µÄÖµÊÇÄú³¢ÊÔµÇÂ¼µÄ¼ÆËã»úµÄIPµØÖ·£¬¶ø²»ÊÇ·´Ïò´úÀí»ò¸ºÔØÆ½ºâÆ÷µÄIPµØÖ·¡£
 
-#### 8.3.4. ä½¿ç”¨å†…ç½®è´Ÿè½½å‡è¡¡å™¨
+#### 8.3.4. Ê¹ÓÃÄÚÖÃ¸ºÔØ¾ùºâÆ÷ {#}
 
-æœ¬èŠ‚ä»‹ç»å¦‚ä½•é…ç½®[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)ä¸­è®¨è®ºçš„å†…ç½®è´Ÿè½½å‡è¡¡å™¨.
+±¾½Ú½éÉÜÈçºÎÅäÖÃ[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)ÖĞÌÖÂÛµÄÄÚÖÃ¸ºÔØ¾ùºâÆ÷.
 
-[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)ä»…è®¾è®¡ä¸ºåœ¨ä¸€å°è®¡ç®—æœºä¸Šè¿è¡Œã€‚ è¦åœ¨å¦ä¸€å°ä¸»æœºä¸Šå¯åŠ¨ä¸€ä¸ªslaveï¼Œä½ éœ€è¦
+[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)½öÉè¼ÆÎªÔÚÒ»Ì¨¼ÆËã»úÉÏÔËĞĞ¡£ ÒªÔÚÁíÒ»Ì¨Ö÷»úÉÏÆô¶¯Ò»¸öslave£¬ÄãĞèÒª
 
-1. ç¼–è¾‘ *domain.xml* æ–‡ä»¶ä»¥æŒ‡å‘æ–°çš„ä¸»æœºslave
-2. å¤åˆ¶æœåŠ¡å™¨åˆ†å‘ç‰ˆã€‚ æ‚¨ä¸éœ€è¦*domain.xml*ï¼Œ*host.xml* æˆ– *host-master.xml*æ–‡ä»¶ã€‚ ä½ ä¹Ÿä¸éœ€è¦ *standalone/* ç›®å½•ã€‚
-3. ç¼–è¾‘ *host-slave.xml* æ–‡ä»¶ä»¥æ›´æ”¹ä½¿ç”¨çš„ç»‘å®šåœ°å€æˆ–åœ¨å‘½ä»¤è¡Œä¸Šè¦†ç›–å®ƒä»¬
+1. ±à¼­ *domain.xml* ÎÄ¼şÒÔÖ¸ÏòĞÂµÄÖ÷»úslave
+2. ¸´ÖÆ·şÎñÆ÷·Ö·¢°æ¡£ Äú²»ĞèÒª*domain.xml*£¬*host.xml* »ò *host-master.xml*ÎÄ¼ş¡£ ÄãÒ²²»ĞèÒª *standalone/* Ä¿Â¼¡£
+3. ±à¼­ *host-slave.xml* ÎÄ¼şÒÔ¸ü¸ÄÊ¹ÓÃµÄ°ó¶¨µØÖ·»òÔÚÃüÁîĞĞÉÏ¸²¸ÇËüÃÇ
 
-##### ä½¿ç”¨Load Balanceræ³¨å†Œæ–°ä¸»æœº
+##### Ê¹ÓÃLoad Balancer×¢²áĞÂÖ÷»ú {#}
 
-è®©æˆ‘ä»¬é¦–å…ˆçœ‹ä¸€ä¸‹ä½¿ç”¨ *domain.xml* ä¸­çš„è´Ÿè½½å‡è¡¡å™¨é…ç½®æ³¨å†Œæ–°çš„ä¸»æœºslaveã€‚ æ‰“å¼€æ­¤æ–‡ä»¶å¹¶è½¬åˆ°`load-balancer`é…ç½®æ–‡ä»¶ä¸­çš„undertowé…ç½®ã€‚ åœ¨`reverse-proxy` XMLå—ä¸­æ·»åŠ ä¸€ä¸ªåä¸º`remote-host3`çš„æ–°`host`å®šä¹‰ã€‚
+ÈÃÎÒÃÇÊ×ÏÈ¿´Ò»ÏÂÊ¹ÓÃ *domain.xml* ÖĞµÄ¸ºÔØ¾ùºâÆ÷ÅäÖÃ×¢²áĞÂµÄÖ÷»úslave¡£ ´ò¿ª´ËÎÄ¼ş²¢×ªµ½`load-balancer`ÅäÖÃÎÄ¼şÖĞµÄundertowÅäÖÃ¡£ ÔÚ`reverse-proxy` XML¿éÖĞÌí¼ÓÒ»¸öÃûÎª`remote-host3`µÄĞÂ`host`¶¨Òå¡£
 
-domain.xmlåå‘ä»£ç†é…ç½®
+domain.xml·´Ïò´úÀíÅäÖÃ
 
 ```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
@@ -2238,9 +2238,9 @@ domain.xmlåå‘ä»£ç†é…ç½®
 </subsystem>
 ```
 
-`output-socket-binding`æ˜¯ä¸€ä¸ªé€»è¾‘åï¼ŒæŒ‡å‘ç¨ååœ¨ *domain.xml* æ–‡ä»¶ä¸­é…ç½®çš„`socket-binding`ã€‚ `instance-id`å±æ€§å¯¹äºæ–°ä¸»æœºä¹Ÿå¿…é¡»æ˜¯å”¯ä¸€çš„ï¼Œå› ä¸ºcookieä½¿ç”¨æ­¤å€¼æ¥åœ¨è´Ÿè½½å¹³è¡¡æ—¶å¯ç”¨ç²˜æ€§ä¼šè¯ã€‚
+`output-socket-binding`ÊÇÒ»¸öÂß¼­Ãû£¬Ö¸ÏòÉÔºóÔÚ *domain.xml* ÎÄ¼şÖĞÅäÖÃµÄ`socket-binding`¡£ `instance-id`ÊôĞÔ¶ÔÓÚĞÂÖ÷»úÒ²±ØĞëÊÇÎ¨Ò»µÄ£¬ÒòÎªcookieÊ¹ÓÃ´ËÖµÀ´ÔÚ¸ºÔØÆ½ºâÊ±ÆôÓÃÕ³ĞÔ»á»°¡£
 
-æ¥ä¸‹æ¥è½¬åˆ°`load-balancer-socket` `socket-binding-group` å¹¶ä¸º `remote-host3` æ·»åŠ  `outbound-socket-binding`ã€‚ æ­¤æ–°ç»‘å®šéœ€è¦æŒ‡å‘æ–°ä¸»æœºçš„ä¸»æœºå’Œç«¯å£ã€‚
+½ÓÏÂÀ´×ªµ½`load-balancer-socket` `socket-binding-group` ²¢Îª `remote-host3` Ìí¼Ó `outbound-socket-binding`¡£ ´ËĞÂ°ó¶¨ĞèÒªÖ¸ÏòĞÂÖ÷»úµÄÖ÷»úºÍ¶Ë¿Ú¡£
 
 domain.xml outbound-socket-binding
 
@@ -2259,17 +2259,17 @@ domain.xml outbound-socket-binding
 </socket-binding-group>
 ```
 
-##### Master Bind Addresses (ä¸»ç»‘å®šåœ°å€)
+##### Master Bind Addresses (Ö÷°ó¶¨µØÖ·) {#}
 
-æ¥ä¸‹æ¥ä½ è¦åšçš„å°±æ˜¯æ›´æ”¹ä¸»æ§ä¸»æœºçš„`public`å’Œ`management`ç»‘å®šåœ°å€ã€‚ æŒ‰ç…§[ç»‘å®šåœ°å€](https://www.keycloak.org/docs/latest/server_installation/index.html#_bind-address)ä¸€ç« ä¸­çš„è¯´æ˜ç¼–è¾‘ *domain.xml* æ–‡ä»¶ï¼Œæˆ–è€…åœ¨å‘½ä»¤è¡Œä¸ŠæŒ‡å®šè¿™äº›ç»‘å®šåœ°å€ å‘½ä»¤è¡Œå¦‚ä¸‹ï¼š
+½ÓÏÂÀ´ÄãÒª×öµÄ¾ÍÊÇ¸ü¸ÄÖ÷¿ØÖ÷»úµÄ`public`ºÍ`management`°ó¶¨µØÖ·¡£ °´ÕÕ[°ó¶¨µØÖ·](https://www.keycloak.org/docs/latest/server_installation/index.html#_bind-address)Ò»ÕÂÖĞµÄËµÃ÷±à¼­ *domain.xml* ÎÄ¼ş£¬»òÕßÔÚÃüÁîĞĞÉÏÖ¸¶¨ÕâĞ©°ó¶¨µØÖ· ÃüÁîĞĞÈçÏÂ£º
 
 ```bash
 $ domain.sh --host-config=host-master.xml -Djboss.bind.address=192.168.0.2 -Djboss.bind.address.management=192.168.0.2
 ```
 
-##### Host Slave Bind Addresses (ä¸»æœºä»å±ç»‘å®šåœ°å€)
+##### Host Slave Bind Addresses (Ö÷»ú´ÓÊô°ó¶¨µØÖ·) {#}
 
-æ¥ä¸‹æ¥ï¼Œæ‚¨å°†ä¸å¾—ä¸æ›´æ”¹`public`ï¼Œ`management`å’ŒåŸŸæ§åˆ¶å™¨ç»‘å®šåœ°å€ï¼ˆ`jboss.domain.master-address`ï¼‰ã€‚ ç¼–è¾‘*host-slave.xml*æ–‡ä»¶æˆ–åœ¨å‘½ä»¤è¡Œä¸­æŒ‡å®šå®ƒä»¬ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
+½ÓÏÂÀ´£¬Äú½«²»µÃ²»¸ü¸Ä`public`£¬`management`ºÍÓò¿ØÖÆÆ÷°ó¶¨µØÖ·£¨`jboss.domain.master-address`£©¡£ ±à¼­*host-slave.xml*ÎÄ¼ş»òÔÚÃüÁîĞĞÖĞÖ¸¶¨ËüÃÇ£¬ÈçÏÂËùÊ¾£º
 
 ```bash
 $ domain.sh --host-config=host-slave.xml
@@ -2278,47 +2278,47 @@ $ domain.sh --host-config=host-slave.xml
        -Djboss.domain.master.address=192.168.0.2
 ```
 
-`jboss.bind.address`å’Œ`jboss.bind.addres.management`çš„å€¼å±äºä¸»æœºslaveçš„IPåœ°å€ã€‚ `jboss.domain.master.address`çš„å€¼å¿…é¡»æ˜¯åŸŸæ§åˆ¶å™¨çš„IPåœ°å€ï¼ŒåŸŸæ§åˆ¶å™¨æ˜¯masterä¸»æœºçš„ç®¡ç†åœ°å€ã€‚
+`jboss.bind.address`ºÍ`jboss.bind.addres.management`µÄÖµÊôÓÚÖ÷»úslaveµÄIPµØÖ·¡£ `jboss.domain.master.address`µÄÖµ±ØĞëÊÇÓò¿ØÖÆÆ÷µÄIPµØÖ·£¬Óò¿ØÖÆÆ÷ÊÇmasterÖ÷»úµÄ¹ÜÀíµØÖ·¡£
 
-#### 8.3.5. é…ç½®å…¶ä»–è´Ÿè½½å‡è¡¡å™¨
+#### 8.3.5. ÅäÖÃÆäËû¸ºÔØ¾ùºâÆ÷ {#}
 
-æœ‰å…³å¦‚ä½•ä½¿ç”¨å…¶ä»–åŸºäºè½¯ä»¶çš„è´Ÿè½½å¹³è¡¡å™¨çš„ä¿¡æ¯ï¼Œè¯·å‚é˜… *WildFly 16æ–‡æ¡£* ä¸­çš„[è´Ÿè½½å‡è¡¡](http://docs.wildfly.org/16/High_Availability_Guide.html)éƒ¨åˆ†ã€‚
+ÓĞ¹ØÈçºÎÊ¹ÓÃÆäËû»ùÓÚÈí¼şµÄ¸ºÔØÆ½ºâÆ÷µÄĞÅÏ¢£¬Çë²ÎÔÄ *WildFly 16ÎÄµµ* ÖĞµÄ[¸ºÔØ¾ùºâ](http://docs.wildfly.org/16/High_Availability_Guide.html)²¿·Ö¡£
 
-### 8.4. ç²˜æ€§ä¼šè¯
+### 8.4. Õ³ĞÔ»á»° {#}
 
-å…¸å‹çš„é›†ç¾¤éƒ¨ç½²åŒ…æ‹¬è´Ÿè½½å‡è¡¡å™¨ï¼ˆåå‘ä»£ç†ï¼‰å’Œä¸“ç”¨ç½‘ç»œä¸Šçš„2ä¸ªæˆ–æ›´å¤šKeycloakæœåŠ¡å™¨ã€‚ å‡ºäºæ€§èƒ½ç›®çš„ï¼Œå¦‚æœè´Ÿè½½å‡è¡¡å™¨å°†ä¸ç‰¹å®šæµè§ˆå™¨ä¼šè¯ç›¸å…³çš„æ‰€æœ‰è¯·æ±‚è½¬å‘åˆ°åŒä¸€Keycloakåç«¯èŠ‚ç‚¹ï¼Œåˆ™å¯èƒ½ä¼šå¾ˆæœ‰ç”¨ã€‚
+µäĞÍµÄ¼¯Èº²¿Êğ°üÀ¨¸ºÔØ¾ùºâÆ÷£¨·´Ïò´úÀí£©ºÍ×¨ÓÃÍøÂçÉÏµÄ2¸ö»ò¸ü¶àKeycloak·şÎñÆ÷¡£ ³öÓÚĞÔÄÜÄ¿µÄ£¬Èç¹û¸ºÔØ¾ùºâÆ÷½«ÓëÌØ¶¨ä¯ÀÀÆ÷»á»°Ïà¹ØµÄËùÓĞÇëÇó×ª·¢µ½Í¬Ò»Keycloakºó¶Ë½Úµã£¬Ôò¿ÉÄÜ»áºÜÓĞÓÃ¡£
 
-åŸå› æ˜¯ï¼ŒKeycloakæ­£åœ¨ä½¿ç”¨Infinispanåˆ†å¸ƒå¼ç¼“å­˜æ¥ä¿å­˜ä¸å½“å‰èº«ä»½éªŒè¯ä¼šè¯å’Œç”¨æˆ·ä¼šè¯ç›¸å…³çš„æ•°æ®ã€‚ é»˜è®¤æƒ…å†µä¸‹ï¼ŒInfinispanåˆ†å¸ƒå¼ç¼“å­˜é…ç½®æœ‰ä¸€ä¸ªæ‰€æœ‰è€…ã€‚ è¿™æ„å‘³ç€ç‰¹å®šä¼šè¯ä»…ä¿å­˜åœ¨ä¸€ä¸ªç¾¤é›†èŠ‚ç‚¹ä¸Šï¼Œè€Œå…¶ä»–èŠ‚ç‚¹éœ€è¦è¿œç¨‹æŸ¥æ‰¾ä¼šè¯æ‰èƒ½è®¿é—®å®ƒã€‚
+Ô­ÒòÊÇ£¬KeycloakÕıÔÚÊ¹ÓÃInfinispan·Ö²¼Ê½»º´æÀ´±£´æÓëµ±Ç°Éí·İÑéÖ¤»á»°ºÍÓÃ»§»á»°Ïà¹ØµÄÊı¾İ¡£ Ä¬ÈÏÇé¿öÏÂ£¬Infinispan·Ö²¼Ê½»º´æÅäÖÃÓĞÒ»¸öËùÓĞÕß¡£ ÕâÒâÎ¶×ÅÌØ¶¨»á»°½ö±£´æÔÚÒ»¸öÈº¼¯½ÚµãÉÏ£¬¶øÆäËû½ÚµãĞèÒªÔ¶³Ì²éÕÒ»á»°²ÅÄÜ·ÃÎÊËü¡£
 
-ä¾‹å¦‚ï¼Œå¦‚æœIDä¸º`123`çš„è®¤è¯ä¼šè¯ä¿å­˜åœ¨`node1`ä¸Šçš„Infinispanç¼“å­˜ä¸­ï¼Œç„¶å`node2`éœ€è¦æŸ¥æ‰¾è¯¥ä¼šè¯ï¼Œåˆ™éœ€è¦é€šè¿‡ç½‘ç»œå°†è¯·æ±‚å‘é€åˆ°`node1`ä»¥è¿”å›ç‰¹å®šä¼šè¯ å®ä½“ã€‚
+ÀıÈç£¬Èç¹ûIDÎª`123`µÄÈÏÖ¤»á»°±£´æÔÚ`node1`ÉÏµÄInfinispan»º´æÖĞ£¬È»ºó`node2`ĞèÒª²éÕÒ¸Ã»á»°£¬ÔòĞèÒªÍ¨¹ıÍøÂç½«ÇëÇó·¢ËÍµ½`node1`ÒÔ·µ»ØÌØ¶¨»á»° ÊµÌå¡£
 
-å¦‚æœç‰¹å®šä¼šè¯å®ä½“å§‹ç»ˆåœ¨æœ¬åœ°å¯ç”¨ï¼Œè¿™æ˜¯æœ‰ç›Šçš„ï¼Œè¿™å¯ä»¥åœ¨ç²˜æ€§ä¼šè¯çš„å¸®åŠ©ä¸‹å®Œæˆã€‚ å…·æœ‰å…¬å…±å‰ç«¯è´Ÿè½½å‡è¡¡å™¨å’Œä¸¤ä¸ªåç«¯KeycloakèŠ‚ç‚¹çš„é›†ç¾¤ç¯å¢ƒä¸­çš„å·¥ä½œæµå¯ä»¥æ˜¯è¿™æ ·çš„ï¼š
+Èç¹ûÌØ¶¨»á»°ÊµÌåÊ¼ÖÕÔÚ±¾µØ¿ÉÓÃ£¬ÕâÊÇÓĞÒæµÄ£¬Õâ¿ÉÒÔÔÚÕ³ĞÔ»á»°µÄ°ïÖúÏÂÍê³É¡£ ¾ßÓĞ¹«¹²Ç°¶Ë¸ºÔØ¾ùºâÆ÷ºÍÁ½¸öºó¶ËKeycloak½ÚµãµÄ¼¯Èº»·¾³ÖĞµÄ¹¤×÷Á÷¿ÉÒÔÊÇÕâÑùµÄ£º
 
-- ç”¨æˆ·å‘é€åˆå§‹è¯·æ±‚ä»¥æŸ¥çœ‹Keycloakç™»å½•å±å¹•
-- è¯¥è¯·æ±‚ç”±å‰ç«¯è´Ÿè½½å‡è¡¡å™¨æä¾›ï¼Œåè€…å°†å…¶è½¬å‘åˆ°æŸä¸ªéšæœºèŠ‚ç‚¹ï¼ˆä¾‹å¦‚ï¼Œnode1ï¼‰ã€‚ ä¸¥æ ¼åœ°è¯´ï¼ŒèŠ‚ç‚¹ä¸éœ€è¦æ˜¯éšæœºçš„ï¼Œä½†å¯ä»¥æ ¹æ®å…¶ä»–ä¸€äº›æ ‡å‡†ï¼ˆå®¢æˆ·ç«¯IPåœ°å€ç­‰ï¼‰è¿›è¡Œé€‰æ‹©ã€‚ è¿™ä¸€åˆ‡éƒ½å–å†³äºåº•å±‚è´Ÿè½½å‡è¡¡å™¨ï¼ˆåå‘ä»£ç†ï¼‰çš„å®ç°å’Œé…ç½®ã€‚
-- Keycloakä½¿ç”¨éšæœºIDï¼ˆä¾‹å¦‚123ï¼‰åˆ›å»ºè®¤è¯ä¼šè¯å¹¶å°†å…¶ä¿å­˜åˆ°Infinispanç¼“å­˜ã€‚
-- Infinispanåˆ†å¸ƒå¼ç¼“å­˜æ ¹æ®ä¼šè¯IDçš„å“ˆå¸Œå€¼åˆ†é…ä¼šè¯çš„ä¸»è¦æ‰€æœ‰è€…ã€‚ æœ‰å…³æ­¤å†…å®¹çš„è¯¦ç»†ä¿¡æ¯ï¼Œè¯·å‚é˜…[Infinispanæ–‡æ¡£](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#distribution_mode)ã€‚ è®©æˆ‘ä»¬å‡è®¾Infinispanå°†`node2`æŒ‡å®šä¸ºæ­¤ä¼šè¯çš„æ‰€æœ‰è€…ã€‚
-- Keycloakä½¿ç”¨`<session-id>.<owner-node-id>`ç­‰æ ¼å¼åˆ›å»ºcookie `AUTH_SESSION_ID`ã€‚ åœ¨æˆ‘ä»¬çš„ç¤ºä¾‹ä¸­ï¼Œå®ƒå°†æ˜¯`123.node2`ã€‚
-- ä½¿ç”¨Keycloakç™»å½•å±å¹•å’Œæµè§ˆå™¨ä¸­çš„AUTH_SESSION_ID cookieå°†å“åº”è¿”å›ç»™ç”¨æˆ·
+- ÓÃ»§·¢ËÍ³õÊ¼ÇëÇóÒÔ²é¿´KeycloakµÇÂ¼ÆÁÄ»
+- ¸ÃÇëÇóÓÉÇ°¶Ë¸ºÔØ¾ùºâÆ÷Ìá¹©£¬ºóÕß½«Æä×ª·¢µ½Ä³¸öËæ»ú½Úµã£¨ÀıÈç£¬node1£©¡£ ÑÏ¸ñµØËµ£¬½Úµã²»ĞèÒªÊÇËæ»úµÄ£¬µ«¿ÉÒÔ¸ù¾İÆäËûÒ»Ğ©±ê×¼£¨¿Í»§¶ËIPµØÖ·µÈ£©½øĞĞÑ¡Ôñ¡£ ÕâÒ»ÇĞ¶¼È¡¾öÓÚµ×²ã¸ºÔØ¾ùºâÆ÷£¨·´Ïò´úÀí£©µÄÊµÏÖºÍÅäÖÃ¡£
+- KeycloakÊ¹ÓÃËæ»úID£¨ÀıÈç123£©´´½¨ÈÏÖ¤»á»°²¢½«Æä±£´æµ½Infinispan»º´æ¡£
+- Infinispan·Ö²¼Ê½»º´æ¸ù¾İ»á»°IDµÄ¹şÏ£Öµ·ÖÅä»á»°µÄÖ÷ÒªËùÓĞÕß¡£ ÓĞ¹Ø´ËÄÚÈİµÄÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[InfinispanÎÄµµ](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#distribution_mode)¡£ ÈÃÎÒÃÇ¼ÙÉèInfinispan½«`node2`Ö¸¶¨Îª´Ë»á»°µÄËùÓĞÕß¡£
+- KeycloakÊ¹ÓÃ`<session-id>.<owner-node-id>`µÈ¸ñÊ½´´½¨cookie `AUTH_SESSION_ID`¡£ ÔÚÎÒÃÇµÄÊ¾ÀıÖĞ£¬Ëü½«ÊÇ`123.node2`¡£
+- Ê¹ÓÃKeycloakµÇÂ¼ÆÁÄ»ºÍä¯ÀÀÆ÷ÖĞµÄAUTH_SESSION_ID cookie½«ÏìÓ¦·µ»Ø¸øÓÃ»§
 
-ä»è¿™ä¸€ç‚¹æ¥çœ‹ï¼Œå¦‚æœè´Ÿè½½å‡è¡¡å™¨å°†æ‰€æœ‰ä¸‹ä¸€ä¸ªè¯·æ±‚è½¬å‘åˆ°`node2`æ˜¯æœ‰ç›Šçš„ï¼Œå› ä¸ºè¿™æ˜¯èŠ‚ç‚¹ï¼Œå®ƒæ˜¯IDä¸º123çš„è®¤è¯ä¼šè¯çš„æ‰€æœ‰è€…ï¼Œå› æ­¤Infinispanå¯ä»¥åœ¨æœ¬åœ°æŸ¥æ‰¾è¯¥ä¼šè¯ã€‚ èº«ä»½éªŒè¯å®Œæˆåï¼Œèº«ä»½éªŒè¯ä¼šè¯å°†è½¬æ¢ä¸ºç”¨æˆ·ä¼šè¯ï¼Œè¯¥ä¼šè¯ä¹Ÿå°†ä¿å­˜åœ¨`node2`ä¸Šï¼Œå› ä¸ºå®ƒå…·æœ‰ç›¸åŒçš„ID`123`ã€‚
+´ÓÕâÒ»µãÀ´¿´£¬Èç¹û¸ºÔØ¾ùºâÆ÷½«ËùÓĞÏÂÒ»¸öÇëÇó×ª·¢µ½`node2`ÊÇÓĞÒæµÄ£¬ÒòÎªÕâÊÇ½Úµã£¬ËüÊÇIDÎª123µÄÈÏÖ¤»á»°µÄËùÓĞÕß£¬Òò´ËInfinispan¿ÉÒÔÔÚ±¾µØ²éÕÒ¸Ã»á»°¡£ Éí·İÑéÖ¤Íê³Éºó£¬Éí·İÑéÖ¤»á»°½«×ª»»ÎªÓÃ»§»á»°£¬¸Ã»á»°Ò²½«±£´æÔÚ`node2`ÉÏ£¬ÒòÎªËü¾ßÓĞÏàÍ¬µÄID`123`¡£
 
-ç²˜æ€§ä¼šè¯å¯¹äºç¾¤é›†è®¾ç½®ä¸æ˜¯å¼ºåˆ¶æ€§çš„ï¼Œä½†ç”±äºä¸Šè¿°åŸå› ï¼Œå®ƒå¯¹æ€§èƒ½æœ‰åˆ©ã€‚ æ‚¨éœ€è¦å°†loadbalanceré…ç½®ä¸ºç²˜è´´åœ¨`AUTH_SESSION_ID` cookieä¸Šã€‚ è¿™ç©¶ç«Ÿå–å†³äºæ‚¨çš„è´Ÿè½½å‡è¡¡å™¨ã€‚
+Õ³ĞÔ»á»°¶ÔÓÚÈº¼¯ÉèÖÃ²»ÊÇÇ¿ÖÆĞÔµÄ£¬µ«ÓÉÓÚÉÏÊöÔ­Òò£¬Ëü¶ÔĞÔÄÜÓĞÀû¡£ ÄúĞèÒª½«loadbalancerÅäÖÃÎªÕ³ÌùÔÚ`AUTH_SESSION_ID` cookieÉÏ¡£ Õâ¾¿¾¹È¡¾öÓÚÄúµÄ¸ºÔØ¾ùºâÆ÷¡£
 
-å»ºè®®åœ¨Keycloakç«¯ä½¿ç”¨å¯åŠ¨æœŸé—´çš„ç³»ç»Ÿå±æ€§`jboss.node.name`ï¼Œå…¶å€¼ä¸è·¯ç”±åç§°ç›¸å¯¹åº”ã€‚ ä¾‹å¦‚ï¼Œ`-Djboss.node.name=node1`å°†ä½¿ç”¨`node1`æ¥æ ‡è¯†è·¯ç”±ã€‚ æ­¤è·¯ç”±å°†ç”±Infinispanç¼“å­˜ä½¿ç”¨ï¼Œå¹¶åœ¨èŠ‚ç‚¹æ˜¯ç‰¹å®šå¯†é’¥çš„æ‰€æœ‰è€…æ—¶é™„åŠ åˆ°AUTH_SESSION_ID cookieã€‚ ä»¥ä¸‹æ˜¯ä½¿ç”¨æ­¤ç³»ç»Ÿå±æ€§çš„å¯åŠ¨å‘½ä»¤çš„ç¤ºä¾‹ï¼š
+½¨ÒéÔÚKeycloak¶ËÊ¹ÓÃÆô¶¯ÆÚ¼äµÄÏµÍ³ÊôĞÔ`jboss.node.name`£¬ÆäÖµÓëÂ·ÓÉÃû³ÆÏà¶ÔÓ¦¡£ ÀıÈç£¬`-Djboss.node.name=node1`½«Ê¹ÓÃ`node1`À´±êÊ¶Â·ÓÉ¡£ ´ËÂ·ÓÉ½«ÓÉInfinispan»º´æÊ¹ÓÃ£¬²¢ÔÚ½ÚµãÊÇÌØ¶¨ÃÜÔ¿µÄËùÓĞÕßÊ±¸½¼Óµ½AUTH_SESSION_ID cookie¡£ ÒÔÏÂÊÇÊ¹ÓÃ´ËÏµÍ³ÊôĞÔµÄÆô¶¯ÃüÁîµÄÊ¾Àı£º
 
 ```bash
 cd $RHSSO_NODE1
 ./standalone.sh -c standalone-ha.xml -Djboss.socket.binding.port-offset=100 -Djboss.node.name=node1
 ```
 
-é€šå¸¸åœ¨ç”Ÿäº§ç¯å¢ƒä¸­ï¼Œè·¯ç”±åç§°åº”ä½¿ç”¨ä¸åç«¯ä¸»æœºç›¸åŒçš„åç§°ï¼Œä½†ä¸æ˜¯å¿…éœ€çš„ã€‚ æ‚¨å¯ä»¥ä½¿ç”¨å…¶ä»–è·¯å¾„åç§°ã€‚ ä¾‹å¦‚ï¼Œå¦‚æœè¦åœ¨ä¸“ç”¨ç½‘ç»œä¸­éšè—KeycloakæœåŠ¡å™¨çš„ä¸»æœºåã€‚
+Í¨³£ÔÚÉú²ú»·¾³ÖĞ£¬Â·ÓÉÃû³ÆÓ¦Ê¹ÓÃÓëºó¶ËÖ÷»úÏàÍ¬µÄÃû³Æ£¬µ«²»ÊÇ±ØĞèµÄ¡£ Äú¿ÉÒÔÊ¹ÓÃÆäËûÂ·¾¶Ãû³Æ¡£ ÀıÈç£¬Èç¹ûÒªÔÚ×¨ÓÃÍøÂçÖĞÒş²ØKeycloak·şÎñÆ÷µÄÖ÷»úÃû¡£
 
-#### 8.4.1. ç¦ç”¨æ·»åŠ è·¯ç”±
+#### 8.4.1. ½ûÓÃÌí¼ÓÂ·ÓÉ {#}
 
-æŸäº›è´Ÿè½½å‡è¡¡å™¨å¯ä»¥é…ç½®ä¸ºè‡ªè¡Œæ·»åŠ è·¯ç”±ä¿¡æ¯ï¼Œè€Œä¸æ˜¯ä¾èµ–äºåç«¯KeycloakèŠ‚ç‚¹ã€‚ ä½†æ˜¯ï¼Œå¦‚ä¸Šæ‰€è¿°ï¼Œå»ºè®®é€šè¿‡Keycloakæ·»åŠ è·¯çº¿ã€‚ è¿™æ˜¯å› ä¸ºå½“è¿™æ ·åšæ—¶æ€§èƒ½å¾—åˆ°æ”¹å–„ï¼Œå› ä¸ºKeycloakçŸ¥é“ä½œä¸ºç‰¹å®šä¼šè¯çš„æ‰€æœ‰è€…çš„å®ä½“å¹¶ä¸”å¯ä»¥è·¯ç”±åˆ°è¯¥èŠ‚ç‚¹ï¼Œè¯¥èŠ‚ç‚¹ä¸ä¸€å®šæ˜¯æœ¬åœ°èŠ‚ç‚¹ã€‚
+Ä³Ğ©¸ºÔØ¾ùºâÆ÷¿ÉÒÔÅäÖÃÎª×ÔĞĞÌí¼ÓÂ·ÓÉĞÅÏ¢£¬¶ø²»ÊÇÒÀÀµÓÚºó¶ËKeycloak½Úµã¡£ µ«ÊÇ£¬ÈçÉÏËùÊö£¬½¨ÒéÍ¨¹ıKeycloakÌí¼ÓÂ·Ïß¡£ ÕâÊÇÒòÎªµ±ÕâÑù×öÊ±ĞÔÄÜµÃµ½¸ÄÉÆ£¬ÒòÎªKeycloakÖªµÀ×÷ÎªÌØ¶¨»á»°µÄËùÓĞÕßµÄÊµÌå²¢ÇÒ¿ÉÒÔÂ·ÓÉµ½¸Ã½Úµã£¬¸Ã½Úµã²»Ò»¶¨ÊÇ±¾µØ½Úµã¡£
 
-å¦‚æœæ‚¨æ„¿æ„ï¼Œå¯ä»¥é€šè¿‡å°†ä»¥ä¸‹å†…å®¹æ·»åŠ åˆ°Keycloakå­ç³»ç»Ÿé…ç½®ä¸­çš„`RHSSO_HOME/standalone/configuration/standalone-ha.xml`æ–‡ä»¶ä¸­æ¥ç¦ç”¨Keycloakå°†è·¯ç”±ä¿¡æ¯æ·»åŠ åˆ°AUTH_SESSION_ID cookieä¸­ï¼š
+Èç¹ûÄúÔ¸Òâ£¬¿ÉÒÔÍ¨¹ı½«ÒÔÏÂÄÚÈİÌí¼Óµ½Keycloak×ÓÏµÍ³ÅäÖÃÖĞµÄ`RHSSO_HOME/standalone/configuration/standalone-ha.xml`ÎÄ¼şÖĞÀ´½ûÓÃKeycloak½«Â·ÓÉĞÅÏ¢Ìí¼Óµ½AUTH_SESSION_ID cookieÖĞ£º
 
 ```xml
 <subsystem xmlns="urn:jboss:domain:keycloak-server:1.1">
@@ -2334,13 +2334,13 @@ cd $RHSSO_NODE1
 </subsystem>
 ```
 
-### 8.5. å¤šæ’­ç½‘ç»œè®¾ç½®
+### 8.5. ¶à²¥ÍøÂçÉèÖÃ {#}
 
-å¼€ç®±å³ç”¨çš„é›†ç¾¤æ”¯æŒéœ€è¦IPå¤šæ’­ã€‚ ç»„æ’­æ˜¯ä¸€ç§ç½‘ç»œå¹¿æ’­åè®®ã€‚ æ­¤åè®®åœ¨å¯åŠ¨æ—¶ç”¨äºå‘ç°å’ŒåŠ å…¥é›†ç¾¤ã€‚ å®ƒè¿˜ç”¨äºå¹¿æ’­æ¶ˆæ¯ï¼Œä»¥ä¾¿å¤åˆ¶å’Œä½¿Keycloakä½¿ç”¨çš„åˆ†å¸ƒå¼ç¼“å­˜å¤±æ•ˆã€‚
+¿ªÏä¼´ÓÃµÄ¼¯ÈºÖ§³ÖĞèÒªIP¶à²¥¡£ ×é²¥ÊÇÒ»ÖÖÍøÂç¹ã²¥Ğ­Òé¡£ ´ËĞ­ÒéÔÚÆô¶¯Ê±ÓÃÓÚ·¢ÏÖºÍ¼ÓÈë¼¯Èº¡£ Ëü»¹ÓÃÓÚ¹ã²¥ÏûÏ¢£¬ÒÔ±ã¸´ÖÆºÍÊ¹KeycloakÊ¹ÓÃµÄ·Ö²¼Ê½»º´æÊ§Ğ§¡£
 
-Keycloakçš„é›†ç¾¤å­ç³»ç»Ÿåœ¨JGroupså †æ ˆä¸Šè¿è¡Œã€‚ å¼€ç®±å³ç”¨ï¼Œé›†ç¾¤çš„ç»‘å®šåœ°å€ç»‘å®šåˆ°ä¸“ç”¨ç½‘ç»œæ¥å£ï¼Œé»˜è®¤IPåœ°å€ä¸º127.0.0.1ã€‚ æ‚¨å¿…é¡»ç¼–è¾‘[Bind Address](https://www.keycloak.org/docs/latest/server_installation/index.html#_bind-address) ä¸­è®¨è®ºçš„*standalone-ha.xml* æˆ– *domain.xml*éƒ¨åˆ†ç« èŠ‚ã€‚
+KeycloakµÄ¼¯Èº×ÓÏµÍ³ÔÚJGroups¶ÑÕ»ÉÏÔËĞĞ¡£ ¿ªÏä¼´ÓÃ£¬¼¯ÈºµÄ°ó¶¨µØÖ·°ó¶¨µ½×¨ÓÃÍøÂç½Ó¿Ú£¬Ä¬ÈÏIPµØÖ·Îª127.0.0.1¡£ Äú±ØĞë±à¼­[Bind Address](https://www.keycloak.org/docs/latest/server_installation/index.html#_bind-address) ÖĞÌÖÂÛµÄ*standalone-ha.xml* »ò *domain.xml*²¿·ÖÕÂ½Ú¡£
 
-ä¸“ç”¨ç½‘ç»œé…ç½®
+×¨ÓÃÍøÂçÅäÖÃ
 
 ```xml
     <interfaces>
@@ -2361,21 +2361,21 @@ Keycloakçš„é›†ç¾¤å­ç³»ç»Ÿåœ¨JGroupså †æ ˆä¸Šè¿è¡Œã€‚ å¼€ç®±å³ç”¨ï¼Œé›†ç¾¤çš„ç
     </socket-binding-group>
 ```
 
-ä½ æƒ³è¦é…ç½®çš„ä¸œè¥¿æ˜¯`jboss.bind.address.private`å’Œ`jboss.default.multicast.address`ä»¥åŠé›†ç¾¤å †æ ˆä¸ŠæœåŠ¡çš„ç«¯å£ã€‚
+ÄãÏëÒªÅäÖÃµÄ¶«Î÷ÊÇ`jboss.bind.address.private`ºÍ`jboss.default.multicast.address`ÒÔ¼°¼¯Èº¶ÑÕ»ÉÏ·şÎñµÄ¶Ë¿Ú¡£
 
-> å¯ä»¥åœ¨æ²¡æœ‰IPå¤šæ’­çš„æƒ…å†µä¸‹å¯¹Keycloakè¿›è¡Œé›†ç¾¤ï¼Œä½†æ­¤ä¸»é¢˜è¶…å‡ºäº†æœ¬æŒ‡å—çš„èŒƒå›´ã€‚ æœ‰å…³æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚é˜… *WildFly 16æ–‡æ¡£* ä¸­çš„[JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem)ã€‚
+> ¿ÉÒÔÔÚÃ»ÓĞIP¶à²¥µÄÇé¿öÏÂ¶ÔKeycloak½øĞĞ¼¯Èº£¬µ«´ËÖ÷Ìâ³¬³öÁË±¾Ö¸ÄÏµÄ·¶Î§¡£ ÓĞ¹Ø¸ü¶àĞÅÏ¢£¬Çë²ÎÔÄ *WildFly 16ÎÄµµ* ÖĞµÄ[JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem)¡£
 
-### 8.6. ç¡®ä¿é›†ç¾¤é€šä¿¡å®‰å…¨
+### 8.6. È·±£¼¯ÈºÍ¨ĞÅ°²È« {#}
 
-å½“é›†ç¾¤èŠ‚ç‚¹åœ¨ä¸“ç”¨ç½‘ç»œä¸Šéš”ç¦»æ—¶ï¼Œå®ƒéœ€è¦è®¿é—®ä¸“ç”¨ç½‘ç»œæ‰èƒ½åŠ å…¥é›†ç¾¤æˆ–æŸ¥çœ‹é›†ç¾¤ä¸­çš„é€šä¿¡ã€‚ æ­¤å¤–ï¼Œæ‚¨è¿˜å¯ä»¥ä¸ºé›†ç¾¤é€šä¿¡å¯ç”¨èº«ä»½éªŒè¯å’ŒåŠ å¯†ã€‚ åªè¦æ‚¨çš„ä¸“ç”¨ç½‘ç»œæ˜¯å®‰å…¨çš„ï¼Œå°±ä¸å¿…å¯ç”¨èº«ä»½éªŒè¯å’ŒåŠ å¯†ã€‚ åœ¨ä»»ä½•ä¸€ç§æƒ…å†µä¸‹ï¼ŒKeycloakéƒ½ä¸ä¼šåœ¨é›†ç¾¤ä¸Šå‘é€éå¸¸æ•æ„Ÿçš„ä¿¡æ¯ã€‚
+µ±¼¯Èº½ÚµãÔÚ×¨ÓÃÍøÂçÉÏ¸ôÀëÊ±£¬ËüĞèÒª·ÃÎÊ×¨ÓÃÍøÂç²ÅÄÜ¼ÓÈë¼¯Èº»ò²é¿´¼¯ÈºÖĞµÄÍ¨ĞÅ¡£ ´ËÍâ£¬Äú»¹¿ÉÒÔÎª¼¯ÈºÍ¨ĞÅÆôÓÃÉí·İÑéÖ¤ºÍ¼ÓÃÜ¡£ Ö»ÒªÄúµÄ×¨ÓÃÍøÂçÊÇ°²È«µÄ£¬¾Í²»±ØÆôÓÃÉí·İÑéÖ¤ºÍ¼ÓÃÜ¡£ ÔÚÈÎºÎÒ»ÖÖÇé¿öÏÂ£¬Keycloak¶¼²»»áÔÚ¼¯ÈºÉÏ·¢ËÍ·Ç³£Ãô¸ĞµÄĞÅÏ¢¡£
 
-å¦‚æœè¦ä¸ºé›†ç¾¤é€šä¿¡å¯ç”¨èº«ä»½éªŒè¯å’ŒåŠ å¯†ï¼Œè¯·å‚é˜… *JBoss EAPé…ç½®æŒ‡å—*ä¸­çš„[ä¿æŠ¤ç¾¤é›†](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html/configuration_guide/configuring_high_availability#securing_cluster)ã€‚
+Èç¹ûÒªÎª¼¯ÈºÍ¨ĞÅÆôÓÃÉí·İÑéÖ¤ºÍ¼ÓÃÜ£¬Çë²ÎÔÄ *JBoss EAPÅäÖÃÖ¸ÄÏ*ÖĞµÄ[±£»¤Èº¼¯](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html/configuration_guide/configuring_high_availability#securing_cluster)¡£
 
-### 8.7. ä¸²è¡ŒåŒ–é›†ç¾¤å¯åŠ¨
+### 8.7. ´®ĞĞ»¯¼¯ÈºÆô¶¯ {#}
 
-å…è®¸Keycloaké›†ç¾¤èŠ‚ç‚¹åŒæ—¶å¼•å¯¼ã€‚ å½“KeycloakæœåŠ¡å™¨å®ä¾‹å¯åŠ¨æ—¶ï¼Œå®ƒå¯ä»¥æ‰§è¡Œä¸€äº›æ•°æ®åº“è¿ç§»ï¼Œå¯¼å…¥æˆ–é¦–æ¬¡åˆå§‹åŒ–ã€‚ æ•°æ®åº“é”ç”¨äºåœ¨é›†ç¾¤èŠ‚ç‚¹åŒæ—¶å¯åŠ¨æ—¶é˜²æ­¢å¯åŠ¨æ“ä½œç›¸äº’å†²çªã€‚
+ÔÊĞíKeycloak¼¯Èº½ÚµãÍ¬Ê±Òıµ¼¡£ µ±Keycloak·şÎñÆ÷ÊµÀıÆô¶¯Ê±£¬Ëü¿ÉÒÔÖ´ĞĞÒ»Ğ©Êı¾İ¿âÇ¨ÒÆ£¬µ¼Èë»òÊ×´Î³õÊ¼»¯¡£ Êı¾İ¿âËøÓÃÓÚÔÚ¼¯Èº½ÚµãÍ¬Ê±Æô¶¯Ê±·ÀÖ¹Æô¶¯²Ù×÷Ïà»¥³åÍ»¡£
 
-é»˜è®¤æƒ…å†µä¸‹ï¼Œæ­¤é”å®šçš„æœ€å¤§è¶…æ—¶ä¸º900ç§’ã€‚ å¦‚æœæŸä¸ªèŠ‚ç‚¹æ­£åœ¨ç­‰å¾…æ­¤é”è¶…è¿‡è¶…æ—¶ï¼Œåˆ™æ— æ³•å¯åŠ¨ã€‚ é€šå¸¸ï¼Œæ‚¨ä¸éœ€è¦å¢åŠ /å‡å°‘é»˜è®¤å€¼ï¼Œä½†ä»¥é˜²ä¸‡ä¸€å¯ä»¥åœ¨æ‚¨çš„å‘è¡Œç‰ˆä¸­çš„`standalone.xml`ï¼Œ`standalone-ha.xml`æˆ–`domain.xml`æ–‡ä»¶ä¸­è¿›è¡Œé…ç½®ã€‚ æ­¤æ–‡ä»¶çš„ä½ç½®å–å†³äºæ‚¨çš„[æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)ã€‚
+Ä¬ÈÏÇé¿öÏÂ£¬´ËËø¶¨µÄ×î´ó³¬Ê±Îª900Ãë¡£ Èç¹ûÄ³¸ö½ÚµãÕıÔÚµÈ´ı´ËËø³¬¹ı³¬Ê±£¬ÔòÎŞ·¨Æô¶¯¡£ Í¨³££¬Äú²»ĞèÒªÔö¼Ó/¼õÉÙÄ¬ÈÏÖµ£¬µ«ÒÔ·ÀÍòÒ»¿ÉÒÔÔÚÄúµÄ·¢ĞĞ°æÖĞµÄ`standalone.xml`£¬`standalone-ha.xml`»ò`domain.xml`ÎÄ¼şÖĞ½øĞĞÅäÖÃ¡£ ´ËÎÄ¼şµÄÎ»ÖÃÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)¡£
 
 ```xml
 <spi name="dblock">
@@ -2387,63 +2387,57 @@ Keycloakçš„é›†ç¾¤å­ç³»ç»Ÿåœ¨JGroupså †æ ˆä¸Šè¿è¡Œã€‚ å¼€ç®±å³ç”¨ï¼Œé›†ç¾¤çš„ç
 </spi>
 ```
 
-### 8.8. å¯åŠ¨ç¾¤é›†
+### 8.8. Æô¶¯Èº¼¯ {#}
 
-åœ¨ç¾¤é›†ä¸­å¯åŠ¨Keycloakå–å†³äºæ‚¨çš„[æ“ä½œæ¨¡å¼](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)
+ÔÚÈº¼¯ÖĞÆô¶¯KeycloakÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)
 
-Standalone Mode (ç‹¬ç«‹æ¨¡å¼)
+Standalone Mode (¶ÀÁ¢Ä£Ê½)
 
 ```bash
 $ bin/standalone.sh --server-config=standalone-ha.xml
 ```
 
-Domain Mode (åŸŸæ¨¡å¼)
+Domain Mode (ÓòÄ£Ê½)
 
 ```bash
 $ bin/domain.sh --host-config=host-master.xml
 $ bin/domain.sh --host-config=host-slave.xml
 ```
 
-æ‚¨å¯èƒ½éœ€è¦ä½¿ç”¨å…¶ä»–å‚æ•°æˆ–ç³»ç»Ÿå±æ€§ã€‚ ä¾‹å¦‚ï¼Œç»‘å®šä¸»æœºçš„å‚æ•°`-b`æˆ–ç³»ç»Ÿå±æ€§`jboss.node.name`ç”¨äºæŒ‡å®šè·¯ç”±çš„åç§°ï¼Œå¦‚[Sticky Sessions](https://www.keycloak.org/docs/latest/server_installation/index.html#sticky-sessions)ä¸­æ‰€è¿° éƒ¨åˆ†ã€‚
+Äú¿ÉÄÜĞèÒªÊ¹ÓÃÆäËû²ÎÊı»òÏµÍ³ÊôĞÔ¡£ ÀıÈç£¬°ó¶¨Ö÷»úµÄ²ÎÊı`-b`»òÏµÍ³ÊôĞÔ`jboss.node.name`ÓÃÓÚÖ¸¶¨Â·ÓÉµÄÃû³Æ£¬Èç[Sticky Sessions](https://www.keycloak.org/docs/latest/server_installation/index.html#sticky-sessions)ÖĞËùÊö ²¿·Ö¡£
 
-### 8.9. æ•…éšœæ’é™¤
+### 8.9. ¹ÊÕÏÅÅ³ı {#}
 
-- è¯·æ³¨æ„ï¼Œåœ¨è¿è¡Œé›†ç¾¤æ—¶ï¼Œæ‚¨åº”è¯¥åœ¨ä¸¤ä¸ªé›†ç¾¤èŠ‚ç‚¹çš„æ—¥å¿—ä¸­çœ‹åˆ°ä¸æ­¤ç±»ä¼¼çš„æ¶ˆæ¯ï¼š
+- Çë×¢Òâ£¬ÔÚÔËĞĞ¼¯ÈºÊ±£¬ÄúÓ¦¸ÃÔÚÁ½¸ö¼¯Èº½ÚµãµÄÈÕÖ¾ÖĞ¿´µ½Óë´ËÀàËÆµÄÏûÏ¢£º
 
   ```
   INFO  [org.infinispan.remoting.transport.jgroups.JGroupsTransport] (Incoming-10,shared=udp)
   ISPN000094: Received new cluster view: [node1/keycloak|1] (2) [node1/keycloak, node2/keycloak]
   ```
 
-  å¦‚æœæ‚¨åªçœ‹åˆ°æåˆ°çš„ä¸€ä¸ªèŠ‚ç‚¹ï¼Œåˆ™æ‚¨çš„é›†ç¾¤ä¸»æœºå¯èƒ½æœªè¿æ¥åœ¨ä¸€èµ·ã€‚
+  Èç¹ûÄúÖ»¿´µ½Ìáµ½µÄÒ»¸ö½Úµã£¬ÔòÄúµÄ¼¯ÈºÖ÷»ú¿ÉÄÜÎ´Á¬½ÓÔÚÒ»Æğ¡£
 
-  é€šå¸¸ï¼Œæœ€ä½³åšæ³•æ˜¯å°†æ‚¨çš„é›†ç¾¤èŠ‚ç‚¹æ”¾åœ¨ä¸“ç”¨ç½‘ç»œä¸Šï¼Œè€Œä¸ä½¿ç”¨é˜²ç«å¢™è¿›è¡Œé€šä¿¡ã€‚ å¯ä»¥ä»…åœ¨å…¬å…±è®¿é—®ç‚¹ä¸Šå¯ç”¨é˜²ç«å¢™ï¼Œè€Œä¸æ˜¯ç½‘ç»œã€‚ å¦‚æœç”±äºæŸç§åŸå› æ‚¨ä»éœ€è¦åœ¨é›†ç¾¤èŠ‚ç‚¹ä¸Šå¯ç”¨é˜²ç«å¢™ï¼Œåˆ™éœ€è¦æ‰“å¼€ä¸€äº›ç«¯å£ã€‚ é»˜è®¤å€¼ä¸ºUDPç«¯å£55200å’Œç»„æ’­åœ°å€ä¸º230.0.0.4çš„ç»„æ’­ç«¯å£45688ã€‚ è¯·æ³¨æ„ï¼Œå¦‚æœè¦ä¸ºJGroupså †æ ˆå¯ç”¨è¯Šæ–­ç­‰å…¶ä»–åŠŸèƒ½ï¼Œåˆ™å¯èƒ½éœ€è¦æ‰“å¼€æ›´å¤šç«¯å£ã€‚ Keycloakå°†å¤§éƒ¨åˆ†é›†ç¾¤å·¥ä½œå§”æ‰˜ç»™Infinispan/JGroupsã€‚ æœ‰å…³æ›´å¤šä¿¡æ¯ï¼Œè¯·å‚é˜… *WildFly 16æ–‡æ¡£* ä¸­çš„[JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem)ã€‚
+  Í¨³££¬×î¼Ñ×ö·¨ÊÇ½«ÄúµÄ¼¯Èº½Úµã·ÅÔÚ×¨ÓÃÍøÂçÉÏ£¬¶ø²»Ê¹ÓÃ·À»ğÇ½½øĞĞÍ¨ĞÅ¡£ ¿ÉÒÔ½öÔÚ¹«¹²·ÃÎÊµãÉÏÆôÓÃ·À»ğÇ½£¬¶ø²»ÊÇÍøÂç¡£ Èç¹ûÓÉÓÚÄ³ÖÖÔ­ÒòÄúÈÔĞèÒªÔÚ¼¯Èº½ÚµãÉÏÆôÓÃ·À»ğÇ½£¬ÔòĞèÒª´ò¿ªÒ»Ğ©¶Ë¿Ú¡£ Ä¬ÈÏÖµÎªUDP¶Ë¿Ú55200ºÍ×é²¥µØÖ·Îª230.0.0.4µÄ×é²¥¶Ë¿Ú45688¡£ Çë×¢Òâ£¬Èç¹ûÒªÎªJGroups¶ÑÕ»ÆôÓÃÕï¶ÏµÈÆäËû¹¦ÄÜ£¬Ôò¿ÉÄÜĞèÒª´ò¿ª¸ü¶à¶Ë¿Ú¡£ Keycloak½«´ó²¿·Ö¼¯Èº¹¤×÷Î¯ÍĞ¸øInfinispan/JGroups¡£ ÓĞ¹Ø¸ü¶àĞÅÏ¢£¬Çë²ÎÔÄ *WildFly 16ÎÄµµ* ÖĞµÄ[JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem)¡£
 
-- å¦‚æœæ‚¨å¯¹æ•…éšœè½¬ç§»æ”¯æŒï¼ˆé«˜å¯ç”¨æ€§ï¼‰ï¼Œé©±é€ï¼Œåˆ°æœŸå’Œç¼“å­˜è°ƒæ•´æ„Ÿå…´è¶£ï¼Œè¯·å‚é˜…[æœåŠ¡å™¨ç¼“å­˜é…ç½®](https://www.keycloak.org/docs/latest/server_installation/index.html#cache-configuration)ã€‚
+- Èç¹ûÄú¶Ô¹ÊÕÏ×ªÒÆÖ§³Ö£¨¸ß¿ÉÓÃĞÔ£©£¬ÇıÖğ£¬µ½ÆÚºÍ»º´æµ÷Õû¸ĞĞËÈ¤£¬Çë²ÎÔÄ[·şÎñÆ÷»º´æÅäÖÃ](https://www.keycloak.org/docs/latest/server_installation/index.html#cache-configuration)¡£
 
-## 9. Server Cache Configuration
+## 9. ·şÎñÆ÷»º´æÅäÖÃ {#}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/cache.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/cache.adoc)
+KeycloakÓĞÁ½ÖÖÀàĞÍµÄ»º´æ¡£ Ò»ÖÖÀàĞÍµÄ»º´æÎ»ÓÚÊı¾İ¿âÇ°Ãæ£¬ÒÔ¼õÉÙÊı¾İ¿âµÄ¸ºÔØ£¬²¢Í¨¹ı½«Êı¾İ±£´æÔÚÄÚ´æÖĞÀ´¼õÉÙ×ÜÌåÏìÓ¦Ê±¼ä¡£ ÁìÓò£¬¿Í»§¶Ë£¬½ÇÉ«ºÍÓÃ»§ÔªÊı¾İ±£´æÔÚ´ËÀà»º´æÖĞ¡£ ´Ë»º´æÊÇ±¾µØ»º´æ¡£ ¼´Ê¹ÄúÔÚ¾ßÓĞ¸ü¶àKeycloak·şÎñÆ÷µÄ¼¯ÈºÖĞ£¬±¾µØ»º´æÒ²²»Ê¹ÓÃ¸´ÖÆ¡£ Ïà·´£¬ËüÃÇ½öÔÚ±¾µØ±£Áô¸±±¾£¬Èç¹û¸üĞÂÁËÌõÄ¿£¬Ôò»áÏò¼¯ÈºµÄÆäÓà²¿·Ö·¢ËÍÎŞĞ§ÏûÏ¢£¬²¢Öğ³ö¸ÃÌõÄ¿¡£ ´æÔÚµ¥¶ÀµÄ¸´ÖÆ»º´æ`work`£¬¸ÃÈÎÎñÊÇ½«Ê§Ğ§ÏûÏ¢·¢ËÍµ½Õû¸ö¼¯Èº£¬¹ØÓÚÓ¦´Ó±¾µØ»º´æÖĞÖğ³öÄÄĞ©ÌõÄ¿¡£ Õâ¼«´óµØ¼õÉÙÁËÍøÂçÁ÷Á¿£¬Ìá¸ßÁËĞ§ÂÊ£¬²¢±ÜÃâÁËÍ¨¹ıÍøÂç´«ÊäÃô¸ĞÔªÊı¾İ¡£
 
-Keycloak has two types of caches. One type of cache sits in front of the database to decrease load on the DB and to decrease overall response times by keeping data in memory. Realm, client, role, and user metadata is kept in this type of cache. This cache is a local cache. Local caches do not use replication even if you are in the cluster with more Keycloak servers. Instead, they only keep copies locally and if the entry is updated an invalidation message is sent to the rest of the cluster and the entry is evicted. There is separate replicated cache `work`, which task is to send the invalidation messages to the whole cluster about what entries should be evicted from local caches. This greatly reduces network traffic, makes things efficient, and avoids transmitting sensitive metadata over the wire.
+µÚ¶şÖÖÀàĞÍµÄ»º´æ´¦ÀíÓÃ»§»á»°£¬ÍÑ»úÁîÅÆºÍ¸ú×ÙµÇÂ¼Ê§°Ü£¬ÒÔ±ã·şÎñÆ÷¿ÉÒÔ¼ì²âÃÜÂëÍøÂçµöÓãºÍÆäËû¹¥»÷¡£ ÕâĞ©»º´æÖĞ±£´æµÄÊı¾İÊÇÁÙÊ±µÄ£¬½öÔÚÄÚ´æÖĞ£¬µ«¿ÉÄÜÔÚ¼¯ÈºÖĞ¸´ÖÆ¡£
 
-The second type of cache handles managing user sessions, offline tokens, and keeping track of login failures so that the server can detect password phishing and other attacks. The data held in these caches is temporary, in memory only, but is possibly replicated across the cluster.
+±¾ÕÂÌÖÂÛÕâĞ©¸ßËÙ»º´æµÄ¼¯Èº·Ç¼¯Èº²¿ÊğµÄÒ»Ğ©ÅäÖÃÑ¡Ïî¡£
 
-This chapter discusses some configuration options for these caches for both clustered a non-clustered deployments.
+> ÕâĞ©¸ßËÙ»º´æµÄ¸ü¸ß¼¶ÅäÖÃ¿ÉÒÔÔÚ *WildFly 16ÎÄµµ* µÄ[Infinispan](http://docs.wildfly.org/16/High_Availability_Guide.html#Infinispan_Subsystem)²¿·ÖÕÒµ½¡£ 
 
-|      | More advanced configuration of these caches can be found in the [Infinispan](http://docs.wildfly.org/16/High_Availability_Guide.html#Infinispan_Subsystem) section of the *WildFly 16 Documentation*. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+### 9.1. Eviction and Expiration(ÇıÖğºÍµ½ÆÚ) {#}
 
-### 9.1. Eviction and Expiration
+ÎªKeycloakÅäÖÃÁË¶à¸ö²»Í¬µÄ»º´æ¡£ ÓĞÒ»¸öÁìÓò»º´æ¿ÉÒÔ±£´æÓĞ¹Ø°²È«Ó¦ÓÃ³ÌĞò£¬³£¹æ°²È«Êı¾İºÍÅäÖÃÑ¡ÏîµÄĞÅÏ¢¡£ »¹ÓĞÒ»¸ö°üº¬ÓÃ»§ÔªÊı¾İµÄÓÃ»§»º´æ¡£ Á½¸ö»º´æÄ¬ÈÏ×î¶àÎª10000¸öÌõÄ¿£¬²¢Ê¹ÓÃ×î½ü×îÉÙÊ¹ÓÃµÄÖğ³ö²ßÂÔ¡£ ËüÃÇÖĞµÄÃ¿Ò»¸ö»¹°ó¶¨µ½¶ÔÏóĞŞ¶©»º´æ£¬¸Ã»º´æ¿ØÖÆÈº¼¯ÉèÖÃÖĞµÄÖğ³ö¡£ ´Ë»º´æÊÇÒşÊ½´´½¨µÄ£¬²¢ÇÒ¾ßÓĞÅäÖÃ´óĞ¡µÄÁ½±¶¡£ ÕâÍ¬ÑùÊÊÓÃÓÚ±£´æÊÚÈ¨Êı¾İµÄ`authorization`»º´æ¡£ `keys`»º´æ±£´æÓĞ¹ØÍâ²¿ÃÜÔ¿µÄÊı¾İ£¬²»ĞèÒª¾ßÓĞ×¨ÓÃµÄĞŞ¶©»º´æ¡£ Ïà·´£¬ËüÔÚÆäÉÏÃ÷È·ÉùÃ÷ÁË`expiration`£¬Òò´ËÃÜÔ¿»á¶¨ÆÚ¹ıÆÚ²¢Ç¿ÖÆ¶¨ÆÚ´ÓÍâ²¿¿Í»§¶Ë»òÉí·İÌá¹©ÕßÏÂÔØ¡£
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/cache/eviction.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/cache/eviction.adoc)
+¿ÉÒÔÔÚ*standalone.xml*£¬*standalone-ha.xml*»ò*domain.xml*ÖĞÅäÖÃÕâĞ©»º´æµÄÇıÖğ²ßÂÔºÍ×î´óÌõÄ¿£¬¾ßÌåÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)¡£ ÔÚÅäÖÃÎÄ¼şÖĞ£¬ÓĞinfinispan×ÓÏµÍ³µÄ²¿·Ö£¬¿´ÆğÀ´ÀàËÆÓÚ£º
 
-There are multiple different caches configured for Keycloak. There is a realm cache that holds information about secured applications, general security data, and configuration options. There is also a user cache that contains user metadata. Both caches default to a maximum of 10000 entries and use a least recently used eviction strategy. Each of them is also tied to an object revisions cache that controls eviction in a clustered setup. This cache is created implicitly and has twice the configured size. The same applies for the `authorization` cache, which holds the authorization data. The `keys` cache holds data about external keys and does not need to have dedicated revisions cache. Rather it has `expiration` explicitly declared on it, so the keys are periodically expired and forced to be periodically downloaded from external clients or identity providers.
-
-The eviction policy and max entries for these caches can be configured in the *standalone.xml*, *standalone-ha.xml*, or*domain.xml* depending on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode). In the configuration file, there is the part with infinispan subsystem, which looks similar to this:
-
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:infinispan:8.0">
     <cache-container name="keycloak">
         <local-cache name="realms">
@@ -2461,50 +2455,44 @@ The eviction policy and max entries for these caches can be configured in the *s
     </cache-container>
 ```
 
-To limit or expand the number of allowed entries simply add or edit the `object` element or the `expiration` element of particular cache configuration.
+ÒªÏŞÖÆ»òÀ©Õ¹ÔÊĞíµÄÌõÄ¿Êı£¬Ö»ĞèÌí¼Ó»ò±à¼­ÌØ¶¨»º´æÅäÖÃµÄ`object`ÔªËØ»ò`expiration`ÔªËØ¡£
 
-In addition, there are also separate caches `sessions`, `clientSessions`, `offlineSessions`, `offlineClientSessions`,`loginFailures` and `actionTokens`. These caches are distributed in cluster environment and they are unbounded in size by default. If they are bounded, it would then be possible that some sessions will be lost. Expired sessions are cleared internally by Keycloak itself to avoid growing the size of these caches without limit. If you see memory issues due to a large number of sessions, you can try to:
+´ËÍâ£¬»¹ÓĞµ¥¶ÀµÄ»º´æ`sessions`£¬`clientSessions`£¬`offlineSessions`£¬`offlineClientSessions`£¬`loginFailures`ºÍ`actionTokens`¡£ ÕâĞ©»º´æÔÚ¼¯Èº»·¾³ÖĞ·Ö²¼£¬Ä¬ÈÏÇé¿öÏÂËüÃÇµÄ´óĞ¡ÎŞÏŞÖÆ¡£ Èç¹ûËüÃÇÊÇÓĞ½çµÄ£¬Ôò¿ÉÄÜ»á¶ªÊ§Ò»Ğ©»á»°¡£ ¹ıÆÚµÄ»á»°ÓÉKeycloak±¾ÉíÔÚÄÚ²¿Çå³ı£¬ÒÔ±ÜÃâÎŞÏŞÖÆµØÔö¼ÓÕâĞ©»º´æµÄ´óĞ¡¡£ Èç¹ûÓÉÓÚ´óÁ¿»á»°¶ø·¢ÏÖÄÚ´æÎÊÌâ£¬Äú¿ÉÒÔ³¢ÊÔ£º
 
-- Increase the size of cluster (more nodes in cluster means that sessions are spread more equally among nodes)
-- Increase the memory for Keycloak server process
-- Decrease the number of owners to ensure that caches are saved in one single place. See [Replication and Failover](https://www.keycloak.org/docs/latest/server_installation/index.html#_replication) for more details
-- Disable l1-lifespan for distributed caches. See Infinispan documentation for more details
-- Decrease session timeouts, which could be done individually for each realm in Keycloak admin console. But this could affect usability for end users. See [Timeouts](https://www.keycloak.org/docs/6.0/server_admin/#_timeouts) for more details.
+- Ôö¼Ó¼¯ÈºµÄ´óĞ¡£¨¼¯ÈºÖĞµÄ¸ü¶à½ÚµãÒâÎ¶×Å»á»°ÔÚ½ÚµãÖ®¼ä¸ü¾ùÔÈµØ·Ö²¼£©
+- Ôö¼ÓKeycloak·şÎñÆ÷½ø³ÌµÄÄÚ´æ
+- ¼õÉÙËùÓĞÕßµÄÊıÁ¿ÒÔÈ·±£½«»º´æ±£´æÔÚÒ»¸öÎ»ÖÃ¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[¸´ÖÆºÍ¹ÊÕÏ×ªÒÆ](https://www.keycloak.org/docs/latest/server_installation/index.html#_replication) 
+- ½ûÓÃ·Ö²¼Ê½»º´æµÄl1-lifespan¡£ ÓĞ¹Ø¸ü¶àÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄInfinispanÎÄµµ
+- ¼õÉÙ»á»°³¬Ê±£¬¿ÉÒÔÔÚKeycloak¹ÜÀí¿ØÖÆÌ¨ÖĞÎªÃ¿¸öÁìÓòµ¥¶ÀÍê³É¡£ µ«Õâ¿ÉÄÜ»áÓ°Ïì×îÖÕÓÃ»§µÄ¿ÉÓÃĞÔ¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[³¬Ê±](https://www.keycloak.org/docs/6.0/server_admin/#_timeouts)¡£
 
-There is an additional replicated cache, `work`, which is mostly used to send messages among cluster nodes; it is also unbounded by default. However, this cache should not cause any memory issues as entries in this cache are very short-lived.
+»¹ÓĞÒ»¸ö¶îÍâµÄ¸´ÖÆ»º´æ£¬`work`£¬Ö÷ÒªÓÃÓÚÔÚ¼¯Èº½ÚµãÖ®¼ä·¢ËÍÏûÏ¢; Ä¬ÈÏÇé¿öÏÂËüÒ²ÊÇÎŞ½çÏŞµÄ¡£ µ«ÊÇ£¬´Ë»º´æ²»Ó¦µ¼ÖÂÈÎºÎÄÚ´æÎÊÌâ£¬ÒòÎª´Ë»º´æÖĞµÄÌõÄ¿·Ç³£¶ÌÔİ¡£
 
-### 9.2. Replication and Failover
+### 9.2. ¸´ÖÆºÍ¹ÊÕÏ×ªÒÆ {#}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/cache/replication.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/cache/replication.adoc)
+ÓĞÒ»Ğ©»º´æ£¬Èç`sessions`£¬`authenticationSessions`£¬`offlineSessions`£¬`loginFailures`µÈµÈ£¨²Î¼û[Eviction and Expiration](https://www.keycloak.org/docs/latest/server_installation/index.html#_eviction)ÁË½â¸ü¶àÏ¸½Ú£©£¬ ÔÚÊ¹ÓÃ¼¯ÈºÉèÖÃÊ±ÅäÖÃÎª·Ö²¼Ê½»º´æ¡£ ÌõÄ¿²»»á¸´ÖÆµ½Ã¿¸ö½Úµã£¬¶øÊÇÑ¡ÔñÒ»¸ö»ò¶à¸ö½Úµã×÷Îª¸ÃÊı¾İµÄËùÓĞÕß¡£ Èç¹û½Úµã²»ÊÇÌØ¶¨¸ßËÙ»º´æÌõÄ¿µÄËùÓĞÕß£¬Ôò²éÑ¯¼¯ÈºÒÔ»ñÈ¡Ëü¡£ Õâ¶ÔÓÚ¹ÊÕÏ×ªÒÆÒâÎ¶×ÅÈç¹ûÓµÓĞÒ»¸öÊı¾İµÄËùÓĞ½Úµã¶¼¹Ø±Õ£¬ÄÇÃ´¸ÃÊı¾İ½«ÓÀÔ¶¶ªÊ§¡£ Ä¬ÈÏÇé¿öÏÂ£¬Keycloak½öÖ¸¶¨Ò»¸öÊı¾İËùÓĞÕß¡£ Òò´Ë£¬Èç¹ûÄÇ¸ö½Úµã·¢Éú¹ÊÕÏ£¬ÄÇÃ´Êı¾İ¾Í»á¶ªÊ§¡£ ÕâÍ¨³£ÒâÎ¶×ÅÓÃ»§½«±»×¢Ïú£¬²¢ÇÒ±ØĞëÔÙ´ÎµÇÂ¼¡£
 
-There are caches like `sessions`, `authenticationSessions`, `offlineSessions`, `loginFailures` and a few others (See [Eviction and Expiration](https://www.keycloak.org/docs/latest/server_installation/index.html#_eviction) for more details), which are configured as distributed caches when using a clustered setup. Entries are not replicated to every single node, but instead one or more nodes is chosen as an owner of that data. If a node is not the owner of a specific cache entry it queries the cluster to obtain it. What this means for failover is that if all the nodes that own a piece of data go down, that data is lost forever. By default, Keycloak only specifies one owner for data. So if that one node goes down that data is lost. This usually means that users will be logged out and will have to login again.
+Äú¿ÉÒÔÍ¨¹ı¸ü¸Ä`distributed-cache`ÉùÃ÷ÖĞµÄ`owners`ÊôĞÔÀ´¸ü¸Ä¸´ÖÆÒ»¶ÎÊı¾İµÄ½ÚµãÊı¡£
 
-You can change the number of nodes that replicate a piece of data by change the `owners` attribute in the `distributed-cache` declaration.
+owners (ÓµÓĞÕß)
 
-owners
-
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:infinispan:8.0">
    <cache-container name="keycloak">
        <distributed-cache name="sessions" owners="2"/>
 ...
 ```
 
-Here weâ€™ve changed it so at least two nodes will replicate one specific user login session.
+ÕâÀïÎÒÃÇÒÑ¾­¸ü¸ÄÁËËü£¬Òò´ËÖÁÉÙÓĞÁ½¸ö½Úµã½«¸´ÖÆÒ»¸öÌØ¶¨µÄÓÃ»§µÇÂ¼»á»°¡£
 
-|      | The number of owners recommended is really dependent on your deployment. If you do not care if users are logged out when a node goes down, then one owner is good enough and you will avoid replication. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> ½¨ÒéµÄËùÓĞÕßÊıÁ¿Êµ¼ÊÉÏÈ¡¾öÓÚÄúµÄ²¿Êğ¡£ Èç¹ûÄú²»¹ØĞÄÓÃ»§ÊÇ·ñÔÚ½Úµã¹Ø±ÕÊ±×¢Ïú£¬ÄÇÃ´Ò»¸öËùÓĞÕß¾Í×ã¹»ÁË£¬Äú½«±ÜÃâ¸´ÖÆ¡£ 
 
-|      | It is generally wise to configure your environment to use loadbalancer with sticky sessions. It is beneficial for performance as Keycloak server, where the particular request is served, will be usually the owner of the data from the distributed cache and will therefore be able to look up the data locally. See [Sticky sessions](https://www.keycloak.org/docs/latest/server_installation/index.html#sticky-sessions) for more details. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> Í¨³£Ã÷ÖÇµÄ×ö·¨ÊÇ½«»·¾³ÅäÖÃÎªÊ¹ÓÃ´øÓĞÕ³ĞÔ»á»°µÄ¸ºÔØ¾ùºâ¡£ Õâ¶ÔÓÚĞÔÄÜÊÇÓĞÒæµÄ£¬ÒòÎªÌá¹©ÌØ¶¨ÇëÇóµÄKeycloak·şÎñÆ÷Í¨³£ÊÇÀ´×Ô·Ö²¼Ê½»º´æµÄÊı¾İµÄËùÓĞÕß£¬Òò´ËÄÜ¹»ÔÚ±¾µØ²éÕÒÊı¾İ¡£ ÓĞ¹ØÏêÏ¸ĞÅÏ¢£¬Çë²ÎÔÄ[Õ³Ìù»á»°](https://www.keycloak.org/docs/latest/server_installation/index.html#sticky-sessions)¡£ 
 
-### 9.3. Disabling Caching
+### 9.3. ½ûÓÃ»º´æ {#}
 
-To disable the realm or user cache, you must edit the `standalone.xml`, `standalone-ha.xml`, or `domain.xml` file in your distribution. The location of this file depends on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode). Hereâ€™s what the config looks like initially.
+Òª½ûÓÃÁìÓò»òÓÃ»§¸ßËÙ»º´æ£¬±ØĞë±à¼­·¢ĞĞ°æÖĞµÄ`standalone.xml`£¬`standalone-ha.xml`»ò`domain.xml`ÎÄ¼ş¡£ ´ËÎÄ¼şµÄÎ»ÖÃÈ¡¾öÓÚÄúµÄ[²Ù×÷Ä£Ê½](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)¡£ ÕâÊÇÅäÖÃ×î³õµÄÑù×Ó¡£
 
-```
+```xml
     <spi name="userCache">
         <provider name="default" enabled="true"/>
     </spi>
@@ -2514,43 +2502,37 @@ To disable the realm or user cache, you must edit the `standalone.xml`, `standal
     </spi>
 ```
 
-To disable the cache set the `enabled` attribute to false for the cache you want to disable. You must reboot your server for this change to take effect.
+Òª½ûÓÃ»º´æ£¬Çë½«Òª½ûÓÃµÄ»º´æµÄ`enabled`ÊôĞÔÉèÖÃÎªfalse¡£ Äú±ØĞëÖØĞÂÆô¶¯·şÎñÆ÷²ÅÄÜÊ¹´Ë¸ü¸ÄÉúĞ§¡£
 
-### 9.4. Clearing Caches at Runtime
+### 9.4. ÔÚÔËĞĞÊ±Çå³ı»º´æ {#}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/cache/clear.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/cache/clear.adoc)
+ÒªÇå³ıÁìÓò»òÓÃ»§»º´æ£¬Çë×ªµ½Keycloak¹ÜÀí¿ØÖÆÌ¨ÁìÓòÉèÖÃ¡ú»º´æÅäÖÃÒ³Ãæ¡£ ÔÚ´ËÒ³ÃæÉÏ£¬Äú¿ÉÒÔÇå³ıÁìÓò»º´æ£¬ÓÃ»§»º´æ»òÍâ²¿¹«Ô¿»º´æ¡£
 
-To clear the realm or user cache, go to the Keycloak admin console Realm Settingsâ†’Cache Config page. On this page you can clear the realm cache, the user cache or cache of external public keys.
+> ËùÓĞÁìÓò»º´æ½«±»Çå³ı£¡ 
 
-|      | The cache will be cleared for all realms! |
-| ---- | ----------------------------------------- |
-|      |                                           |
+## 10. Keycloak°²È«´úÀí {#}
 
-## 10. Keycloak Security Proxy
+KeycloakÓĞÒ»¸öHTTP(S)´úÀí£¬Äú¿ÉÒÔ·ÅÔÚWebÓ¦ÓÃ³ÌĞòºÍ·şÎñÖ®Ç°£¬ÎŞ·¨°²×°KeycloakÊÊÅäÆ÷¡£ Äú¿ÉÒÔÉèÖÃURL¹ıÂËÆ÷£¬ÒÔ±ãÍ¨¹ıä¯ÀÀÆ÷µÇÂ¼ºÍ/»ò³ĞÔØÁîÅÆÉí·İÑéÖ¤À´±£»¤Ä³Ğ©URL¡£ Äú»¹¿ÉÒÔÔÚÓ¦ÓÃ³ÌĞòÖĞ¶¨ÒåURLÄ£Ê½µÄ½ÇÉ«Ô¼Êø¡£
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/proxy.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/proxy.adoc)
+### 10.1. ´úÀí°²×°ºÍÔËĞĞ {#}
 
-Keycloak has an HTTP(S) proxy that you can put in front of web applications and services where it is not possible to install the Keycloak adapter. You can set up URL filters so that certain URLs are secured either by browser login and/or bearer token authentication. You can also define role constraints for URL patterns within your applications.
+´ÓKeycloakÏÂÔØÒ³ÃæÏÂÔØKeycloak´úÀí·¢²¼°æ²¢½âÑ¹Ëõ¡£
 
-### 10.1. Proxy Install and Run
-
-Download the Keycloak proxy distribution from the Keycloak download pages and unzip it.
-
-```
+```bash
 $ unzip keycloak-proxy-dist.zip
 ```
 
-To run it you must have a proxy config file (which weâ€™ll discuss in a moment).
+ÒªÔËĞĞËü£¬Äú±ØĞëÓĞÒ»¸ö´úÀíÅäÖÃÎÄ¼ş£¨ÎÒÃÇ½«ÔÚÉÔºóÌÖÂÛ£©¡£
 
-```
+```bash
 $ java -jar bin/launcher.jar [your-config.json]
 ```
 
-If you do not specify a path to the proxy config file, the launcher will look in the current working directory for the file named `proxy.json`
+Èç¹ûÎ´Ö¸¶¨´úÀíÅäÖÃÎÄ¼şµÄÂ·¾¶£¬ÔòÆô¶¯³ÌĞò½«ÔÚµ±Ç°¹¤×÷Ä¿Â¼ÖĞ²éÕÒÃûÎª`proxy.jsonµÄÎÄ¼ş¡£
 
-### 10.2. Proxy Configuration
+### 10.2. ´úÀíÅäÖÃ {#}
 
-Hereâ€™s an example configuration file.
+ÕâÊÇÒ»¸öÊ¾ÀıÅäÖÃÎÄ¼ş¡£
 
 ```
 {
@@ -2606,158 +2588,155 @@ Hereâ€™s an example configuration file.
 }
 ```
 
-#### 10.2.1. Basic Config
+#### 10.2.1. »ù±¾ÅäÖÃ {#}
 
-The basic configuration options for the server are as follows:
+·şÎñÆ÷µÄ»ù±¾ÅäÖÃÑ¡ÏîÈçÏÂ£º
 
 - target-url
 
-  The URL this server is proxying. *REQUIRED*.
+  ´Ë·şÎñÆ÷´úÀíµÄURL¡£ *ĞèÒª*¡£
 
 - target-request-timeout
 
-  The timeout (in ms) for the proxied request. *OPTIONAL*. Default is 30000.
+  ´úÀíÇëÇóµÄ³¬Ê±£¨ÒÔºÁÃëÎªµ¥Î»£©¡£ *¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª30000¡£
 
 - send-access-token
 
-  Boolean flag. If true, this will send the access token via the KEYCLOAK_ACCESS_TOKEN header to the proxied server. *OPTIONAL*. Default is false.
+  ²¼¶û±êÖ¾¡£ Èç¹ûÎªtrue£¬Ôò»áÍ¨¹ıKEYCLOAK_ACCESS_TOKEN±êÍ·½«·ÃÎÊÁîÅÆ·¢ËÍµ½´úÀí·şÎñÆ÷¡£ *¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎªfalse¡£
 
 - bind-address
 
-  DNS name or IP address to bind the proxy serverâ€™s sockets to. *OPTIONAL*. The default value is *localhost*
+  ÓÃÓÚ½«´úÀí·şÎñÆ÷µÄÌ×½Ó×Ö°ó¶¨µ½µÄDNSÃû³Æ»òIPµØÖ·¡£ *¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª*localhost*
 
 - http-port
 
-  Port to listen for HTTP requests. If you do not specify this value, then the proxy will not listen for regular HTTP requests. *OPTIONAL*.
+  ÓÃÓÚÕìÌıHTTPÇëÇóµÄ¶Ë¿Ú¡£ Èç¹ûÎ´Ö¸¶¨´ËÖµ£¬Ôò´úÀí½«²»ÕìÌı³£¹æHTTPÇëÇó¡£ *¿ÉÑ¡µÄ*¡£
 
 - https-port
 
-  Port to listen for HTTPS requests. If you do not specify this value, then the proxy will not listen for HTTPS requests. *OPTIONAL*.
+  ÕìÌıHTTPSÇëÇóµÄ¶Ë¿Ú¡£ Èç¹ûÎ´Ö¸¶¨´ËÖµ£¬Ôò´úÀí½«²»ÕìÌıHTTPSÇëÇó¡£ *¿ÉÑ¡µÄ*¡£
 
 - keystore
 
-  Path to a Java keystore file that contains private key and certificate for the server to be able to handle HTTPS requests. Can be a file path, or, if you prefix it with `classpath:` it will look for this file in the classpath. *OPTIONAL*. If you have enabled HTTPS, but have not defined a keystore, the proxy will auto-generate a self-signed certificate and use that.
+  JavaÃÜÔ¿¿âÎÄ¼şµÄÂ·¾¶£¬¸ÃÎÄ¼ş°üº¬·şÎñÆ÷ÄÜ¹»´¦ÀíHTTPSÇëÇóµÄË½Ô¿ºÍÖ¤Êé¡£ ¿ÉÒÔÊÇÎÄ¼şÂ·¾¶£¬»òÕß£¬Èç¹ûÔÚÇ°ÃæÌí¼Ó`classpath:`£¬Ëü½«ÔÚÀàÂ·¾¶ÖĞ²éÕÒ´ËÎÄ¼ş¡£ *¿ÉÑ¡µÄ*¡£ Èç¹ûÄúÒÑÆôÓÃHTTPSµ«ÉĞÎ´¶¨ÒåÃÜÔ¿¿â£¬Ôò´úÀí½«×Ô¶¯Éú³É×ÔÇ©ÃûÖ¤Êé²¢Ê¹ÓÃ¸ÃÖ¤Êé¡£
 
 - buffer-size
 
-  HTTP server socket buffer size. Usually the default is good enough. *OPTIONAL*.
+  HTTP·şÎñÆ÷Ì×½Ó×Ö»º³åÇø´óĞ¡ Í¨³£Ä¬ÈÏÖµ×ã¹»ºÃ¡£ *¿ÉÑ¡µÄ*¡£
 
 - buffers-per-region
 
-  HTTP server socket buffers per region. Usually the default is good enough. *OPTIONAL*.
+  Ã¿¸öregion(ÇøÓò)µÄHTTP·şÎñÆ÷Ì×½Ó×Ö»º³å Í¨³£Ä¬ÈÏÖµ×ã¹»ºÃ¡£ *¿ÉÑ¡µÄ*¡£
 
 - io-threads
 
-  Number of threads to handle IO. Usually default is good enough. *OPTIONAL*. The default is the number of available processors * 2.
+  ´¦ÀíIOµÄÏß³ÌÊı¡£ Í¨³£Ä¬ÈÏÊÇ×ã¹»ºÃµÄ¡£ *¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÊÇ¿ÉÓÃ´¦ÀíÆ÷ÊıÁ¿* 2¡£
 
 - worker-threads
 
-  Number of threads to handle requests. Usually the default is good enough. *OPTIONAL*. The default is the number of available processors * 16.
+  ´¦ÀíÇëÇóµÄÏß³ÌÊı¡£ Í¨³£Ä¬ÈÏÖµ×ã¹»ºÃ¡£ *¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÊÇ¿ÉÓÃ´¦ÀíÆ÷ÊıÁ¿* 16¡£
 
-### 10.3. Application Config
+### 10.3. Ó¦ÓÃ³ÌĞòÅäÖÃ {#}
 
-Next under the `applications` array attribute, you can define one or more applications per host you are proxying.
+½ÓÏÂÀ´ÔÚ`applications`Êı×éÊôĞÔÏÂ£¬Äú¿ÉÒÔÎªÃ¿¸öÒª´úÀíµÄÖ÷»ú¶¨ÒåÒ»¸ö»ò¶à¸öÓ¦ÓÃ³ÌĞò¡£
 
 - base-path
 
-  The base context root for the application. Must start with '/'. *REQUIRED*.
+  Ó¦ÓÃ³ÌĞòµÄ»ù±¾ÉÏÏÂÎÄ¸ù¡£ ±ØĞëÒÔ'/'¿ªÍ·¡£ *ĞèÒª*¡£
 
 - error-page
 
-  If the proxy has an error, it will display the target applicationâ€™s error page relative URL. *OPTIONAL*. This is a relative path to the base-path. In the example above it would be `/customer-portal/error.html`.
+  Èç¹û´úÀíÓĞ´íÎó£¬Ëü½«ÏÔÊ¾Ä¿±êÓ¦ÓÃ³ÌĞòµÄ´íÎóÒ³ÃæÏà¶ÔURL¡£ *¿ÉÑ¡µÄ*¡£ ÕâÊÇ»ù±¾Â·¾¶µÄÏà¶ÔÂ·¾¶¡£ ÔÚÉÏÃæµÄÀı×ÓÖĞ£¬Ëü½«ÊÇ`/customer-portal/error.html`¡£
 
 - adapter-config
 
-  *REQUIRED*. Same configuration as any other Keycloak adapter.
+  *ĞèÒª*¡£ ÓëÈÎºÎÆäËûKeycloakÊÊÅäÆ÷µÄÅäÖÃÏàÍ¬¡£
 
 - proxy-address-forwarding
 
-  Enable usage of X-Forwarded-For, X-Forwarded-Host, X-Forwarded-Proto when hosted behind another proxy/load-balancer.
+  µ±ÍĞ¹ÜÔÚÁíÒ»¸ö´úÀí/¸ºÔØ¾ùºâÆ÷ºóÃæÊ±£¬ÔÊĞíÊ¹ÓÃX-Forwarded-For£¬X-Forwarded-Host£¬X-Forwarded-Proto¡£
 
-#### 10.3.1. Constraint Config
+#### 10.3.1. Ô¼ÊøÅäÖÃ {#}
 
-Next under each application you can define one or more constraints in the `constraints` array attribute. A constraint defines a URL pattern relative to the base-path. You can deny, permit, or require authentication for a specific URL pattern. You can specify roles allowed for that path as well. More specific constraints will take precedence over more general ones.
+ÔÚÃ¿¸öÓ¦ÓÃ³ÌĞòÏÂ£¬Äú¿ÉÒÔÔÚ`constraints`Êı×éÊôĞÔÖĞ¶¨ÒåÒ»¸ö»ò¶à¸öÔ¼Êø¡£ Ô¼Êø¶¨ÒåÏà¶ÔÓÚ»ù±¾Â·¾¶µÄURLÄ£Ê½¡£ Äú¿ÉÒÔ¾Ü¾ø£¬ÔÊĞí»òÒªÇó¶ÔÌØ¶¨URLÄ£Ê½½øĞĞÉí·İÑéÖ¤¡£ ÄúÒ²¿ÉÒÔÖ¸¶¨¸ÃÂ·¾¶ÔÊĞíµÄ½ÇÉ«¡£ ¸ü¾ßÌåµÄÔ¼Êø½«ÓÅÏÈÓÚ¸üÒ»°ãµÄÔ¼Êø¡£
 
 - pattern
 
-  URL pattern to match relative to the base-path of the application. Must start with '/'. *REQUIRED.* You may only have one wildcard and it must come at the end of the pattern.Valid: `/foo/bar/*` and `/foo/*.txt`Not valid: `/*/foo/*`.
+  Ïà¶ÔÓÚÓ¦ÓÃ³ÌĞòµÄ»ù±¾Â·¾¶Æ¥ÅäµÄURLÄ£Ê½¡£ ±ØĞëÒÔ'/'¿ªÍ·¡£ *±ØĞë*. Äã¿ÉÄÜÖ»ÓĞÒ»¸öÍ¨Åä·û£¬Ëü±ØĞëÎ»ÓÚÄ£Ê½µÄÄ©Î²¡£ÓĞĞ§£º`/foo/bar/*`ºÍ`/foo/*.txt` ÎŞĞ§£º`/ */foo/*`¡£
 
 - roles-allowed
 
-  Array of strings of roles allowed to access this url pattern. *OPTIONAL*.
+  ÔÊĞí·ÃÎÊ´ËurlÄ£Ê½µÄ½ÇÉ«×Ö·û´®Êı×é¡£ *¿ÉÑ¡µÄ*¡£
 
 - methods
 
-  Array of strings of HTTP methods that will exclusively match this pattern and HTTP request. *OPTIONAL*.
+  HTTP·½·¨µÄ×Ö·û´®Êı×é£¬ËüÃÇ½«¶ÀÕ¼µØÆ¥Åä´ËÄ£Ê½ºÍHTTPÇëÇó¡£ *¿ÉÑ¡µÄ*¡£
 
 - excluded-methods
 
-  Array of strings of HTTP methods that will be ignored when match this pattern. *OPTIONAL*.
+  Æ¥Åä´ËÄ£Ê½Ê±½«ºöÂÔµÄHTTP·½·¨×Ö·û´®Êı×é¡£ *¿ÉÑ¡µÄ*¡£
 
 - deny
 
-  Deny all access to this URL pattern. *OPTIONAL*.
+  ¾Ü¾øËùÓĞ·ÃÎÊ´ËURLÄ£Ê½µÄÈ¨ÏŞ¡£ *¿ÉÑ¡µÄ*¡£
 
 - permit
 
-  Permit all access without requiring authentication or a role mapping. *OPTIONAL*.
+  ÔÊĞíËùÓĞ·ÃÎÊ¶øÎŞĞèÉí·İÑéÖ¤»ò½ÇÉ«Ó³Éä¡£ *¿ÉÑ¡µÄ*¡£
 
 - permit-and-inject
 
-  Permit all access, but inject the headers, if user is already authenticated. *OPTIONAL*.
+  ÔÊĞíËùÓĞ·ÃÎÊ£¬µ«Èç¹ûÓÃ»§ÒÑ¾­¹ıÉí·İÑéÖ¤£¬Ôò×¢Èë±êÍ·¡£ *¿ÉÑ¡µÄ*¡£
 
 - authenticate
 
-  Require authentication for this pattern, but no role mapping. *OPTIONAL*.
+  ĞèÒª¶Ô´ËÄ£Ê½½øĞĞÉí·İÑéÖ¤£¬µ«²»ĞèÒª½ÇÉ«Ó³Éä¡£ *¿ÉÑ¡µÄ*¡£
 
-#### 10.3.2. Header Names Config
+#### 10.3.2. Header Names Config (Í·ÃûÅäÖÃ) {#}
 
-Next under the list of applications you can override the defaults for the names of the header fields injected by the proxy (see [Keycloak Identity Headers](https://www.keycloak.org/docs/latest/server_installation/index.html#_identity_headers)). This mapping is optional.
+½ÓÏÂÀ´£¬ÔÚÓ¦ÓÃ³ÌĞòÁĞ±íÏÂ£¬Äú¿ÉÒÔ¸²¸Ç´úÀí×¢ÈëµÄÍ·×Ö¶ÎÃû³ÆµÄÄ¬ÈÏÖµ£¨Çë²ÎÔÄ[Keycloak Identity Headers](https://www.keycloak.org/docs/latest/server_installation/index.html#_identity_headers)£©¡£ ´ËÓ³ÉäÊÇ¿ÉÑ¡µÄ¡£
 
 - keycloak-subject
 
-  e.g. MYAPP_USER_ID
+  ÀıÈç: MYAPP_USER_ID
 
 - keycloak-username
 
-  e.g. MYAPP_USER_NAME
+  ÀıÈç: MYAPP_USER_NAME
 
 - keycloak-email
 
-  e.g. MYAPP_USER_EMAIL
+  ÀıÈç: MYAPP_USER_EMAIL
 
 - keycloak-name
 
-  e.g. MYAPP_USER_ID
+  ÀıÈç: MYAPP_USER_ID
 
 - keycloak-access-token
 
-  e.g. MYAPP_ACCESS_TOKEN
+  ÀıÈç: MYAPP_ACCESS_TOKEN
 
-### 10.4. Keycloak Identity Headers
+### 10.4. Keycloak±êÊ¶Í· {#}
 
-When forwarding requests to the proxied server, Keycloak Proxy will set some additional headers with values from the OIDC identity token it received for authentication.
+½«ÇëÇó×ª·¢µ½´úÀí·şÎñÆ÷Ê±£¬Keycloak Proxy½«Ê¹ÓÃÊÕµ½µÄOIDCÉí·İÁîÅÆÖĞµÄÖµÉèÖÃÒ»Ğ©ÆäËû±êÍ·ÒÔ½øĞĞÉí·İÑéÖ¤¡£
 
 - KEYCLOAK_SUBJECT
 
-  User id. Corresponds to JWT `sub` and will be the user id Keycloak uses to store this user.
+  ÓÃ»§ID¡£ ¶ÔÓ¦ÓÚJWT`sub`£¬½«ÊÇKeycloakÓÃÓÚ´æ´¢´ËÓÃ»§µÄÓÃ»§ID¡£
 
 - KEYCLOAK_USERNAME
 
-  Username. Corresponds to JWT `preferred_username`.
+  ÓÃ»§Ãû¡£ ¶ÔÓ¦ÓÚJWT`preferred_username`¡£
 
 - KEYCLOAK_EMAIL
 
-  Email address of user if set.
+  ÉèÖÃµÄÓÃ»§µÄµç×ÓÓÊ¼şµØÖ·¡£
 
 - KEYCLOAK_NAME
 
-  Full name of user if set.
+  Èç¹ûÉèÖÃ, ÓÃ»§È«Ãû¡£ 
 
 - KEYCLOAK_ACCESS_TOKEN
 
-  Send the access token in this header if the proxy was configured to send it. This token can be used to make bearer token requests. Header field names can be configured using a map of `header-names` in configuration file:`{     "header-names" {         "keycloak-subject": "MY_SUBJECT"     } }`
+  Èç¹û´úÀíÅäÖÃÎª·¢ËÍ£¬ÔòÔÚ´Ë±êÍ·ÖĞ·¢ËÍ·ÃÎÊÁîÅÆ¡£ ´ËÁîÅÆ¿ÉÓÃÓÚ·¢³ö³ĞÔØÁîÅÆÇëÇó¡£ ¿ÉÒÔÊ¹ÓÃÅäÖÃÎÄ¼şÖĞµÄ`header-names`Ó³ÉäÅäÖÃ±êÌâ×Ö¶ÎÃû³Æ£º`{     "header-names" {         "keycloak-subject": "MY_SUBJECT"     } }`
 
-------
-
-[1](https://www.keycloak.org/docs/latest/server_installation/index.html#_footnoteref_1). Tracked as <https://issues.jboss.org/browse/KEYCLOAK-3873>
