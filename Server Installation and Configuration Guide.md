@@ -2081,66 +2081,56 @@ $ keytool -import -alias HOSTDOMAIN -keystore truststore.jks -file host-certific
 
   如果为true（默认值），则将忽略信任库配置，并且证书检查将回退到JSSE配置，如上所述。 如果设置为false，则必须为truststore配置`file`和`password`。
 
-## 8. Clustering
+## 8. 集群
 
 
-  This section covers configuring Keycloak to run in a cluster. There’s a number of things you have to do when setting up a cluster, specifically:
+  本节介绍如何配置要在集群中运行的Keycloak。 设置集群时，您需要做很多事情，具体来说：
 
-- [Pick an operation mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)
-- [Configure a shared external database](https://www.keycloak.org/docs/latest/server_installation/index.html#_database)
-- Set up a load balancer
-- Supplying a private network that supports IP multicast
+- [选择一种操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)
+- [配置共享外部数据库](https://www.keycloak.org/docs/latest/server_installation/index.html#_database)
+- 设置负载均衡器
+- 提供支持IP多播的专用网络
 
-Picking an operation mode and configuring a shared database have been discussed earlier in this guide. In this chapter we’ll discuss setting up a load balancer and supplying a private network. We’ll also discuss some issues that you need to be aware of when booting up a host in the cluster.
+本指南前面已讨论过选择操作模式和配置共享数据库。 在本章中，我们将讨论设置负载均衡器和提供专用网络。 我们还将讨论在集群中启动主机时需要注意的一些问题。
 
-|      | It is possible to cluster Keycloak without IP Multicast, but this topic is beyond the scope of this guide. For more information, see [JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem) chapter of the *WildFly 16 Documentation*. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 可以在没有IP多播的情况下对Keycloak进行群集，但此主题超出了本指南的范围。 有关更多信息，请参阅 *WildFly 16 文档* 的[JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem) 章节。 
 
-### 8.1. Recommended Network Architecture
+### 8.1. 推荐的网络架构
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/clustering/recommended.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/clustering/recommended.adoc)
+用于部署Keycloak的推荐网络体系结构是在公共IP地址上设置HTTP/HTTPS负载均衡器，以将请求路由到位于专用网络上的Keycloak服务器。 这隔离了所有集群连接，并提供了保护服务器的好方法。
 
-The recommended network architecture for deploying Keycloak is to set up an HTTP/HTTPS load balancer on a public IP address that routes requests to Keycloak servers sitting on a private network. This isolates all clustering connections and provides a nice means of protecting the servers.
+> 默认情况下，没有什么可以阻止未经授权的节点加入集群和广播多播消息。 这就是集群节点应该在专用网络中的原因，防火墙可以保护它们免受外部攻击。 
 
-|      | By default, there is nothing to prevent unauthorized nodes from joining the cluster and broadcasting multicast messages. This is why cluster nodes should be in a private network, with a firewall protecting them from outside attacks. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+### 8.2. 集群示例
 
-### 8.2. Clustering Example
+Keycloak确实附带了一个利用域模式的开箱即用集群演示。 有关详细信息，请查看[群集域示例](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)一章。
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/clustering/example.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/clustering/example.adoc)
+### 8.3. 设置负载均衡器或代理
 
-Keycloak does come with an out of the box clustering demo that leverages domain mode. Review the[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example) chapter for more details.
+本节讨论在将反向代理或负载均衡器放在群集Keycloak部署之前需要配置的一些事项。 它还包括配置内置负载均衡器[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)。
 
-### 8.3. Setting Up a Load Balancer or Proxy
+#### 8.3.1. 识别客户端IP地址
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/clustering/load-balancer.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/clustering/load-balancer.adoc)
+Keycloak中的一些功能依赖于连接到身份验证服务器的HTTP客户端的远程地址是客户端计算机的真实IP地址。 例子包括：
 
-This section discusses a number of things you need to configure before you can put a reverse proxy or load balancer in front of your clustered Keycloak deployment. It also covers configuring the built in load balancer that was [Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example).
+- 事件日志 - 将使用错误的源IP地址记录失败的登录尝试
+- 需要SSL - 如果所需的SSL设置为外部（默认值），则所有外部请求都需要SSL
+- 认证流程 - 使用IP地址的自定义身份验证流，例如仅针对外部请求显示OTP
+- 动态客户端注册
 
-#### 8.3.1. Identifying Client IP Addresses
+当您在Keycloak身份验证服务器前面有反向代理或负载均衡器时，这可能会有问题。 通常的设置是，您有一个位于公共网络上的前端代理，负载平衡并将请求转发给位于专用网络中的后端Keycloak服务器实例。 在此方案中您需要执行一些额外配置，以便将实际的客户端IP地址转发到Keycloak服务器实例并由其处理。 特别：
 
-A few features in Keycloak rely on the fact that the remote address of the HTTP client connecting to the authentication server is the real IP address of the client machine. Examples include:
+- 配置反向代理或负载均衡器以正确设置 `X-Forwarded-For` 和 `X-Forwarded-Proto` HTTP头。
+- 配置反向代理或负载均衡器以保留原始 `Host`HTTP头。
+- 配置身份验证服务器以从 `X-Forwarded-For` 头读取客户端的IP地址。
 
-- Event logs - a failed login attempt would be logged with the wrong source IP address
-- SSL required - if the SSL required is set to external (the default) it should require SSL for all external requests
-- Authentication flows - a custom authentication flow that uses the IP address to for example show OTP only for external requests
-- Dynamic Client Registration
+配置代理以生成`X-Forwarded-For`和`X-Forwarded-Proto`HTTP头并保留原始的`Host`HTTP头超出了本指南的范围。 采取额外的预防措施，以确保您的代理设置`X-Forwared-For`头。 如果您的代理配置不正确，那么 *rogue* 客户端可以自己设置此标头，并诱使Keycloak认为客户端从不同的IP地址连接而不是实际连接。 如果您正在进行任何黑名单或白名单的IP地址，这将变得非常重要。
 
-This can be problematic when you have a reverse proxy or loadbalancer in front of your Keycloak authentication server. The usual setup is that you have a frontend proxy sitting on a public network that load balances and forwards requests to backend Keycloak server instances located in a private network. There is some extra configuration you have to do in this scenario so that the actual client IP address is forwarded to and processed by the Keycloak server instances. Specifically:
+除了代理本身之外，还需要在Keycloak方面配置一些东西。 如果您的代理通过HTTP协议转发请求，那么您需要配置Keycloak以从 `X-Forwarded-For` 头而不是从网络数据包中提取客户端的IP地址。 要执行此操作，请打开配置文件配置文件（*standalone.xml*，*standalone-ha.xml* 或 *domain.xml*，具体取决于您的[操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)）并查找 `urn:jboss:domain:undertow:8.0` XML块。
 
-- Configure your reverse proxy or loadbalancer to properly set `X-Forwarded-For` and `X-Forwarded-Proto` HTTP headers.
-- Configure your reverse proxy or loadbalancer to preserve the original 'Host' HTTP header.
-- Configure the authentication server to read the client’s IP address from `X-Forwarded-For` header.
+`X-Forwarded-For` HTTP 配置
 
-Configuring your proxy to generate the `X-Forwarded-For` and `X-Forwarded-Proto` HTTP headers and preserving the original `Host` HTTP header is beyond the scope of this guide. Take extra precautions to ensure that the `X-Forwared-For`header is set by your proxy. If your proxy isn’t configured correctly, then *rogue* clients can set this header themselves and trick Keycloak into thinking the client is connecting from a different IP address than it actually is. This becomes really important if you are doing any black or white listing of IP addresses.
-
-Beyond the proxy itself, there are a few things you need to configure on the Keycloak side of things. If your proxy is forwarding requests via the HTTP protocol, then you need to configure Keycloak to pull the client’s IP address from the `X-Forwarded-For` header rather than from the network packet. To do this, open up the profile configuration file (*standalone.xml*, *standalone-ha.xml*, or *domain.xml* depending on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)) and look for the `urn:jboss:domain:undertow:8.0` XML block.
-
-`X-Forwarded-For` HTTP Config
-
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
    <buffer-cache name="default"/>
    <server name="default-server">
@@ -2153,13 +2143,13 @@ Beyond the proxy itself, there are a few things you need to configure on the Key
 </subsystem>
 ```
 
-Add the `proxy-address-forwarding` attribute to the `http-listener` element. Set the value to `true`.
+将`proxy-address-forwarding`属性添加到`http-listener`元素。 将值设置为`true`。
 
-If your proxy is using the AJP protocol instead of HTTP to forward requests (i.e. Apache HTTPD + mod-cluster), then you have to configure things a little differently. Instead of modifying the `http-listener`, you need to add a filter to pull this information from the AJP packets.
+如果您的代理使用AJP协议而不是HTTP来转发请求（即Apache HTTPD + mod-cluster），那么您必须以不同的方式配置。 您需要添加一个过滤器来从AJP数据包中提取此信息，而不是修改`http-listener`。
 
-`X-Forwarded-For` AJP Config
+`X-Forwarded-For` AJP 配置
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
      <buffer-cache name="default"/>
      <server name="default-server">
@@ -2180,11 +2170,11 @@ If your proxy is using the AJP protocol instead of HTTP to forward requests (i.e
  </subsystem>
 ```
 
-#### 8.3.2. Enable HTTPS/SSL with a Reverse Proxy
+#### 8.3.2. 使反向代理启用HTTPS/SSL
 
-Assuming that your reverse proxy doesn’t use port 8443 for SSL you also need to configure what port HTTPS traffic is redirected to.
+假设您的反向代理不使用端口8443进行SSL，您还需要配置重定向到HTTPS流量的端口。
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
     ...
     <http-listener name="default" socket-binding="http"
@@ -2193,11 +2183,11 @@ Assuming that your reverse proxy doesn’t use port 8443 for SSL you also need t
 </subsystem>
 ```
 
-Add the `redirect-socket` attribute to the `http-listener` element. The value should be `proxy-https` which points to a socket binding you also need to define.
+将`redirect-socket`属性添加到`http-listener`元素。 值应为`proxy-https`，它指向您还需要定义的套接字绑定。
 
-Then add a new `socket-binding` element to the `socket-binding-group` element:
+然后在`socket-binding-group`元素中添加一个新的`socket-binding`元素：
 
-```
+```xml
 <socket-binding-group name="standard-sockets" default-interface="public"
     port-offset="${jboss.socket.binding.port-offset:0}">
     ...
@@ -2206,35 +2196,35 @@ Then add a new `socket-binding` element to the `socket-binding-group` element:
 </socket-binding-group>
 ```
 
-#### 8.3.3. Verify Configuration
+#### 8.3.3. 验证配置
 
-You can verify the reverse proxy or load balancer configuration by opening the path `/auth/realms/master/.well-known/openid-configuration` through the reverse proxy. For example if the reverse proxy address is `https://acme.com/` then open the URL `https://acme.com/auth/realms/master/.well-known/openid-configuration`. This will show a JSON document listing a number of endpoints for Keycloak. Make sure the endpoints starts with the address (scheme, domain and port) of your reverse proxy or load balancer. By doing this you make sure that Keycloak is using the correct endpoint.
+您可以通过反向代理打开路径 `/auth/realms/master/.well-known/openid-configuration` 来验证反向代理或负载均衡器配置。 例如，如果反向代理地址是 `https://acme.com/`，则打开URL `https://acme.com/auth/realms/master/.well-known/openid-configuration`。 这将显示一个JSON文档，其中列出了Keycloak的许多端点。 确保端点以反向代理或负载均衡器的地址（scheme, domain and port）开头。 通过这样做，您可以确保Keycloak正在使用正确的端点。
 
-You should also verify that Keycloak sees the correct source IP address for requests. Do check this you can try to login to the admin console with an invalid username and/or password. This should show a warning in the server log something like this:
+您还应验证Keycloak是否看到了请求的正确源IP地址。 请检查此项，您可以尝试使用无效的用户名和/或密码登录管理控制台。 这应该在服务器日志中显示如下警告：
 
 ```
 08:14:21,287 WARN  XNIO-1 task-45 [org.keycloak.events] type=LOGIN_ERROR, realmId=master, clientId=security-admin-console, userId=8f20d7ba-4974-4811-a695-242c8fbd1bf8, ipAddress=X.X.X.X, error=invalid_user_credentials, auth_method=openid-connect, auth_type=code, redirect_uri=http://localhost:8080/auth/admin/master/console/?redirect_fragment=%2Frealms%2Fmaster%2Fevents-settings, code_id=a3d48b67-a439-4546-b992-e93311d6493e, username=admin
 ```
 
-Check that the value of `ipAddress` is the IP address of the machine you tried to login with and not the IP address of the reverse proxy or load balancer.
+检查`ipAddress`的值是您尝试登录的计算机的IP地址，而不是反向代理或负载平衡器的IP地址。
 
-#### 8.3.4. Using the Built-In Load Balancer
+#### 8.3.4. 使用内置负载均衡器
 
-This section covers configuring the built in load balancer that is discussed in the [Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example).
+本节介绍如何配置[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)中讨论的内置负载均衡器.
 
-The [Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example) is only designed to run on one machine. To bring up a slave on another host, you’ll need to
+[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)仅设计为在一台计算机上运行。 要在另一台主机上启动一个slave，你需要
 
-1. Edit the *domain.xml* file to point to your new host slave
-2. Copy the server distribution. You don’t need the *domain.xml*, *host.xml*, or *host-master.xml* files. Nor do you need the *standalone/* directory.
-3. Edit the *host-slave.xml* file to change the bind addresses used or override them on the command line
+1. 编辑 *domain.xml* 文件以指向新的主机slave
+2. 复制服务器分发版。 您不需要*domain.xml*，*host.xml* 或 *host-master.xml*文件。 你也不需要 *standalone/* 目录。
+3. 编辑 *host-slave.xml* 文件以更改使用的绑定地址或在命令行上覆盖它们
 
-##### Register a New Host With Load Balancer
+##### 使用Load Balancer注册新主机
 
-Let’s look first at registering the new host slave with the load balancer configuration in *domain.xml*. Open this file and go to the undertow configuration in the `load-balancer` profile. Add a new `host` definition called `remote-host3` within the `reverse-proxy` XML block.
+让我们首先看一下使用 *domain.xml* 中的负载均衡器配置注册新的主机slave。 打开此文件并转到`load-balancer`配置文件中的undertow配置。 在`reverse-proxy` XML块中添加一个名为`remote-host3`的新`host`定义。
 
-domain.xml reverse-proxy config
+domain.xml反向代理配置
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
   ...
   <handlers>
@@ -2248,13 +2238,13 @@ domain.xml reverse-proxy config
 </subsystem>
 ```
 
-The `output-socket-binding` is a logical name pointing to a `socket-binding` configured later in the *domain.xml* file. the `instance-id` attribute must also be unique to the new host as this value is used by a cookie to enable sticky sessions when load balancing.
+`output-socket-binding`是一个逻辑名，指向稍后在 *domain.xml* 文件中配置的`socket-binding`。 `instance-id`属性对于新主机也必须是唯一的，因为cookie使用此值来在负载平衡时启用粘性会话。
 
-Next go down to the `load-balancer-sockets` `socket-binding-group` and add the `outbound-socket-binding` for `remote-host3`. This new binding needs to point to the host and port of the new host.
+接下来转到`load-balancer-socket` `socket-binding-group` 并为 `remote-host3` 添加 `outbound-socket-binding`。 此新绑定需要指向新主机的主机和端口。
 
 domain.xml outbound-socket-binding
 
-```
+```xml
 <socket-binding-group name="load-balancer-sockets" default-interface="public">
     ...
     <outbound-socket-binding name="remote-host1">
@@ -2269,70 +2259,68 @@ domain.xml outbound-socket-binding
 </socket-binding-group>
 ```
 
-##### Master Bind Addresses
+##### Master Bind Addresses (主绑定地址)
 
-Next thing you’ll have to do is to change the `public` and `management` bind addresses for the master host. Either edit the *domain.xml* file as discussed in the [Bind Addresses](https://www.keycloak.org/docs/latest/server_installation/index.html#_bind-address) chapter or specify these bind addresses on the command line as follows:
+接下来你要做的就是更改主控主机的`public`和`management`绑定地址。 按照[绑定地址](https://www.keycloak.org/docs/latest/server_installation/index.html#_bind-address)一章中的说明编辑 *domain.xml* 文件，或者在命令行上指定这些绑定地址 命令行如下：
 
-```
+```bash
 $ domain.sh --host-config=host-master.xml -Djboss.bind.address=192.168.0.2 -Djboss.bind.address.management=192.168.0.2
 ```
 
-##### Host Slave Bind Addresses
+##### Host Slave Bind Addresses (主机从属绑定地址)
 
-Next you’ll have to change the `public`, `management`, and domain controller bind addresses (`jboss.domain.master-address`). Either edit the *host-slave.xml* file or specify them on the command line as follows:
+接下来，您将不得不更改`public`，`management`和域控制器绑定地址（`jboss.domain.master-address`）。 编辑*host-slave.xml*文件或在命令行中指定它们，如下所示：
 
-```
+```bash
 $ domain.sh --host-config=host-slave.xml
      -Djboss.bind.address=192.168.0.5
       -Djboss.bind.address.management=192.168.0.5
        -Djboss.domain.master.address=192.168.0.2
 ```
 
-The values of `jboss.bind.address` and `jboss.bind.addres.management` pertain to the host slave’s IP address. The value of `jboss.domain.master.address` need to be the IP address of the domain controller which is the management address of the master host.
+`jboss.bind.address`和`jboss.bind.addres.management`的值属于主机slave的IP地址。 `jboss.domain.master.address`的值必须是域控制器的IP地址，域控制器是master主机的管理地址。
 
-#### 8.3.5. Configuring Other Load Balancers
+#### 8.3.5. 配置其他负载均衡器
 
-See [the load balancing](http://docs.wildfly.org/16/High_Availability_Guide.html) section in the *WildFly 16 Documentation* for information how to use other software-based load balancers.
+有关如何使用其他基于软件的负载平衡器的信息，请参阅 *WildFly 16文档* 中的[负载均衡](http://docs.wildfly.org/16/High_Availability_Guide.html)部分。
 
-### 8.4. Sticky sessions
+### 8.4. 粘性会话
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/clustering/sticky-sessions.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/clustering/sticky-sessions.adoc)
+典型的集群部署包括负载均衡器（反向代理）和专用网络上的2个或更多Keycloak服务器。 出于性能目的，如果负载均衡器将与特定浏览器会话相关的所有请求转发到同一Keycloak后端节点，则可能会很有用。
 
-Typical cluster deployment consists of the load balancer (reverse proxy) and 2 or more Keycloak servers on private network. For performance purposes, it may be useful if load balancer forwards all requests related to particular browser session to the same Keycloak backend node.
+原因是，Keycloak正在使用Infinispan分布式缓存来保存与当前身份验证会话和用户会话相关的数据。 默认情况下，Infinispan分布式缓存配置有一个所有者。 这意味着特定会话仅保存在一个群集节点上，而其他节点需要远程查找会话才能访问它。
 
-The reason is, that Keycloak is using Infinispan distributed cache under the covers for save data related to current authentication session and user session. The Infinispan distributed caches are configured with one owner by default. That means that particular session is saved just on one cluster node and the other nodes need to lookup the session remotely if they want to access it.
+例如，如果ID为`123`的认证会话保存在`node1`上的Infinispan缓存中，然后`node2`需要查找该会话，则需要通过网络将请求发送到`node1`以返回特定会话 实体。
 
-For example if authentication session with ID `123` is saved in the Infinispan cache on `node1`, and then `node2` needs to lookup this session, it needs to send the request to `node1` over the network to return the particular session entity.
+如果特定会话实体始终在本地可用，这是有益的，这可以在粘性会话的帮助下完成。 具有公共前端负载均衡器和两个后端Keycloak节点的集群环境中的工作流可以是这样的：
 
-It is beneficial if particular session entity is always available locally, which can be done with the help of sticky sessions. The workflow in the cluster environment with the public frontend load balancer and two backend Keycloak nodes can be like this:
+- 用户发送初始请求以查看Keycloak登录屏幕
+- 该请求由前端负载均衡器提供，后者将其转发到某个随机节点（例如，node1）。 严格地说，节点不需要是随机的，但可以根据其他一些标准（客户端IP地址等）进行选择。 这一切都取决于底层负载均衡器（反向代理）的实现和配置。
+- Keycloak使用随机ID（例如123）创建认证会话并将其保存到Infinispan缓存。
+- Infinispan分布式缓存根据会话ID的哈希值分配会话的主要所有者。 有关此内容的详细信息，请参阅[Infinispan文档](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#distribution_mode)。 让我们假设Infinispan将`node2`指定为此会话的所有者。
+- Keycloak使用`<session-id>.<owner-node-id>`等格式创建cookie `AUTH_SESSION_ID`。 在我们的示例中，它将是`123.node2`。
+- 使用Keycloak登录屏幕和浏览器中的AUTH_SESSION_ID cookie将响应返回给用户
 
-- User sends initial request to see the Keycloak login screen
-- This request is served by the frontend load balancer, which forwards it to some random node (eg. node1). Strictly said, the node doesn’t need to be random, but can be chosen according to some other criterias (client IP address etc). It all depends on the implementation and configuration of underlying load balancer (reverse proxy).
-- Keycloak creates authentication session with random ID (eg. 123) and saves it to the Infinispan cache.
-- Infinispan distributed cache assigns the primary owner of the session based on the hash of session ID. See [Infinispan documentation](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#distribution_mode) for more details around this. Let’s assume that Infinispan assigned `node2` to be the owner of this session.
-- Keycloak creates the cookie `AUTH_SESSION_ID` with the format like `<session-id>.<owner-node-id>` . In our example case, it will be `123.node2` .
-- Response is returned to the user with the Keycloak login screen and the AUTH_SESSION_ID cookie in the browser
+从这一点来看，如果负载均衡器将所有下一个请求转发到`node2`是有益的，因为这是节点，它是ID为123的认证会话的所有者，因此Infinispan可以在本地查找该会话。 身份验证完成后，身份验证会话将转换为用户会话，该会话也将保存在`node2`上，因为它具有相同的ID`123`。
 
-From this point, it is beneficial if load balancer forwards all the next requests to the `node2` as this is the node, who is owner of the authentication session with ID `123` and hence Infinispan can lookup this session locally. After authentication is finished, the authentication session is converted to user session, which will be also saved on `node2` because it has same ID `123` .
+粘性会话对于群集设置不是强制性的，但由于上述原因，它对性能有利。 您需要将loadbalancer配置为粘贴在`AUTH_SESSION_ID` cookie上。 这究竟取决于您的负载均衡器。
 
-The sticky session is not mandatory for the cluster setup, however it is good for performance for the reasons mentioned above. You need to configure your loadbalancer to sticky over the `AUTH_SESSION_ID` cookie. How exactly do this is dependent on your loadbalancer.
+建议在Keycloak端使用启动期间的系统属性`jboss.node.name`，其值与路由名称相对应。 例如，`-Djboss.node.name=node1`将使用`node1`来标识路由。 此路由将由Infinispan缓存使用，并在节点是特定密钥的所有者时附加到AUTH_SESSION_ID cookie。 以下是使用此系统属性的启动命令的示例：
 
-It is recommended on the Keycloak side to use the system property `jboss.node.name` during startup, with the value corresponding to the name of your route. For example, `-Djboss.node.name=node1` will use `node1` to identify the route. This route will be used by Infinispan caches and will be attached to the AUTH_SESSION_ID cookie when the node is the owner of the particular key. Here is an example of the start up command using this system property:
-
-```
+```bash
 cd $RHSSO_NODE1
 ./standalone.sh -c standalone-ha.xml -Djboss.socket.binding.port-offset=100 -Djboss.node.name=node1
 ```
 
-Typically in production environment the route name should use the same name as your backend host, but it is not required. You can use a different route name. For example, if you want to hide the host name of your Keycloak server inside your private network.
+通常在生产环境中，路由名称应使用与后端主机相同的名称，但不是必需的。 您可以使用其他路径名称。 例如，如果要在专用网络中隐藏Keycloak服务器的主机名。
 
-#### 8.4.1. Disable adding the route
+#### 8.4.1. 禁用添加路由
 
-Some load balancers can be configured to add the route information by themselves instead of relying on the back end Keycloak node. However, as described above, adding the route by the Keycloak is recommended. This is because when done this way performance improves, since Keycloak is aware of the entity that is the owner of particular session and can route to that node, which is not necessarily the local node.
+某些负载均衡器可以配置为自行添加路由信息，而不是依赖于后端Keycloak节点。 但是，如上所述，建议通过Keycloak添加路线。 这是因为当这样做时性能得到改善，因为Keycloak知道作为特定会话的所有者的实体并且可以路由到该节点，该节点不一定是本地节点。
 
-You are permitted to disable adding route information to the AUTH_SESSION_ID cookie by Keycloak, if you prefer, by adding the following into your `RHSSO_HOME/standalone/configuration/standalone-ha.xml` file in the Keycloak subsystem configuration:
+如果您愿意，可以通过将以下内容添加到Keycloak子系统配置中的`RHSSO_HOME/standalone/configuration/standalone-ha.xml`文件中来禁用Keycloak将路由信息添加到AUTH_SESSION_ID cookie中：
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:keycloak-server:1.1">
   ...
     <spi name="stickySessionEncoder">
@@ -2346,17 +2334,15 @@ You are permitted to disable adding route information to the AUTH_SESSION_ID coo
 </subsystem>
 ```
 
-### 8.5. Multicast Network Setup
+### 8.5. 多播网络设置
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/clustering/multicast.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/clustering/multicast.adoc)
+开箱即用的集群支持需要IP多播。 组播是一种网络广播协议。 此协议在启动时用于发现和加入集群。 它还用于广播消息，以便复制和使Keycloak使用的分布式缓存失效。
 
-Out of the box clustering support needs IP Multicast. Multicast is a network broadcast protocol. This protocol is used at boot time to discover and join the cluster. It is also used to broadcast messages for the replication and invalidation of distributed caches used by Keycloak.
+Keycloak的集群子系统在JGroups堆栈上运行。 开箱即用，集群的绑定地址绑定到专用网络接口，默认IP地址为127.0.0.1。 您必须编辑[Bind Address](https://www.keycloak.org/docs/latest/server_installation/index.html#_bind-address) 中讨论的*standalone-ha.xml* 或 *domain.xml*部分章节。
 
-The clustering subsystem for Keycloak runs on the JGroups stack. Out of the box, the bind addresses for clustering are bound to a private network interface with 127.0.0.1 as default IP address. You have to edit your the *standalone-ha.xml* or *domain.xml*sections discussed in the [Bind Address](https://www.keycloak.org/docs/latest/server_installation/index.html#_bind-address) chapter.
+专用网络配置
 
-private network config
-
-```
+```xml
     <interfaces>
         ...
         <interface name="private">
@@ -2375,29 +2361,23 @@ private network config
     </socket-binding-group>
 ```
 
-Things you’ll want to configure are the `jboss.bind.address.private` and `jboss.default.multicast.address` as well as the ports of the services on the clustering stack.
+你想要配置的东西是`jboss.bind.address.private`和`jboss.default.multicast.address`以及集群堆栈上服务的端口。
 
-|      | It is possible to cluster Keycloak without IP Multicast, but this topic is beyond the scope of this guide. For more information, see [JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem) in the *WildFly 16 Documentation*. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 可以在没有IP多播的情况下对Keycloak进行集群，但此主题超出了本指南的范围。 有关更多信息，请参阅 *WildFly 16文档* 中的[JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem)。
 
-### 8.6. Securing Cluster Communication
+### 8.6. 确保集群通信安全
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/clustering/securing-cluster-comm.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/clustering/securing-cluster-comm.adoc)
+当集群节点在专用网络上隔离时，它需要访问专用网络才能加入集群或查看集群中的通信。 此外，您还可以为集群通信启用身份验证和加密。 只要您的专用网络是安全的，就不必启用身份验证和加密。 在任何一种情况下，Keycloak都不会在集群上发送非常敏感的信息。
 
-When cluster nodes are isolated on a private network it requires access to the private network to be able to join a cluster or to view communication in the cluster. In addition you can also enable authentication and encryption for cluster communication. As long as your private network is secure it is not necessary to enable authentication and encryption. Keycloak does not send very sensitive information on the cluster in either case.
+如果要为集群通信启用身份验证和加密，请参阅 *JBoss EAP配置指南*中的[保护群集](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html/configuration_guide/configuring_high_availability#securing_cluster)。
 
-If you want to enable authentication and encryption for clustering communication see [Securing a Cluster](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html/configuration_guide/configuring_high_availability#securing_cluster) in the *JBoss EAP Configuration Guide*.
+### 8.7. 串行化集群启动
 
-### 8.7. Serialized Cluster Startup
+允许Keycloak集群节点同时引导。 当Keycloak服务器实例启动时，它可以执行一些数据库迁移，导入或首次初始化。 数据库锁用于在集群节点同时启动时防止启动操作相互冲突。
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/clustering/serialized.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/clustering/serialized.adoc)
+默认情况下，此锁定的最大超时为900秒。 如果某个节点正在等待此锁超过超时，则无法启动。 通常，您不需要增加/减少默认值，但以防万一可以在您的发行版中的`standalone.xml`，`standalone-ha.xml`或`domain.xml`文件中进行配置。 此文件的位置取决于您的[操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)。
 
-Keycloak cluster nodes are allowed to boot concurrently. When Keycloak server instance boots up it may do some database migration, importing, or first time initializations. A DB lock is used to prevent start actions from conflicting with one another when cluster nodes boot up concurrently.
-
-By default, the maximum timeout for this lock is 900 seconds. If a node is waiting on this lock for more than the timeout it will fail to boot. Typically you won’t need to increase/decrease the default value, but just in case it’s possible to configure it in`standalone.xml`, `standalone-ha.xml`, or `domain.xml` file in your distribution. The location of this file depends on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode).
-
-```
+```xml
 <spi name="dblock">
     <provider name="jpa" enabled="true">
         <properties>
@@ -2407,41 +2387,39 @@ By default, the maximum timeout for this lock is 900 seconds. If a node is waiti
 </spi>
 ```
 
-### 8.8. Booting the Cluster
+### 8.8. 启动群集
 
-Booting Keycloak in a cluster depends on your [operating mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)
+在群集中启动Keycloak取决于您的[操作模式](https://www.keycloak.org/docs/latest/server_installation/index.html#_operating-mode)
 
-Standalone Mode
+Standalone Mode (独立模式)
 
-```
+```bash
 $ bin/standalone.sh --server-config=standalone-ha.xml
 ```
 
-Domain Mode
+Domain Mode (域模式)
 
-```
+```bash
 $ bin/domain.sh --host-config=host-master.xml
 $ bin/domain.sh --host-config=host-slave.xml
 ```
 
-You may need to use additional parameters or system properties. For example, the parameter `-b` for the binding host or the system property `jboss.node.name` to specify the name of the route, as described in [Sticky Sessions](https://www.keycloak.org/docs/latest/server_installation/index.html#sticky-sessions) section.
+您可能需要使用其他参数或系统属性。 例如，绑定主机的参数`-b`或系统属性`jboss.node.name`用于指定路由的名称，如[Sticky Sessions](https://www.keycloak.org/docs/latest/server_installation/index.html#sticky-sessions)中所述 部分。
 
-### 8.9. Troubleshooting
+### 8.9. 故障排除
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_installation/topics/clustering/troubleshooting.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_installation/topics/clustering/troubleshooting.adoc)
-
-- Note that when you run a cluster, you should see message similar to this in the log of both cluster nodes:
+- 请注意，在运行集群时，您应该在两个集群节点的日志中看到与此类似的消息：
 
   ```
   INFO  [org.infinispan.remoting.transport.jgroups.JGroupsTransport] (Incoming-10,shared=udp)
   ISPN000094: Received new cluster view: [node1/keycloak|1] (2) [node1/keycloak, node2/keycloak]
   ```
 
-  If you see just one node mentioned, it’s possible that your cluster hosts are not joined together.
+  如果您只看到提到的一个节点，则您的集群主机可能未连接在一起。
 
-  Usually it’s best practice to have your cluster nodes on private network without firewall for communication among them. Firewall could be enabled just on public access point to your network instead. If for some reason you still need to have firewall enabled on cluster nodes, you will need to open some ports. Default values are UDP port 55200 and multicast port 45688 with multicast address 230.0.0.4. Note that you may need more ports opened if you want to enable additional features like diagnostics for your JGroups stack. Keycloak delegates most of the clustering work to Infinispan/JGroups. For more information, see [JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem) in the *WildFly 16 Documentation*.
+  通常，最佳做法是将您的集群节点放在专用网络上，而不使用防火墙进行通信。 可以仅在公共访问点上启用防火墙，而不是网络。 如果由于某种原因您仍需要在集群节点上启用防火墙，则需要打开一些端口。 默认值为UDP端口55200和组播地址为230.0.0.4的组播端口45688。 请注意，如果要为JGroups堆栈启用诊断等其他功能，则可能需要打开更多端口。 Keycloak将大部分集群工作委托给Infinispan/JGroups。 有关更多信息，请参阅 *WildFly 16文档* 中的[JGroups](http://docs.wildfly.org/16/High_Availability_Guide.html#JGroups_Subsystem)。
 
-- If you are interested in failover support (high availability), evictions, expiration and cache tuning, see [Server Cache Configuration](https://www.keycloak.org/docs/latest/server_installation/index.html#cache-configuration).
+- 如果您对故障转移支持（高可用性），驱逐，到期和缓存调整感兴趣，请参阅[服务器缓存配置](https://www.keycloak.org/docs/latest/server_installation/index.html#cache-configuration)。
 
 ## 9. Server Cache Configuration
 
