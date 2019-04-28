@@ -92,7 +92,7 @@ Keycloak服务器有三个可下载的发行版:
 
 独立的操作模式只在您希望运行一个且仅运行一个Keycloak服务器实例时才有用。它不适用于集群部署，而且所有缓存都是非分布式的，并且只在本地使用。 不建议在生产中使用独立模式，因为只有一个故障点。如果您的单机模式服务器宕机，用户将无法登录。这种模式只适用于测试驱动和使用Keycloak的功能.
 
-#### 3.1.1. 独立的启动脚本 {#Standalone Boot Script}
+#### 3.1.1. 独立的启动脚本 {#Standalone_Boot_Script}
 
 当以独立模式运行服务器时，您需要运行一个特定的脚本来启动服务器，这取决于您的操作系统。这些脚本位于服务器分发版的 *bin/* 目录中。
 
@@ -114,7 +114,7 @@ Windows
 > ...\bin\standalone.bat
 ```
 
-#### 3.1.2. 独立的配置 {#Standalone Configuration}
+#### 3.1.2. 独立的配置 {#Standalone_Configuration}
 
 本指南的大部分内容将指导您如何配置Keycloak的基础设施级别方面。 这些方面是在配置文件中配置的，该配置文件特定于Keycloak派生的应用程序服务器。在独立操作模式下，该文件位于 *.. / independent /configuration/standalone.xml* 中。 此文件还用于配置特定于Keycloak组件的非基础设施级别的内容。
 
@@ -128,7 +128,7 @@ Windows
 
 当您希望在集群中运行Keycloak时，可以使用独立集群操作模式。此模式要求在希望运行服务器实例的每台计算机上都有Keycloak分发版的副本。这种模式最初很容易部署，但是会变得相当麻烦。要进行配置更改，您必须修改每台机器上的每个发行版。对于大型集群，这可能会耗费时间并容易出错。
 
-#### 3.2.1. 独立的集群配置 {#Standalone Clustered Configuration}
+#### 3.2.1. 独立的集群配置 {#Standalone_Clustered_Configuration}
 
 该发行版有一个主要预配置的app服务器配置文件，用于在集群中运行。它具有用于网络、数据库、缓存和发现的所有特定基础设施设置。此文件驻留在 *…/standalone/configuration/standalone-ha.xml*. 这个配置中缺少一些东西。如果不配置共享数据库连接，就不能在集群中运行Keycloak。您还需要在集群前面部署某种类型的负载均衡器。 本指南的[集群](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustering)  和 [数据库](https://www.keycloak.org/docs/latest/server_installation/index.html#_database) 部分将指导您了解这些内容。
 
@@ -138,7 +138,7 @@ Windows
 
 > 在服务器运行时对该文件所做的任何更改都不会生效，甚至可能被服务器覆盖。建议使用命令行脚本或WildFly的web控制台。 更多信息参见 [*WildFly 16 Documentation*](http://docs.wildfly.org/16/Admin_Guide.html)                                  |
 
-#### 3.2.2. 独立集群启动脚本 {#Standalone Clustered Boot Script}
+#### 3.2.2. 独立集群启动脚本 {#Standalone_Clustered_Boot_Script}
 
 使用与在独立模式下相同的引导脚本启动Keycloak。不同之处在于，您传递了一个额外的标志来指向HA配置文件。
 
@@ -188,7 +188,7 @@ Windows
 
 在域模式下，在主节点上启动域控制器。集群的配置位于域控制器中。 接下来，在群集中的每台计算机上启动主机控制器。 每个主机控制器部署配置指定将在该计算机上启动的Keycloak服务器实例数。 当主机控制器启动时，它启动的Keycloak服务器实例与配置时一样多。这些服务器实例从域控制器中提取配置。
 
-#### 3.3.1. 域配置 {#Domain Configuration}
+#### 3.3.1. 域配置 {#Domain_Configuration}
 
 本指南的其他各章将介绍如何配置数据库、HTTP网络连接、缓存和其他与基础设施相关的内容。 虽然独立模式使用 *standalone.xml* 文件来配置这些内容，但域模式使用 *.../domain/configuration/domain.xml* 配置文件。 这里定义了Keycloak 服务器的域配置文件和服务器组。
 
@@ -261,7 +261,7 @@ server group
     </server-groups>
 ```
 
-#### 3.3.2. 主机控制器配置 {#Host Controller Configuration}
+#### 3.3.2. 主机控制器配置 {#Host_Controller_Configuration}
 
 Keycloak附带了两个主机控制器配置文件，它们位于 *.../domain/configuration/* 目录中：*host-master.xml* 和 *host-slave.xml*。 *host-master.xml* 配置为启动域控制器，负载均衡器和一个Keycloak服务器实例。 *host-slave.xml* 配置为与域控制器通信并启动一个Keycloak服务器实例。
 
@@ -292,7 +292,7 @@ Keycloak附带了两个主机控制器配置文件，它们位于 *.../domain/co
     </servers>
 ```
 
-#### 3.3.3. 服务器实例工作目录 {#Server Instance Working Directories}
+#### 3.3.3. 服务器实例工作目录 {#Server_Instance_Working_Directories}
 
 主机文件中定义的每个Keycloak服务器实例在 *…/domain/servers/{SERVER NAME}* 下创建一个工作目录。可以在其中进行其他配置，并且服务器实例需要或创建的任何临时，日志或数据文件也可以放在那里。 每个服务器目录的结构最终看起来像任何其他WildFly启动的服务器。
 
@@ -300,7 +300,7 @@ Keycloak附带了两个主机控制器配置文件，它们位于 *.../domain/co
 
 ![domain server dir](assets/domain-server-dir.png)
 
-#### 3.3.4. 域启动脚本 {#Domain Boot Script}
+#### 3.3.4. 域启动脚本 {#Domain_Boot_Script}
 
 在域模式下运行服务器时，根据您的操作系统，需要运行特定的脚本来启动服务器。 这些脚本位于服务器分发的 *bin/* 目录中。
 
@@ -324,7 +324,7 @@ Windows
 
 运行启动脚本时，您需要通过`--host-config`开关传入您将要使用的主机控制配置文件。
 
-#### 3.3.5. 集群域示例 {#Clustered Domain Example}
+#### 3.3.5. 集群域示例 {#Clustered_Domain_Example}
 
 您可以使用开箱即用的 *domain.xml* 配置测试驱动器集群。这个示例域是用来在一台机器上运行并启动的:
 
@@ -424,7 +424,7 @@ $ domain.sh --host-config=host-slave.xml
 - [集群与Keycloak](https://www.keycloak.org/docs/6.0/server_installation/#_clustering) 设置跨数据中心复制时，您将使用更多独立的Keycloak集群，因此您必须了解集群的工作方式以及基本概念和要求，例如负载平衡，共享数据库和多播。
 - [JBoss数据网格跨数据中心复制](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication) Keycloak使用JBoss Data Grid（JDG）在数据中心之间复制Infinispan数据。
 
-#### 3.4.2. 技术细节 {#Technical details}
+#### 3.4.2. 技术细节 {#Technical_details}
 
 本节介绍了如何完成Keycloak跨数据中心复制的概念和详细信息。
 
@@ -444,7 +444,7 @@ Keycloak是有状态的应用程序。 它使用以下作为数据源：
 
 For more details, see [Modes](https://www.keycloak.org/docs/latest/server_installation/index.html#modes).
 
-#### 3.4.3. 请求处理 {#Request processing}
+#### 3.4.3. 请求处理 {#Request_processing}
 
 最终用户的浏览器向[前端负载均衡器](https://www.keycloak.org/docs/6.0/server_installation/#_setting-up-a-load-balancer-or-proxy)发送HTTP请求。 此负载均衡器通常是HTTPD或WildFly，带有mod_cluster，NGINX，HA代理，或者某些其他类型的软件或硬件负载均衡器。
 
@@ -452,7 +452,7 @@ For more details, see [Modes](https://www.keycloak.org/docs/latest/server_instal
 
 从客户端应用程序发送到负载均衡器的HTTP请求称为“反向通道请求”。终端用户的浏览器不会看到这些，因此不能作为用户和负载平衡器之间的粘性会话的一部分。 对于反向信道请求，负载均衡器可以将HTTP请求转发到任何数据中心中的任何Keycloak实例。 这很有挑战性，因为一些OpenID Connect和一些SAML流需要来自用户和应用程序的多个HTTP请求。 由于我们不能可靠地依赖粘性会话来强制将所有相关请求发送到同一数据中心中的同一个Keycloak实例，因此我们必须跨数据中心复制一些数据，以便在特定流期间由后续HTTP请求查看数据。
 
-#### 3.4.4. Modes (模式) {#Modes}
+#### 3.4.4. 模式 {#Modes}
 
 根据您的要求，跨数据中心复制有两种基本操作模式：
 
@@ -470,7 +470,7 @@ Keycloak使用关系数据库管理系统(RDBMS)来持久保存有关领域，�
 - Oracle Database 12c Release 1 (12.1) RAC
 - Galera 3.12 cluster for MariaDB server version 10.1.19-MariaDB
 
-#### 3.4.6. Infinispan缓存 {#Infinispan caches}
+#### 3.4.6. Infinispan缓存 {#Infinispan_caches}
 
 本节首先介绍Infinispan缓存的高级描述。 下面是缓存设置的更多细节。
 
@@ -498,7 +498,7 @@ Brute force protection (强力保护)
 
 有关如何配置高速缓存的更多详细信息，请参阅[调整JDG高速缓存配置](https://www.keycloak.org/docs/latest/server_installation/index.html#tuningcache)。
 
-#### 3.4.7. 通信细节 {#Communication details}
+#### 3.4.7. 通信细节 {#Communication_details}
 
 keycover使用多个独立的Infinispan缓存集群。每个Keycloak 节点都与相同数据中心中的其他Keycloak 节点在集群中，但不包含不同数据中心的Keycloak节点。 Keycloak节点不直接与来自不同数据中心的Keycloak节点通信。 Keycloak节点使用外部JDG（实际上是Infinispan服务器）跨数据中心进行通信。 这是使用[Infinispan HotRod协议](http://infinispan.org/docs/8.2.x/user_guide/user_guide.html#using_hot_rod_server)。
 
@@ -508,7 +508,7 @@ Keycloak端上的Infinispan缓存必须配置为[remoteStore](http://infinispan.
 
 有关更多细节，请参见[示例架构图](https://www.keycloak.org/docs/latest/server_installation/index.html#archdiagram)。
 
-#### 3.4.8. 基本设置 {#Basic setup}
+#### 3.4.8. 基本设置 {#Basic_setup}
 
 在本例中，我们描述了使用两个数据中心，`site1` 和 `site2`。 每个数据中心由1个Infinispan服务器和2个Keycloak服务器组成。 我们最终将拥有2台Infinispan服务器和4台Keycloak服务器。
 
@@ -901,7 +901,7 @@ Keycloak端上的Infinispan缓存必须配置为[remoteStore](http://infinispan.
       Event 'CLIENT_CACHE_ENTRY_REMOVED', key '193489e7-e2bc-4069-afe8-f1dfa73084ea', skip 'false'
       ```
 
-#### 3.4.9. 跨DC部署的管理 {#Administration of Cross DC deployment}
+#### 3.4.9. 跨DC部署的管理 {#Administration_of_Cross_DC_deployment}
 
 本节包含与跨数据中心复制相关的一些提示和选项。
 
@@ -910,7 +910,7 @@ Keycloak端上的Infinispan缓存必须配置为[remoteStore](http://infinispan.
 - 每个数据中心都可以在集群中运行更多Infinispan服务器。 如果您需要一些故障转移和更好的容错能力，这将非常有用。 用于Infinispan服务器和Keycloak服务器之间通信的HotRod协议具有以下功能：Infinispan服务器将自动向Keycloak服务器发送有关Infinispan群集更改的新拓扑， 因此，Keycloak端的远程存储将知道它可以连接到哪个Infinispan服务器。阅读Infinispan和WildFly文档了解更多细节。
 - 强烈建议在启动**任何**站点中的Keycloak服务器之前，在每个站点中运行一个主Infinispan服务器。 在我们的例子中，我们首先在所有Keycloak服务器之前启动了`jdg1`和`jdg2`。 如果您仍然需要运行Keycloak服务器并且备份站点处于脱机状态，建议您在站点上的Infinispan服务器上手动切换备份站点，如[使站点脱机并联机](https://www.keycloak.org/docs/latest/server_installation/index.html#onoffline)中所述。 如果不手动将不可用站点脱机，则第一次启动可能会失败，或者在启动期间可能会出现一些异常，直到备份站点因配置的失败操作计数而自动脱机。
 
-#### 3.4.10. 使网站脱机和在线 {#Bringing sites offline and online}
+#### 3.4.10. 使网站脱机和在线 {#Bringing_sites_offline_and_online}
 
 例如，假设这种情况：
 
@@ -953,7 +953,7 @@ Keycloak端上的Infinispan缓存必须配置为[remoteStore](http://infinispan.
 - 做[状态转移](https://www.keycloak.org/docs/latest/server_installation/index.html#statetransfer)。
 - 手动[清除缓存](https://www.keycloak.org/docs/latest/server_installation/index.html#clearcache)。
 
-#### 3.4.11. 状态转移 {#State transfer}
+#### 3.4.11. 状态转移 {#State_transfer}
 
 国家转移是必需的手动步骤。 Infinispan服务器不会自动执行此操作，例如在裂脑期间，只有管理员可以决定哪个站点具有首选项，因此是否需要在两个站点之间双向进行状态转移，或者只是单向进行，如同仅来自`site1 `到`site2`，但不是从`site2`到`site1`。
 
@@ -963,7 +963,7 @@ Keycloak端上的Infinispan缓存必须配置为[remoteStore](http://infinispan.
 
 状态转移也可以通过JMX在Infinispan服务器端完成。 操作名称是`pushState`。 几乎没有其他操作来监视状态，取消推送状态等。 有关状态转移的更多信息，请参阅[Infinispan docs](https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_user_guide/x_site_replication#pushing_state_transfer_to_sites)。
 
-#### 3.4.12. 清除缓存 {#Clear caches}
+#### 3.4.12. 清除缓存 {#Clear_caches}
 
 在脑裂之后，可以安全地在Keycloak管理控制台中手动清除缓存。 这是因为在`site1`上的数据库中可能存在一些数据发生了变化，并且由于该事件，缓存应该被无效，并且在脑裂期间没有被转移到`site2`。 因此，`site2`上的Keycloak节点可能仍然在其缓存中有一些陈旧的数据。
 
@@ -971,7 +971,7 @@ Keycloak端上的Infinispan缓存必须配置为[remoteStore](http://infinispan.
 
 当网络恢复时，仅在任何随机站点上的一个Keycloak节点上清除缓存就足够了。 缓存失效事件将发送到所有站点中的所有其他Keycloak节点。 但是，需要对所有缓存（领域，用户，密钥）执行此操作。 有关详细信息，请参阅[清除服务器缓存](https://www.keycloak.org/docs/6.0/server_admin/#_clear-cache)。
 
-#### 3.4.13. 调整JDG缓存配置 {#Tuning the JDG cache configuration}
+#### 3.4.13. 调整JDG缓存配置 {#Tuning_the_JDG_cache_configuration}
 
 本节包含配置JDG缓存的技巧和选项。
 
@@ -1007,7 +1007,7 @@ Lock acquisition timeout (锁定获取超时)
 
 唯一（非功能）问题是Infinispan服务器日志中的异常，每次锁定不可用时都会发生。
 
-#### 3.4.14. 同步或异步备份 {#SYNC or ASYNC backups}
+#### 3.4.14. 同步或异步备份 {#SYNC_or_ASYNC_backups}
 
 `backup`元素的一个重要部分是`strategy`属性。 您必须决定是否需要`SYNC`或`ASYNC`。 我们有7个可能支持跨数据中心复制的缓存，这些缓存可以配置为3种不同的交叉直流模式：
 
@@ -1330,57 +1330,57 @@ $ .../bin/jboss-cli.sh --file=turn-off-caching.cli
 **` = `/profile=auth-server-clustered/subsystem=keycloak-server
 ```
 
-#### 4.6.1. 更改服务器的Web上下文 {#Change the web context of the server}
+#### 4.6.1. 更改服务器的Web上下文 {#Change_the_web_context_of_the_server}
 
 ```
 /subsystem=keycloak-server/:write-attribute(name=web-context,value=myContext)
 ```
 
-#### 4.6.2. 设置全局默认主题 {#Set the global default theme}
+#### 4.6.2. 设置全局默认主题 {#Set_the_global_default_theme}
 
 ```
 **/theme=defaults/:write-attribute(name=default,value=myTheme)
 ```
 
-#### 4.6.3. 添加新的SPI和提供程序 {#Add a new SPI and a provider}
+#### 4.6.3. 添加新的SPI和提供程序 {#Add_a_new_SPI_and_a_provider}
 
 ```
 **/spi=mySPI/:add
 **/spi=mySPI/provider=myProvider/:add(enabled=true)
 ```
 
-#### 4.6.4. 禁用提供商 {#Disable a provide}
+#### 4.6.4. 禁用提供商 {#Disable_a_provide}
 
 ```
 **/spi=mySPI/provider=myProvider/:write-attribute(name=enabled,value=false)
 ```
 
-#### 4.6.5. 更改SPI的默认提供程序 {#Change the default provider for an SPI}
+#### 4.6.5. 更改SPI的默认提供程序 {#Change_the_default_provider_for_an_SPI}
 
 ```
 **/spi=mySPI/:write-attribute(name=default-provider,value=myProvider)
 ```
 
-#### 4.6.6. 配置dblock SPI {#Configure the dblock SPI}
+#### 4.6.6. 配置dblock SPI {#Configure_the_dblock_SPI}
 
 ```
 **/spi=dblock/:add(default-provider=jpa)
 **/spi=dblock/provider=jpa/:add(properties={lockWaitTimeout => "900"},enabled=true)
 ```
 
-#### 4.6.7. 为提供者添加或更改单个属性值 {#Add or change a single property value for a provider}
+#### 4.6.7. 为提供者添加或更改单个属性值 {#Add_or_change_a_single_property_value_for_a_provider}
 
 ```
 **/spi=dblock/provider=jpa/:map-put(name=properties,key=lockWaitTimeout,value=3)
 ```
 
-#### 4.6.8. 从提供程序中删除单个属性 {#Remove a single property from a provider}
+#### 4.6.8. 从提供程序中删除单个属性 {#Remove_a_single_property_from_a_provider}
 
 ```
 **/spi=dblock/provider=jpa/:map-remove(name=properties,key=lockRecheckTime)
 ```
 
-#### 4.6.9. 在类型为`List`的提供程序属性上设置值 {#Set values on a provider property of type List}
+#### 4.6.9. 在类型为`List`的提供程序属性上设置值 {#Set_values_on_a_provider_property_of_type_List}
 
 ```
 **/spi=eventsStore/provider=jpa/:map-put(name=properties,key=exclude-events,value=[EVENT1,EVENT2])
@@ -1658,23 +1658,23 @@ Keycloak中的数据库模式仅考虑以下特殊字段中的Unicode字符串�
 
 从技术上讲，Unicode支持所有字段的关键标准是数据库是否允许为`VARCHAR`和`CHAR`字段设置Unicode字符集。 如果是，那么Unicode很可能是合理的，通常以字段长度为代价。 如果它只支持`NVARCHAR`和`NCHAR`字段中的Unicode，则不太可能支持所有文本字段，因为Keycloak模式广泛使用`VARCHAR`和`CHAR`字段。
 
-#### 6.6.1. Oracle 数据库 {#Oracle Database}
+#### 6.6.1. Oracle 数据库 {#Oracle_Database}
 
 如果数据库是在`VARCHAR`和`CHAR`字段中使用Unicode支持创建的（例如，使用`AL32UTF8`字符集作为数据库字符集），则可以正确处理Unicode字符。 JDBC驱动程序无需特殊设置。
 
 如果数据库字符集不是Unicode，那么要在特殊字段中使用Unicode字符，需要使用连接属性`oracle.jdbc.defaultNChar`设置为`true`来配置JDBC驱动程序。 将`oracle.jdbc.convertNcharLiterals`连接属性设置为`true`可能是明智的，尽管不是绝对必要的。 可以将这些属性设置为系统属性或连接属性。 请注意，设置`oracle.jdbc.defaultNChar`可能会对性能产生负面影响。 有关详细信息，请参阅Oracle JDBC驱动程序配置文档。
 
-#### 6.6.2. Microsoft SQL Server 数据库 {#Microsoft SQL Server Database}
+#### 6.6.2. Microsoft SQL Server 数据库 {#Microsoft_SQL_Server_Database}
 
 只为特殊字段正确处理Unicode字符。 不需要JDBC驱动程序或数据库的特殊设置。
 
-#### 6.6.3. MySQL 数据库 {#MySQL Database}
+#### 6.6.3. MySQL 数据库 {#MySQL_Database}
 
 如果在`CREATE DATABASE`命令中的`VARCHAR`和`CHAR`fields中使用Unicode支持创建数据库，则可以正确处理Unicode字符（例如，使用`utf8`字符集作为MySQL 5.5中的默认数据库字符集。请注意 由于对`utf8`字符集[[1](https://www.keycloak.org/docs/latest/server_installation/index.html#_footnote_1)]的存储要求不同，`utf8mb4`字符集不起作用。 请注意，在这种情况下，对非特殊字段的长度限制不适用，因为创建列以容纳给定数量的字符，而不是字节。 如果数据库缺省字符集不允许存储Unicode，则只有特殊字段允许存储Unicode值。
 
 在JDBC驱动程序设置方面，需要在JDBC连接设置中添加连接属性`characterEncoding = UTF-8`。
 
-#### 6.6.4. PostgreSQL 数据库 {#PostgreSQL Database}
+#### 6.6.4. PostgreSQL 数据库 {#PostgreSQL_Database}
 
 当数据库字符集为`UTF8`时，支持Unicode。 在这种情况下，Unicode字符可以在任何字段中使用，非特殊字段的字段长度不会减少。 不需要JDBC驱动程序的特殊设置。
 
@@ -1795,7 +1795,7 @@ $ domain.sh -Djboss.bind.address=192.168.0.5
 
 可以在Keycloak管理控制台中配置每个领域的SSL模式。
 
-#### 7.3.1. 为Keycloak Server启用SSL/HTTPS {#Enabling SSL/HTTPS for the Keycloak Server}
+#### 7.3.1. 为Keycloak Server启用SSL/HTTPS {#Enabling_SSL_HTTPS_for_the_Keycloak_Server}
 
 如果您没有使用反向代理或负载平衡器来处理HTTPS流量，则需要为Keycloak服务器启用HTTPS。 这涉及到
 
@@ -1983,7 +1983,7 @@ HTTP客户端配置示例
 
   注意传出HTTP请求的代理配置。 有关更多详细信息，请参阅[传出HTTP请求的代理映射](https://www.keycloak.org/docs/latest/server_installation/index.html#_proxymappings)部分。
 
-#### 7.4.1. 传出HTTP请求的代理映射 {#Proxy Mappings for Outgoing HTTP Requests}
+#### 7.4.1. 传出HTTP请求的代理映射 {#Proxy_Mappings_for_Outgoing_HTTP_Requests}
 
 Keycloak发送的传出HTTP请求可以选择使用基于逗号分隔的代理映射列表的代理服务器。 代理映射表示基于正则表达式的主机名模式和`hostnamePattern;proxyUri`形式的proxy-uri的组合，例如：
 
@@ -2034,7 +2034,7 @@ echo SETUP: Configure proxy routes for HttpClient SPI
 </spi>
 ```
 
-#### 7.4.2. 传出HTTPS请求信任库 {#Outgoing HTTPS Request Truststore}
+#### 7.4.2. 传出HTTPS请求信任库 {#Outgoing_HTTPS_Request_Truststore}
 
 当Keycloak在远程HTTPS端点上调用时，它必须验证远程服务器的证书，以确保它连接到受信任的服务器。 这对于防止中间人攻击是必要的。 必须将这些远程服务器的证书或签署这些证书的CA放在信任库中。 此信任库由Keycloak服务器管理。
 
@@ -2109,7 +2109,7 @@ Keycloak确实附带了一个利用域模式的开箱即用集群演示。 有�
 
 本节讨论在将反向代理或负载均衡器放在群集Keycloak部署之前需要配置的一些事项。 它还包括配置内置负载均衡器[Clustered Domain Example](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustered-domain-example)。
 
-#### 8.3.1. 识别客户端IP地址 {#Identifying Client IP Addresses}
+#### 8.3.1. 识别客户端IP地址 {#Identifying_Client_IP_Addresses}
 
 Keycloak中的一些功能依赖于连接到身份验证服务器的HTTP客户端的远程地址是客户端计算机的真实IP地址。 例子包括：
 
@@ -2170,7 +2170,7 @@ Keycloak中的一些功能依赖于连接到身份验证服务器的HTTP客户�
  </subsystem>
 ```
 
-#### 8.3.2. 使反向代理启用HTTPS/SSL {#Enable HTTPS/SSL with a Reverse Proxy}
+#### 8.3.2. 使反向代理启用HTTPS/SSL {#Enable_HTTPS_SSL_with_a_Reverse_Proxy}
 
 假设您的反向代理不使用端口8443进行SSL，您还需要配置重定向到HTTPS流量的端口。
 
@@ -2196,7 +2196,7 @@ Keycloak中的一些功能依赖于连接到身份验证服务器的HTTP客户�
 </socket-binding-group>
 ```
 
-#### 8.3.3. 验证配置 {#Verify Configuration}
+#### 8.3.3. 验证配置 {#Verify_Configuration}
 
 您可以通过反向代理打开路径 `/auth/realms/master/.well-known/openid-configuration` 来验证反向代理或负载均衡器配置。 例如，如果反向代理地址是 `https://acme.com/`，则打开URL `https://acme.com/auth/realms/master/.well-known/openid-configuration`。 这将显示一个JSON文档，其中列出了Keycloak的许多端点。 确保端点以反向代理或负载均衡器的地址（scheme, domain and port）开头。 通过这样做，您可以确保Keycloak正在使用正确的端点。
 
@@ -2314,7 +2314,7 @@ cd $RHSSO_NODE1
 
 通常在生产环境中，路由名称应使用与后端主机相同的名称，但不是必需的。 您可以使用其他路径名称。 例如，如果要在专用网络中隐藏Keycloak服务器的主机名。
 
-#### 8.4.1. 禁用添加路由 {#Disable adding the route}
+#### 8.4.1. 禁用添加路由 {#Disable_adding_the_route}
 
 某些负载均衡器可以配置为自行添加路由信息，而不是依赖于后端Keycloak节点。 但是，如上所述，建议通过Keycloak添加路线。 这是因为当这样做时性能得到改善，因为Keycloak知道作为特定会话的所有者的实体并且可以路由到该节点，该节点不一定是本地节点。
 
