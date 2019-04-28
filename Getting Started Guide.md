@@ -1,4 +1,4 @@
-# Keycloak入门指南 {#Getting Started Guide}
+# Keycloak入门指南 {#Getting_Started_Guide}
 
 [原文地址: https://www.keycloak.org/docs/latest/getting_started/index.html](https://www.keycloak.org/docs/latest/getting_started/index.html)
 
@@ -7,11 +7,11 @@
 
 本指南可帮助您开始使用Keycloak。 它涵盖了服务器配置和默认数据库的使用。 不包括高级部署选项。 有关功能或配置选项的更深入说明，请参阅其他参考指南。
 
-## 2. 安装和启动 {#Installing and Booting}
+## 2. 安装和启动 {#Installing_and_Booting}
 
 本节介绍如何在独立模式下启动Keycloak服务器，设置初始管理员用户，以及登录Keycloak管理控制台。
 
-### 2.1. 安装分发文件 {#Installing Distribution Files}
+### 2.1. 安装分发文件 {#Installing_Distribution_Files}
 
 下载Keycloak服务器分发文件:
 
@@ -39,11 +39,9 @@ Windows
 > unzip keycloak-6.0.1.zip
 ```
 
-### 2.2. Booting the Server
+### 2.2. 启动服务器 {#Booting_the_Server}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/first-boot/boot.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/first-boot/boot.adoc)
-
-To boot the Keycloak server, go to the `bin` directory of the server distribution and run the `standalone` boot script:
+要启动Keycloak服务器，请转到服务器分发的`bin`目录并运行`standalone`启动脚本：
 
 Linux/Unix
 
@@ -58,9 +56,7 @@ Windows
 > ...\bin\standalone.bat
 ```
 
-### 2.3. Creating the Admin Account
-
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/first-boot/initial-user.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/first-boot/initial-user.adoc)
+### 2.3. 创建管理员帐户 {#Creating_the_Admin_Account}
 
 After the server boots, open <http://localhost:8080/auth> in your web browser. The welcome page will indicate that the server is running.
 
@@ -72,7 +68,7 @@ This account will be permitted to log in to the `master` realm’s administratio
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-### 2.4. Logging in to the Admin Console
+### 2.4. 登录管理控制台 {#Logging_in_to_the_Admin_Console}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/first-boot/admin-console.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/first-boot/admin-console.adoc)
 
@@ -86,19 +82,19 @@ After you create the initial admin account, use the following steps to log in to
 
    ![admin console](assets/admin-console.png)
 
-## 3. Creating a Realm and User
+## 3. 创建领域和用户 {#Creating_a_Realm_and_User}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/first-realm.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/first-realm.adoc)
 
 In this section you will create a new realm within the Keycloak admin console and add a new user to that realm. You will use that new user to log in to your new realm and visit the built-in user account service that all users have access to.
 
-### 3.1. Before You Start
+### 3.1. 在你开始之前 {#Before_You_Start}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/first-realm/before.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/first-realm/before.adoc)
 
 Before you can create your first realm, complete the installation of Keycloak and create the initial admin user as shown in [Installing and Booting](https://www.keycloak.org/docs/latest/getting_started/index.html#_install-boot).
 
-### 3.2. Creating a New Realm
+### 3.2. 创建一个新领域 {#Creating_a_New_Realm}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/first-realm/realm.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/first-realm/realm.adoc)
 
@@ -110,7 +106,7 @@ To create a new realm, complete the following steps:
 
 When the realm is created, the main admin console page opens. Notice the current realm is now set to `demo`. Switch between managing the `master` realm and the realm you just created by clicking entries in the **Select realm** drop-down menu.
 
-### 3.3. Creating a New User
+### 3.3. 创建新用户 {#Creating_a_New_User}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/first-realm/user.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/first-realm/user.adoc)
 
@@ -126,7 +122,7 @@ To create a new user in the `demo` realm, along with a temporary password for th
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-### 3.4. User Account Service
+### 3.4. 用户帐户服务 {#User_Account_Service}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/first-realm/account.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/first-realm/account.adoc)
 
@@ -136,7 +132,7 @@ To create a new user in the `demo` realm, along with a temporary password for th
 
 The user account service page will open. Every user in a realm has access to this account service by default. From this page, you can update profile information and change or add additional credentials. For more information on this service see the [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/).
 
-## 4. Securing a JBoss Servlet Application
+## 4. 保护JBoss Servlet应用程序 {#Securing_a_JBoss_Servlet_Application}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/secure-jboss-app.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/secure-jboss-app.adoc)
 
@@ -146,7 +142,7 @@ This section describes how to secure a Java servlet application on the WildFly a
 - Creating and registering a client application in the Keycloak admin console
 - Configuring the application to be secured by Keycloak
 
-### 4.1. Before You Start
+### 4.1. 在你开始之前 {#Before_You_Start}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/secure-jboss-app/before.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/secure-jboss-app/before.adoc)
 
@@ -173,7 +169,7 @@ Windows
 
 After starting Keycloak, go to <http://localhost:8180/auth/admin/> to access the admin console.
 
-### 4.2. Installing the Client Adapter
+### 4.2. 安装客户端适配器 {#Installing_the_Client_Adapter}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/secure-jboss-app/install-client-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/secure-jboss-app/install-client-adapter.adoc)
 
@@ -232,7 +228,7 @@ Windows
 > ...\bin\standalone.bat
 ```
 
-### 4.3. Downloading, Building, and Deploying Application Code
+### 4.3. 下载，构建和部署应用程序代码{#Downloading_Building_and_Deploying_Application_Code}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/secure-jboss-app/download-quickstarts.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/secure-jboss-app/download-quickstarts.adoc)
 
@@ -266,7 +262,7 @@ To confirm that the application is successfully deployed, go to <http://localhos
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-### 4.4. Creating and Registering the Client
+### 4.4. 创建和注册客户端 {#Creating_and_Registering_the_Client}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/secure-jboss-app/create-client.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/secure-jboss-app/create-client.adoc)
 
@@ -298,7 +294,7 @@ To define and register the client in the Keycloak admin console, complete the fo
 
    ![client install selected](assets/client-install-selected.png)
 
-### 4.5. Configuring the Subsystem
+### 4.5. 配置子系统 {#Configuring_the_Subsystem}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/getting_started/topics/secure-jboss-app/subsystem.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: getting_started/topics/secure-jboss-app/subsystem.adoc)
 
