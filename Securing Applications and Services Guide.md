@@ -1,28 +1,22 @@
-# Securing Applications and Services Guide
+# ±£»¤Ó¦ÓÃ³ÌÐòºÍ·þÎñÖ¸ÄÏ {#Securing Applications and Services Guide}
 
 
 
-## 1. Overview
+## 1. ¸ÅÊö {#Overview}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/overview/overview.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/overview/overview.adoc)
+KeycloakÖ§³ÖOpenID Connect£¨OAuth 2.0µÄÀ©Õ¹£©ºÍSAML 2.0¡£ ÔÚ±£»¤¿Í»§¶ËºÍ·þÎñÊ±£¬Ê×ÏÈÐèÒªÈ·¶¨µÄÊÇÄúÒªÊ¹ÓÃµÄÁ½¸öÖÐµÄÄÄÒ»¸ö¡£ Èç¹ûÄúÔ¸Òâ£¬ÄúÒ²¿ÉÒÔÑ¡ÔñÊ¹ÓÃOpenID ConnectºÍÆäËûSAML°²È«±£»¤¡£
 
-Keycloak supports both OpenID Connect (an extension to OAuth 2.0) and SAML 2.0. When securing clients and services the first thing you need to decide is which of the two you are going to use. If you want you can also choose to secure some with OpenID Connect and others with SAML.
+To secure clients and services you are also going to need an adapter or library for the protocol you¡¯ve selected. Keycloak comes with its own adapters for selected platforms, but it is also possible to use generic OpenID Connect Resource Provider and SAML Service Provider libraries.
 
-To secure clients and services you are also going to need an adapter or library for the protocol youâ€™ve selected. Keycloak comes with its own adapters for selected platforms, but it is also possible to use generic OpenID Connect Resource Provider and SAML Service Provider libraries.
+### 1.1. Ê²Ã´ÊÇ¿Í»§¶ËÊÊÅäÆ÷? {#What_are_Client_Adapters}
 
-### 1.1. What are Client Adapters?
+Keycloak¿Í»§¶ËÊÊÅäÆ÷ÊÇÊ¹ÓÃKeycloakÇáËÉ±£»¤Ó¦ÓÃ³ÌÐòºÍ·þÎñµÄ¿â¡£ ÎÒÃÇ½«ËüÃÇ³ÆÎªÊÊÅäÆ÷¶ø²»ÊÇ¿â£¬ÒòÎªËüÃÇÌá¹©ÁËÓëµ×²ãÆ½Ì¨ºÍ¿ò¼ÜµÄ½ôÃÜ¼¯³É¡£ ÕâÊ¹µÃÎÒÃÇµÄÊÊÅäÆ÷Ò×ÓÚÊ¹ÓÃ£¬²¢ÇÒËüÃÇÐèÒªµÄ¿âÑù°å´úÂëÉÙÓÚ¿âÍ¨³£ËùÐèµÄ´úÂë¡£
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/overview/what-are-client-adapters.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/overview/what-are-client-adapters.adoc)
+### 1.2. Ö§³ÖµÄÆ½Ì¨ {#Supported_Platforms}
 
-Keycloak client adapters are libraries that makes it very easy to secure applications and services with Keycloak. We call them adapters rather than libraries as they provide a tight integration to the underlying platform and framework. This makes our adapters easy to use and they require less boilerplate code than what is typically required by a library.
+#### 1.2.1. OpenID Connect {#OpenID_Connect}
 
-### 1.2. Supported Platforms
-
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/overview/supported-platforms.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/overview/supported-platforms.adoc)
-
-#### 1.2.1. OpenID Connect
-
-##### Java
+##### Java {#Java}
 
 - [JBoss EAP](https://www.keycloak.org/docs/latest/securing_apps/index.html#_jboss_adapter)
 - [WildFly](https://www.keycloak.org/docs/latest/securing_apps/index.html#_jboss_adapter)
@@ -33,104 +27,96 @@ Keycloak client adapters are libraries that makes it very easy to secure applica
 - [Spring Boot](https://www.keycloak.org/docs/latest/securing_apps/index.html#_spring_boot_adapter)
 - [Spring Security](https://www.keycloak.org/docs/latest/securing_apps/index.html#_spring_security_adapter)
 
-##### JavaScript (client-side)
+##### JavaScript (client-side) {#JavaScript_client_side}
 
 - [JavaScript](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter)
 
-##### Node.js (server-side)
+##### Node.js (server-side) {#Node_js_server_side}
 
 - [Node.js](https://www.keycloak.org/docs/latest/securing_apps/index.html#_nodejs_adapter)
 
-#### 1.2.2. C#
+#### 1.2.2. C# {#C__}
 
 - [OWIN](https://github.com/dylanplecki/KeycloakOwinAuthentication) (community)
 
-#### 1.2.3. Python
+#### 1.2.3. Python {#Python}
 
 - [oidc](https://pypi.org/project/oic/) (generic)
 
-#### 1.2.4. Android
+#### 1.2.4. Android {#Android}
 
 - [AppAuth](https://github.com/openid/AppAuth-Android) (generic)
 - [AeroGear](https://github.com/aerogear/aerogear-android-authz) (generic)
 
-#### 1.2.5. iOS
+#### 1.2.5. iOS {#iOS}
 
 - [AppAuth](https://github.com/openid/AppAuth-iOS) (generic)
 - [AeroGear](https://github.com/aerogear/aerogear-ios-oauth2) (generic)
 
-##### Apache HTTP Server
+##### Apache HTTP Server {#Apache_HTTP_Server}
 
 - [mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc)
 
-#### 1.2.6. SAML
+#### 1.2.6. SAML {#SAML}
 
-##### Java
+##### Java {#Java}
 
 - [JBoss EAP](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml_jboss_adapter)
 - [WildFly](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml_jboss_adapter)
 - [Tomcat](https://www.keycloak.org/docs/latest/securing_apps/index.html#_tomcat_adapter)
 - [Jetty](https://www.keycloak.org/docs/latest/securing_apps/index.html#_jetty_saml_adapter)
 
-##### Apache HTTP Server
+##### Apache HTTP Server {#Apache_HTTP_Server}
 
 - [mod_auth_mellon](https://www.keycloak.org/docs/latest/securing_apps/index.html#_mod_auth_mellon)
 
-### 1.3. Supported Protocols
+### 1.3. Ö§³ÖµÄÐ­Òé {#Supported_Protocols}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/overview/supported-protocols.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/overview/supported-protocols.adoc)
+#### 1.3.1. OpenIDÁ¬½Ó {#OpenID_Connect}
 
-#### 1.3.1. OpenID Connect
+[OpenID Á¬½Ó](https://openid.net/connect/) (OIDC)ÊÇÒ»¸öÉí·ÝÑéÖ¤Ð­Òé£¬ËüÊÇ[OAuth 2.0](https://tools.ietf.org/html/rfc6749)µÄÀ©Õ¹¡£ËäÈ»OAuth 2.0Ö»ÊÇÒ»¸ö¹¹½¨ÊÚÈ¨Ð­ÒéµÄ¿ò¼Ü£¬¶øÇÒÖ÷ÒªÊÇ²»ÍêÕûµÄ£¬µ«OIDCÊÇÒ»¸öÍêÕûµÄÉí·ÝÑéÖ¤ºÍÊÚÈ¨Ð­Òé¡£ OIDC»¹´óÁ¿Ê¹ÓÃÁË[Json Web Token](https://jwt.io/) (JWT)±ê×¼¼¯¡£ÕâÐ©±ê×¼¶¨ÒåÁËÒ»ÖÖÉí·ÝÁîÅÆJSON¸ñÊ½£¬ÒÔ¼°ÒÔÒ»ÖÖ½ô´ÕÇÒwebÓÑºÃµÄ·½Ê½¶ÔÊý¾Ý½øÐÐÊý×ÖÇ©ÃûºÍ¼ÓÃÜµÄ·½·¨¡£
 
-[OpenID Connect](https://openid.net/connect/) (OIDC) is an authentication protocol that is an extension of [OAuth 2.0](https://tools.ietf.org/html/rfc6749). While OAuth 2.0 is only a framework for building authorization protocols and is mainly incomplete, OIDC is a full-fledged authentication and authorization protocol. OIDC also makes heavy use of the [Json Web Token](https://jwt.io/) (JWT) set of standards. These standards define an identity token JSON format and ways to digitally sign and encrypt that data in a compact and web-friendly way.
+Ê¹ÓÃOIDCÊ±£¬Êµ¼ÊÉÏÓÐÁ½ÖÖÓÃÀý¡£ µÚÒ»¸öÊÇÒªÇóKeycloak·þÎñÆ÷ÎªÓÃ»§ÑéÖ¤ÓÃ»§µÄÓ¦ÓÃ³ÌÐò¡£ ³É¹¦µÇÂ¼ºó£¬Ó¦ÓÃ³ÌÐò½«ÊÕµ½*identity token(Éí·ÝÁîÅÆ)*ºÍ*access token(·ÃÎÊÁîÅÆ)*¡£ *Éí·ÝÁîÅÆ*°üº¬ÓÐ¹ØÓÃ»§µÄÐÅÏ¢£¬ÀýÈçÓÃ»§Ãû£¬µç×ÓÓÊ¼þºÍÆäËû¸öÈË×ÊÁÏÐÅÏ¢¡£ *·ÃÎÊÁîÅÆ*ÓÉÁìÓò½øÐÐÊý×ÖÇ©Ãû£¬²¢°üº¬·ÃÎÊÐÅÏ¢£¨ÈçÓÃ»§½ÇÉ«Ó³Éä£©£¬Ó¦ÓÃ³ÌÐò¿ÉÒÔÊ¹ÓÃ¸ÃÐÅÏ¢À´È·¶¨ÔÊÐíÓÃ»§ÔÚÓ¦ÓÃ³ÌÐòÉÏ·ÃÎÊÄÄÐ©×ÊÔ´¡£
 
-There are really two types of use cases when using OIDC. The first is an application that asks the Keycloak server to authenticate a user for them. After a successful login, the application will receive an *identity token* and an *access token*. The *identity token* contains information about the user such as username, email, and other profile information. The *access token* is digitally signed by the realm and contains access information (like user role mappings) that the application can use to determine what resources the user is allowed to access on the application.
+µÚ¶þÖÖÓÃÀýÊÇÏ£Íû»ñµÃÔ¶³Ì·þÎñ·ÃÎÊÈ¨ÏÞµÄ¿Í»§¶Ë¡£ ÔÚÕâÖÖÇé¿öÏÂ£¬¿Í»§¶ËÒªÇóKeycloak»ñÈ¡*·ÃÎÊÁîÅÆ*£¬Ëü¿ÉÒÔ´ú±íÓÃ»§ÔÚÆäËûÔ¶³Ì·þÎñÉÏµ÷ÓÃ¡£ Keycloak¶ÔÓÃ»§½øÐÐÉí·ÝÑéÖ¤£¬È»ºóÒªÇóÓÃ»§Í¬ÒâÊÚÓè·ÃÎÊÇëÇóËüµÄ¿Í»§¶ËµÄÈ¨ÏÞ¡£ È»ºó¿Í»§¶Ë½ÓÊÕ*·ÃÎÊÁîÅÆ*¡£ ´Ë*·ÃÎÊÁîÅÆ*ÓÉÁìÓò½øÐÐÊý×ÖÇ©Ãû¡£ ¿Í»§¶Ë¿ÉÒÔÊ¹ÓÃ´Ë*·ÃÎÊÁîÅÆ*ÔÚÔ¶³Ì·þÎñÉÏ½øÐÐRESTµ÷ÓÃ¡£ REST·þÎñÌáÈ¡*·ÃÎÊÁîÅÆ*£¬ÑéÖ¤ÁîÅÆµÄÇ©Ãû£¬È»ºó¸ù¾ÝÁîÅÆÄÚµÄ·ÃÎÊÐÅÏ¢¾ö¶¨ÊÇ·ñ´¦ÀíÇëÇó¡£
 
-The second type of use cases is that of a client that wants to gain access to remote services. In this case, the client asks Keycloak to obtain an *access token* it can use to invoke on other remote services on behalf of the user. Keycloak authenticates the user then asks the user for consent to grant access to the client requesting it. The client then receives the *access token*. This *access token* is digitally signed by the realm. The client can make REST invocations on remote services using this *access token*. The REST service extracts the *access token*, verifies the signature of the token, then decides based on access information within the token whether or not to process the request.
+#### 1.3.2. SAML 2.0 {#SAML_2_0}
 
-#### 1.3.2. SAML 2.0
+[SAML 2.0](http://saml.xml.org/saml-specifications) ÊÇÓëOIDCÀàËÆµÄ¹æ·¶£¬µ«ÊÇ¸üÀÏ£¬¸ü³ÉÊì¡£ ËüµÄ¸ùÔ´ÔÚÓÚSOAPºÍ¹ý¶àµÄWS-*¹æ·¶£¬ËùÒÔËüÍùÍù±ÈOIDC¸üÈß³¤¡£ SAML 2.0Ö÷ÒªÊÇÒ»ÖÖÉí·ÝÑéÖ¤Ð­Òé£¬Í¨¹ýÔÚÉí·ÝÑéÖ¤·þÎñÆ÷ºÍÓ¦ÓÃ³ÌÐòÖ®¼ä½»»»XMLÎÄµµÀ´¹¤×÷¡£ XMLÇ©ÃûºÍ¼ÓÃÜÓÃÓÚÑéÖ¤ÇëÇóºÍÏìÓ¦¡£
 
-[SAML 2.0](http://saml.xml.org/saml-specifications) is a similar specification to OIDC but a lot older and more mature. It has its roots in SOAP and the plethora of WS-* specifications so it tends to be a bit more verbose than OIDC. SAML 2.0 is primarily an authentication protocol that works by exchanging XML documents between the authentication server and the application. XML signatures and encryption are used to verify requests and responses.
+ÔÚKeycloakÖÐ£¬SAMLÌá¹©Á½ÖÖÓÃÀý£ºä¯ÀÀÆ÷Ó¦ÓÃ³ÌÐòºÍRESTµ÷ÓÃ¡£
 
-In Keycloak SAML serves two types of use cases: browser applications and REST invocations.
+Ê¹ÓÃSAMLÊ±£¬Êµ¼ÊÉÏÓÐÁ½ÖÖÓÃÀý¡£ µÚÒ»¸öÊÇÒªÇóKeycloak·þÎñÆ÷ÎªÓÃ»§ÑéÖ¤ÓÃ»§µÄÓ¦ÓÃ³ÌÐò¡£ ³É¹¦µÇÂ¼ºó£¬Ó¦ÓÃ³ÌÐò½«ÊÕµ½Ò»¸öXMLÎÄµµ£¬ÆäÖÐ°üº¬³ÆÎªSAML¶ÏÑÔµÄÄÚÈÝ£¬¸Ã¶ÏÑÔÖ¸¶¨ÁËÓÐ¹ØÓÃ»§µÄ¸÷ÖÖÊôÐÔ¡£ ´ËXMLÎÄµµÓÉÁìÓò½øÐÐÊý×ÖÇ©Ãû£¬²¢°üº¬·ÃÎÊÐÅÏ¢£¨ÈçÓÃ»§½ÇÉ«Ó³Éä£©£¬Ó¦ÓÃ³ÌÐò¿ÉÒÔÊ¹ÓÃ¸ÃÐÅÏ¢À´È·¶¨ÔÊÐíÓÃ»§ÔÚÓ¦ÓÃ³ÌÐòÉÏ·ÃÎÊÄÄÐ©×ÊÔ´¡£
 
-There are really two types of use cases when using SAML. The first is an application that asks the Keycloak server to authenticate a user for them. After a successful login, the application will receive an XML document that contains something called a SAML assertion that specifies various attributes about the user. This XML document is digitally signed by the realm and contains access information (like user role mappings) that the application can use to determine what resources the user is allowed to access on the application.
+µÚ¶þÖÖÓÃÀýÊÇÏ£Íû»ñµÃÔ¶³Ì·þÎñ·ÃÎÊÈ¨ÏÞµÄ¿Í»§¶Ë¡£ ÔÚÕâÖÖÇé¿öÏÂ£¬¿Í»§¶ËÒªÇóKeycloak»ñÈ¡¿ÉÓÃÓÚ´ú±íÓÃ»§ÔÚÆäËûÔ¶³Ì·þÎñÉÏµ÷ÓÃµÄSAML¶ÏÑÔ¡£
 
-The second type of use cases is that of a client that wants to gain access to remote services. In this case, the client asks Keycloak to obtain a SAML assertion it can use to invoke on other remote services on behalf of the user.
+#### 1.3.3. OpenID Connect Óë SAML {#OpenID_Connect_vs_SAML}
 
-#### 1.3.3. OpenID Connect vs. SAML
+ÔÚOpenID ConnectºÍSAMLÖ®¼ä½øÐÐÑ¡Ôñ²»½ö½öÊÇÊ¹ÓÃ¸üÐÂµÄÐ­Òé£¨OIDC£©¶ø²»ÊÇ¾ÉµÄ¸ü³ÉÊìµÄÐ­Òé£¨SAML£©¡£
 
-Choosing between OpenID Connect and SAML is not just a matter of using a newer protocol (OIDC) instead of the older more mature protocol (SAML).
+ÔÚ´ó¶àÊýÇé¿öÏÂ£¬Keycloak½¨ÒéÊ¹ÓÃOIDC¡£
 
-In most cases Keycloak recommends using OIDC.
+SAMLÍùÍù±ÈOIDC¸üÈß³¤¡£
 
-SAML tends to be a bit more verbose than OIDC.
+³ýÁË½»»»Êý¾ÝµÄÏêÏ¸³Ì¶ÈÖ®Íâ£¬Èç¹ûÄú±È½Ï¹æ·¶£¬Äú»á·¢ÏÖOIDCÖ¼ÔÚÓëWebÒ»Æð¹¤×÷£¬Í¬Ê±SAML±»¸Ä×°ÎªÔÚWebÉÏÔËÐÐ¡£ ÀýÈç£¬OIDCÒ²¸üÊÊºÏHTML5/JavaScriptÓ¦ÓÃ³ÌÐò£¬ÒòÎªËü±ÈSAML¸üÈÝÒ×ÔÚ¿Í»§¶ËÊµÏÖ¡£ ÓÉÓÚÁîÅÆ²ÉÓÃJSON¸ñÊ½£¬Òò´ËJavaScript¸üÒ×ÓÚÊ¹ÓÃ¡£ Äú»¹½«ÕÒµ½Ò»Ð©ºÜºÃµÄ¹¦ÄÜ£¬¿ÉÒÔ¸üÇáËÉµØÔÚWebÓ¦ÓÃ³ÌÐòÖÐÊµÏÖ°²È«ÐÔ¡£ ÀýÈç£¬²é¿´¹æ·¶ÓÃÓÚÇáËÉÈ·¶¨ÓÃ»§ÊÇ·ñÈÔÔÚµÇÂ¼µÄ[iframe¼¼ÇÉ](https://openid.net/specs/openid-connect-session-1_0.html#ChangeNotification)¡£
 
-Beyond verbosity of exchanged data, if you compare the specifications youâ€™ll find that OIDC was designed to work with the web while SAML was retrofitted to work on top of the web. For example, OIDC is also more suited for HTML5/JavaScript applications because it is easier to implement on the client side than SAML. As tokens are in the JSON format, they are easier to consume by JavaScript. You will also find several nice features that make implementing security in your web applications easier. For example, check out the [iframe trick](https://openid.net/specs/openid-connect-session-1_0.html#ChangeNotification) that the specification uses to easily determine if a user is still logged in or not.
+SAMLËäÈ»ÓÐËüµÄÓÃÍ¾¡£ ÕýÈçÄúËù¿´µ½µÄ£¬OIDC¹æ·¶µÄ·¢Õ¹£¬Äú»á·¢ÏÖËüÃÇÊµÏÖÁËSAML¶àÄêÀ´ËùÓµÓÐµÄÔ½À´Ô½¶àµÄ¹¦ÄÜ¡£ ÎÒÃÇ¾­³£¿´µ½ÈËÃÇÑ¡ÔñSAML¶ø²»ÊÇOIDC£¬ÒòÎªÈËÃÇÈÏÎªËü¸ü³ÉÊì£¬Ò²ÒòÎªËûÃÇÒÑ¾­ÓÐÁËÏÖÓÐµÄÓ¦ÓÃ³ÌÐò¡£
 
-SAML has its uses though. As you see the OIDC specifications evolve you see they implement more and more features that SAML has had for years. What we often see is that people pick SAML over OIDC because of the perception that it is more mature and also because they already have existing applications that are secured with it.
+## 2. OpenID Á¬½ÓÆ÷ {#OpenID_Connect}
 
-## 2. OpenID Connect
+±¾½Ú½éÉÜÈçºÎÊ¹ÓÃKeycloakÊÊÅäÆ÷»òÍ¨ÓÃOpenID Connect×ÊÔ´Ìá¹©³ÌÐò¿âÍ¨¹ýOpenID Connect±£»¤Ó¦ÓÃ³ÌÐòºÍ·þÎñ¡£
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/oidc-overview.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/oidc-overview.adoc)
+### 2.1. JavaÊÊÅäÆ÷ {#Java_Adapters}
 
-This section describes how you can secure applications and services with OpenID Connect using either Keycloak adapters or generic OpenID Connect Resource Provider libraries.
+KeycloakÎªJavaÓ¦ÓÃ³ÌÐòÌá¹©ÁËÒ»ÏµÁÐ²»Í¬µÄÊÊÅäÆ÷¡£ Ñ¡ÔñÕýÈ·µÄÊÊÅäÆ÷È¡¾öÓÚÄ¿±êÆ½Ì¨¡£
 
-### 2.1. Java Adapters
+ËùÓÐJavaÊÊÅäÆ÷¹²Ïí[Java Adapters Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config) ÕÂ½ÚÖÐÃèÊöµÄÒ»×é³£ÓÃÅäÖÃÑ¡Ïî¡£
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/java-adapters.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/java-adapters.adoc)
+#### 2.1.1. JavaÊÊÅäÆ÷ÅäÖÃ {#Java_Adapter_Config}
 
-Keycloak comes with a range of different adapters for Java application. Selecting the correct adapter depends on the target platform.
+KeycloakÖ§³ÖµÄÃ¿¸öJavaÊÊÅäÆ÷¶¼¿ÉÒÔÍ¨¹ý¼òµ¥µÄJSONÎÄ¼þ½øÐÐÅäÖÃ¡£ Õâ¿ÉÄÜÊÇÕâÑùµÄ£º
 
-All Java adapters share a set of common configuration options described in the [Java Adapters Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config) chapter.
-
-#### 2.1.1. Java Adapter Config
-
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/java-adapter-config.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/java-adapter-config.adoc)
-
-Each Java adapter supported by Keycloak can be configured by a simple JSON file. This is what one might look like:
-
-```
+```json
 {
   "realm" : "demo",
   "resource" : "customer-portal",
@@ -167,280 +153,272 @@ Each Java adapter supported by Keycloak can be configured by a simple JSON file.
 }
 ```
 
-You can use `${â€¦}` enclosure for system property replacement. For example `${jboss.server.config.dir}` would be replaced by `/path/to/Keycloak`. Replacement of environment variables is also supported via the `env` prefix, e.g. `${env.MY_ENVIRONMENT_VARIABLE}`.
+Äú¿ÉÒÔÊ¹ÓÃ`${¡­}`À´Ìæ»»ÏµÍ³ÊôÐÔ¡£ÀýÈç`${jboss.server.config.dir}`½«Ìæ»»Îª`/path/to/Keycloak`¡£»·¾³±äÁ¿µÄÌæ»»Ò²Í¨¹ý`env`Ç°×ºµÃµ½Ö§³Ö£¬ÀýÈç¡£ `${env.MY_ENVIRONMENT_VARIABLE}`¡£
 
-The initial config file can be obtained from the admin console. This can be done by opening the admin console, select `Clients` from the menu and clicking on the corresponding client. Once the page for the client is opened click on the `Installation` tab and select `Keycloak OIDC JSON`.
+¿ÉÒÔ´Ó¹ÜÀí¿ØÖÆÌ¨»ñÈ¡³õÊ¼ÅäÖÃÎÄ¼þ¡£ Õâ¿ÉÒÔÍ¨¹ý´ò¿ª¹ÜÀí¿ØÖÆÌ¨£¬´Ó²Ëµ¥ÖÐÑ¡Ôñ`Clients`²¢µ¥»÷ÏàÓ¦µÄ¿Í»§¶ËÀ´Íê³É¡£ ´ò¿ª¿Í»§¶ËÒ³Ãæºó£¬µ¥»÷`Installation`Ñ¡Ïî¿¨£¬È»ºóÑ¡Ôñ`Keycloak OIDC JSON`¡£
 
-Here is a description of each configuration option:
+ÒÔÏÂÊÇÃ¿¸öÅäÖÃÑ¡ÏîµÄËµÃ÷£º
 
 - realm
 
-  Name of the realm. This is *REQUIRED.*
+  ÁìÓòµÄÃû³Æ¡£ ÕâÊÇ*±ØÐèµÄ*
 
 - resource
 
-  The client-id of the application. Each application has a client-id that is used to identify the application. This is *REQUIRED.*
+  Ó¦ÓÃ³ÌÐòµÄ¿Í»§¶ËID¡£ Ã¿¸öÓ¦ÓÃ³ÌÐò¶¼ÓÐÒ»¸öclient-id£¬ÓÃÓÚ±êÊ¶Ó¦ÓÃ³ÌÐò¡£ ÕâÊÇ*±ØÐèµÄ*
 
 - realm-public-key
 
-  PEM format of the realm public key. You can obtain this from the administration console. This is *OPTIONAL* and itâ€™s not recommended to set it. If not set, the adapter will download this from Keycloak and it will always re-download it when needed (eg. Keycloak rotate itâ€™s keys). However if realm-public-key is set, then adapter will never download new keys from Keycloak, so when Keycloak rotate itâ€™s keys, adapter will break.
+  ÁìÓò¹«Ô¿µÄPEM¸ñÊ½¡£ Äú¿ÉÒÔ´Ó¹ÜÀí¿ØÖÆÌ¨»ñÈ¡´ËÐÅÏ¢¡£ ÕâÊÇ*¿ÉÑ¡µÄ*£¬²»½¨ÒéÉèÖÃËü¡£ Èç¹ûÃ»ÓÐÉèÖÃ£¬ÊÊÅäÆ÷½«´ÓKeycloakÏÂÔØËü£¬Ëü½«ÔÚÐèÒªÊ±×ÜÊÇÖØÐÂÏÂÔØ£¨ÀýÈçKeycloakÐý×ªËüµÄ¼ü£©¡£ µ«ÊÇ£¬Èç¹ûÉèÖÃÁËrealm-public-key£¬ÄÇÃ´ÊÊÅäÆ÷ÓÀÔ¶²»»á´ÓKeycloakÏÂÔØÐÂÃÜÔ¿£¬ËùÒÔµ±KeycloakÐý×ªËüµÄÃÜÔ¿Ê±£¬ÊÊÅäÆ÷½«»áÖÐ¶Ï¡£
 
 - auth-server-url
 
-  The base URL of the Keycloak server. All other Keycloak pages and REST service endpoints are derived from this. It is usually of the form `https://host:port/auth`. This is *REQUIRED.*
+  Keycloak·þÎñÆ÷µÄ»ù±¾URL¡£ ËùÓÐÆäËûKeycloakÒ³ÃæºÍREST·þÎñ¶Ëµã¶¼Ô´ÓÚ´Ë¡£ ËüµÄÐÎÊ½Í¨³£Îª`https://host:port/auth`¡£ ÕâÊÇ*±ØÐèµÄ*
 
 - ssl-required
 
-  Ensures that all communication to and from the Keycloak server is over HTTPS. In production this should be set to `all`. This is *OPTIONAL*. The default value is *external* meaning that HTTPS is required by default for external requests. Valid values are 'all', 'external' and 'none'.
+  È·±£ÓëKeycloak·þÎñÆ÷Ö®¼äµÄËùÓÐÍ¨ÐÅ¾ùÍ¨¹ýHTTPS½øÐÐ¡£ ÔÚÉú²úÖÐ£¬ÕâÓ¦¸ÃÉèÖÃÎª¡°all¡±¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª*external*±íÊ¾Ä¬ÈÏÇé¿öÏÂHTTPSÊÇÍâ²¿ÇëÇóËù±ØÐèµÄ¡£ ÓÐÐ§ÖµÎª¡°all¡±£¬¡°external¡±ºÍ¡°none¡±¡£
 
 - confidential-port
 
-  The confidential port used by the Keycloak server for secure connections over SSL/TLS. This is *OPTIONAL*. The default value is *8443*.
+  Keycloak·þÎñÆ÷ÓÃÓÚÍ¨¹ýSSL/TLS½øÐÐ°²È«Á¬½ÓµÄ»úÃÜ¶Ë¿Ú¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª*8443*¡£
 
 - use-resource-role-mappings
 
-  If set to true, the adapter will look inside the token for application level role mappings for the user. If false, it will look at the realm level for user role mappings. This is *OPTIONAL*. The default value is *false*.
+  Èç¹ûÉèÖÃÎªtrue£¬ÄÇÃ´ÊÊÅäÆ÷½«ÔÚÁîÅÆÄÚ²éÕÒÓÃ»§µÄÓ¦ÓÃ³ÌÐò¼¶±ð½ÇÉ«Ó³Éä¡£ Èç¹ûÎªfalse£¬Ëü½«²é¿´ÓÃ»§½ÇÉ«Ó³ÉäµÄÁìÓò¼¶±ð¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª* false*¡£
 
 - public-client
 
-  If set to true, the adapter will not send credentials for the client to Keycloak. This is *OPTIONAL*. The default value is *false*.
+  Èç¹ûÉèÖÃÎªtrue£¬ÔòÊÊÅäÆ÷½«²»»á½«¿Í»§¶ËµÄÆ¾¾Ý·¢ËÍµ½Keycloak¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª*false*¡£
 
 - enable-cors
 
-  This enables CORS support. It will handle CORS preflight requests. It will also look into the access token to determine valid origins. This is *OPTIONAL*. The default value is *false*.
+  ÕâÊ¹CORSÖ§³Ö³ÉÎª¿ÉÄÜ¡£ Ëü½«´¦ÀíCORSÔ¤¼ìÇëÇó¡£ Ëü»¹½«²é¿´·ÃÎÊÁîÅÆÒÔÈ·¶¨ÓÐÐ§µÄÀ´Ô´¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª*false*¡£
 
 - cors-max-age
 
-  If CORS is enabled, this sets the value of the `Access-Control-Max-Age` header. This is *OPTIONAL*. If not set, this header is not returned in CORS responses.
+  Èç¹ûÆôÓÃÁËCORS£¬ÔòÉèÖÃ`Access-Control-Max-Age`±êÍ·µÄÖµ¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Èç¹ûÎ´ÉèÖÃ£¬ÔòÔÚCORSÏìÓ¦ÖÐ²»·µ»Ø´Ë±êÍ·¡£
 
 - cors-allowed-methods
 
-  If CORS is enabled, this sets the value of the `Access-Control-Allow-Methods` header. This should be a comma-separated string. This is *OPTIONAL*. If not set, this header is not returned in CORS responses.
+  Èç¹ûÆôÓÃÁËCORS£¬ÔòÉèÖÃ`Access-Control-Allow-Methods`±êÍ·µÄÖµ¡£ ÕâÓ¦¸ÃÊÇ¶ººÅ·Ö¸ôµÄ×Ö·û´®¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Èç¹ûÎ´ÉèÖÃ£¬ÔòÔÚCORSÏìÓ¦ÖÐ²»·µ»Ø´Ë±êÍ·¡£
 
 - cors-allowed-headers
 
-  If CORS is enabled, this sets the value of the `Access-Control-Allow-Headers` header. This should be a comma-separated string. This is *OPTIONAL*. If not set, this header is not returned in CORS responses.
+  Èç¹ûÆôÓÃÁËCORS£¬ÔòÉèÖÃ`Access-Control-Allow-Headers`±êÍ·µÄÖµ¡£ ÕâÓ¦¸ÃÊÇ¶ººÅ·Ö¸ôµÄ×Ö·û´®¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Èç¹ûÎ´ÉèÖÃ£¬ÔòÔÚCORSÏìÓ¦ÖÐ²»·µ»Ø´Ë±êÍ·¡£
 
 - cors-exposed-headers
 
-  If CORS is enabled, this sets the value of the `Access-Control-Expose-Headers` header. This should be a comma-separated string. This is *OPTIONAL*. If not set, this header is not returned in CORS responses.
+  Èç¹ûÆôÓÃÁËCORS£¬ÔòÉèÖÃ`Access-Control-Expose-Headers`±êÍ·µÄÖµ¡£ ÕâÓ¦¸ÃÊÇ¶ººÅ·Ö¸ôµÄ×Ö·û´®¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Èç¹ûÎ´ÉèÖÃ£¬ÔòÔÚCORSÏìÓ¦ÖÐ²»·µ»Ø´Ë±êÍ·¡£
 
 - bearer-only
 
-  This should be set to *true* for services. If enabled the adapter will not attempt to authenticate users, but only verify bearer tokens. This is *OPTIONAL*. The default value is *false*.
+  ¶ÔÓÚ·þÎñ£¬Ó¦½«ÆäÉèÖÃÎª*true*¡£ Èç¹ûÆôÓÃ£¬ÊÊÅäÆ÷½«²»»á³¢ÊÔ¶ÔÓÃ»§½øÐÐÉí·ÝÑéÖ¤£¬¶øÖ»»áÑéÖ¤³ÐÔØÁîÅÆ¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª*false*¡£
 
 - autodetect-bearer-only
 
-  This should be set to *true* if your application serves both a web application and web services (e.g. SOAP or REST). It allows you to redirect unauthenticated users of the web application to the Keycloak login page, but send an HTTP `401` status code to unauthenticated SOAP or REST clients instead as they would not understand a redirect to the login page. Keycloak auto-detects SOAP or REST clients based on typical headers like `X-Requested-With`, `SOAPAction` or `Accept`. The default value is *false*.
+  Èç¹ûÄúµÄÓ¦ÓÃ³ÌÐòÍ¬Ê±Ìá¹©WebÓ¦ÓÃ³ÌÐòºÍWeb·þÎñ£¨ÀýÈçSOAP»òREST£©£¬ÔòÓ¦½«ÆäÉèÖÃÎª*true*¡£ ËüÔÊÐíÄú½«Î´¾­Éí·ÝÑéÖ¤µÄWebÓ¦ÓÃ³ÌÐòÓÃ»§ÖØ¶¨Ïòµ½KeycloakµÇÂ¼Ò³Ãæ£¬µ«ÊÇ½«HTTP`401`×´Ì¬´úÂë·¢ËÍ¸øÎ´¾­Éí·ÝÑéÖ¤µÄSOAP»òREST¿Í»§¶Ë£¬ÒòÎªËûÃÇÎÞ·¨Àí½âÖØ¶¨Ïòµ½µÇÂ¼Ò³Ãæ¡£ Keycloak»ùÓÚµäÐÍµÄ±êÌâ×Ô¶¯¼ì²âSOAP»òREST¿Í»§¶Ë£¬Èç`X-Requested-With`£¬`SOAPAction` »ò `Accept`¡£ Ä¬ÈÏÖµÎª*false*¡£
 
 - enable-basic-auth
 
-  This tells the adapter to also support basic authentication. If this option is enabled, then *secret* must also be provided. This is *OPTIONAL*. The default value is *false*.
+  Õâ¸æËßÊÊÅäÆ÷Ò²Ö§³Ö»ù±¾Éí·ÝÑéÖ¤¡£ Èç¹ûÆôÓÃ´ËÑ¡Ïî£¬Ôò»¹±ØÐëÌá¹©*secret*¡£ ÕâÊÇ*Ñ¡µÄ*¡£ Ä¬ÈÏÖµÎª*false*¡£
 
 - expose-token
 
-  If `true`, an authenticated browser client (via a JavaScript HTTP invocation) can obtain the signed access token via the URL `root/k_query_bearer_token`. This is *OPTIONAL*. The default value is *false*.
+  Èç¹ûÊÇ`true`£¬Ôò¾­¹ýÉí·ÝÑéÖ¤µÄä¯ÀÀÆ÷¿Í»§¶Ë£¨Í¨¹ýJavaScript HTTPµ÷ÓÃ£©¿ÉÒÔÍ¨¹ýURL `root/k_query_bearer_token`»ñÈ¡Ç©Ãû·ÃÎÊÁîÅÆ¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª*false*¡£
 
 - credentials
 
-  Specify the credentials of the application. This is an object notation where the key is the credential type and the value is the value of the credential type. Currently password and jwt is supported. This is *REQUIRED* only for clients with 'Confidential' access type.
+  Ö¸¶¨Ó¦ÓÃ³ÌÐòµÄÆ¾¾Ý¡£ ÕâÊÇÒ»¸ö¶ÔÏó±íÊ¾·¨£¬ÆäÖÐ¼üÊÇÆ¾Ö¤ÀàÐÍ£¬ÖµÊÇÆ¾Ö¤ÀàÐÍµÄÖµ¡£ Ä¿Ç°Ö§³ÖÃÜÂëºÍjwt¡£ ÕâÊÇ*±ØÐëµÄ*½öÊÊÓÃÓÚ¾ßÓÐ'Confidential(»úÃÜ)'·ÃÎÊÀàÐÍµÄ¿Í»§¡£
 
 - connection-pool-size
 
-  Adapters will make separate HTTP invocations to the Keycloak server to turn an access code into an access token. This config option defines how many connections to the Keycloak server should be pooled. This is *OPTIONAL*. The default value is `20`.
+  ÊÊÅäÆ÷½«¶ÔKeycloak·þÎñÆ÷½øÐÐµ¥¶ÀµÄHTTPµ÷ÓÃ£¬ÒÔ½«·ÃÎÊ´úÂë×ª»»Îª·ÃÎÊÁîÅÆ¡£ ´ËÅäÖÃÑ¡Ïî¶¨ÒåÓ¦¸ÃºÏ²¢µ½Keycloak·þÎñÆ÷µÄÁ¬½ÓÊý¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª`20`¡£
 
 - disable-trust-manager
 
-  If the Keycloak server requires HTTPS and this config option is set to `true` you do not have to specify a truststore. This setting should only be used during development and **never** in production as it will disable verification of SSL certificates. This is *OPTIONAL*. The default value is `false`.
+  Èç¹ûKeycloak·þÎñÆ÷ÐèÒªHTTPS²¢ÇÒ´ËÅäÖÃÑ¡ÏîÉèÖÃÎªtrue£¬Ôò²»±ØÖ¸¶¨ÐÅÈÎ¿â¡£ ´ËÉèÖÃ½öÓ¦ÔÚ¿ª·¢ÆÚ¼äÊ¹ÓÃ£¬**ÓÀÔ¶**²»ÒªÔÚÉú²úÖÐÊ¹ÓÃ£¬ÒòÎªËü½«½ûÓÃSSLÖ¤ÊéµÄÑéÖ¤¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª`false`¡£
 
 - allow-any-hostname
 
-  If the Keycloak server requires HTTPS and this config option is set to `true` the Keycloak serverâ€™s certificate is validated via the truststore, but host name validation is not done. This setting should only be used during development and **never** in production as it will disable verification of SSL certificates. This seting may be useful in test environments This is *OPTIONAL*. The default value is `false`.
+  Èç¹ûKeycloak·þÎñÆ÷ÐèÒªHTTPS²¢ÇÒ´ËÅäÖÃÑ¡ÏîÉèÖÃÎª`true`£¬ÔòÍ¨¹ýÐÅÈÎ¿âÑéÖ¤Keycloak·þÎñÆ÷µÄÖ¤Êé£¬µ«²»»á½øÐÐÖ÷»úÃûÑéÖ¤¡£ ´ËÉèÖÃ½öÓ¦ÔÚ¿ª·¢ÆÚ¼äÊ¹ÓÃ£¬**ÓÀÔ¶**²»ÒªÔÚÉú²úÖÐÊ¹ÓÃ£¬ÒòÎªËü½«½ûÓÃSSLÖ¤ÊéµÄÑéÖ¤¡£ ´Ë²âÊÔÔÚ²âÊÔ»·¾³ÖÐ¿ÉÄÜºÜÓÐÓÃ¡£ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª`false`¡£
 
 - proxy-url
 
-  The URL for the HTTP proxy if one is used.
+  HTTP´úÀíµÄURL£¨Èç¹ûÊ¹ÓÃ£©¡£
 
 - truststore
 
-  The value is the file path to a truststore file. If you prefix the path with `classpath:`, then the truststore will be obtained from the deploymentâ€™s classpath instead. Used for outgoing HTTPS communications to the Keycloak server. Client making HTTPS requests need a way to verify the host of the server they are talking to. This is what the trustore does. The keystore contains one or more trusted host certificates or certificate authorities. You can create this truststore by extracting the public certificate of the Keycloak serverâ€™s SSL keystore. This is *REQUIRED* unless `ssl-required` is `none` or `disable-trust-manager` is `true`.
+  ¸ÃÖµÊÇÐÅÈÎ¿âÎÄ¼þµÄÎÄ¼þÂ·¾¶¡£ Èç¹ûÔÚÂ·¾¶Ç°¼ÓÉÏ`classpath:`£¬ÄÇÃ´½«´Ó²¿ÊðµÄÀàÂ·¾¶ÖÐ»ñÈ¡ÐÅÈÎ¿â¡£ ÓÃÓÚÓëKeycloak·þÎñÆ÷µÄ´«³öHTTPSÍ¨ÐÅ¡£ ·¢³öHTTPSÇëÇóµÄ¿Í»§¶ËÐèÒªÒ»ÖÖ·½·¨À´ÑéÖ¤ËûÃÇÕýÔÚÓëÖ®Í¨ÐÅµÄ·þÎñÆ÷µÄÖ÷»ú¡£ Õâ¾ÍÊÇÎ¯ÍÐÈËËù×öµÄ¡£ ÃÜÔ¿¿â°üº¬Ò»¸ö»ò¶à¸ö¿ÉÐÅÖ÷»úÖ¤Êé»òÖ¤Êé°ä·¢»ú¹¹¡£ Äú¿ÉÒÔÍ¨¹ýÌáÈ¡Keycloak·þÎñÆ÷µÄSSLÃÜÔ¿¿âµÄ¹«¹²Ö¤ÊéÀ´´´½¨´ËÐÅÈÎ¿â¡£ ÕâÊÇ* ±ØÐëµÄ*£¬³ý·Ç`ssl-required`ÊÇ`none`»ò`disable-trust-manager` ÊÇ `true`¡£
 
 - truststore-password
 
-  Password for the truststore. This is *REQUIRED* if `truststore` is set and the truststore requires a password.
+  ÐÅÈÎ¿âµÄÃÜÂë¡£ Èç¹ûÉèÖÃÁË`truststore`²¢ÇÒÐÅÈÎ¿âÐèÒªÃÜÂë£¬ÄÇÃ´ÕâÊÇ*±ØÐëµÄ*¡£
 
 - client-keystore
 
-  This is the file path to a keystore file. This keystore contains client certificate for two-way SSL when the adapter makes HTTPS requests to the Keycloak server. This is *OPTIONAL*.
+  ÕâÊÇÃÜÔ¿¿âÎÄ¼þµÄÎÄ¼þÂ·¾¶¡£ µ±ÊÊÅäÆ÷ÏòKeycloak·þÎñÆ÷·¢³öHTTPSÇëÇóÊ±£¬´ËÃÜÔ¿¿â°üº¬Ë«ÏòSSLµÄ¿Í»§¶ËÖ¤Êé¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£
 
 - client-keystore-password
 
-  Password for the client keystore. This is *REQUIRED* if `client-keystore` is set.
+  ¿Í»§¶ËÃÜÔ¿¿âµÄÃÜÂë¡£ Èç¹ûÉèÖÃÁË`client-keystore`£¬ÕâÊÇ*±ØÐëµÄ*¡£
 
 - client-key-password
 
-  Password for the clientâ€™s key. This is *REQUIRED* if `client-keystore` is set.
+  ¿Í»§ÃÜÔ¿µÄÃÜÂë¡£ Èç¹ûÉèÖÃÁË`client-keystore`£¬ÕâÊÇ*±ØÐëµÄ*¡£
 
 - always-refresh-token
 
-  If *true*, the adapter will refresh token in every request.
+  Èç¹û*true*£¬ÔòÊÊÅäÆ÷½«ÔÚÃ¿¸öÇëÇóÖÐË¢ÐÂÁîÅÆ¡£
 
 - register-node-at-startup
 
-  If *true*, then adapter will send registration request to Keycloak. Itâ€™s *false* by default and useful only when application is clustered. See [Application Clustering](https://www.keycloak.org/docs/latest/securing_apps/index.html#_applicationclustering) for details
+  Èç¹û*true*£¬ÔòÊÊÅäÆ÷½«ÏòKeycloak·¢ËÍ×¢²áÇëÇó¡£ ËüÄ¬ÈÏÎª*false*£¬½öÔÚÓ¦ÓÃ³ÌÐò¼¯ÈºÊ±²ÅÓÐÓÃ¡£ ÓÐ¹ØÏêÏ¸ÐÅÏ¢£¬Çë²ÎÔÄ[Ó¦ÓÃ³ÌÐòÈº¼¯](https://www.keycloak.org/docs/latest/securing_apps/index.html#_applicationclustering)
 
 - register-node-period
 
-  Period for re-registration adapter to Keycloak. Useful when application is clustered. See [Application Clustering](https://www.keycloak.org/docs/latest/securing_apps/index.html#_applicationclustering) for details
+  ÖØÐÂ×¢²áÊÊÅäÆ÷µ½KeycloakµÄÆÚÏÞ¡£ Ó¦ÓÃ³ÌÐò¼¯ÈºÊ±ºÜÓÐÓÃ¡£ ÓÐ¹ØÏêÏ¸ÐÅÏ¢£¬Çë²ÎÔÄ[Ó¦ÓÃ³ÌÐòÈº¼¯](https://www.keycloak.org/docs/latest/securing_apps/index.html#_applicationclustering)
 
 - token-store
 
-  Possible values are *session* and *cookie*. Default is *session*, which means that adapter stores account info in HTTP Session. Alternative *cookie* means storage of info in cookie. See [Application Clustering](https://www.keycloak.org/docs/latest/securing_apps/index.html#_applicationclustering) for details
+  ¿ÉÄÜµÄÖµÊÇ*session*ºÍ*cookie*¡£ Ä¬ÈÏÎª*session*£¬ÕâÒâÎ¶×ÅÊÊÅäÆ÷ÔÚHTTP»á»°ÖÐ´æ´¢ÕÊ»§ÐÅÏ¢¡£ Èç¹ûÊÇ*cookie*±íÊ¾ÔÚcookieÖÐ´æ´¢ÐÅÏ¢¡£ ÓÐ¹ØÏêÏ¸ÐÅÏ¢£¬Çë²ÎÔÄ[Ó¦ÓÃ³ÌÐòÈº¼¯](https://www.keycloak.org/docs/latest/securing_apps/index.html#_applicationclustering)
 
 - token-cookie-path
 
-  When using a cookie store, this option sets the path of the cookie used to store account info. If itâ€™s a relative path, then it is assumed that the application is running in a context root, and is interpreted relative to that context root. If itâ€™s an absolute path, then the absolute path is used to set the cookie path. Defaults to use paths relative to the context root.
+  Ê¹ÓÃcookie´æ´¢Ê±£¬´ËÑ¡ÏîÉèÖÃÓÃÓÚ´æ´¢ÕÊ»§ÐÅÏ¢µÄcookieµÄÂ·¾¶¡£ Èç¹ûËüÊÇÏà¶ÔÂ·¾¶£¬Ôò¼Ù¶¨Ó¦ÓÃ³ÌÐòÔÚÉÏÏÂÎÄ¸ùÖÐÔËÐÐ£¬²¢ÇÒÏà¶ÔÓÚ¸ÃÉÏÏÂÎÄ¸ù½øÐÐ½âÊÍ¡£ Èç¹ûËüÊÇ¾ø¶ÔÂ·¾¶£¬Ôò¾ø¶ÔÂ·¾¶ÓÃÓÚÉèÖÃcookieÂ·¾¶¡£ Ä¬ÈÏÊ¹ÓÃÏà¶ÔÓÚÉÏÏÂÎÄ¸ùµÄÂ·¾¶¡£
 
 - principal-attribute
 
-  OpenID Connect ID Token attribute to populate the UserPrincipal name with. If token attribute is null, defaults to `sub`. Possible values are `sub`, `preferred_username`, `email`, `name`, `nickname`, `given_name`, `family_name`.
+  Ê¹ÓÃOpenID Connect ID TokenÊôÐÔÌî³äUserPrincipalÃû³Æ¡£ Èç¹ûtokenÊôÐÔÎªnull£¬ÔòÄ¬ÈÏÎª`sub`¡£ ¿ÉÄÜµÄÖµÊÇ`sub`£¬`preferred_username`£¬`email`£¬`name`£¬`nickname`£¬`given_name`£¬`family_name`¡£
 
 - turn-off-change-session-id-on-login
 
-  The session id is changed by default on a successful login on some platforms to plug a security attack vector. Change this to true if you want to turn this off This is *OPTIONAL*. The default value is *false*.
+  Ä¬ÈÏÇé¿öÏÂ£¬ÔÚÄ³Ð©Æ½Ì¨ÉÏ³É¹¦µÇÂ¼Ê±»á¸ü¸Ä»á»°IDÒÔ²åÈë°²È«¹¥»÷ÏòÁ¿¡£ Èç¹ûÒª½«Æä¹Ø±Õ£¬Çë½«´Ë¸ü¸ÄÎªtrueÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª*false*¡£
 
 - token-minimum-time-to-live
 
-  Amount of time, in seconds, to preemptively refresh an active access token with the Keycloak server before it expires. This is especially useful when the access token is sent to another REST client where it could expire before being evaluated. This value should never exceed the realmâ€™s access token lifespan. This is *OPTIONAL*. The default value is `0` seconds, so adapter will refresh access token just if itâ€™s expired.
+  ÔÚKeycloak·þÎñÆ÷µ½ÆÚÖ®Ç°Ê¹ÓÃKeycloak·þÎñÆ÷ÇÀÏÈË¢ÐÂ»î¶¯·ÃÎÊÁîÅÆµÄÊ±¼ä£¨ÒÔÃëÎªµ¥Î»£©¡£ µ±·ÃÎÊÁîÅÆ±»·¢ËÍµ½ÁíÒ»¸öREST¿Í»§¶ËÊ±£¬ÕâÔÚËü¿ÉÄÜÔÚÆÀ¹ÀÖ®Ç°µ½ÆÚÊ±ÌØ±ðÓÐÓÃ¡£ ¸ÃÖµ²»Ó¦³¬¹ýÁìÓòµÄ·ÃÎÊÁîÅÆÊÙÃü¡£ ÕâÊÇ*¿ÉÑ¡µÄ*¡£ Ä¬ÈÏÖµÎª`0`Ãë£¬Òò´ËÊÊÅäÆ÷½«Ë¢ÐÂ·ÃÎÊÁîÅÆ£¬Èç¹ûËüÒÑ¹ýÆÚ¡£
 
 - min-time-between-jwks-requests
 
-  Amount of time, in seconds, specifying minimum interval between two requests to Keycloak to retrieve new public keys. It is 10 seconds by default. Adapter will always try to download new public key when it recognize token with unknown `kid` . However it wonâ€™t try it more than once per 10 seconds (by default). This is to avoid DoS when attacker sends lots of tokens with bad `kid` forcing adapter to send lots of requests to Keycloak.
+  Ö¸¶¨Keycloak¼ìË÷ÐÂ¹«Ô¿µÄÁ½¸öÇëÇóÖ®¼äµÄ×îÐ¡¼ä¸ôµÄÊ±¼äÁ¿£¨ÒÔÃëÎªµ¥Î»£©¡£ Ä¬ÈÏÎª10Ãë¡£ µ±ÊÊÅäÆ÷Ê¶±ð´øÓÐÎ´Öª`kid`µÄÁîÅÆÊ±£¬Ëü×ÜÊÇ»á³¢ÊÔÏÂÔØÐÂµÄ¹«Ô¿¡£ µ«ÊÇ£¬Ëü²»»áÃ¿10Ãë³¢ÊÔÒ»´Î£¨Ä¬ÈÏÇé¿öÏÂ£©¡£ ÕâÊÇÎªÁË±ÜÃâDoS£¬µ±¹¥»÷Õß·¢ËÍ´óÁ¿´øÓÐ´íÎó`kid`Ç¿ÖÆÊÊÅäÆ÷µÄÁîÅÆÏòKeycloak·¢ËÍ´óÁ¿ÇëÇóÊ±¡£
 
 - public-key-cache-ttl
 
-  Amount of time, in seconds, specifying maximum interval between two requests to Keycloak to retrieve new public keys. It is 86400 seconds (1 day) by default. Adapter will always try to download new public key when it recognize token with unknown `kid` . If it recognize token with known `kid`, it will just use the public key downloaded previously. However at least once per this configured interval (1 day by default) will be new public key always downloaded even if the `kid` of token is already known.
+  Ö¸¶¨Keycloak¼ìË÷ÐÂ¹«Ô¿µÄÁ½¸öÇëÇóÖ®¼äµÄ×î´ó¼ä¸ôµÄÊ±¼äÁ¿£¨ÒÔÃëÎªµ¥Î»£©¡£ Ä¬ÈÏÎª86400Ãë£¨1Ìì£©¡£ µ±ÊÊÅäÆ÷Ê¶±ð´øÓÐÎ´Öª`kid`µÄÁîÅÆÊ±£¬Ëü×ÜÊÇ»á³¢ÊÔÏÂÔØÐÂµÄ¹«Ô¿¡£ Èç¹ûËüÊ¶±ðÒÑÖª`kid`µÄÁîÅÆ£¬Ëü½«Ö»Ê¹ÓÃÏÈÇ°ÏÂÔØµÄ¹«Ô¿¡£ µ«ÊÇ£¬Ã¿¸ö´ËÅäÖÃµÄ¼ä¸ô£¨Ä¬ÈÏÎª1Ìì£©ÖÁÉÙÒ»´Î½«ÊÇÐÂµÄ¹«Ô¿£¬¼´Ê¹ÁîÅÆµÄ`kid`ÒÑÖª£¬Ò²»áÒ»Ö±ÏÂÔØ¡£
 
 - ignore-oauth-query-parameter
 
-  Defaults to `false`, if set to `true` will turn off processing of the `access_token` query parameter for bearer token processing. Users will not be able to authenticate if they only pass in an `access_token`
+  Ä¬ÈÏÎª`false`£¬Èç¹ûÉèÖÃÎª`true`½«¹Ø±Õ´¦Àí³ÐÔØÁîÅÆ´¦ÀíµÄ`access_token`²éÑ¯²ÎÊý¡£ Èç¹ûÓÃ»§Ö»´«Èë`access_token`£¬ËûÃÇ½«ÎÞ·¨½øÐÐÉí·ÝÑéÖ¤
 
 - redirect-rewrite-rules
 
-  If needed, specify the Redirect URI rewrite rule. This is an object notation where the key is the regular expression to which the Redirect URI is to be matched and the value is the replacement String. `$` character can be used for backreferences in the replacement String.
+  Èç¹ûÐèÒª£¬ÇëÖ¸¶¨ÖØ¶¨ÏòURIÖØÐ´¹æÔò¡£ ÕâÊÇÒ»¸ö¶ÔÏó±íÊ¾·¨£¬ÆäÖÐ¼üÊÇÒªÓëRedirect URIÆ¥ÅäµÄÕýÔò±í´ïÊ½£¬ÖµÊÇÌæ»»String¡£ `$`×Ö·û¿ÉÓÃÓÚÌæ»»StringÖÐµÄ·´ÏòÒýÓÃ¡£
 
 - verify-token-audience
 
-  If set to `true`, then during authentication with the bearer token, the adapter will verify whether the token contains this client name (resource) as an audience. The option is especially useful for services, which primarily serve requests authenticated by the bearer token. This is set to `false` by default, however for improved security, it is recommended to enable this. See [Audience Support](https://www.keycloak.org/docs/6.0/server_admin/#_audience) for more details about audience support.
+  Èç¹ûÉèÖÃÎª¡°true¡±£¬ÔòÔÚÊ¹ÓÃ³ÐÔØÁîÅÆ½øÐÐÉí·ÝÑéÖ¤ÆÚ¼ä£¬ÊÊÅäÆ÷½«ÑéÖ¤ÁîÅÆÊÇ·ñ°üº¬´Ë¿Í»§¶ËÃû³Æ£¨×ÊÔ´£©×÷ÎªÊÜÖÚ¡£ ¸ÃÑ¡Ïî¶ÔÓÚÖ÷Òª·þÎñÓÚÓÉ³ÐÔØÁîÅÆÑéÖ¤µÄÇëÇóµÄ·þÎñÌØ±ðÓÐÓÃ¡£ Ä¬ÈÏÉèÖÃÎª`false`£¬µ«ÎªÁËÌá¸ß°²È«ÐÔ£¬½¨ÒéÆôÓÃ´Ë¹¦ÄÜ¡£ ÓÐ¹ØÊÜÖÚÈºÌåÖ§³ÖµÄÏêÏ¸ÐÅÏ¢£¬Çë²ÎÔÄ[ÊÜÖÚÈºÌåÖ§³Ö](https://www.keycloak.org/docs/6.0/server_admin/#_audience)¡£
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/jboss-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/jboss-adapter.adoc)
+#### 2.1.2. JBoss EAP/WildFly ÊÊÅäÆ÷ {#JBoss_EAP_WildFly_Adapter}
 
-#### 2.1.2. JBoss EAP/WildFly Adapter
+ÎªÁËÄÜ¹»±£»¤²¿ÊðÔÚJBoss EAP£¬WildFly»òJBoss ASÉÏµÄWARÓ¦ÓÃ³ÌÐò£¬Äú±ØÐë°²×°ºÍÅäÖÃKeycloakÊÊÅäÆ÷×ÓÏµÍ³¡£ È»ºó£¬ÄúÓÐÁ½¸öÑ¡ÏîÀ´±£»¤ÄúµÄWAR¡£
 
-To be able to secure WAR apps deployed on JBoss EAP, WildFly or JBoss AS, you must install and configure the Keycloak adapter subsystem. You then have two options to secure your WARs.
+Äú¿ÉÒÔÔÚWARÖÐÌá¹©ÊÊÅäÆ÷ÅäÖÃÎÄ¼þ£¬²¢ÔÚweb.xmlÖÐ½«auth-method¸ü¸ÄÎªKEYCLOAK¡£
 
-You can provide an adapter config file in your WAR and change the auth-method to KEYCLOAK within web.xml.
+»òÕß£¬Äú¸ù±¾²»±ØÐÞ¸ÄWAR£¬²¢ÇÒ¿ÉÒÔÍ¨¹ýÅäÖÃÎÄ¼þÖÐµÄKeycloakÊÊÅäÆ÷×ÓÏµÍ³ÅäÖÃ£¨ÀýÈç`standalone.xml`£©À´±£»¤Ëü¡£ ±¾½Ú½«½éÉÜÕâÁ½ÖÖ·½·¨¡£
 
-Alternatively, you donâ€™t have to modify your WAR at all and you can secure it via the Keycloak adapter subsystem configuration in the configuration file, such as `standalone.xml`. Both methods are described in this section.
+##### °²×°ÊÊÅäÆ÷ {#Installing_the_adapter}
 
-##### Installing the adapter
+¸ù¾ÝÄúÊ¹ÓÃµÄ·þÎñÆ÷°æ±¾£¬ÊÊÅäÆ÷¿É×÷Îªµ¥¶ÀµÄ´æµµÌá¹©¡£
 
-Adapters are available as a separate archive depending on what server version you are using.
+> ÎÒÃÇÖ»²âÊÔºÍÎ¬»¤ÊÊÅäÆ÷£¬²¢ÔÚ·¢²¼Ê±Ìá¹©×îÐÂ°æ±¾µÄWildFly¡£ Ò»µ©·¢²¼ÁËÐÂ°æ±¾µÄWildFly£¬µ±Ç°µÄÊÊÅäÆ÷½«±»ÆúÓÃ£¬²¢ÇÒÔÚÏÂÒ»¸öWildFly°æ±¾·¢²¼ºó½«É¾³ý¶ÔËüÃÇµÄÖ§³Ö¡£ ÁíÒ»ÖÖ·½·¨ÊÇ½«Ó¦ÓÃ³ÌÐò´ÓWildFlyÇÐ»»µ½JBoss EAP£¬ÒòÎªJBoss EAPÊÊÅäÆ÷µÄÖ§³ÖÊ±¼ä¸ü³¤¡£
 
-|      | We only test and maintain adapter with the most recent version of WildFly available upon the release. Once new version of WildFly is released, the current adapters become deprecated and support for them will be removed after next WildFly release. The other alternative is to switch your applications from WildFly to the JBoss EAP, as the JBoss EAP adapter is supported for much longer period. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+°²×°WildFly 9»ò¸üÐÂ°æ±¾:
 
-Install on WildFly 9 or newer:
-
-```
+```bash
 $ cd $WILDFLY_HOME
 $ unzip keycloak-wildfly-adapter-dist-6.0.1.zip
 ```
 
-Install on WildFly 8:
+°²×°WildFly 8:
 
-```
+```bash
 $ cd $WILDFLY_HOME
 $ unzip keycloak-wf8-adapter-dist-6.0.1.zip
 ```
 
-Install on JBoss EAP 7:
+°²×°JBoss EAP 7:
 
-```
+```bash
 $ cd $EAP_HOME
 $ unzip keycloak-eap7-adapter-dist-6.0.1.zip
 ```
 
-Install on JBoss EAP 6:
+°²×°JBoss EAP 6:
 
-```
+```bash
 $ cd $EAP_HOME
 $ unzip keycloak-eap6-adapter-dist-6.0.1.zip
 ```
 
-Install on JBoss AS 7.1:
+°²×°JBoss AS 7.1:
 
-```
+```bash
 $ cd $JBOSS_HOME
 $ unzip keycloak-as7-adapter-dist-6.0.1.zip
 ```
 
-This ZIP archive contains JBoss Modules specific to the Keycloak adapter. It also contains JBoss CLI scripts to configure the adapter subsystem.
+´ËZIP´æµµ°üº¬ÌØ¶¨ÓÚKeycloakÊÊÅäÆ÷µÄJBossÄ£¿é¡£ Ëü»¹°üº¬JBoss CLI½Å±¾ÒÔÅäÖÃÊÊÅäÆ÷×ÓÏµÍ³¡£
 
-To configure the adapter subsystem if the server is not running execute:
+ÒªÔÚ·þÎñÆ÷Î´ÔËÐÐÊ±ÅäÖÃÊÊÅäÆ÷×ÓÏµÍ³£¬ÇëÖ´ÐÐ£º
 
-|      | Alternatively, you can specify the `server.config` property while installing adapters from the command line to install adapters using a different config, for example: `-Dserver.config=standalone-ha.xml`. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> »òÕß£¬Äú¿ÉÒÔÔÚ´ÓÃüÁîÐÐ°²×°ÊÊÅäÆ÷Ê±Ö¸¶¨`server.config`ÊôÐÔ£¬ÒÔÊ¹ÓÃÆäËûÅäÖÃ°²×°ÊÊÅäÆ÷£¬ÀýÈç£º`-Dserver.config=standalone-ha.xml`¡£
 
-WildFly 11 or newer
+WildFly 11 »òÕß ¸üÐÂ°æ±¾
 
-```
+```bash
 $ ./bin/jboss-cli.sh --file=bin/adapter-elytron-install-offline.cli
 ```
 
-WildFly 10 or older
+WildFly 10 »òÕß ¸ü¾É°æ±¾
 
-```
+```bash
 $ ./bin/jboss-cli.sh --file=bin/adapter-install-offline.cli
 ```
 
-|      | It is possible to use the legacy non-Elytron adapter on WildFly 11 or newer as well, meaning you can use `adapter-install-offline.cli` even on those versions. However, we recommend to use the newer Elytron adapter. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> ¿ÉÒÔÔÚWildFly 11»ò¸üÐÂ°æ±¾ÉÏÊ¹ÓÃ´«Í³µÄ·ÇElytronÊÊÅäÆ÷£¬ÕâÒâÎ¶×Å¼´Ê¹ÔÚÕâÐ©°æ±¾ÉÏÒ²¿ÉÒÔÊ¹ÓÃ`adapter-install-offline.cli`¡£ µ«ÊÇ£¬ÎÒÃÇ½¨ÒéÊ¹ÓÃ½ÏÐÂµÄElytronÊÊÅäÆ÷¡£
 
-Alternatively, if the server is running execute:
+»òÕß£¬Èç¹û·þÎñÆ÷ÕýÔÚÔËÐÐ£¬ÔòÖ´ÐÐ£º
 
-WildFly 11 or newer
+WildFly 11 »òÕß ¸üÐÂ°æ±¾
 
-```
+```bash
 $ ./bin/jboss-cli.sh -c --file=bin/adapter-elytron-install.cli
 ```
 
-WildFly 10 or older
+WildFly 10 »òÕß ¸ü¾É°æ±¾
 
-```
+```bash
 $ ./bin/jboss-cli.sh -c --file=bin/adapter-install.cli
 ```
 
 ##### JBoss SSO
 
-WildFly has built-in support for single sign-on for web applications deployed to the same WildFly instance. This should not be enabled when using Keycloak.
+WildFlyÄÚÖÃÖ§³Ö²¿Êðµ½Í¬Ò»WildFlyÊµÀýµÄWebÓ¦ÓÃ³ÌÐòµÄµ¥µãµÇÂ¼¡£ Ê¹ÓÃKeycloakÊ±²»Ó¦ÆôÓÃ´Ë¹¦ÄÜ¡£
 
-##### Required Per WAR Configuration
+##### Ã¿¸öWARÅäÖÃ±ØÐè
 
-This section describes how to secure a WAR directly by adding configuration and editing files within your WAR package.
+±¾½Ú½éÉÜÈçºÎÍ¨¹ýÔÚWAR°üÖÐÌí¼ÓÅäÖÃºÍ±à¼­ÎÄ¼þÀ´Ö±½Ó±£»¤WAR¡£
 
-The first thing you must do is create a `keycloak.json` adapter configuration file within the `WEB-INF` directory of your WAR.
+Äú±ØÐë×öµÄµÚÒ»¼þÊÂÊÇÔÚWARµÄ`WEB-INF`Ä¿Â¼ÖÐ´´½¨Ò»¸ö`keycloak.json`ÊÊÅäÆ÷ÅäÖÃÎÄ¼þ¡£
 
-The format of this configuration file is described in the [Java adapter configuration](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config) section.
+´ËÅäÖÃÎÄ¼þµÄ¸ñÊ½ÔÚ[JavaÊÊÅäÆ÷ÅäÖÃ](https://www.keycloak.org/docs/latest/securing_apps/index.html#java_adapter_config) ²¿·ÖÖÐ½øÐÐÁËÃèÊö¡£
 
-Next you must set the `auth-method` to `KEYCLOAK` in `web.xml`. You also have to use standard servlet security to specify role-base constraints on your URLs.
+½ÓÏÂÀ´£¬Äú±ØÐëÔÚ`web.xml`ÖÐ½«`auth-method`ÉèÖÃÎª`KEYCLOAK`¡£ Äú»¹±ØÐëÊ¹ÓÃ±ê×¼servlet°²È«ÐÔÀ´Ö¸¶¨URLÉÏµÄ½ÇÉ«»ù´¡Ô¼Êø¡£
 
-Hereâ€™s an example:
+ÕâÊÇÒ»¸öÀý×Ó£º
 
-```
+```xml
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
@@ -487,11 +465,11 @@ Hereâ€™s an example:
 </web-app>
 ```
 
-##### Securing WARs via Adapter Subsystem
+##### Í¨¹ýÊÊÅäÆ÷×ÓÏµÍ³±£»¤WAR
 
-You do not have to modify your WAR to secure it with Keycloak. Instead you can externally secure it via the Keycloak Adapter Subsystem. While you donâ€™t have to specify KEYCLOAK as an `auth-method`, you still have to define the `security-constraints` in `web.xml`. You do not, however, have to create a `WEB-INF/keycloak.json` file. This metadata is instead defined within server configuration (i.e. `standalone.xml`) in the Keycloak subsystem definition.
+Äú²»±ØÐÞ¸ÄWARÒÔÊ¹ÓÃKeycloak±£»¤Ëü¡£ Ïà·´£¬Äú¿ÉÒÔÍ¨¹ýKeycloakÊÊÅäÆ÷×ÓÏµÍ³´ÓÍâ²¿±£»¤Ëü¡£ ËäÈ»Äú²»±Ø½«KEYCLOAKÖ¸¶¨Îª`auth-method`£¬µ«ÈÔÐèÒªÔÚ`web.xml`ÖÐ¶¨Òå`security-constraints`¡£ µ«ÊÇ£¬Äú²»±Ø´´½¨`WEB-INF/keycloak.json`ÎÄ¼þ¡£ ¶øÊÇÔÚKeycloak×ÓÏµÍ³¶¨ÒåÖÐµÄ·þÎñÆ÷ÅäÖÃ£¨¼´`standalone.xml`£©ÖÐ¶¨Òå´ËÔªÊý¾Ý¡£
 
-```
+```xml
 <extensions>
   <extension module="org.keycloak.keycloak-adapter-subsystem"/>
 </extensions>
@@ -509,15 +487,15 @@ You do not have to modify your WAR to secure it with Keycloak. Instead you can e
 </profile>
 ```
 
-The `secure-deployment` `name` attribute identifies the WAR you want to secure. Its value is the `module-name` defined in `web.xml` with `.war` appended. The rest of the configuration corresponds pretty much one to one with the `keycloak.json` configuration options defined in [Java adapter configuration](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config).
+`secure-deployment``name`ÊôÐÔ±êÊ¶Òª±£»¤µÄWAR¡£ ËüµÄÖµÊÇ`web.xml`ÖÐ¶¨ÒåµÄ`module-name`£¬¸½¼ÓÁË`.war`¡£ ÆäÓàµÄÅäÖÃ¼¸ºõÓë[Java adapter configuration](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config)ÖÐ¶¨ÒåµÄ`keycloak.json`ÅäÖÃÑ¡ÏîÒ»Ò»¶ÔÓ¦¡£
 
-The exception is the `credential` element.
+ÀýÍâÊÇ`credential`ÔªËØ¡£
 
-To make it easier for you, you can go to the Keycloak Administration Console and go to the Client/Installation tab of the application this WAR is aligned with. It provides an example XML file you can cut and paste.
+ÎªÁË·½±ãÄú£¬Äú¿ÉÒÔ×ªµ½Keycloak¹ÜÀí¿ØÖÆÌ¨²¢×ªµ½´ËWARËù¶ÔÓ¦µÄÓ¦ÓÃ³ÌÐòµÄ¿Í»§¶Ë/°²×°Ñ¡Ïî¿¨¡£ ËüÌá¹©ÁËÒ»¸ö¿ÉÒÔ¼ôÇÐºÍÕ³ÌùµÄÊ¾ÀýXMLÎÄ¼þ¡£
 
-If you have multiple deployments secured by the same realm you can share the realm configuration in a separate element. For example:
+Èç¹ûÄúÓÐ¶à¸öÓÉÍ¬Ò»ÁìÓò±£»¤µÄ²¿Êð£¬Ôò¿ÉÒÔÔÚµ¥¶ÀµÄÔªËØÖÐ¹²ÏíÁìÓòÅäÖÃ¡£ ÀýÈç£º
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:keycloak:1.1">
     <realm name="demo">
         <auth-server-url>http://localhost:8080/auth</auth-server-url>
@@ -541,11 +519,11 @@ If you have multiple deployments secured by the same realm you can share the rea
 </subsystem>
 ```
 
-##### Security Domain
+##### °²È«Óò
 
-To propagate the security context to the EJB tier you need to configure it to use the "keycloak" security domain. This can be achieved with the @SecurityDomain annotation:
+Òª½«°²È«ÉÏÏÂÎÄ´«²¥µ½EJB²ã£¬ÄúÐèÒª½«ÆäÅäÖÃÎªÊ¹ÓÃ¡°keycloak¡±°²È«Óò¡£ Õâ¿ÉÒÔÍ¨¹ý@SecurityDomain×¢ÊÍÀ´ÊµÏÖ£º
 
-```
+```java
 import org.jboss.ejb3.annotation.SecurityDomain;
 ...
 
@@ -560,192 +538,174 @@ public class CustomerService {
 }
 ```
 
-#### 2.1.3. Installing JBoss EAP Adapter from an RPM
+#### 2.1.3. ´ÓRPM°²×°JBoss EAPÊÊÅäÆ÷ {#Installing_JBoss_EAP_Adapter_from_an_RPM}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/jboss-adapter-rpms.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/jboss-adapter-rpms.adoc)
+´ÓRPM°²×°EAP 7ÊÊÅäÆ÷£º
 
-Install the EAP 7 Adapters from an RPM:
+> ÔÚRed Hat Enterprise Linux 7ÖÐ£¬`term channel`±»Ìæ»»Îª`term repository`¡£ ÔÚÕâÐ©ËµÃ÷ÖÐ£¬½öÊ¹ÓÃ`term repository`¡£
 
-|      | With Red Hat Enterprise Linux 7, the term channel was replaced with the term repository. In these instructions only the term repository is used. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+Äú±ØÐëÏÈ¶©ÔÄJBoss EAP 7.2´æ´¢¿â£¬È»ºó²ÅÄÜ´ÓRPM°²×°EAP 7ÊÊÅäÆ÷¡£
 
-You must subscribe to the JBoss EAP 7.2 repository before you can install the EAP 7 adapters from an RPM.
+ÏÈ¾öÌõ¼þ
 
-Prerequisites
+1. È·±£ÄúµÄRed Hat Enterprise LinuxÏµÍ³ÒÑÊ¹ÓÃRed Hat Subscription Manager×¢²áµ½ÄúµÄÕÊ»§¡£ ÓÐ¹Ø¸ü¶àÐÅÏ¢£¬Çë²ÎÔÄ[Red Hat¶©ÔÄ¹ÜÀíÎÄµµ](https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html-single/quick_registration_for_rhel/index)¡£
+2. Èç¹ûÄúÒÑ¾­¶©ÔÄÁËÁíÒ»¸öJBoss EAP´æ´¢¿â£¬Ôò±ØÐëÏÈÈ¡Ïû¶©ÔÄ¸Ã´æ´¢¿â¡£
 
-1. Ensure that your Red Hat Enterprise Linux system is registered to your account using Red Hat Subscription Manager. For more information see the [Red Hat Subscription Management documentation](https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html-single/quick_registration_for_rhel/index).
-2. If you are already subscribed to another JBoss EAP repository, you must unsubscribe from that repository first.
+Ê¹ÓÃRed Hat¶©ÔÄ¹ÜÀíÆ÷£¬Ê¹ÓÃÒÔÏÂÃüÁî¶©ÔÄJBoss EAP 7.2´æ´¢¿â¡£¸ù¾ÝÄúµÄRed Hat Enterprise Linux°æ±¾£¬½«<rhel_version>Ìæ»»Îª6»ò7¡£</rhel_version>
 
-Using Red Hat Subscription Manager, subscribe to the JBoss EAP 7.2 repository using the following command. Replace <RHEL_VERSION> with either 6 or 7 depending on your Red Hat Enterprise Linux version.
-
-```
+```bash
 $ sudo subscription-manager repos --enable=jb-eap-7-for-rhel-<RHEL_VERSION>-server-rpms
 ```
 
-Install the EAP 7 adapters for OIDC using the following command:
+Ê¹ÓÃÒÔÏÂÃüÁî°²×°OIDCµÄEAP 7ÊÊÅäÆ÷:
 
-```
+```bash
 $ sudo yum install eap7-keycloak-adapter-sso7_3
 ```
 
-|      | The default EAP_HOME path for the RPM installation is /opt/rh/eap7/root/usr/share/wildfly. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> RPM°²×°µÄÄ¬ÈÏEAP_HOMEÂ·¾¶ÊÇ:/opt/rh/eap7/root/usr/share/wildfly¡£
 
-Run the appropriate module installation script.
+ÔËÐÐÊÊµ±µÄÄ£¿é°²×°½Å±¾¡£
 
-For the OIDC module, enter the following command:
+¶ÔÓÚOIDCÄ£¿é£¬ÊäÈëÒÔÏÂÃüÁî:
 
-```
+```bash
 $ $EAP_HOME/bin/jboss-cli.sh -c --file=$EAP_HOME/bin/adapter-install.cli
 ```
 
-Your installation is complete.
+°²×°Íê³É¡£
 
-Install the EAP 6 Adapters from an RPM:
+´ÓRPM°²×°EAP 6ÊÊÅäÆ÷:
 
-|      | With Red Hat Enterprise Linux 7, the term channel was replaced with the term repository. In these instructions only the term repository is used. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> ÔÚRed Hat Enterprise Linux 7ÖÐ£¬`term channel`±»`term repository`Ìæ»»¡£ÔÚÕâÐ©Ö¸ÁîÖÐ£¬Ö»Ê¹ÓÃ`term repository`¡£
 
-You must subscribe to the JBoss EAP 6.0 repository before you can install the EAP 6 adapters from an RPM.
+ÔÚ´ÓRPM°²×°EAP 6ÊÊÅäÆ÷Ö®Ç°£¬±ØÐë¶©ÔÄJBoss EAP 6.0´æ´¢¿â¡£
 
-Prerequisites
+ÏÈ¾öÌõ¼þ
 
-1. Ensure that your Red Hat Enterprise Linux system is registered to your account using Red Hat Subscription Manager. For more information see the [Red Hat Subscription Management documentation](https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html-single/quick_registration_for_rhel/index).
-2. If you are already subscribed to another JBoss EAP repository, you must unsubscribe from that repository first.
+1. È·±£ÄúµÄRed Hat Enterprise LinuxÏµÍ³Ê¹ÓÃRed Hat Subscription Manager×¢²áµ½ÄúµÄÕÊ»§¡£ÓÐ¹Ø¸ü¶àÐÅÏ¢£¬Çë²Î¼û[Red Hat¶©ÔÄ¹ÜÀíÎÄµµ](https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html-single/quick_registration_for_rhel/index)¡£
+2. Èç¹ûÄúÒÑ¾­¶©ÔÄÁËÁíÒ»¸öJBoss EAP´æ´¢¿â£¬Ôò±ØÐëÊ×ÏÈ´Ó¸Ã´æ´¢¿âÈ¡Ïû¶©ÔÄ¡£
 
-Using Red Hat Subscription Manager, subscribe to the JBoss EAP 6.0 repository using the following command. Replace <RHEL_VERSION> with either 6 or 7 depending on your Red Hat Enterprise Linux version.
+Ê¹ÓÃRed Hat¶©ÔÄ¹ÜÀíÆ÷£¬Ê¹ÓÃÒÔÏÂÃüÁî¶©ÔÄJBoss EAP 6.0´æ´¢¿â¡£¸ù¾ÝÄúµÄRed Hat Enterprise Linux°æ±¾£¬½«<rhel_version>Ìæ»»Îª6»ò7¡£</rhel_version>
 
-```
+```bash
 $ sudo subscription-manager repos --enable=jb-eap-6-for-rhel-<RHEL_VERSION>-server-rpms
 ```
 
-Install the EAP 6 adapters for OIDC using the following command:
+Ê¹ÓÃÒÔÏÂÃüÁî°²×°OIDCµÄEAP 6ÊÊÅäÆ÷:
 
-```
+```bash
 $ sudo yum install keycloak-adapter-sso7_3-eap6
 ```
 
-|      | The default EAP_HOME path for the RPM installation is /opt/rh/eap6/root/usr/share/wildfly. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> RPM°²×°µÄÄ¬ÈÏEAP_HOMEÂ·¾¶ÊÇ/opt/rh/eap6/root/usr/share/wildfly¡£ 
 
-Run the appropriate module installation script.
+ÔËÐÐÊÊµ±µÄÄ£¿é°²×°½Å±¾¡£
 
-For the OIDC module, enter the following command:
+¶ÔÓÚOIDCÄ£¿é£¬ÊäÈëÒÔÏÂÃüÁî:
 
-```
+```bash
 $ $EAP_HOME/bin/jboss-cli.sh -c --file=$EAP_HOME/bin/adapter-install.cli
 ```
 
-Your installation is complete.
+°²×°Íê³É¡£
 
-#### 2.1.4. JBoss Fuse 6 Adapter
+#### 2.1.4. JBoss Fuse 6 ÊÊÅäÆ÷ {#JBoss_Fuse_6_Adapter}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse-adapter.adoc)
+KeycloakÖ§³Ö±£»¤ÔÚ[JBoss Fuse 6](https://developers.redhat.com/products/fuse/overview/)ÖÐÔËÐÐµÄwebÓ¦ÓÃ³ÌÐò¡£
 
-Keycloak supports securing your web applications running inside [JBoss Fuse 6](https://developers.redhat.com/products/fuse/overview/).
+JBoss Fuse 6ÀûÓÃ[Jetty 9ÊÊÅäÆ÷](https://www.keycloak.org/docs/latest/securing_apps/index.html#_jetty9_adapter)×÷ÎªJBoss Fuse 6.3.0 Rollup 5Óë[Jetty 9.2·þÎñÆ÷](http://www.eclipse.org/jetty/)À¦°óÔÚÒ»ÆðºÍJettyÓÃÓÚÔËÐÐ¸÷ÖÖWebÓ¦ÓÃ³ÌÐò¡£
 
-JBoss Fuse 6 leverages [Jetty 9 adapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#_jetty9_adapter) as JBoss Fuse 6.3.0 Rollup 5 is bundled with [Jetty 9.2 server](http://www.eclipse.org/jetty/) under the covers and Jetty is used for running various kinds of web applications.
+> Fuse 6Î¨Ò»ÊÜÖ§³ÖµÄ°æ±¾ÊÇ×îÐÂ°æ±¾¡£ Èç¹ûÊ¹ÓÃÔçÆÚ°æ±¾µÄFuse 6£¬ÔòÄ³Ð©¹¦ÄÜ¿ÉÄÜÎÞ·¨Õý³£¹¤×÷¡£ ÌØ±ðÊÇ£¬[Hawtio](https://hawt.io/)¼¯³É²»ÊÊÓÃÓÚÔçÆÚ°æ±¾µÄFuse 6¡£
 
-|      | The only supported version of Fuse 6 is the latest release. If you use earlier versions of Fuse 6, it is possible that some functions will not work correctly. In particular, the [Hawtio](https://hawt.io/) integration will not work with earlier versions of Fuse 6. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+FuseÖ§³ÖÒÔÏÂÏîÄ¿µÄ°²È«ÐÔ:
 
-Security for the following items is supported for Fuse:
+- Ê¹ÓÃPax Web WAR ExtenderÔÚFuseÉÏ²¿Êð¾­µäµÄWARÓ¦ÓÃ³ÌÐò
+- Ê¹ÓÃPax Web°×°åÀ©Õ¹Æ÷½«servlet×÷ÎªOSGI·þÎñ²¿ÊðÔÚFuseÉÏ
+- [Apache Camel](http://camel.apache.org/)Ê¹ÓÃ[Camel Jetty](http://camel.apache.org/jetty.html)×é¼þÔËÐÐµÄJetty¶Ëµã
+- [Apache CXF](http://cxf.apache.org/)¶ËµãÔÚ×Ô¼º¶ÀÁ¢µÄ[JettyÒýÇæ](http://cxf.apache.org/docs/jetty-configuration.html)ÉÏÔËÐÐ
+- [Apache CXF](http://cxf.apache.org/)ÔÚCXF servletÌá¹©µÄÄ¬ÈÏÒýÇæÉÏÔËÐÐµÄ¶Ëµã
+- SSHºÍJMX¹ÜÀíÔ±·ÃÎÊÈ¨ÏÞ
+- [Hawtio¹ÜÀí¿ØÖÆÌ¨](https://hawt.io/)
 
-- Classic WAR applications deployed on Fuse with Pax Web War Extender
-- Servlets deployed on Fuse as OSGI services with Pax Web Whiteboard Extender
-- [Apache Camel](http://camel.apache.org/) Jetty endpoints running with the [Camel Jetty](http://camel.apache.org/jetty.html) component
-- [Apache CXF](http://cxf.apache.org/) endpoints running on their own separate [Jetty engine](http://cxf.apache.org/docs/jetty-configuration.html)
-- [Apache CXF](http://cxf.apache.org/) endpoints running on the default engine provided by the CXF servlet
-- SSH and JMX admin access
-- [Hawtio administration console](https://hawt.io/)
+##### ÔÚFuse 6ÖÐ±£»¤WebÓ¦ÓÃ³ÌÐò {#Securing_Your_Web_Applications_Inside_Fuse_6}
 
-##### Securing Your Web Applications Inside Fuse 6
+Äú±ØÐëÏÈ°²×°Keycloak Karaf¹¦ÄÜ¡£ ½ÓÏÂÀ´£¬ÄúÐèÒª¸ù¾ÝÒª±£»¤µÄÓ¦ÓÃ³ÌÐòÀàÐÍÖ´ÐÐÕâÐ©²½Öè¡£ ËùÓÐÒýÓÃµÄWebÓ¦ÓÃ³ÌÐò¶¼ÐèÒª½«Keycloak JettyÉí·ÝÑéÖ¤Æ÷×¢Èëµ×²ãJetty·þÎñÆ÷¡£ ÊµÏÖ´ËÄ¿±êµÄ²½ÖèÈ¡¾öÓÚÓ¦ÓÃ³ÌÐòÀàÐÍ¡£ Ï¸½ÚÃèÊöÈçÏÂ¡£
 
-You must first install the Keycloak Karaf feature. Next you will need to perform the steps according to the type of application you want to secure. All referenced web applications require injecting the Keycloak Jetty authenticator into the underlying Jetty server. The steps to achieve this depend on the application type. The details are described below.
+×îºÃµÄÆðµãÊÇ¿´¿´×÷Îª`fuse`Ä¿Â¼ÖÐKeycloakÊ¾ÀýµÄÒ»²¿·ÖÀ¦°óµÄFuseÑÝÊ¾¡£ Í¨¹ý²âÊÔºÍÀí½âÑÝÊ¾£¬´ó¶àÊý²½Öè¶¼Ó¦¸ÃÊÇ¿ÉÒÔÀí½âµÄ¡£
 
-The best place to start is look at Fuse demo bundled as part of Keycloak examples in directory `fuse` . Most of the steps should be understandable from testing and understanding the demo.
+##### °²×°Keycloak¹¦ÄÜ {#Installing_the_Keycloak_Feature}
 
-##### Installing the Keycloak Feature
+Äú±ØÐëÊ×ÏÈÔÚJBoss Fuse»·¾³ÖÐ°²×°`keycloak`¹¦ÄÜ¡£ keycloak¹¦ÄÜ°üÀ¨FuseÊÊÅäÆ÷ºÍËùÓÐµÚÈý·½ÒÀÀµÏî¡£ Äú¿ÉÒÔ´ÓMaven´æ´¢¿â»ò´æµµÖÐ°²×°Ëü¡£
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse/install-feature.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse/install-feature.adoc)
+###### ´ÓMaven´æ´¢¿â°²×° {#Installing_from_the_Maven_Repository}
 
-You must first install the `keycloak` feature in the JBoss Fuse environment. The keycloak feature includes the Fuse adapter and all third-party dependencies. You can install it either from the Maven repository or from an archive.
+×÷ÎªÏÈ¾öÌõ¼þ£¬Äú±ØÐëÔÚÏß²¢ÇÒ¿ÉÒÔ·ÃÎÊMaven´æ´¢¿â¡£
 
-###### Installing from the Maven Repository
+¶ÔÓÚÉçÇøÀ´Ëµ£¬Ö»ÒªÔÚmavenÖÐÑë´æ´¢¿âÖÐÌá¹©ËùÓÐ¹¤¼þºÍµÚÈý·½ÒÀÀµÏî¾Í×ã¹»ÁË¡£
 
-As a prerequisite, you must be online and have access to the Maven repository.
+ÒªÊ¹ÓÃMaven´æ´¢¿â°²×°keycloak¹¦ÄÜ£¬ÇëÍê³ÉÒÔÏÂ²½Öè£º
 
-For community itâ€™s sufficient to be online as all the artifacts and 3rd party dependencies should be available in the maven central repository.
-
-To install the keycloak feature using the Maven repository, complete the following steps:
-
-1. Start JBoss Fuse 6.3.0 Rollup 5; then in the Karaf terminal type:
+1. Æô¶¯JBoss Fuse 6.3.0 Rollup 5; È»ºóÔÚKarafÖÕ¶ËÀàÐÍ£º
 
    ```
    features:addurl mvn:org.keycloak/keycloak-osgi-features/6.0.1/xml/features
    features:install keycloak
    ```
 
-2. You might also need to install the Jetty 9 feature:
+2. Äú¿ÉÄÜ»¹ÐèÒª°²×°Jetty 9¹¦ÄÜ£º
 
    ```
    features:install keycloak-jetty9-adapter
    ```
 
-3. Ensure that the features were installed:
-
-```
-features:list | grep keycloak
-```
-
-###### Installing from the ZIP bundle
-
-This is useful if you are offline or do not want to use Maven to obtain the JAR files and other artifacts.
-
-To install the Fuse adapter from the ZIP archive, complete the following steps:
-
-1. Download the Keycloak Fuse adapter ZIP archive.
-
-2. Unzip it into the root directory of JBoss Fuse. The dependencies are then installed under the `system` directory. You can overwrite all existing jar files.
-
-   Use this for JBoss Fuse 6.3.0 Rollup 5:
+3. È·±£ÒÑ°²×°¹¦ÄÜ£º
 
    ```
+   features:list | grep keycloak
+   ```
+
+###### ´ÓZIPÀ¦°ó°ü°²×° {#Installing_from_the_ZIP_bundle}
+
+Èç¹ûÄú´¦ÓÚÍÑ»ú×´Ì¬»ò²»ÏëÊ¹ÓÃMaven»ñÈ¡JARÎÄ¼þºÍÆäËû¹¤¼þ£¬Õâ½«·Ç³£ÓÐÓÃ¡£
+
+Òª´ÓZIP´æµµ°²×°FuseÊÊÅäÆ÷£¬ÇëÍê³ÉÒÔÏÂ²½Öè£º
+
+1. ÏÂÔØKeycloak FuseÊÊÅäÆ÷ZIP´æµµÎÄ¼þ¡£
+
+2. ½«Æä½âÑ¹Ëõµ½JBoss FuseµÄ¸ùÄ¿Â¼ÖÐ¡£ È»ºó½«ÒÀÀµÏî°²×°ÔÚ`system`Ä¿Â¼ÏÂ¡£ Äú¿ÉÒÔ¸²¸ÇËùÓÐÏÖÓÐµÄjarÎÄ¼þ¡£
+
+   ½«´ËÓÃÓÚJBoss Fuse 6.3.0»ã×Ü5£º
+
+   ```bash
    cd /path-to-fuse/jboss-fuse-6.3.0.redhat-254
    unzip -q /path-to-adapter-zip/keycloak-fuse-adapter-6.0.1.zip
    ```
 
-3. Start Fuse and run these commands in the fuse/karaf terminal:
+3. Æô¶¯Fuse²¢ÔÚFuse/karafÖÕ¶ËÖÐÔËÐÐÒÔÏÂÃüÁî:
 
-   ```
+   ```bash
    features:addurl mvn:org.keycloak/keycloak-osgi-features/6.0.1/xml/features
    features:install keycloak
    ```
 
-4. Install the corresponding Jetty adapter. Since the artifacts are available directly in the JBoss Fuse `system` directory, you do not need to use the Maven repository.
+4. °²×°ÏàÓ¦µÄJettyÊÊÅäÆ÷¡£ ÓÉÓÚartifacts¿ÉÖ±½ÓÔÚJBoss Fuse`system`Ä¿Â¼ÖÐÊ¹ÓÃ£¬Òò´ËÄúÎÞÐèÊ¹ÓÃMaven´æ´¢¿â¡£
 
-##### Securing a Classic WAR Application
+##### ±£»¤¾­µäWARÓ¦ÓÃ³ÌÐò {#Securing_a_Classic_WAR_Application}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse/classic-war.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse/classic-war.adoc)
+±£»¤WARÓ¦ÓÃ³ÌÐòËùÐèµÄ²½ÖèÈçÏÂ£º
 
-The needed steps to secure your WAR application are:
+1. ÔÚ`/WEB-INF/web.xml`ÎÄ¼þÖÐ£¬ÉùÃ÷±ØÒªµÄ£º
 
-1. In the `/WEB-INF/web.xml` file, declare the necessary:
+   - <security-constraint>ÔªËØÖÐµÄ°²È«ÐÔÔ¼Êø
 
-   - security constraints in the <security-constraint> element
+   - <login-config>ÔªËØÖÐµÄµÇÂ¼ÅäÖÃ
 
-   - login configuration in the <login-config> element
+   - <security-role>ÔªËØÖÐµÄ°²È«½ÇÉ«¡£
 
-   - security roles in the <security-role> element.
+     ÀýÈç£º
 
-     For example:
-
-     ```
+   ```xml
      <?xml version="1.0" encoding="UTF-8"?>
      <web-app xmlns="http://java.sun.com/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -780,13 +740,13 @@ The needed steps to secure your WAR application are:
              <role-name>user</role-name>
          </security-role>
      </web-app>
-     ```
-
-2. Add the `jetty-web.xml` file with the authenticator to the `/WEB-INF/jetty-web.xml` file.
-
-   For example:
-
    ```
+
+2. ½«´øÓÐÑéÖ¤Æ÷µÄ`jetty-web.xml`ÎÄ¼þÌí¼Óµ½`/WEB-INF/jetty-web.xml`ÎÄ¼þÖÐ¡£
+
+   ÀýÈç£º
+
+   ```xml
    <?xml version="1.0"?>
    <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN"
     "http://www.eclipse.org/jetty/configure_9_0.dtd">
@@ -800,11 +760,11 @@ The needed steps to secure your WAR application are:
    </Configure>
    ```
 
-3. Within the `/WEB-INF/` directory of your WAR, create a new file, keycloak.json. The format of this configuration file is described in the [Java Adapters Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config) section. It is also possible to make this file available externally as described in [Configuring the External Adapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#config_external_adapter).
+3. ÔÚWARµÄ`/WEB-INF/`Ä¿Â¼ÖÐ£¬´´½¨Ò»¸öÐÂÎÄ¼þkeycloak.json¡£ ¸ÃÅäÖÃÎÄ¼þµÄ¸ñÊ½ÔÚ[Java Adapters Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config) ²¿·ÖÖÐ½øÐÐÁËÃèÊö¡£ Ò²¿ÉÒÔ°´[ÅäÖÃÍâ²¿ÊÊÅäÆ÷](https://www.keycloak.org/docs/latest/securing_apps/index.html#config_external_adapter)ÖÐµÄËµÃ÷ÔÚÍâ²¿Ê¹ÓÃ´ËÎÄ¼þ¡£
 
-4. Ensure your WAR application imports `org.keycloak.adapters.jetty` and maybe some more packages in the `META-INF/MANIFEST.MF` file, under the `Import-Package` header. Using `maven-bundle-plugin` in your project properly generates OSGI headers in manifest. Note that "*" resolution for the package does not import the `org.keycloak.adapters.jetty` package, since it is not used by the application or the Blueprint or Spring descriptor, but is rather used in the `jetty-web.xml` file.
+4. È·±£ÄúµÄWARÓ¦ÓÃ³ÌÐòÔÚ`Import-Package`±êÌâÏÂµÄ`META-INF/MANIFEST.MF`ÎÄ¼þÖÐµ¼Èë`org.keycloak.adapters.jetty`ºÍ¸ü¶àÈí¼þ°ü¡£ ÔÚÏîÄ¿ÖÐÊ¹ÓÃ`maven-bundle-plugin`¿ÉÒÔÔÚÇåµ¥ÖÐÕýÈ·Éú³ÉOSGIÍ·ÎÄ¼þ¡£ Çë×¢Òâ£¬°üµÄ¡°*¡±½âÎö²»»áµ¼Èë`org.keycloak.adapters.jetty`°ü£¬ÒòÎªËü²»ÊÇÓÉÓ¦ÓÃ³ÌÐò»òBlueprint»òSpringÃèÊö·ûÊ¹ÓÃ£¬¶øÊÇÔÚ`jetty-web.xml`ÎÄ¼þÖÐÊ¹ÓÃ¡£
 
-   The list of the packages to import might look like this:
+   Òªµ¼ÈëµÄ°üµÄÁÐ±í¿ÉÄÜÊÇÕâÑùµÄ:
 
    ```
    org.keycloak.adapters.jetty;version="6.0.1",
@@ -815,34 +775,32 @@ The needed steps to secure your WAR application are:
    *;resolution:=optional
    ```
 
-###### Configuring the External Adapter
+###### ÅäÖÃÍâ²¿ÊÊÅäÆ÷ {#Configuring_the_External_Adapter}
 
-If you do not want the `keycloak.json` adapter configuration file to be bundled inside your WAR application, but instead made available externally and loaded based on naming conventions, use this configuration method.
+Èç¹ûÄú²»Ï£Íû½«`keycloak.json`ÊÊÅäÆ÷ÅäÖÃÎÄ¼þÀ¦°óÔÚWARÓ¦ÓÃ³ÌÐòÖÐ£¬¶øÊÇ¸ù¾ÝÃüÃûÔ¼¶¨ÔÚÍâ²¿Ìá¹©²¢¼ÓÔØ£¬ÇëÊ¹ÓÃ´ËÅäÖÃ·½·¨¡£
 
-To enable the functionality, add this section to your `/WEB_INF/web.xml` file:
+ÒªÆôÓÃ¸Ã¹¦ÄÜ£¬Çë½«´Ë²¿·ÖÌí¼Óµ½`/WEB_INF/web.xml`ÎÄ¼þÖÐ£º
 
-```
+```xml
 <context-param>
     <param-name>keycloak.config.resolver</param-name>
     <param-value>org.keycloak.adapters.osgi.PathBasedKeycloakConfigResolver</param-value>
 </context-param>
 ```
 
-That component uses `keycloak.config` or `karaf.etc` java properties to search for a base folder to locate the configuration. Then inside one of those folders it searches for a file called `<your_web_context>-keycloak.json`.
+¸Ã×é¼þÊ¹ÓÃ`keycloak.config`»ò`karaf.etc` javaÊôÐÔÀ´ËÑË÷»ù±¾ÎÄ¼þ¼ÐÒÔÕÒµ½ÅäÖÃ¡£ È»ºóÔÚÆäÖÐÒ»¸öÎÄ¼þ¼ÐÖÐËÑË÷ÃûÎª`<your_web_context> -keycloak.json`µÄÎÄ¼þ¡£
 
-So, for example, if your web application has context `my-portal`, then your adapter configuration is loaded from the`$FUSE_HOME/etc/my-portal-keycloak.json` file.
+Òò´Ë£¬ÀýÈç£¬Èç¹ûÄúµÄWebÓ¦ÓÃ³ÌÐò¾ßÓÐÉÏÏÂÎÄ`my-portal`£¬ÄÇÃ´ÄúµÄÊÊÅäÆ÷ÅäÖÃ½«´Ó`$FUSE_HOME/etc/my-portal-keycloak.json`ÎÄ¼þ¼ÓÔØ¡£
 
-##### Securing a Servlet Deployed as an OSGI Service
+##### ±£»¤²¿ÊðÎªOSGI·þÎñµÄServlet {#Securing_a_Servlet_Deployed_as_an_OSGI_Service}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse/servlet-whiteboard.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse/servlet-whiteboard.adoc)
+Èç¹ûÔÚOSGIÀ¦°óÏîÄ¿ÖÐÓÐÒ»¸öÎ´²¿ÊðÎª¾­µäWARÓ¦ÓÃ³ÌÐòµÄservletÀà£¬Ôò¿ÉÒÔÊ¹ÓÃ´Ë·½·¨¡£ FuseÊ¹ÓÃPax Web Whiteboard Extender½«ÕâÐ©servlet²¿ÊðÎªWebÓ¦ÓÃ³ÌÐò¡£
 
-You can use this method if you have a servlet class inside your OSGI bundled project that is not deployed as a classic WAR application. Fuse uses Pax Web Whiteboard Extender to deploy such servlets as web applications.
+ÒªÊ¹ÓÃKeycloak±£»¤ÄúµÄservlet£¬ÇëÍê³ÉÒÔÏÂ²½Öè£º
 
-To secure your servlet with Keycloak, complete the following steps:
+1. KeycloakÌá¹©ÁËPaxWebIntegrationService£¬ËüÔÊÐí×¢Èëjetty-web.xml²¢ÎªÄúµÄÓ¦ÓÃ³ÌÐòÅäÖÃ°²È«ÐÔÔ¼Êø¡£ ÄúÐèÒªÔÚÓ¦ÓÃ³ÌÐòÄÚµÄ`OSGI-INF/blueprint/blueprint.xml`ÎÄ¼þÖÐÉùÃ÷´ËÀà·þÎñ¡£ Çë×¢Òâ£¬ÄúµÄservletÐèÒªÒÀÀµËü¡£ ÅäÖÃÊ¾Àý£º
 
-1. Keycloak provides PaxWebIntegrationService, which allows injecting jetty-web.xml and configuring security constraints for your application. You need to declare such services in the `OSGI-INF/blueprint/blueprint.xml` file inside your application. Note that your servlet needs to depend on it. An example configuration:
-
-   ```
+   ```xml
    <?xml version="1.0" encoding="UTF-8"?>
    <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -891,11 +849,11 @@ To secure your servlet with Keycloak, complete the following steps:
    </blueprint>
    ```
 
-   - You might need to have the `WEB-INF` directory inside your project (even if your project is not a web application) and create the `/WEB-INF/jetty-web.xml` and `/WEB-INF/keycloak.json` files as in the [Classic WAR application](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse_adapter_classic_war) section. Note you donâ€™t need the `web.xml` file as the security-constraints are declared in the blueprint configuration file.
+   - Äú¿ÉÄÜÐèÒªÔÚÏîÄ¿ÖÐ°üº¬`WEB-INF`Ä¿Â¼£¨¼´Ê¹ÄúµÄÏîÄ¿²»ÊÇWebÓ¦ÓÃ³ÌÐò£©²¢´´½¨`/WEB-INF/jetty-web.xml`ºÍ`/WEB-INF/keycloak.json`ÎÄ¼þ£¬Èç[¾­µäWARÓ¦ÓÃ³ÌÐò](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse_adapter_classic_war)²¿·Ö¡£ Çë×¢Òâ£¬Äú²»ÐèÒª`web.xml`ÎÄ¼þ£¬ÒòÎªÔÚÀ¶Í¼ÅäÖÃÎÄ¼þÖÐÉùÃ÷ÁË°²È«ÐÔÔ¼Êø¡£
 
-2. The `Import-Package` in `META-INF/MANIFEST.MF` must contain at least these imports:
+2. `META-INF/MANIFEST.MF`ÖÐµÄ`Import-Package`±ØÐëÖÁÉÙ°üº¬ÒÔÏÂµ¼Èë£º
 
-   ```
+   ```properties
    org.keycloak.adapters.jetty;version="6.0.1",
    org.keycloak.adapters;version="6.0.1",
    org.keycloak.constants;version="6.0.1",
@@ -904,15 +862,13 @@ To secure your servlet with Keycloak, complete the following steps:
    *;resolution:=optional
    ```
 
-##### Securing an Apache Camel Application
+##### ±£»¤Apache CamelÓ¦ÓÃ³ÌÐò {#Securing_an_Apache_Camel_Application}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse/camel.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse/camel.adoc)
+Äú¿ÉÒÔÍ¨¹ýÌí¼Ó´øÓÐ`KeycloakJettyAuthenticator`µÄsecurityHandler²¢×¢ÈëÊÊµ±µÄ°²È«Ô¼ÊøÀ´±£»¤Ê¹ÓÃ[camel-jetty](http://camel.apache.org/jetty.html)×é¼þÊµÏÖµÄApache Camel¶Ëµã¡£ Äú¿ÉÒÔÊ¹ÓÃÀàËÆÒÔÏÂÅäÖÃ½«`OSGI-INF/blueprint/blueprint.xml`ÎÄ¼þÌí¼Óµ½CamelÓ¦ÓÃ³ÌÐòÖÐ¡£ ½ÇÉ«£¬°²È«Ô¼ÊøÓ³ÉäºÍKeycloakÊÊÅäÆ÷ÅäÖÃ¿ÉÄÜÂÔÓÐ²»Í¬£¬¾ßÌåÈ¡¾öÓÚÄúµÄ»·¾³ºÍÐèÇó¡£
 
-You can secure Apache Camel endpoints implemented with the [camel-jetty](http://camel.apache.org/jetty.html) component by adding securityHandler with `KeycloakJettyAuthenticator` and the proper security constraints injected. You can add the `OSGI-INF/blueprint/blueprint.xml` file to your Camel application with a similar configuration as below. The roles, security constraint mappings, and Keycloak adapter configuration might differ slightly depending on your environment and needs.
+ÀýÈç£º
 
-For example:
-
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
@@ -980,9 +936,9 @@ For example:
 </blueprint>
 ```
 
-- The `Import-Package` in `META-INF/MANIFEST.MF` needs to contain these imports:
+- `META-INF/MANIFEST.MF`ÖÐµÄ`Import-Package`ÐèÒª°üº¬ÕâÐ©µ¼Èë£º
 
-```
+```properties
 javax.servlet;version="[3,4)",
 javax.servlet.http;version="[3,4)",
 org.apache.camel.*,
@@ -996,15 +952,15 @@ org.osgi.service.blueprint.container,
 org.osgi.service.event,
 ```
 
-##### Camel RestDSL
+##### Camel RestDSL {#Camel_RestDSL}
 
-Camel RestDSL is a Camel feature used to define your REST endpoints in a fluent way. But you must still use specific implementation classes and provide instructions on how to integrate with Keycloak.
+Camel Rest DSLÊÇÒ»ÖÖCamel¹¦ÄÜ£¬ÓÃÓÚÒÔÁ÷³©µÄ·½Ê½¶¨ÒåREST¶Ëµã¡£ µ«ÄúÈÔ±ØÐëÊ¹ÓÃÌØ¶¨µÄÊµÏÖÀà£¬²¢Ìá¹©ÓÐ¹ØÈçºÎÓëKeycloak¼¯³ÉµÄËµÃ÷¡£
 
-The way to configure the integration mechanism depends on the Camel component for which you configure your RestDSL-defined routes.
+ÅäÖÃ¼¯³É»úÖÆµÄ·½·¨È¡¾öÓÚÄúÎªÆäÅäÖÃRestDSL¶¨ÒåµÄÂ·ÓÉµÄCamel×é¼þ¡£
 
-The following example shows how to configure integration using the Jetty component, with references to some of the beans defined in previous Blueprint example.
+ÒÔÏÂÊ¾ÀýÏÔÊ¾ÈçºÎÊ¹ÓÃJetty×é¼þÅäÖÃ¼¯³É£¬ÒÔ¼°¶ÔÏÈÇ°BlueprintÊ¾ÀýÖÐ¶¨ÒåµÄÄ³Ð©beanµÄÒýÓÃ¡£
 
-```
+```xml
 <bean id="securityHandlerRest" class="org.eclipse.jetty.security.ConstraintSecurityHandler">
     <property name="authenticator" ref="keycloakAuthenticator" />
     <property name="constraintMappings">
@@ -1053,15 +1009,13 @@ The following example shows how to configure integration using the Jetty compone
 </camelContext>
 ```
 
-##### Securing an Apache CXF Endpoint on a Separate Jetty Engine
+##### ÔÚµ¥¶ÀµÄJettyÒýÇæÉÏ±£»¤Apache CXF¶Ëµã {#Securing_an_Apache_CXF_Endpoint_on_a_Separate_Jetty_Engine}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse/cxf-separate.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse/cxf-separate.adoc)
+ÒªÔÚµ¥¶ÀµÄJettyÒýÇæÉÏÔËÐÐKeycloak±£»¤µÄCXF¶Ëµã£¬ÇëÍê³ÉÒÔÏÂ²½Öè£º
 
-To run your CXF endpoints secured by Keycloak on separate Jetty engines, complete the following steps:
+1. ½«`META-INF/spring/beans.xml`Ìí¼Óµ½ÄúµÄÓ¦ÓÃ³ÌÐòÖÐ£¬²¢ÔÚÆäÖÐÊ¹ÓÃJetty SecurityHandlerÉùÃ÷`httpj£ºngine-factory`£¬²¢×¢Èë`KeycloakJettyAuthenticator`¡£ CFX JAX-WSÓ¦ÓÃ³ÌÐòµÄÅäÖÃ¿ÉÄÜÀàËÆÓÚÒÔÏÂÄÚÈÝ£º
 
-1. Add `META-INF/spring/beans.xml` to your application, and in it, declare `httpj:engine-factory` with Jetty SecurityHandler with injected `KeycloakJettyAuthenticator`. The configuration for a CFX JAX-WS application might resemble this one:
-
-   ```
+   ```xml
    <?xml version="1.0" encoding="UTF-8"?>
    
    <beans xmlns="http://www.springframework.org/schema/beans"
@@ -1133,9 +1087,9 @@ To run your CXF endpoints secured by Keycloak on separate Jetty engines, complet
    </beans>
    ```
 
-   For the CXF JAX-RS application, the only difference might be in the configuration of the endpoint dependent on engine-factory:
+   ¶ÔÓÚCXF JAX-RSÓ¦ÓÃ³ÌÐò£¬Î¨Ò»µÄÇø±ð¿ÉÄÜÔÚÓÚÒÀÀµÓÚengine-factoryµÄ¶ËµãÅäÖÃ£º
 
-   ```
+   ```xml
    <jaxrs:server serviceClass="org.keycloak.example.rs.CustomerService" address="http://localhost:8282/rest"
        depends-on="kc-cxf-endpoint">
        <jaxrs:providers>
@@ -1144,9 +1098,9 @@ To run your CXF endpoints secured by Keycloak on separate Jetty engines, complet
    </jaxrs:server>
    ```
 
-2. The `Import-Package` in `META-INF/MANIFEST.MF` must contain those imports:
+2. `META-INF/MANIFEST.MF`ÖÐµÄ`Import-Package`±ØÐë°üº¬ÄÇÐ©µ¼Èë£º
 
-```
+```properties
 META-INF.cxf;version="[2.7,3.2)",
 META-INF.cxf.osgi;version="[2.7,3.2)";resolution:=optional,
 org.apache.cxf.bus;version="[2.7,3.2)",
@@ -1160,15 +1114,13 @@ org.eclipse.jetty.util.security;version="[9,10)",
 org.keycloak.*;version="6.0.1"
 ```
 
-##### Securing an Apache CXF Endpoint on the Default Jetty Engine
+##### ÔÚÄ¬ÈÏJettyÒýÇæÉÏ±£»¤Apache CXF¶Ëµã {#Securing_an_Apache_CXF_Endpoint_on_the_Default_Jetty_Engine}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse/cxf-builtin.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse/cxf-builtin.adoc)
+Ä³Ð©·þÎñ»áÔÚÆô¶¯Ê±×Ô¶¯¸½´øÒÑ²¿ÊðµÄservlet¡£ Ò»¸öÕâÑùµÄ·þÎñÊÇÔÚ`http://localhost:8181/cxf`ÉÏÏÂÎÄÖÐÔËÐÐµÄCXF servlet¡£ ±£»¤ÕâÐ©¶Ëµã¿ÉÄÜºÜ¸´ÔÓ¡£ KeycloakÄ¿Ç°Ê¹ÓÃµÄÒ»ÖÖ·½·¨ÊÇServletReregistrationService£¬ËüÔÚÆô¶¯Ê±È¡Ïû²¿ÊðÄÚÖÃservlet£¬Ê¹ÄúÄÜ¹»ÔÚKeycloak±£»¤µÄÉÏÏÂÎÄÖÐÖØÐÂ²¿ÊðËü¡£
 
-Some services automatically come with deployed servlets on startup. One such service is the CXF servlet running in the http://localhost:8181/cxf context. Securing such endpoints can be complicated. One approach, which Keycloak is currently using, is ServletReregistrationService, which undeploys a built-in servlet at startup, enabling you to redeploy it on a context secured by Keycloak.
+Ó¦ÓÃ³ÌÐòÖÐµÄÅäÖÃÎÄ¼þ`OSGI-INF/blueprint/blueprint.xml`¿ÉÄÜÀàËÆÓÚÏÂÃæµÄÄÇ¸ö¡£ Çë×¢Òâ£¬ËüÌí¼ÓÁËJAX-RS`customerservice`¶Ëµã£¬ËüÊÇÌØ¶¨ÓÚ¶ËµãµÄÓ¦ÓÃ³ÌÐò£¬µ«¸üÖØÒªµÄÊÇ£¬Ëü±£»¤Õû¸ö`/cxf`ÉÏÏÂÎÄ¡£
 
-The configuration file `OSGI-INF/blueprint/blueprint.xml` inside your application might resemble the one below. Note that it adds the JAX-RS `customerservice` endpoint, which is endpoint-specific to your application, but more importantly, secures the entire `/cxf` context.
-
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1231,12 +1183,12 @@ The configuration file `OSGI-INF/blueprint/blueprint.xml` inside your applicatio
 </blueprint>
 ```
 
-As a result, all other CXF services running on the default CXF HTTP destination are also secured. Similarly, when the application is undeployed, the entire `/cxf` context becomes unsecured as well. For this reason, using your own Jetty engine for your applications as described in [Secure CXF Application on separate Jetty Engine](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse_adapter_cxf_separate) then gives you more control over security for each individual application.
+Òò´Ë£¬ÔÚÄ¬ÈÏCXF HTTPÄ¿±êÉÏÔËÐÐµÄËùÓÐÆäËûCXF·þÎñÒ²ÊÇ°²È«µÄ¡£ ÀàËÆµØ£¬µ±È¡Ïû²¿ÊðÓ¦ÓÃ³ÌÐòÊ±£¬Õû¸ö`/cxf`ÉÏÏÂÎÄÒ²±äµÃ²»°²È«¡£ Òò´Ë£¬Èç[ÔÚµ¥¶ÀµÄJettyÒýÇæÉÏ°²È«CXFÓ¦ÓÃ³ÌÐò](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse_adapter_cxf_separate)ÖÐËùÊö£¬ÎªÄúµÄÓ¦ÓÃ³ÌÐòÊ¹ÓÃ×Ô¼ºµÄJettyÒýÇæ£¬È»ºóÎªÄúÌá¹© ¸üºÃµØ¿ØÖÆÃ¿¸öÓ¦ÓÃ³ÌÐòµÄ°²È«ÐÔ¡£
 
-- The `WEB-INF` directory might need to be inside your project (even if your project is not a web application). You might also need to edit the `/WEB-INF/jetty-web.xml` and `/WEB-INF/keycloak.json` files in a similar way as in [Classic WAR application](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse_adapter_classic_war). Note that you do not need the `web.xml` file as the security constraints are declared in the blueprint configuration file.
-- The `Import-Package` in `META-INF/MANIFEST.MF` must contain these imports:
+- `WEB-INF`Ä¿Â¼¿ÉÄÜÐèÒªÔÚÄúµÄÏîÄ¿ÖÐ£¨¼´Ê¹ÄúµÄÏîÄ¿²»ÊÇWebÓ¦ÓÃ³ÌÐò£©¡£ Äú¿ÉÄÜ»¹ÐèÒªÒÔÓë[¾­µäWARÓ¦ÓÃ³ÌÐò](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse_adapter_classic_war)ÀàËÆµÄ·½Ê½±à¼­`/WEB-INF/jetty-web.xml`ºÍ`/WEB-INF/keycloak.json`ÎÄ¼þ¡£ Çë×¢Òâ£¬Äú²»ÐèÒª`web.xml`ÎÄ¼þ£¬ÒòÎªÀ¶Í¼ÅäÖÃÎÄ¼þÖÐÉùÃ÷ÁË°²È«ÐÔÔ¼Êø¡£
+- `META-INF/MANIFEST.MF`ÖÐµÄ`Import-Package`±ØÐë°üº¬ÒÔÏÂµ¼Èë£º
 
-```
+```properties
 META-INF.cxf;version="[2.7,3.2)",
 META-INF.cxf.osgi;version="[2.7,3.2)";resolution:=optional,
 org.apache.cxf.transport.http;version="[2.7,3.2)",
@@ -1249,27 +1201,25 @@ org.keycloak.adapters.jetty;version="6.0.1",
 *;resolution:=optional
 ```
 
-##### Securing Fuse Administration Services
+##### °²È«Fuse¹ÜÀí·þÎñ {#Securing_Fuse_Administration_Services}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse/fuse-admin.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse/fuse-admin.adoc)
+###### Ê¹ÓÃSSHÉí·ÝÑéÖ¤À´ÈÚºÏÖÕ¶Ë {#Using_SSH_Authentication_to_Fuse_Terminal}
 
-###### Using SSH Authentication to Fuse Terminal
+KeycloakÖ÷Òª´¦ÀíÓÃÓÚWebÓ¦ÓÃ³ÌÐòÉí·ÝÑéÖ¤µÄÓÃÀý; µ«ÊÇ£¬Èç¹ûÄúµÄÆäËûWeb·þÎñºÍÓ¦ÓÃ³ÌÐòÊÜKeycloak±£»¤£¬ÔòÊ¹ÓÃKeycloakÆ¾¾Ý±£»¤·ÇWeb¹ÜÀí·þÎñ£¨ÈçSSH£©ÊÇ×î¼ÑÊµ¼ù¡£ Äú¿ÉÒÔÊ¹ÓÃJAASµÇÂ¼Ä£¿éÖ´ÐÐ´Ë²Ù×÷£¬¸ÃÄ£¿éÔÊÐíÔ¶³ÌÁ¬½Óµ½Keycloak²¢¸ù¾Ý[×ÊÔ´ËùÓÐÕßÃÜÂëÆ¾¾Ý](https://www.keycloak.org/docs/latest/securing_apps/index.html#_resource_owner_password_credentials_flow)ÑéÖ¤Æ¾¾Ý¡£
 
-Keycloak mainly addresses use cases for authentication of web applications; however, if your other web services and applications are protected with Keycloak, protecting non-web administration services such as SSH with Keycloak credentials is a best pracrice. You can do this using the JAAS login module, which allows remote connection to Keycloak and verifies credentials based on [Resource Owner Password Credentials](https://www.keycloak.org/docs/latest/securing_apps/index.html#_resource_owner_password_credentials_flow).
+ÒªÆôÓÃSSHÉí·ÝÑéÖ¤£¬ÇëÍê³ÉÒÔÏÂ²½Öè£º
 
-To enable SSH authentication, complete the following steps:
+1. ÔÚKeycloakÖÐ´´½¨Ò»¸ö¿Í»§¶Ë£¨ÀýÈç£¬`ssh-jmx-admin-client`£©£¬Ëü½«ÓÃÓÚSSHÉí·ÝÑéÖ¤¡£ ´Ë¿Í»§¶ËÐèÒª½«`Direct Access Grants Enabled`Ñ¡Îª`On`¡£
 
-1. In Keycloak create a client (for example, `ssh-jmx-admin-client`), which will be used for SSH authentication. This client needs to have `Direct Access Grants Enabled` selected to `On`.
+2. ÔÚ`$FUSE_HOME/etc/org.apache.karaf.shell.cfg`ÎÄ¼þÖÐ£¬¸üÐÂ»òÖ¸¶¨´ËÊôÐÔ£º
 
-2. In the `$FUSE_HOME/etc/org.apache.karaf.shell.cfg` file, update or specify this property:
-
-   ```
+   ```properties
    sshRealm=keycloak
    ```
 
-3. Add the `$FUSE_HOME/etc/keycloak-direct-access.json` file with content similar to the following (based on your environment and Keycloak client settings):
+3. Ìí¼Ó`$FUSE_HOME/etc/keycloak-direct-access.json`ÎÄ¼þ£¬ÆäÄÚÈÝÀàËÆÓÚÒÔÏÂÄÚÈÝ£¨»ùÓÚÄúµÄ»·¾³ºÍKeycloak¿Í»§¶ËÉèÖÃ£©£º
 
-   ```
+   ```json
    {
        "realm": "demo",
        "resource": "ssh-jmx-admin-client",
@@ -1281,73 +1231,69 @@ To enable SSH authentication, complete the following steps:
    }
    ```
 
-   This file specifies the client application configuration, which is used by JAAS DirectAccessGrantsLoginModule from the `keycloak` JAAS realm for SSH authentication.
+   ´ËÎÄ¼þÖ¸¶¨¿Í»§¶ËÓ¦ÓÃ³ÌÐòÅäÖÃ£¬¸ÃÃüÁîÓÉÀ´×Ô`keycloak` JAASÁìÓòµÄJAAS DirectAccessGrantsLoginModuleÓÃÓÚSSHÉí·ÝÑéÖ¤¡£
 
-4. Start Fuse and install the `keycloak` JAAS realm. The easiest way is to install the `keycloak-jaas` feature, which has the JAAS realm predefined. You can override the featureâ€™s predefined realm by using your own `keycloak` JAAS realm with higher ranking. For details see the [JBoss Fuse documentation](https://access.redhat.com/documentation/en-us/red_hat_jboss_fuse/6.3/html-single/security_guide/#ESBSecureContainer).
+4. Æô¶¯Fuse²¢°²×°`keycloak` JAASÁìÓò¡£ ×î¼òµ¥µÄ·½·¨ÊÇ°²×°`keycloak-jaas`¹¦ÄÜ£¬Ëü¾ßÓÐÔ¤¶¨ÒåµÄJAASÁìÓò¡£ Äú¿ÉÒÔÊ¹ÓÃ×Ô¼ºµÄ`keycloak` JAASÁìÓò¸²¸Ç¸Ã¹¦ÄÜµÄÔ¤¶¨ÒåÁìÓò¡£ ÓÐ¹ØÏêÏ¸ÐÅÏ¢£¬Çë²ÎÔÄ[JBoss FuseÎÄµµ](https://access.redhat.com/documentation/en-us/red_hat_jboss_fuse/6.3/html-single/security_guide/#ESBSecureContainer)¡£
 
-   Use these commands in the Fuse terminal:
+   ÔÚFuseÖÕ¶ËÖÐÊ¹ÓÃÒÔÏÂÃüÁî£º
 
    ```
    features:addurl mvn:org.keycloak/keycloak-osgi-features/6.0.1/xml/features
    features:install keycloak-jaas
    ```
 
-5. Log in using SSH as `admin` user by typing the following in the terminal:
+5. Í¨¹ýÔÚÖÕ¶ËÖÐ¼üÈëÒÔÏÂÄÚÈÝ£¬Ê¹ÓÃSSH×÷Îª`admin`ÓÃ»§µÇÂ¼£º
 
-   ```
+   ```bash
    ssh -o PubkeyAuthentication=no -p 8101 admin@localhost
    ```
 
-6. Log in with password `password`.
+6. Ê¹ÓÃÃÜÂë`password`µÇÂ¼¡£
 
-|      | On some later operating systems, you might also need to use the SSH commandâ€™s -o option `-o HostKeyAlgorithms=+ssh-dss` because later SSH clients do not allow use of the `ssh-dss` algorithm, by default. However, by default, it is currently used in JBoss Fuse 6.3.0 Rollup 5. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> ÔÚÄ³Ð©¸ü¸ß°æ±¾µÄ²Ù×÷ÏµÍ³ÉÏ£¬Äú¿ÉÄÜ»¹ÐèÒªÊ¹ÓÃSSHÃüÁîµÄ-oÑ¡Ïî`-o HostKeyAlgorithms=+ssh-dss`£¬ÒòÎªÒÔºóµÄSSH¿Í»§¶ËÄ¬ÈÏÇé¿öÏÂ²»ÔÊÐíÊ¹ÓÃ`ssh-dss`Ëã·¨¡£ µ«ÊÇ£¬Ä¬ÈÏÇé¿öÏÂ£¬ËüÄ¿Ç°ÓÃÓÚJBoss Fuse 6.3.0 Rollup 5¡£
 
-Note that the user needs to have realm role `admin` to perform all operations or another role to perform a subset of operations (for example, the **viewer** role that restricts the user to run only read-only Karaf commands). The available roles are configured in `$FUSE_HOME/etc/org.apache.karaf.shell.cfg` or `$FUSE_HOME/etc/system.properties`.
+Çë×¢Òâ£¬ÓÃ»§ÐèÒª¾ßÓÐÁìÓò½ÇÉ«`admin`À´Ö´ÐÐËùÓÐ²Ù×÷»òÆäËû½ÇÉ«À´Ö´ÐÐ²Ù×÷×Ó¼¯£¨ÀýÈç£¬**viewer**½ÇÉ«ÏÞÖÆÓÃ»§½öÔËÐÐÖ»¶ÁµÄKarafÃüÁî£©¡£ ¿ÉÓÃ½ÇÉ«ÔÚ`$FUSE_HOME/etc/org.apache.karaf.shell.cfg`»ò`$FUSE_HOME/etc/system.properties`ÖÐÅäÖÃ¡£
 
-###### Using JMX Authentication
+###### Ê¹ÓÃJMXÉí·ÝÑéÖ¤ {#Using_JMX_Authentication}
 
-JMX authentication might be necessary if you want to use jconsole or another external tool to remotely connect to JMX through RMI. Otherwise it might be better to use hawt.io/jolokia, since the jolokia agent is installed in hawt.io by default. For more details see [Hawtio Admin Console](https://www.keycloak.org/docs/latest/securing_apps/index.html#_hawtio).
+Èç¹ûÒªÊ¹ÓÃjconsole»òÆäËûÍâ²¿¹¤¾ßÍ¨¹ýRMIÔ¶³ÌÁ¬½Óµ½JMX£¬Ôò¿ÉÄÜÐèÒªJMXÉí·ÝÑéÖ¤¡£ ·ñÔò×îºÃÊ¹ÓÃhawt.io/jolokia£¬ÒòÎªjolokia´úÀíÄ¬ÈÏ°²×°ÔÚhawt.ioÖÐ¡£ ÓÐ¹ØÏêÏ¸ÐÅÏ¢£¬Çë²ÎÔÄ[Hawtio¹ÜÀí¿ØÖÆÌ¨](https://www.keycloak.org/docs/latest/securing_apps/index.html#_hawtio)¡£
 
-To use JMX authentication, complete the following steps:
+ÒªÊ¹ÓÃJMXÉí·ÝÑéÖ¤£¬ÇëÍê³ÉÒÔÏÂ²½Öè£º
 
-1. In the `$FUSE_HOME/etc/org.apache.karaf.management.cfg` file, change the jmxRealm property to:
+1. ÔÚ`$FUSE_HOME/etc/org.apache.karaf.management.cfg`ÎÄ¼þÖÐ£¬½«jmxRealmÊôÐÔ¸ü¸ÄÎª£º
 
-   ```
+   ```properties
    jmxRealm=keycloak
    ```
 
-2. Install the `keycloak-jaas` feature and configure the `$FUSE_HOME/etc/keycloak-direct-access.json` file as described in the SSH section above.
+2. °²×°`keycloak-jaas`¹¦ÄÜ²¢ÅäÖÃ`$FUSE_HOME/etc/keycloak-direct-access.json`ÎÄ¼þ£¬ÈçÉÏÃæµÄSSH²¿·ÖËùÊö¡£
 
-3. In jconsole you can use a URL such as:
+3. ÔÚjconsoleÖÐ£¬Äú¿ÉÒÔÊ¹ÓÃÒÔÏÂURL£º
 
 ```
 service:jmx:rmi://localhost:44444/jndi/rmi://localhost:1099/karaf-root
 ```
 
-and credentials: admin/password (based on the user with admin privileges according to your environment).
+ºÍÆ¾¾Ý£ºadmin/password£¨¸ù¾ÝÄúµÄ»·¾³£¬¾ßÓÐ¹ÜÀíÔ±È¨ÏÞµÄÓÃ»§£©¡£
 
-##### Securing the Hawtio Administration Console
+##### ±£»¤Hawtio¹ÜÀí¿ØÖÆÌ¨ {#Securing_the_Hawtio_Administration_Console}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse/hawtio.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse/hawtio.adoc)
+ÒªÊ¹ÓÃKeycloak±£»¤Hawtio¹ÜÀí¿ØÖÆÌ¨£¬ÇëÍê³ÉÒÔÏÂ²½Öè:
 
-To secure the Hawtio Administration Console with Keycloak, complete the following steps:
+1. ½«ÕâÐ©ÊôÐÔÌí¼Óµ½`$FUSE_HOME/etc/system.properties`ÎÄ¼þÖÐ£º
 
-1. Add these properties to the `$FUSE_HOME/etc/system.properties` file:
-
-   ```
+   ```properties
    hawtio.keycloakEnabled=true
    hawtio.realm=keycloak
    hawtio.keycloakClientConfig=file://${karaf.base}/etc/keycloak-hawtio-client.json
    hawtio.rolePrincipalClasses=org.keycloak.adapters.jaas.RolePrincipal,org.apache.karaf.jaas.boot.principal.RolePrincipal
    ```
 
-2. Create a client in the Keycloak administration console in your realm. For example, in the Keycloak `demo` realm, create a client `hawtio-client`, specify `public` as the Access Type, and specify a redirect URI pointing to Hawtio: http://localhost:8181/hawtio/*. You must also have a corresponding Web Origin configured (in this case, http://localhost:8181).
+2. ÔÚÄúµÄÁìÓòµÄKeycloak¹ÜÀí¿ØÖÆÌ¨ÖÐ´´½¨Ò»¸ö¿Í»§¶Ë¡£ ÀýÈç£¬ÔÚKeycloak`demo`ÁìÓò£¬´´½¨Ò»¸ö¿Í»§¶Ë`hawtio-client`£¬Ö¸¶¨`public`×÷ÎªAccess Type£¬²¢Ö¸¶¨Ò»¸öÖ¸ÏòHawtioµÄÖØ¶¨ÏòURI£º`http://localhost:8181/hawtio/*`¡£ Äú»¹±ØÐëÅäÖÃÏàÓ¦µÄWeb Origin£¨ÔÚ±¾ÀýÖÐÎª`http://localhost:8181`£©¡£
 
-3. Create the `keycloak-hawtio-client.json` file in the `$FUSE_HOME/etc` directory using content similar to that shown in the example below. Change the `realm`, `resource`, and `auth-server-url` properties according to your Keycloak environment. The `resource` property must point to the client created in the previous step. This file is used by the client (Hawtio JavaScript application) side.
+3. Ê¹ÓÃÀàËÆÓÚÏÂÃæÊ¾ÀýÖÐËùÊ¾µÄÄÚÈÝÔÚ`$FUSE_HOME/etc`Ä¿Â¼ÖÐ´´½¨`keycloak-hawtio-client.json`ÎÄ¼þ¡£ ¸ù¾ÝÄúµÄKeycloak»·¾³¸ü¸Ä`realm`£¬`resource`ºÍ`auth-server-url`ÊôÐÔ¡£ `resource`ÊôÐÔ±ØÐëÖ¸ÏòÉÏÒ»²½ÖÐ´´½¨µÄ¿Í»§¶Ë¡£ ¸ÃÎÄ¼þÓÉ¿Í»§¶Ë£¨Hawtio JavaScriptÓ¦ÓÃ³ÌÐò£©Ê¹ÓÃ¡£
 
-   ```
+   ```json
    {
      "realm" : "demo",
      "resource" : "hawtio-client",
@@ -1357,9 +1303,9 @@ To secure the Hawtio Administration Console with Keycloak, complete the followin
    }
    ```
 
-4. Create the `keycloak-hawtio.json` file in the `$FUSE_HOME/etc` dicrectory using content similar to that shown in the example below. Change the `realm` and `auth-server-url` properties according to your Keycloak environment. This file is used by the adapters on the server (JAAS Login module) side.
+4. Ê¹ÓÃÀàËÆÓÚÏÂÃæÊ¾ÀýÖÐËùÊ¾µÄÄÚÈÝÔÚ`$FUSE_HOME/etc` Ä¿Â¼ÖÐ´´½¨`keycloak-hawtio.json`ÎÄ¼þ¡£ ¸ù¾ÝÄúµÄKeycloak»·¾³¸ü¸Ä`realm`ºÍ`auth-server-url`ÊôÐÔ¡£ ´ËÎÄ¼þÓÉ·þÎñÆ÷£¨JAASµÇÂ¼Ä£¿é£©¶ËµÄÊÊÅäÆ÷Ê¹ÓÃ¡£
 
-   ```
+   ```json
    {
      "realm" : "demo",
      "resource" : "jaas",
@@ -1371,18 +1317,18 @@ To secure the Hawtio Administration Console with Keycloak, complete the followin
    }
    ```
 
-5. Start JBoss Fuse 6.3.0 Rollup 5 and install the keycloak feature if you have not already done so. The commands in Karaf terminal are similar to this example:
+5. Æô¶¯JBoss Fuse 6.3.0 Rollup 5²¢°²×°keycloak¹¦ÄÜ£¨Èç¹ûÉÐÎ´°²×°£©¡£ KarafÖÕ¶ËÖÐµÄÃüÁîÓë´ËÊ¾ÀýÀàËÆ£º
 
    ```
    features:addurl mvn:org.keycloak/keycloak-osgi-features/6.0.1/xml/features
    features:install keycloak
    ```
 
-6. Go to <http://localhost:8181/hawtio> and log in as a user from your Keycloak realm.
+6. ×ªµ½<http://localhost:8181/hawtio>²¢ÒÔKeycloakÁìÓòµÄÓÃ»§Éí·ÝµÇÂ¼¡£
 
-   Note that the user needs to have the proper realm role to successfully authenticate to Hawtio. The available roles are configured in the `$FUSE_HOME/etc/system.properties` file in `hawtio.roles`.
+   Çë×¢Òâ£¬ÓÃ»§ÐèÒª¾ßÓÐÊÊµ±µÄÁìÓò½ÇÉ«²ÅÄÜ³É¹¦ÏòHawtio½øÐÐÉí·ÝÑéÖ¤¡£ ¿ÉÓÃ½ÇÉ«ÔÚ`hawtio.roles`ÖÐµÄ`$FUSE_HOME/etc/system.properties`ÎÄ¼þÖÐÅäÖÃ¡£
 
-###### Securing Hawtio on JBoss EAP 6.4
+###### Securing Hawtio on JBoss EAP 6.4 {#}
 
 To run Hawtio on the JBoss EAP 6.4 server, complete the following steps:
 
@@ -1445,7 +1391,7 @@ To run Hawtio on the JBoss EAP 6.4 server, complete the following steps:
 
 9. Access Hawtio at <http://localhost:8181/hawtio>. It is secured by Keycloak.
 
-#### 2.1.5. JBoss Fuse 7 Adapter
+#### 2.1.5. JBoss Fuse 7 Adapter {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7-adapter.adoc)
 
@@ -1467,23 +1413,23 @@ Security for the following items is supported for Fuse:
 - SSH and JMX admin access
 - [Hawtio administration console](https://hawt.io/)
 
-##### Securing Your Web Applications Inside Fuse 7
+##### Securing Your Web Applications Inside Fuse 7 {#}
 
 You must first install the Keycloak Karaf feature. Next you will need to perform the steps according to the type of application you want to secure. All referenced web applications require injecting the Keycloak Undertow authentication mechanism into the underlying web server. The steps to achieve this depend on the application type. The details are described below.
 
 The best place to start is look at Fuse demo bundled as part of Keycloak examples in directory `fuse` . Most of the steps should be understandable from testing and understanding the demo.
 
-##### Installing the Keycloak Feature
+##### Installing the Keycloak Feature {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/install-feature.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/install-feature.adoc)
 
 You must first install the `keycloak-pax-http-undertow` and `keycloak-jaas` features in the JBoss Fuse environment. The `keycloak-pax-http-undertow` feature includes the Fuse adapter and all third-party dependencies. The `keycloak-jaas` contains JAAS module used in realm for SSH and JMX authentication. You can install it either from the Maven repository or from an archive.
 
-###### Installing from the Maven Repository
+###### Installing from the Maven Repository {#}
 
 As a prerequisite, you must be online and have access to the Maven repository.
 
-For community itâ€™s sufficient to be online as all the artifacts and 3rd party dependencies should be available in the maven central repository.
+For community it¡¯s sufficient to be online as all the artifacts and 3rd party dependencies should be available in the maven central repository.
 
 To install the keycloak feature using the Maven repository, complete the following steps:
 
@@ -1506,7 +1452,7 @@ To install the keycloak feature using the Maven repository, complete the followi
 feature:list | grep keycloak
 ```
 
-###### Installing from the ZIP bundle
+###### Installing from the ZIP bundle {#}
 
 This is useful if you are offline or do not want to use Maven to obtain the JAR files and other artifacts.
 
@@ -1532,7 +1478,7 @@ To install the Fuse adapter from the ZIP archive, complete the following steps:
 
 4. Install the corresponding Undertow adapter. Since the artifacts are available directly in the JBoss Fuse `system` directory, you do not need to use the Maven repository.
 
-##### Securing a Classic WAR Application
+##### Securing a Classic WAR Application {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/classic-war.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/classic-war.adoc)
 
@@ -1603,7 +1549,7 @@ The needed steps to secure your WAR application are:
 
 3. Contrary to the Fuse 6 adapter, there are no special OSGi imports needed in MANIFEST.MF.
 
-###### Configuration Resolvers
+###### Configuration Resolvers {#}
 
 The `keycloak.json` adapter configuration file can be stored inside a bundle, which is default behaviour, or in a directory on a filesystem. To specify the actual source of the configuration file, set the `keycloak.config.resolver` deployment parameter to the desired configuration resolver class. For example, in a classic WAR application, set the `keycloak.config.resolver` context parameter in `web.xml` file like this:
 
@@ -1628,7 +1574,7 @@ The following resolvers are available for `keycloak.config.resolver`:
 
   This resolver is similar to `PathBasedKeycloakConfigResolver` above, where for given URI path, configuration locations are checked from most to least specific.For example, for `/my/web-app/context` URI, the following configuration locations are searched for existence until the first one exists:`${karaf.etc}/my-web-app-context-keycloak.json``${karaf.etc}/my-web-app-keycloak.json``${karaf.etc}/my-keycloak.json``${karaf.etc}/keycloak.json`
 
-##### Securing a Servlet Deployed as an OSGI Service
+##### Securing a Servlet Deployed as an OSGI Service {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/servlet-whiteboard.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/servlet-whiteboard.adoc)
 
@@ -1677,11 +1623,11 @@ To secure your servlet with Keycloak, complete the following steps:
    </blueprint>
    ```
 
-   - You might need to have the `WEB-INF` directory inside your project (even if your project is not a web application) and create the `/WEB-INF/keycloak.json` file as described in the [Classic WAR application](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_adapter_classic_war) section. Note you donâ€™t need the `web.xml` file as the security-constraints are declared in the blueprint configuration file.
+   - You might need to have the `WEB-INF` directory inside your project (even if your project is not a web application) and create the `/WEB-INF/keycloak.json` file as described in the [Classic WAR application](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_adapter_classic_war) section. Note you don¡¯t need the `web.xml` file as the security-constraints are declared in the blueprint configuration file.
 
 2. Contrary to the Fuse 6 adapter, there are no special OSGi imports needed in MANIFEST.MF.
 
-##### Securing an Apache Camel Application
+##### Securing an Apache Camel Application {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/camel.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/camel.adoc)
 
@@ -1738,7 +1684,7 @@ org.osgi.service.blueprint,
 org.osgi.service.blueprint.container
 ```
 
-##### Camel RestDSL
+##### Camel RestDSL {#}
 
 Camel RestDSL is a Camel feature used to define your REST endpoints in a fluent way. But you must still use specific implementation classes and provide instructions on how to integrate with Keycloak.
 
@@ -1778,7 +1724,7 @@ The following example shows how to configure integration using the `undertow-key
 </camelContext>
 ```
 
-##### Securing an Apache CXF Endpoint on a Separate Undertow Engine
+##### Securing an Apache CXF Endpoint on a Separate Undertow Engine {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/cxf-separate.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/cxf-separate.adoc)
 
@@ -1843,11 +1789,11 @@ org.springframework.beans.factory.config,
 org.keycloak.*;version="6.0.1"
 ```
 
-##### Securing an Apache CXF Endpoint on the Default Undertow Engine
+##### Securing an Apache CXF Endpoint on the Default Undertow Engine {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/cxf-builtin.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/cxf-builtin.adoc)
 
-Some services automatically come with deployed servlets on startup. One such service is the CXF servlet running in the http://localhost:8181/cxf context. Fuseâ€™s Pax Web supports altering existing contexts via configuration admin. This can be used to secure endpoints by Keycloak.
+Some services automatically come with deployed servlets on startup. One such service is the CXF servlet running in the http://localhost:8181/cxf context. Fuse¡¯s Pax Web supports altering existing contexts via configuration admin. This can be used to secure endpoints by Keycloak.
 
 The configuration file `OSGI-INF/blueprint/blueprint.xml` inside your application might resemble the one below. Note that it adds the JAX-RS `customerservice` endpoint, which is endpoint-specific to your application.
 
@@ -1917,11 +1863,11 @@ org.apache.cxf.*;version="[2.7,3.3)",
 com.fasterxml.jackson.jaxrs.json;version="${jackson.version}"
 ```
 
-##### Securing Fuse Administration Services
+##### Securing Fuse Administration Services {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/fuse-admin.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/fuse-admin.adoc)
 
-###### Using SSH Authentication to Fuse Terminal
+###### Using SSH Authentication to Fuse Terminal {#}
 
 Keycloak mainly addresses use cases for authentication of web applications; however, if your other web services and applications are protected with Keycloak, protecting non-web administration services such as SSH with Keycloak credentials is a best pracrice. You can do this using the JAAS login module, which allows remote connection to Keycloak and verifies credentials based on [Resource Owner Password Credentials](https://www.keycloak.org/docs/latest/securing_apps/index.html#_resource_owner_password_credentials_flow).
 
@@ -1951,7 +1897,7 @@ To enable SSH authentication, complete the following steps:
 
    This file specifies the client application configuration, which is used by JAAS DirectAccessGrantsLoginModule from the `keycloak` JAAS realm for SSH authentication.
 
-4. Start Fuse and install the `keycloak` JAAS realm. The easiest way is to install the `keycloak-jaas` feature, which has the JAAS realm predefined. You can override the featureâ€™s predefined realm by using your own `keycloak` JAAS realm with higher ranking. For details see the [JBoss Fuse documentation](https://access.redhat.com/documentation/en-us/red_hat_fuse/7.2/html-single/apache_karaf_security_guide/index#ESBSecureContainer).
+4. Start Fuse and install the `keycloak` JAAS realm. The easiest way is to install the `keycloak-jaas` feature, which has the JAAS realm predefined. You can override the feature¡¯s predefined realm by using your own `keycloak` JAAS realm with higher ranking. For details see the [JBoss Fuse documentation](https://access.redhat.com/documentation/en-us/red_hat_fuse/7.2/html-single/apache_karaf_security_guide/index#ESBSecureContainer).
 
    Use these commands in the Fuse terminal:
 
@@ -1968,13 +1914,13 @@ To enable SSH authentication, complete the following steps:
 
 6. Log in with password `password`.
 
-|      | On some later operating systems, you might also need to use the SSH commandâ€™s -o option `-o HostKeyAlgorithms=+ssh-dss` because later SSH clients do not allow use of the `ssh-dss` algorithm, by default. However, by default, it is currently used in JBoss Fuse 7.2.0. |
+|      | On some later operating systems, you might also need to use the SSH command¡¯s -o option `-o HostKeyAlgorithms=+ssh-dss` because later SSH clients do not allow use of the `ssh-dss` algorithm, by default. However, by default, it is currently used in JBoss Fuse 7.2.0. |
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
 Note that the user needs to have realm role `admin` to perform all operations or another role to perform a subset of operations (for example, the **viewer** role that restricts the user to run only read-only Karaf commands). The available roles are configured in `$FUSE_HOME/etc/org.apache.karaf.shell.cfg` or `$FUSE_HOME/etc/system.properties`.
 
-###### Using JMX Authentication
+###### Using JMX Authentication {#}
 
 JMX authentication might be necessary if you want to use jconsole or another external tool to remotely connect to JMX through RMI. Otherwise it might be better to use hawt.io/jolokia, since the jolokia agent is installed in hawt.io by default. For more details see [Hawtio Admin Console](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_hawtio).
 
@@ -1996,7 +1942,7 @@ service:jmx:rmi://localhost:44444/jndi/rmi://localhost:1099/karaf-root
 
 and credentials: admin/password (based on the user with admin privileges according to your environment).
 
-##### Securing the Hawtio Administration Console
+##### Securing the Hawtio Administration Console {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/hawtio.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/hawtio.adoc)
 
@@ -2058,13 +2004,13 @@ To secure the Hawtio Administration Console with Keycloak, complete the followin
 
    Note that the user needs to have the proper realm role to successfully authenticate to Hawtio. The available roles are configured in the `$FUSE_HOME/etc/system.properties` file in `hawtio.roles`.
 
-#### 2.1.6. Spring Boot Adapter
+#### 2.1.6. Spring Boot Adapter {#}
 
-To be able to secure Spring Boot apps you must add the Keycloak Spring Boot adapter JAR to your app. You then have to provide some extra configuration via normal Spring Boot configuration (`application.properties`). Letâ€™s go over these steps.
+To be able to secure Spring Boot apps you must add the Keycloak Spring Boot adapter JAR to your app. You then have to provide some extra configuration via normal Spring Boot configuration (`application.properties`). Let¡¯s go over these steps.
 
-##### Adapter Installation
+##### Adapter Installation {#}
 
-The Keycloak Spring Boot adapter takes advantage of Spring Bootâ€™s autoconfiguration so all you need to do is add the Keycloak Spring Boot starter to your project. They Keycloak Spring Boot Starter is also directly available from the [Spring Start Page](https://start.spring.io/). To add it manually using Maven, add the following to your dependencies:
+The Keycloak Spring Boot adapter takes advantage of Spring Boot¡¯s autoconfiguration so all you need to do is add the Keycloak Spring Boot starter to your project. They Keycloak Spring Boot Starter is also directly available from the [Spring Start Page](https://start.spring.io/). To add it manually using Maven, add the following to your dependencies:
 
 ```
 <dependency>
@@ -2095,7 +2041,7 @@ Currently the following embedded containers are supported and do not require any
 - Undertow
 - Jetty
 
-##### Required Spring Boot Adapter Configuration
+##### Required Spring Boot Adapter Configuration {#}
 
 This section describes how to configure your Spring Boot app to use Keycloak.
 
@@ -2114,7 +2060,7 @@ You can disable the Keycloak Spring Boot Adapter (for example in tests) by setti
 
 To configure a Policy Enforcer, unlike keycloak.json, `policy-enforcer-config` must be used instead of just `policy-enforcer`.
 
-You also need to specify the Java EE security config that would normally go in the `web.xml`. The Spring Boot Adapter will set the `login-method` to `KEYCLOAK` and configure the `security-constraints` at startup time. Hereâ€™s an example configuration:
+You also need to specify the Java EE security config that would normally go in the `web.xml`. The Spring Boot Adapter will set the `login-method` to `KEYCLOAK` and configure the `security-constraints` at startup time. Here¡¯s an example configuration:
 
 ```
 keycloak.securityConstraints[0].authRoles[0] = admin
@@ -2131,17 +2077,17 @@ keycloak.securityConstraints[1].securityCollections[0].patterns[0] = /admin
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-#### 2.1.7. Tomcat 6, 7 and 8 Adapters
+#### 2.1.7. Tomcat 6, 7 and 8 Adapters {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/tomcat-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/tomcat-adapter.adoc)
 
-To be able to secure WAR apps deployed on Tomcat 6, 7 and 8 you must install the Keycloak Tomcat 6, 7 or 8 adapter into your Tomcat installation. You then have to provide some extra configuration in each WAR you deploy to Tomcat. Letâ€™s go over these steps.
+To be able to secure WAR apps deployed on Tomcat 6, 7 and 8 you must install the Keycloak Tomcat 6, 7 or 8 adapter into your Tomcat installation. You then have to provide some extra configuration in each WAR you deploy to Tomcat. Let¡¯s go over these steps.
 
-##### Adapter Installation
+##### Adapter Installation {#}
 
 Adapters are no longer included with the appliance or war distribution. Each adapter is a separate download on the Keycloak download site. They are also available as a maven artifact.
 
-You must unzip the adapter distro into Tomcatâ€™s `lib/` directory. Including adapterâ€™s jars within your WEB-INF/lib directory will not work! The Keycloak adapter is implemented as a Valve and valve code must reside in Tomcatâ€™s main lib/ directory.
+You must unzip the adapter distro into Tomcat¡¯s `lib/` directory. Including adapter¡¯s jars within your WEB-INF/lib directory will not work! The Keycloak adapter is implemented as a Valve and valve code must reside in Tomcat¡¯s main lib/ directory.
 
 ```
 $ cd $TOMCAT_HOME/lib
@@ -2152,7 +2098,7 @@ $ unzip keycloak-tomcat7-adapter-dist.zip
 $ unzip keycloak-tomcat8-adapter-dist.zip
 ```
 
-##### Required Per WAR Configuration
+##### Required Per WAR Configuration {#}
 
 This section describes how to secure a WAR directly by adding config and editing files within your WAR package.
 
@@ -2168,7 +2114,7 @@ Next you must create a `keycloak.json` adapter config file within the `WEB-INF` 
 
 The format of this config file is described in the [Java adapter configuration](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config)
 
-Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Hereâ€™s an example:
+Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Here¡¯s an example:
 
 ```
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
@@ -2202,17 +2148,17 @@ Finally you must specify both a `login-config` and use standard servlet security
 </web-app>
 ```
 
-#### 2.1.8. Jetty 9.x Adapters
+#### 2.1.8. Jetty 9.x Adapters {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/jetty9-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/jetty9-adapter.adoc)
 
-Keycloak has a separate adapter for Jetty 9.2.x, Jetty 9.3.x and Jetty 9.4.x that you will have to install into your Jetty installation. You then have to provide some extra configuration in each WAR you deploy to Jetty. Letâ€™s go over these steps.
+Keycloak has a separate adapter for Jetty 9.2.x, Jetty 9.3.x and Jetty 9.4.x that you will have to install into your Jetty installation. You then have to provide some extra configuration in each WAR you deploy to Jetty. Let¡¯s go over these steps.
 
-##### Adapter Installation
+##### Adapter Installation {#}
 
 Adapters are no longer included with the appliance or war distribution. Each adapter is a separate download on the Keycloak download site. They are also available as a maven artifact.
 
-You must unzip the Jetty 9.x distro into Jetty 9.xâ€™s [base directory](https://www.eclipse.org/jetty/documentation/current/startup-base-and-home.html). Including adapterâ€™s jars within your WEB-INF/lib directory will not work! In the example below, the Jetty base is named `your-base`:
+You must unzip the Jetty 9.x distro into Jetty 9.x¡¯s [base directory](https://www.eclipse.org/jetty/documentation/current/startup-base-and-home.html). Including adapter¡¯s jars within your WEB-INF/lib directory will not work! In the example below, the Jetty base is named `your-base`:
 
 ```
 $ cd your-base
@@ -2225,7 +2171,7 @@ Next, you will have to enable the `keycloak` module for your Jetty base:
 $ java -jar $JETTY_HOME/start.jar --add-to-startd=keycloak
 ```
 
-##### Required Per WAR Configuration
+##### Required Per WAR Configuration {#}
 
 This section describes how to secure a WAR directly by adding config and editing files within your WAR package.
 
@@ -2252,7 +2198,7 @@ The format of this config file is described in the [Java adapter configuration](
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-Instead of using keycloak.json, you can define everything within the `jetty-web.xml`. Youâ€™ll just have to figure out how the json settings match to the `org.keycloak.representations.adapters.config.AdapterConfig` class.
+Instead of using keycloak.json, you can define everything within the `jetty-web.xml`. You¡¯ll just have to figure out how the json settings match to the `org.keycloak.representations.adapters.config.AdapterConfig` class.
 
 ```
 <?xml version="1.0"?>
@@ -2283,9 +2229,9 @@ Instead of using keycloak.json, you can define everything within the `jetty-web.
 </Configure>
 ```
 
-You do not have to crack open your WAR to secure it with keycloak. Instead create the jetty-web.xml file in your webapps directory with the name of yourwar.xml. Jetty should pick it up. In this mode, youâ€™ll have to declare keycloak.json configuration directly within the xml file.
+You do not have to crack open your WAR to secure it with keycloak. Instead create the jetty-web.xml file in your webapps directory with the name of yourwar.xml. Jetty should pick it up. In this mode, you¡¯ll have to declare keycloak.json configuration directly within the xml file.
 
-Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Hereâ€™s an example:
+Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Here¡¯s an example:
 
 ```
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
@@ -2322,7 +2268,7 @@ Finally you must specify both a `login-config` and use standard servlet security
 </web-app>
 ```
 
-#### 2.1.9. Spring Security Adapter
+#### 2.1.9. Spring Security Adapter {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/spring-security-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/spring-security-adapter.adoc)
 
@@ -2330,7 +2276,7 @@ To secure an application with Spring Security and Keycloak, add this adapter as 
 
 Unlike the other Keycloak Adapters, you should not configure your security in web.xml. However, keycloak.json is still required.
 
-##### Adapter Installation
+##### Adapter Installation {#}
 
 Add Keycloak Spring Security adapter as a dependency to your Maven POM or Gradle build.
 
@@ -2342,11 +2288,11 @@ Add Keycloak Spring Security adapter as a dependency to your Maven POM or Gradle
 </dependency>
 ```
 
-##### Spring Security Configuration
+##### Spring Security Configuration {#}
 
-The Keycloak Spring Security adapter takes advantage of Spring Securityâ€™s flexible security configuration syntax.
+The Keycloak Spring Security adapter takes advantage of Spring Security¡¯s flexible security configuration syntax.
 
-###### Java Configuration
+###### Java Configuration {#}
 
 Keycloak provides a KeycloakWebSecurityConfigurerAdapter as a convenient base class for creating a [WebSecurityConfigurer](https://docs.spring.io/spring-security/site/docs/4.0.x/apidocs/org/springframework/security/config/annotation/web/WebSecurityConfigurer.html)instance. The implementation allows customization by overriding methods. While its use is not required, it greatly simplifies your security context configuration.
 
@@ -2386,15 +2332,15 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 
 You must provide a session authentication strategy bean which should be of type `RegisterSessionAuthenticationStrategy` for public or confidential applications and `NullAuthenticatedSessionStrategy` for bearer-only applications.
 
-Spring Securityâ€™s `SessionFixationProtectionStrategy` is currently not supported because it changes the session identifier after login via Keycloak. If the session identifier changes, universal log out will not work because Keycloak is unaware of the new session identifier.
+Spring Security¡¯s `SessionFixationProtectionStrategy` is currently not supported because it changes the session identifier after login via Keycloak. If the session identifier changes, universal log out will not work because Keycloak is unaware of the new session identifier.
 
 |      | The `@KeycloakConfiguration` annotation is a metadata annotion that defines all annotations that are needed to integrate Keycloak in Spring Security. If you have a complexe Spring Security setup you can simply have a look ath the annotations of the `@KeycloakConfiguration` annotation and create your own custom meta annotation or just use specific Spring annotations for the Keycloak adapter. |
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-###### XML Configuration
+###### XML Configuration {#}
 
-While Spring Securityâ€™s XML namespace simplifies configuration, customizing the configuration can be a bit verbose.
+While Spring Security¡¯s XML namespace simplifies configuration, customizing the configuration can be a bit verbose.
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -2458,19 +2404,19 @@ While Spring Securityâ€™s XML namespace simplifies configuration, customizing th
 </beans>
 ```
 
-##### Multi Tenancy
+##### Multi Tenancy {#}
 
 The Keycloak Spring Security adapter also supports multi tenancy. Instead of injecting `AdapterDeploymentContextFactoryBean` with the path to `keycloak.json` you can inject an implementation of the `KeycloakConfigResolver` interface. More details on how to implement the `KeycloakConfigResolver` can be found in [Multi Tenancy](https://www.keycloak.org/docs/latest/securing_apps/index.html#_multi_tenancy).
 
-##### Naming Security Roles
+##### Naming Security Roles {#}
 
 Spring Security, when using role-based authentication, requires that role names start with `ROLE_`. For example, an administrator role must be declared in Keycloak as `ROLE_ADMIN` or similar, not simply `ADMIN`.
 
 The class `org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider` supports an optional `org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper` which can be used to map roles coming from Keycloak to roles recognized by Spring Security. Use, for example, `org.springframework.security.core.authority.mapping.SimpleAuthorityMapper` to insert the `ROLE_` prefix and convert the role name to upper case. The class is part of Spring Security Core module.
 
-##### Client to Client Support
+##### Client to Client Support {#}
 
-To simplify communication between clients, Keycloak provides an extension of Springâ€™s `RestTemplate` that handles bearer token authentication for you. To enable this feature your security configuration must add the `KeycloakRestTemplate`bean. Note that it must be scoped as a prototype to function correctly.
+To simplify communication between clients, Keycloak provides an extension of Spring¡¯s `RestTemplate` that handles bearer token authentication for you. To enable this feature your security configuration must add the `KeycloakRestTemplate`bean. Note that it must be scoped as a prototype to function correctly.
 
 For Java configuration:
 
@@ -2522,7 +2468,7 @@ public class RemoteProductService implements ProductService {
 }
 ```
 
-##### Spring Boot Integration
+##### Spring Boot Integration {#}
 
 The Spring Boot and the Spring Security adapters can be combined.
 
@@ -2535,7 +2481,7 @@ If you are using the Keycloak Spring Boot Starter to make use of the Spring Secu
 </dependency>
 ```
 
-###### Using Spring Boot Configuration
+###### Using Spring Boot Configuration {#}
 
 By Default, the Spring Security Adapter looks for a `keycloak.json` configuration file. You can make sure it looks at the configuration provided by the Spring Boot Adapter by adding this bean :
 
@@ -2546,7 +2492,7 @@ public KeycloakConfigResolver KeycloakConfigResolver() {
 }
 ```
 
-###### Avoid double bean registration
+###### Avoid double bean registration {#}
 
 Spring Boot attempts to eagerly register filter beans with the web application context. Therefore, when running the Keycloak Spring Security adapter in a Spring Boot environment, it may be necessary to add `FilterRegistrationBean`s to your security configuration to prevent the Keycloak filters from being registered twice.
 
@@ -2601,13 +2547,13 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 }
 ```
 
-#### 2.1.10. Java Servlet Filter Adapter
+#### 2.1.10. Java Servlet Filter Adapter {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/servlet-filter-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/servlet-filter-adapter.adoc)
 
 If you are deploying your Java Servlet application on a platform where there is no Keycloak adapter you opt to use the servlet filter adapter. This adapter works a bit differently than the other adapters. You do not define security constraints in web.xml. Instead you define a filter mapping using the Keycloak servlet filter adapter to secure the url patterns you want to secure.
 
-|      | Backchannel logout works a bit differently than the standard adapters. Instead of invalidating the HTTP session it marks the session id as logged out. Thereâ€™s no standard way to invalidate an HTTP session based on a session id. |
+|      | Backchannel logout works a bit differently than the standard adapters. Instead of invalidating the HTTP session it marks the session id as logged out. There¡¯s no standard way to invalidate an HTTP session based on a session id. |
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
@@ -2644,7 +2590,7 @@ Patterns are matched against the `requestURI` without the `context-path`. Given 
 </init-param>
 ```
 
-Note that you should configure your client in the Keycloak Admin Console with an Admin URL that points to a secured section covered by the filterâ€™s url-pattern.
+Note that you should configure your client in the Keycloak Admin Console with an Admin URL that points to a secured section covered by the filter¡¯s url-pattern.
 
 The Admin URL will make callbacks to the Admin URL to do things like backchannel logout. So, the Admin URL in this example should be `http[s]://hostname/{context-root}/keycloak`.
 
@@ -2660,13 +2606,13 @@ To use this filter, include this maven artifact in your WAR poms:
 </dependency>
 ```
 
-##### Using on OSGi
+##### Using on OSGi {#}
 
 The servlet filter adapter is packaged as an OSGi bundle, and thus is usable in a generic OSGi environment (R6 and above) with HTTP Service and HTTP Whiteboard.
 
-###### Installation
+###### Installation {#}
 
-The adapter and its dependencies are distributed as Maven artifacts, so youâ€™ll need either working Internet connection to access Maven Central, or have the artifacts cached in your local Maven repo.
+The adapter and its dependencies are distributed as Maven artifacts, so you¡¯ll need either working Internet connection to access Maven Central, or have the artifacts cached in your local Maven repo.
 
 If you are using Apache Karaf, you can simply install a feature from the Keycloak feature repo:
 
@@ -2681,7 +2627,7 @@ For other OSGi runtimes, please refer to the runtime documentation on how to ins
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-###### Configuration
+###### Configuration {#}
 
 First, the adapter needs to be registered as a servlet filter with the OSGi HTTP Service. The most common ways to do this are programmatic (e.g. via bundle activator) and declarative (using OSGi annotations). We recommend using the latter since it simplifies the process of dynamically registering and un-registering the filter:
 
@@ -2709,7 +2655,7 @@ public class KeycloakFilter extends KeycloakOIDCFilter {
 
 The above snippet uses OSGi declarative service specification to expose the filter as an OSGI service under `javax.servlet.Filter` class. Once the class is published in the OSGi service registry, it is going to be picked up by OSGi HTTP Service implementation and used for filtering requests for the specified servlet context. This will trigger Keycloak adapter for every request that matches servlet context path + filter path.
 
-Since the component is put under the control of OSGi Configuration Admin Service, itâ€™s properties can be configured dynamically. To do that, either create a `mypackage.KeycloakFilter.cfg` file under the standard config location for your OSGi runtime:
+Since the component is put under the control of OSGi Configuration Admin Service, it¡¯s properties can be configured dynamically. To do that, either create a `mypackage.KeycloakFilter.cfg` file under the standard config location for your OSGi runtime:
 
 ```
 keycloak.config.file = /path/to/keycloak.json
@@ -2747,17 +2693,17 @@ public class Activator implements BundleActivator {
 
 Please refer to [Apache Felix HTTP Service](http://felix.apache.org/documentation/subprojects/apache-felix-http-service.html#using-the-osgi-http-whiteboard) for more info on programmatic registration.
 
-#### 2.1.11. JAAS plugin
+#### 2.1.11. JAAS plugin {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/jaas.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/jaas.adoc)
 
-Itâ€™s generally not needed to use JAAS for most of the applications, especially if they are HTTP based, and you should most likely choose one of our other adapters. However, some applications and systems may still rely on pure legacy JAAS solution. Keycloak provides two login modules to help in these situations.
+It¡¯s generally not needed to use JAAS for most of the applications, especially if they are HTTP based, and you should most likely choose one of our other adapters. However, some applications and systems may still rely on pure legacy JAAS solution. Keycloak provides two login modules to help in these situations.
 
 The provided login modules are:
 
 - org.keycloak.adapters.jaas.DirectAccessGrantsLoginModule
 
-  This login module allows to authenticate with username/password from Keycloak. Itâ€™s using [Resource Owner Password Credentials](https://www.keycloak.org/docs/latest/securing_apps/index.html#_resource_owner_password_credentials_flow) flow to validate if the provided username/password is valid. Itâ€™s useful for non-web based systems, which need to rely on JAAS and want to use Keycloak, but canâ€™t use the standard browser based flows due to their non-web nature. Example of such application could be messaging or SSH.
+  This login module allows to authenticate with username/password from Keycloak. It¡¯s using [Resource Owner Password Credentials](https://www.keycloak.org/docs/latest/securing_apps/index.html#_resource_owner_password_credentials_flow) flow to validate if the provided username/password is valid. It¡¯s useful for non-web based systems, which need to rely on JAAS and want to use Keycloak, but can¡¯t use the standard browser based flows due to their non-web nature. Example of such application could be messaging or SSH.
 
 - org.keycloak.adapters.jaas.BearerTokenLoginModule
 
@@ -2767,7 +2713,7 @@ Both modules use the following configuration properties:
 
 - keycloak-config-file
 
-  The location of the `keycloak.json` configuration file. The configuration file can either be located on the filesystem or on the classpath. If itâ€™s located on the classpath you need to prefix the location with `classpath:` (for example `classpath:/path/keycloak.json`). This is *REQUIRED.*
+  The location of the `keycloak.json` configuration file. The configuration file can either be located on the filesystem or on the classpath. If it¡¯s located on the classpath you need to prefix the location with `classpath:` (for example `classpath:/path/keycloak.json`). This is *REQUIRED.*
 
 - `role-principal-class`
 
@@ -2777,7 +2723,7 @@ Both modules use the following configuration properties:
 
   This option is only applicable to the `DirectAccessGrantsLoginModule`. The specified value will be used as the OAuth2 `scope` parameter in the Resource Owner Password Credentials Grant request.
 
-#### 2.1.12. CLI / Desktop Applications
+#### 2.1.12. CLI / Desktop Applications {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/installed-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/installed-adapter.adoc)
 
@@ -2787,7 +2733,7 @@ The `KeycloakInstalled` adapter supports a `desktop` and a `manual` variant. The
 
 Tip: Google provides some more information about this approach on at [OAuth2InstalledApp](https://developers.google.com/identity/protocols/OAuth2InstalledApp).
 
-##### How it works
+##### How it works {#}
 
 To authenticate a user with the `desktop` variant the `KeycloakInstalled` adapter opens a desktop browser window where a user uses the regular Keycloak login pages to login when the `loginDesktop()` method is called on the `KeycloakInstalled` object.
 
@@ -2803,7 +2749,7 @@ The client eventually receives the tokens (access_token, refresh_token, id_token
 
 The `KeycloakInstalled` adapter provides support for renewal of stale tokens.
 
-##### Adapter Installation
+##### Adapter Installation {#}
 
 ```
 <dependency>
@@ -2813,13 +2759,13 @@ The `KeycloakInstalled` adapter provides support for renewal of stale tokens.
 </dependency>
 ```
 
-##### Client Configuration
+##### Client Configuration {#}
 
 The application needs to be configured as a `public` OpenID Connect client with `Standard Flow Enabled` and http://localhost:* as an allowed `Valid Redirect URI`.
 
-##### Usage
+##### Usage {#}
 
-The `KeycloakInstalled` adapter reads itâ€™s configuration from `META-INF/keycloak.json` on the classpath. Custom configurations can be supplied with an `InputStream` or a `KeycloakDeployment` through the `KeycloakInstalled`constructor.
+The `KeycloakInstalled` adapter reads it¡¯s configuration from `META-INF/keycloak.json` on the classpath. Custom configurations can be supplied with an `InputStream` or a `KeycloakDeployment` through the `KeycloakInstalled`constructor.
 
 In the example below, the client configuration for `desktop-app` uses the following `keycloak.json`:
 
@@ -2859,7 +2805,7 @@ keycloak.logout();
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-##### Example
+##### Example {#}
 
 The following provides an example for the configuration mentioned above.
 
@@ -2912,7 +2858,7 @@ public class DesktopApp {
 }
 ```
 
-#### 2.1.13. Security Context
+#### 2.1.13. Security Context {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/adapter-context.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/adapter-context.adoc)
 
@@ -2932,7 +2878,7 @@ httpServletRequest.getSession()
     .getAttribute(KeycloakSecurityContext.class.getName());
 ```
 
-#### 2.1.14. Error Handling
+#### 2.1.14. Error Handling {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/adapter_error_handling.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/adapter_error_handling.adoc)
 
@@ -2961,7 +2907,7 @@ Reason reason = error.getReason();
 System.out.println(reason.name());
 ```
 
-#### 2.1.15. Logout
+#### 2.1.15. Logout {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/logout.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/logout.adoc)
 
@@ -2971,7 +2917,7 @@ When using the `HttpServletRequest.logout()` option the adapter executes a back-
 
 If you want to avoid logging out of an external identity provider as part of the logout process, you can supply the parameter `initiating_idp`, with the value being the identity (alias) of the identity provider in question. This is useful when the logout endpoint is invoked as part of single logout initiated by the external identity provider.
 
-#### 2.1.16. Parameters Forwarding
+#### 2.1.16. Parameters Forwarding {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/params_forwarding.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/params_forwarding.adoc)
 
@@ -3002,13 +2948,13 @@ Most of the parameters are described in the [OIDC specification](https://openid.
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-#### 2.1.17. Client Authentication
+#### 2.1.17. Client Authentication {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/client-authentication.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/client-authentication.adoc)
 
 When a confidential OIDC client needs to send a backchannel request (for example, to exchange code for the token, or to refresh the token) it needs to authenticate against the Keycloak server. By default, there are three ways to authenticate the client: client ID and client secret, client authentication with signed JWT, or client authentication with signed JWT using client secret.
 
-##### Client ID and Client Secret
+##### Client ID and Client Secret {#}
 
 This is the traditional method described in the OAuth2 specification. The client has a secret, which needs to be known to both the adapter (application) and the Keycloak server. You can generate the secret for a particular client in the Keycloak administration console, and then paste this secret into the `keycloak.json` file on the application side:
 
@@ -3018,16 +2964,16 @@ This is the traditional method described in the OAuth2 specification. The client
 }
 ```
 
-##### Client Authentication with Signed JWT
+##### Client Authentication with Signed JWT {#}
 
 This is based on the [RFC7523](https://tools.ietf.org/html/rfc7523) specification. It works this way:
 
-- The client must have the private key and certificate. For Keycloak this is available through the traditional `keystore` file, which is either available on the client applicationâ€™s classpath or somewhere on the file system.
+- The client must have the private key and certificate. For Keycloak this is available through the traditional `keystore` file, which is either available on the client application¡¯s classpath or somewhere on the file system.
 - Once the client application is started, it allows to download its public key in [JWKS](https://self-issued.info/docs/draft-ietf-jose-json-web-key.html) format using a URL such as http://myhost.com/myapp/k_jwks, assuming that http://myhost.com/myapp is the base URL of your client application. This URL can be used by Keycloak (see below).
 - During authentication, the client generates a JWT token and signs it with its private key and sends it to Keycloak in the particular backchannel request (for example, code-to-token request) in the `client_assertion` parameter.
 - Keycloak must have the public key or certificate of the client so that it can verify the signature on JWT. In Keycloak you need to configure client credentials for your client. First you need to choose `Signed JWT` as the method of authenticating your client in the tab `Credentials` in administration console. Then you can choose to either:
-  - Configure the JWKS URL where Keycloak can download the clientâ€™s public keys. This can be a URL such as http://myhost.com/myapp/k_jwks (see details above). This option is the most flexible, since the client can rotate its keys anytime and Keycloak then always downloads new keys when needed without needing to change the configuration. More accurately, Keycloak downloads new keys when it sees the token signed by an unknown `kid` (Key ID).
-  - Upload the clientâ€™s public key or certificate, either in PEM format, in JWK format, or from the keystore. With this option, the public key is hardcoded and must be changed when the client generates a new key pair. You can even generate your own keystore from the Keycloak admininstration console if you donâ€™t have your own available. For more details on how to set up the Keycloak administration console see [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/).
+  - Configure the JWKS URL where Keycloak can download the client¡¯s public keys. This can be a URL such as http://myhost.com/myapp/k_jwks (see details above). This option is the most flexible, since the client can rotate its keys anytime and Keycloak then always downloads new keys when needed without needing to change the configuration. More accurately, Keycloak downloads new keys when it sees the token signed by an unknown `kid` (Key ID).
+  - Upload the client¡¯s public key or certificate, either in PEM format, in JWK format, or from the keystore. With this option, the public key is hardcoded and must be changed when the client generates a new key pair. You can even generate your own keystore from the Keycloak admininstration console if you don¡¯t have your own available. For more details on how to set up the Keycloak administration console see [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/).
 
 For set up on the adapter side you need to have something like this in your `keycloak.json` file:
 
@@ -3048,7 +2994,7 @@ With this configuration, the keystore file `keystore-client.jks` must be availab
 
 For inspiration, you can take a look at the examples distribution into the main demo example into the `product-portal`application.
 
-##### Client Authentication with Signed JWT using Client Secret
+##### Client Authentication with Signed JWT using Client Secret {#}
 
 This is the same as Client Authentication with Signed JWT except for using the client secret instead of the private key and certificate.
 
@@ -3062,11 +3008,11 @@ The client has a secret, which needs to be known to both the adapter (applicatio
 }
 ```
 
-##### Add Your Own Client Authentication Method
+##### Add Your Own Client Authentication Method {#}
 
 You can add your own client authentication method as well. You will need to implement both client-side and server-side providers. For more details see the `Authentication SPI` section in [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/).
 
-#### 2.1.18. Multi Tenancy
+#### 2.1.18. Multi Tenancy {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/multi-tenancy.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/multi-tenancy.adoc)
 
@@ -3118,7 +3064,7 @@ You also need to configure which `KeycloakConfigResolver` implementation to use 
 </web-app>
 ```
 
-#### 2.1.19. Application Clustering
+#### 2.1.19. Application Clustering {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/application-clustering.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/application-clustering.adoc)
 
@@ -3131,13 +3077,13 @@ There are a few options available depending on whether your application is:
 - Relying on sticky sessions provided by load balancer
 - Hosted on same domain as Keycloak
 
-Dealing with clustering is not quite as simple as for a regular application. Mainly due to the fact that both the browser and the server-side application sends requests to Keycloak, so itâ€™s not as simple as enabling sticky sessions on your load balancer.
+Dealing with clustering is not quite as simple as for a regular application. Mainly due to the fact that both the browser and the server-side application sends requests to Keycloak, so it¡¯s not as simple as enabling sticky sessions on your load balancer.
 
-##### Stateless token store
+##### Stateless token store {#}
 
 By default, the web application secured by Keycloak uses the HTTP session to store security context. This means that you either have to enable sticky sessions or replicate the HTTP session.
 
-As an alternative to storing the security context in the HTTP session the adapter can be configured to store this in a cookie instead. This is useful if you want to make your application stateless or if you donâ€™t want to store the security context in the HTTP session.
+As an alternative to storing the security context in the HTTP session the adapter can be configured to store this in a cookie instead. This is useful if you want to make your application stateless or if you don¡¯t want to store the security context in the HTTP session.
 
 To use the cookie store for saving the security context, edit your applications `WEB-INF/keycloak.json` and add:
 
@@ -3151,13 +3097,13 @@ To use the cookie store for saving the security context, edit your applications 
 
 One limitation of using the cookie store is that the whole security context is passed in the cookie for every HTTP request. This may impact performance.
 
-Another small limitation is limited support for Single-Sign Out. It works without issues if you init servlet logout (HttpServletRequest.logout) from the application itself as the adapter will delete the KEYCLOAK_ADAPTER_STATE cookie. However, back-channel logout initialized from a different application isnâ€™t propagated by Keycloak to applications using cookie store. Hence itâ€™s recommended to use a short value for the access token timeout (for example 1 minute).
+Another small limitation is limited support for Single-Sign Out. It works without issues if you init servlet logout (HttpServletRequest.logout) from the application itself as the adapter will delete the KEYCLOAK_ADAPTER_STATE cookie. However, back-channel logout initialized from a different application isn¡¯t propagated by Keycloak to applications using cookie store. Hence it¡¯s recommended to use a short value for the access token timeout (for example 1 minute).
 
 |      | Some load balancers do not allow any configuration of the sticky session cookie name or contents, such as Amazon ALB. For these, it is recommended to set the `shouldAttachRoute` option to `false`. |
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-##### Relative URI optimization
+##### Relative URI optimization {#}
 
 In deployment scenarios where Keycloak and the application is hosted on the same domain (through a reverse proxy or load balancer) it can be convenient to use relative URI options in your client configuration.
 
@@ -3165,9 +3111,9 @@ With relative URIs the URI is resolved as relative to the URL used to access Key
 
 For example if the URL to your application is `https://acme.org/myapp` and the URL to Keycloak is `https://acme.org/auth`, then you can use the redirect-uri `/myapp` instead of `https://acme.org/myapp`.
 
-##### Admin URL configuration
+##### Admin URL configuration {#}
 
-Admin URL for a particular client can be configured in the Keycloak Administration Console. Itâ€™s used by the Keycloak server to send backend requests to the application for various tasks, like logout users or push revocation policies.
+Admin URL for a particular client can be configured in the Keycloak Administration Console. It¡¯s used by the Keycloak server to send backend requests to the application for various tasks, like logout users or push revocation policies.
 
 For example the way backchannel logout works is:
 
@@ -3179,7 +3125,7 @@ For example the way backchannel logout works is:
 
 If admin URL contains `${application.session.host}` it will be replaced with the URL to the node associated with the HTTP session.
 
-##### Registration of application nodes
+##### Registration of application nodes {#}
 
 The previous section describes how Keycloak can send logout request to node associated with a specific HTTP session. However, in some cases admin may want to propagate admin tasks to all registered cluster nodes, not just one of them. For example to push a new not before policy to the application or to logout all users from the application.
 
@@ -3187,10 +3133,10 @@ In this case Keycloak needs to be aware of all application cluster nodes, so it 
 
 1. When a new application node joins the cluster, it sends a registration request to the Keycloak server
 2. The request may be re-sent to Keycloak in configured periodic intervals
-3. If the Keycloak server doesnâ€™t receive a re-registration request within a specified timeout then it automatically unregisters the specific node
+3. If the Keycloak server doesn¡¯t receive a re-registration request within a specified timeout then it automatically unregisters the specific node
 4. The node is also unregistered in Keycloak when it sends an unregistration request, which is usually during node shutdown or application undeployment. This may not work properly for forced shutdown when undeployment listeners are not invoked, which results in the need for automatic unregistration
 
-Sending startup registrations and periodic re-registration is disabled by default as itâ€™s only required for some clustered applications.
+Sending startup registrations and periodic re-registration is disabled by default as it¡¯s only required for some clustered applications.
 
 To enable the feature edit the `WEB-INF/keycloak.json` file for your application and add:
 
@@ -3201,11 +3147,11 @@ To enable the feature edit the `WEB-INF/keycloak.json` file for your application
 
 This means the adapter will send the registration request on startup and re-register every 10 minutes.
 
-In the Keycloak Administration Console you can specify the maximum node re-registration timeout (should be larger than *register-node-period* from the adapter configuration). You can also manually add and remove cluster nodes in through the Adminstration Console, which is useful if you donâ€™t want to rely on the automatic registration feature or if you want to remove stale application nodes in the event your not using the automatic unregistration feature.
+In the Keycloak Administration Console you can specify the maximum node re-registration timeout (should be larger than *register-node-period* from the adapter configuration). You can also manually add and remove cluster nodes in through the Adminstration Console, which is useful if you don¡¯t want to rely on the automatic registration feature or if you want to remove stale application nodes in the event your not using the automatic unregistration feature.
 
-##### Refresh token in each request
+##### Refresh token in each request {#}
 
-By default the application adapter will only refresh the access token when itâ€™s expired. However, you can also configure the adapter to refresh the token on every request. This may have a performance impact as your application will send more requests to the Keycloak server.
+By default the application adapter will only refresh the access token when it¡¯s expired. However, you can also configure the adapter to refresh the token on every request. This may have a performance impact as your application will send more requests to the Keycloak server.
 
 To enable the feature edit the `WEB-INF/keycloak.json` file for your application and add:
 
@@ -3213,11 +3159,11 @@ To enable the feature edit the `WEB-INF/keycloak.json` file for your application
 "always-refresh-token": true
 ```
 
-|      | This may have a significant impact on performance. Only enable this feature if you canâ€™t rely on backchannel messages to propagate logout and not before policies. Another thing to consider is that by default access tokens has a short expiration so even if logout is not propagated the token will expire within minutes of the logout. |
+|      | This may have a significant impact on performance. Only enable this feature if you can¡¯t rely on backchannel messages to propagate logout and not before policies. Another thing to consider is that by default access tokens has a short expiration so even if logout is not propagated the token will expire within minutes of the logout. |
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-### 2.2. JavaScript Adapter
+### 2.2. JavaScript Adapter {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/javascript-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/javascript-adapter.adoc)
 
@@ -3304,7 +3250,7 @@ var loadData = function () {
 };
 ```
 
-One thing to keep in mind is that the access token by default has a short life expiration so you may need to refresh the access token prior to sending the request. You can do this by the `updateToken` method. The `updateToken` method returns a promise object which makes it easy to invoke the service only if the token was successfully refreshed and for example display an error to the user if it wasnâ€™t. For example:
+One thing to keep in mind is that the access token by default has a short life expiration so you may need to refresh the access token prior to sending the request. You can do this by the `updateToken` method. The `updateToken` method returns a promise object which makes it easy to invoke the service only if the token was successfully refreshed and for example display an error to the user if it wasn¡¯t. For example:
 
 ```
 keycloak.updateToken(30).success(function() {
@@ -3314,13 +3260,13 @@ keycloak.updateToken(30).success(function() {
 });
 ```
 
-#### 2.2.1. Session Status iframe
+#### 2.2.1. Session Status iframe {#}
 
 By default, the JavaScript adapter creates a hidden iframe that is used to detect if a Single-Sign Out has occurred. This does not require any network traffic, instead the status is retrieved by looking at a special status cookie. This feature can be disabled by setting `checkLoginIframe: false` in the options passed to the `init` method.
 
-You should not rely on looking at this cookie directly. Its format can change and itâ€™s also associated with the URL of the Keycloak server, not your application.
+You should not rely on looking at this cookie directly. Its format can change and it¡¯s also associated with the URL of the Keycloak server, not your application.
 
-#### 2.2.2. Implicit and Hybrid Flow
+#### 2.2.2. Implicit and Hybrid Flow {#}
 
 By default, the JavaScript adapter uses the [Authorization Code](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth) flow.
 
@@ -3350,17 +3296,17 @@ For the Hybrid flow, you need to pass the parameter `flow` with value `hybrid` t
 keycloak.init({ flow: 'hybrid' })
 ```
 
-#### 2.2.3. Hybrid Apps with Cordova  
+#### 2.2.3. Hybrid Apps with Cordova   {#}
 
 Keycloak support hybrid mobile apps developed with [Apache Cordova](https://cordova.apache.org/). The Javascript adapter has two modes for this: `cordova` and `cordova-native`:
 
 The default is cordova, which the adapter will automatically select if no adapter type has been configured and window.cordova is present. When logging in, it will open an [InApp Browser](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-inappbrowser/) that lets the user interact with Keycloak and afterwards returns to the app by redirecting to `http://localhost`. Because of this, you must whitelist this URL as a valid redirect-uri in the client configuration section of the Administration Console.
 
-While this mode is easy to setup, it also has some disadvantages: * The InApp-Browser is a browser embedded in the app and is not the phoneâ€™s default browser. Therefore it will have different settings and stored credentials will not be available. * The InApp-Browser might also be slower, especially when rendering more complex themes. * There are security concerns to consider, before using this mode, such as that it is possible for the app to gain access to the credentials of the user, as it has full control of the browser rendering the login page, so do not allow its use in apps you do not trust.
+While this mode is easy to setup, it also has some disadvantages: * The InApp-Browser is a browser embedded in the app and is not the phone¡¯s default browser. Therefore it will have different settings and stored credentials will not be available. * The InApp-Browser might also be slower, especially when rendering more complex themes. * There are security concerns to consider, before using this mode, such as that it is possible for the app to gain access to the credentials of the user, as it has full control of the browser rendering the login page, so do not allow its use in apps you do not trust.
 
 Use this example app to help you get started: <https://github.com/keycloak/keycloak/tree/master/examples/cordova>
 
-The alternative mode `cordova-nativei` takes a different approach. It opens the login page using the systemâ€™s browser. After the user has authenticated, the browser redirects back into the app using a special URL. From there, the Keycloak adapter can finish the login by reading the code or token from the URL.
+The alternative mode `cordova-nativei` takes a different approach. It opens the login page using the system¡¯s browser. After the user has authenticated, the browser redirects back into the app using a special URL. From there, the Keycloak adapter can finish the login by reading the code or token from the URL.
 
 You can activate the native mode by passing the adapter type `cordova-native` to the `init` method:
 
@@ -3370,7 +3316,7 @@ keycloak.init({ adapter: 'cordova-native' })
 
 This adapter required two additional plugins:
 
-- [cordova-plugin-browsertab](https://github.com/google/cordova-plugin-browsertab): allows the app to open webpages in the systemâ€™s browser
+- [cordova-plugin-browsertab](https://github.com/google/cordova-plugin-browsertab): allows the app to open webpages in the system¡¯s browser
 - [cordova-plugin-deeplinks](https://github.com/e-imaxina/cordova-plugin-deeplinks): allow the browser to redirect back to your app by special URLs
 
 The technical details for linking to an app differ on each plattform and special setup is needed. Please refer to the Android and iOS sections of the [deeplinks plugin documentation](https://github.com/e-imaxina/cordova-plugin-deeplinks/blob/master/README.md) for further instructions.
@@ -3388,7 +3334,7 @@ Furthermore, we recommend the following steps to improve compatibility with the 
 
 There is an example app that shows how to use the native-mode: <https://github.com/keycloak/keycloak/tree/master/examples/cordova-native>
 
-#### 2.2.4. Earlier Browsers
+#### 2.2.4. Earlier Browsers {#}
 
 The JavaScript adapter depends on Base64 (window.btoa and window.atob), HTML5 History API and optionally the Promise API. If you need to support browsers that do not have these available (for example, IE9) you need to add polyfillers.
 
@@ -3398,9 +3344,9 @@ Example polyfill libraries:
 - HTML5 History - <https://github.com/devote/HTML5-History-API>
 - Promise - <https://github.com/stefanpenner/es6-promise>
 
-#### 2.2.5. JavaScript Adapter Reference
+#### 2.2.5. JavaScript Adapter Reference {#}
 
-##### Constructor
+##### Constructor {#}
 
 ```
 new Keycloak();
@@ -3408,7 +3354,7 @@ new Keycloak('http://localhost/keycloak.json');
 new Keycloak({ url: 'http://localhost/auth', realm: 'myrealm', clientId: 'myApp' });
 ```
 
-##### Properties
+##### Properties {#}
 
 - authenticated
 
@@ -3464,15 +3410,15 @@ new Keycloak({ url: 'http://localhost/auth', realm: 'myrealm', clientId: 'myApp'
 
 - adapter
 
-  Allows you to override the way that redirects and other browser-related functions will be handled by the library. Available options:"default" - the library uses the browser api for redirects (this is the default)"cordova" - the library will try to use the InAppBrowser cordova plugin to load keycloak login/registration pages (this is used automatically when the library is working in a cordova ecosystem)"cordova-native" - the library tries to open the login and registration page using the phoneâ€™s system browser using the BrowserTabs cordova plugin. This requires extra setup for redirecting back to the app (see [Hybrid Apps with Cordova](https://www.keycloak.org/docs/latest/securing_apps/index.html#hybrid-apps-with-cordova)).custom - allows you to implement a custom adapter (only for advanced use cases)
+  Allows you to override the way that redirects and other browser-related functions will be handled by the library. Available options:"default" - the library uses the browser api for redirects (this is the default)"cordova" - the library will try to use the InAppBrowser cordova plugin to load keycloak login/registration pages (this is used automatically when the library is working in a cordova ecosystem)"cordova-native" - the library tries to open the login and registration page using the phone¡¯s system browser using the BrowserTabs cordova plugin. This requires extra setup for redirecting back to the app (see [Hybrid Apps with Cordova](https://www.keycloak.org/docs/latest/securing_apps/index.html#hybrid-apps-with-cordova)).custom - allows you to implement a custom adapter (only for advanced use cases)
 
 - responseType
 
   Response type sent to Keycloak with login requests. This is determined based on the flow value used during initialization, but can be overridden by setting this value.
 
-##### Methods
+##### Methods {#}
 
-###### init(options)
+###### init(options) {#}
 
 Called to initialize the adapter.
 
@@ -3491,7 +3437,7 @@ Options is an Object, where:
 
 Returns promise to set functions to be invoked on success or error.
 
-###### login(options)
+###### login(options) {#}
 
 Redirects to login form on (options is an optional object with redirectUri and/or prompt fields).
 
@@ -3505,16 +3451,16 @@ Options is an Object, where:
 - idpHint - Used to tell Keycloak to skip showing the login page and automatically redirect to the specified identity provider instead. More info in the [Identity Provider documentation](https://www.keycloak.org/docs/6.0/server_admin/#_client_suggested_idp).
 - action - If value is 'register' then user is redirected to registration page, otherwise to login page.
 - locale - Sets the 'ui_locales' query param in compliance with section 3.1.2.1 of the OIDC 1.0 specification.
-- kcLocale - Specifies the desired Keycloak locale for the UI. This differs from the locale param in that it tells the Keycloak server to set a cookie and update the userâ€™s profile to a new preferred locale.
+- kcLocale - Specifies the desired Keycloak locale for the UI. This differs from the locale param in that it tells the Keycloak server to set a cookie and update the user¡¯s profile to a new preferred locale.
 - cordovaOptions - Specifies the arguments that are passed to the Cordova in-app-browser (if applicable). Options `hidden`and `location` are not affected by these arguments. All available options are defined at <https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-inappbrowser/>. Example of use: `{ zoom: "no", hardwareback: "yes" }`;
 
-###### createLoginUrl(options)
+###### createLoginUrl(options) {#}
 
 Returns the URL to login form on (options is an optional object with redirectUri and/or prompt fields).
 
 Options is an Object, which supports same options like the function `login` .
 
-###### logout(options)
+###### logout(options) {#}
 
 Redirects to logout.
 
@@ -3522,7 +3468,7 @@ Options is an Object, where:
 
 - redirectUri - Specifies the uri to redirect to after logout.
 
-###### createLogoutUrl(options)
+###### createLogoutUrl(options) {#}
 
 Returns the URL to logout the user.
 
@@ -3530,35 +3476,35 @@ Options is an Object, where:
 
 - redirectUri - Specifies the uri to redirect to after logout.
 
-###### register(options)
+###### register(options) {#}
 
 Redirects to registration form. Shortcut for login with option action = 'register'
 
 Options are same as for the login method but 'action' is set to 'register'
 
-###### createRegisterUrl(options)
+###### createRegisterUrl(options) {#}
 
 Returns the url to registration page. Shortcut for createLoginUrl with option action = 'register'
 
 Options are same as for the createLoginUrl method but 'action' is set to 'register'
 
-###### accountManagement()
+###### accountManagement() {#}
 
 Redirects to the Account Management Console.
 
-###### createAccountUrl()
+###### createAccountUrl() {#}
 
 Returns the URL to the Account Management Console.
 
-###### hasRealmRole(role)
+###### hasRealmRole(role) {#}
 
 Returns true if the token has the given realm role.
 
-###### hasResourceRole(role, resource)
+###### hasResourceRole(role, resource) {#}
 
 Returns true if the token has the given role for the resource (resource is optional, if not specified clientId is used).
 
-###### loadUserProfile()
+###### loadUserProfile() {#}
 
 Loads the users profile.
 
@@ -3574,11 +3520,11 @@ keycloak.loadUserProfile().success(function(profile) {
     });
 ```
 
-###### isTokenExpired(minValidity)
+###### isTokenExpired(minValidity) {#}
 
 Returns true if the token has less than minValidity seconds left before it expires (minValidity is optional, if not specified 0 is used).
 
-###### updateToken(minValidity)
+###### updateToken(minValidity) {#}
 
 If the token expires within minValidity seconds (minValidity is optional, if not specified 5 is used) the token is refreshed. If the session status iframe is enabled, the session status is also checked.
 
@@ -3596,13 +3542,13 @@ keycloak.updateToken(5).success(function(refreshed) {
     });
 ```
 
-###### clearToken()
+###### clearToken() {#}
 
 Clear authentication state, including tokens. This can be useful if application has detected the session was expired, for example if updating token fails.
 
 Invoking this results in onAuthLogout callback listener being invoked.
 
-##### Callback Events
+##### Callback Events {#}
 
 The adapter supports setting callback listeners for certain events.
 
@@ -3622,7 +3568,7 @@ The available events are:
 - onAuthLogout - Called if the user is logged out (will only be called if the session status iframe is enabled, or in Cordova mode).
 - onTokenExpired - Called when the access token is expired. If a refresh token is available the token can be refreshed with updateToken, or in cases where it is not (that is, with implicit flow) you can redirect to login screen to obtain a new access token.
 
-### 2.3. Node.js Adapter
+### 2.3. Node.js Adapter {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/nodejs-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/nodejs-adapter.adoc)
 
@@ -3634,9 +3580,9 @@ To use the Node.js adapter, first you must create a client for your application 
 
 Once the client is created click the `Installation` tab, select `Keycloak OIDC JSON` for `Format Option`, and then click `Download`. The downloaded `keycloak.json` file should be at the root folder of your project.
 
-#### 2.3.1. Installation
+#### 2.3.1. Installation {#}
 
-Assuming youâ€™ve already installed [Node.js](https://nodejs.org/), create a folder for your application:
+Assuming you¡¯ve already installed [Node.js](https://nodejs.org/), create a folder for your application:
 
 ```
 mkdir myapp && cd myapp
@@ -3650,7 +3596,7 @@ Use `npm init` command to create a `package.json` for your application. Now add 
     }
 ```
 
-#### 2.3.2. Usage
+#### 2.3.2. Usage {#}
 
 - Instantiate a Keycloak class
 
@@ -3666,7 +3612,7 @@ Use `npm init` command to create a `package.json` for your application. Now add 
 
 By default, this will locate a file named `keycloak.json` alongside the main executable of your application to initialize keycloak-specific settings (public key, realm name, various URLs). The `keycloak.json` file is obtained from the Keycloak Admin Console.
 
-Instantiation with this method results in all of the reasonable defaults being used. As alternative, itâ€™s also possible to provide a configuration object, rather than the `keycloak.json` file:
+Instantiation with this method results in all of the reasonable defaults being used. As alternative, it¡¯s also possible to provide a configuration object, rather than the `keycloak.json` file:
 
 ```
     let kcConfig = {
@@ -3688,7 +3634,7 @@ Applications can also redirect users to their preferred identity provider by usi
 
 - Configuring a web session store
 
-  If you want to use web sessions to manage server-side state for authentication, you need to initialize the `Keycloak(â€¦)`with at least a `store` parameter, passing in the actual session store that `express-session` is using.
+  If you want to use web sessions to manage server-side state for authentication, you need to initialize the `Keycloak(¡­)`with at least a `store` parameter, passing in the actual session store that `express-session` is using.
 
 ```
     var session = require('express-session');
@@ -3699,13 +3645,13 @@ Applications can also redirect users to their preferred identity provider by usi
 
 - Passing a custom scope value
 
-  By default, the scope value `openid` is passed as a query parameter to Keycloakâ€™s login URL, but you can add an additional custom value:
+  By default, the scope value `openid` is passed as a query parameter to Keycloak¡¯s login URL, but you can add an additional custom value:
 
 ```
     var keycloak = new Keycloak({ scope: 'offline_access' });
 ```
 
-#### 2.3.3. Installing Middleware
+#### 2.3.3. Installing Middleware {#}
 
 Once instantiated, install the middleware into your connect-capable app:
 
@@ -3715,7 +3661,7 @@ Once instantiated, install the middleware into your connect-capable app:
     app.use( keycloak.middleware() );
 ```
 
-#### 2.3.4. Checking Authentication
+#### 2.3.4. Checking Authentication {#}
 
 To check that a user is authenticated before accessing a resource, simply use `keycloak.checkSso()`. It will only authenticate if the user is already logged-in. If the user is not logged-in, the browser will be redirected back to the originally-requested URL and remain unauthenticated:
 
@@ -3723,7 +3669,7 @@ To check that a user is authenticated before accessing a resource, simply use `k
     app.get( '/check-sso', keycloak.checkSso(), checkSsoHandler );
 ```
 
-#### 2.3.5. Protecting Resources
+#### 2.3.5. Protecting Resources {#}
 
 - Simple authentication
 
@@ -3765,7 +3711,7 @@ To secure a resource with a realm role:
     app.get( '/:section/:page', keycloak.protect( protectBySection ), sectionHandler );
 ```
 
-#### 2.3.6. Additional URLs
+#### 2.3.6. Additional URLs {#}
 
 - Explicit user-triggered logout
 
@@ -3783,7 +3729,7 @@ To secure a resource with a realm role:
     app.use( keycloak.middleware( { admin: '/callbacks' } );
 ```
 
-### 2.4. Keycloak Gatekeeper
+### 2.4. Keycloak Gatekeeper {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/keycloak-gatekeeper.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/keycloak-gatekeeper.adoc)
 
@@ -3797,7 +3743,7 @@ For further information, see the included help file which includes a full list o
     $ bin/keycloak-gatekeeper help
 ```
 
-#### 2.4.1. Building
+#### 2.4.1. Building {#}
 
 Prerequisites
 
@@ -3814,43 +3760,43 @@ Procedure
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-#### 2.4.2. Configuration options
+#### 2.4.2. Configuration options {#}
 
 Configuration can come from a yaml/json file or by using command line options. Here is a list of options.
 
 ```
-# is the url for retrieve the OpenID configuration - normally the <server>/auth/realm/<realm_name>
+# is the url for retrieve the OpenID configuration - normally the <server>/auth/realm/<realm_name> {#}
 discovery-url: https://keycloak.example.com/auth/realms/<REALM_NAME>
-# the client id for the 'client' application
+# the client id for the 'client' application {#}
 client-id: <CLIENT_ID>
-# the secret associated to the 'client' application
+# the secret associated to the 'client' application {#}
 client-secret: <CLIENT_SECRET>
-# the interface definition you wish the proxy to listen, all interfaces is specified as ':<port>', unix sockets as unix://<REL_PATH>|</ABS PATH>
+# the interface definition you wish the proxy to listen, all interfaces is specified as ':<port>', unix sockets as unix://<REL_PATH>|</ABS PATH> {#}
 listen: 127.0.0.1:3000
-# whether to enable refresh tokens
+# whether to enable refresh tokens {#}
 enable-refresh-tokens: true
-# the location of a certificate you wish the proxy to use for TLS support
+# the location of a certificate you wish the proxy to use for TLS support {#}
 tls-cert:
-# the location of a private key for TLS
+# the location of a private key for TLS {#}
 tls-private-key:
-# the redirection url, essentially the site url, note: /oauth/callback is added at the end
+# the redirection url, essentially the site url, note: /oauth/callback is added at the end {#}
 redirection-url: http://127.0.0.1:3000
-# the encryption key used to encode the session state
+# the encryption key used to encode the session state {#}
 encryption-key: <ENCRYPTION_KEY>
-# the upstream endpoint which we should proxy request
+# the upstream endpoint which we should proxy request {#}
 upstream-url: http://127.0.0.1:80
-# additional scopes to add to add to the default (openid+email+profile)
+# additional scopes to add to add to the default (openid+email+profile) {#}
 scopes:
 - vpn-user
-# a collection of resource i.e. urls that you wish to protect
+# a collection of resource i.e. urls that you wish to protect {#}
 resources:
 - uri: /admin/test
-  # the methods on this url that should be protected, if missing, we assuming all
+  # the methods on this url that should be protected, if missing, we assuming all {#}
   methods:
   - GET
-  # a list of roles the user must have in order to access urls under the above
-  # If all you want is authentication ONLY, simply remove the roles array - the user must be authenticated but
-  # no roles are required
+  # a list of roles the user must have in order to access urls under the above {#}
+  # If all you want is authentication ONLY, simply remove the roles array - the user must be authenticated but {#}
+  # no roles are required {#}
   roles:
   - openvpn:vpn-user
   - openvpn:prod-vpn
@@ -3865,7 +3811,7 @@ resources:
 
 Options issued at the command line have a higher priority and will override or merge with options referenced in a config file. Examples of each style are shown here.
 
-#### 2.4.3. Example usage and configuration
+#### 2.4.3. Example usage and configuration {#}
 
 Assuming you have some web service you wish protected by Keycloak:
 
@@ -3879,7 +3825,7 @@ Here is an example configuration file.
 ```
 client-id: <CLIENT_ID>
 client-secret: <CLIENT_SECRET> # require for access_type: confidential
-# Note the redirection-url is optional, it will default to the X-Forwarded-Proto / X-Forwarded-Host r the URL scheme and host not found
+# Note the redirection-url is optional, it will default to the X-Forwarded-Proto / X-Forwarded-Host r the URL scheme and host not found {#}
 discovery-url: https://keycloak.example.com/auth/realms/<REALM_NAME>
 enable-default-deny: true
 encryption_key: AgXa7xRcoClDEU0ZDSH4X0XhL5Qy2Z2j
@@ -3937,7 +3883,7 @@ bin/keycloak-gatekeeper \
 
 By default the roles defined on a resource perform a logical `AND` so all roles specified must be present in the claims, this behavior can be altered by the `require-any-role` option, however, so as long as one role is present the permission is granted.
 
-#### 2.4.4. OpenID Provider Communication
+#### 2.4.4. OpenID Provider Communication {#}
 
 By default the communication with the OpenID provider is direct. If you wish, you can specify a forwarding proxy server in your configuration file:
 
@@ -3945,7 +3891,7 @@ By default the communication with the OpenID provider is direct. If you wish, yo
 openid-provider-proxy: http://proxy.example.com:8080
 ```
 
-#### 2.4.5. HTTP routing
+#### 2.4.5. HTTP routing {#}
 
 By default all requests will be proxyed on to the upstream, if you wish to ensure all requests are authentication you can use this:
 
@@ -3955,11 +3901,11 @@ By default all requests will be proxyed on to the upstream, if you wish to ensur
 
 The HTTP routing rules follow the guidelines from [chi](https://github.com/go-chi/chi#router-design). The ordering of the resources do not matter, the router will handle that for you.
 
-#### 2.4.6. Session-only cookies
+#### 2.4.6. Session-only cookies {#}
 
 By default the access and refresh cookies are session-only and disposed of on browser close; you can disable this feature using the `--enable-session-cookies` option.
 
-#### 2.4.7. Forward-signing proxy
+#### 2.4.7. Forward-signing proxy {#}
 
 Forward-signing provides a mechanism for authentication and authorization between services using tokens issued from the IdP. When operating in this mode the proxy will automatically acquire an access token (handling the refreshing or logins on your behalf) and tag outbound requests with a Authorization header. You can control which domains are tagged with the --forwarding-domains option. Note, this option use a **contains** comparison on domains. So, if you wanted to match all domains under *.svc.cluster.local you can use: --forwarding-domain=svc.cluster.local.
 
@@ -3980,24 +3926,24 @@ You have collection of micro-services which are permitted to speak to one anothe
   - --forwarding-domains=projectb.svc.cluster.local
   - --tls-ca-certificate=/etc/secrets/ca.pem
   - --tls-ca-key=/etc/secrets/ca-key.pem
-  # Note: if you don't specify any forwarding domains, all domains will be signed; Also the code checks is the
-  # domain 'contains' the value (it's not a regex) so if you wanted to sign all requests to svc.cluster.local, just use
-  # svc.cluster.local
+  # Note: if you don't specify any forwarding domains, all domains will be signed; Also the code checks is the {#}
+  # domain 'contains' the value (it's not a regex) so if you wanted to sign all requests to svc.cluster.local, just use {#}
+  # svc.cluster.local {#}
   volumeMounts:
   - name: keycloak-socket
     mountPoint: /var/run/keycloak
 - name: projecta
   image: some_images
 
-# test the forward proxy
+# test the forward proxy {#}
 $ curl -k --proxy http://127.0.0.1:3000 https://test.projesta.svc.cluster.local
 ```
 
 On the receiver side you could set up the Keycloak Gatekeeper (--no=redirects=true) and permit this to verify and handle admission for you. Alternatively, the access token can found as a bearer token in the request.
 
-#### 2.4.8. Forwarding signed HTTPS connections
+#### 2.4.8. Forwarding signed HTTPS connections {#}
 
-Handling HTTPS requires a man-in-the-middle sort of TLS connection. By default, if no `--tls-ca-certificate` and `--tls-ca-key` are provided the proxy will use the default certificate. If you wish to verify the trust, youâ€™ll need to generate a CA, for example.
+Handling HTTPS requires a man-in-the-middle sort of TLS connection. By default, if no `--tls-ca-certificate` and `--tls-ca-key` are provided the proxy will use the default certificate. If you wish to verify the trust, you¡¯ll need to generate a CA, for example.
 
 ```
 $ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ca.key -out ca.pem
@@ -4012,9 +3958,9 @@ $ bin/keycloak-gatekeeper \
   --tls-ca-key=ca-key.pem
 ```
 
-#### 2.4.9. HTTPS redirect
+#### 2.4.9. HTTPS redirect {#}
 
-The proxy supports an HTTP listener, so the only real requirement here is to perform an HTTP â†’ HTTPS redirect. You can enable the option like this:
+The proxy supports an HTTP listener, so the only real requirement here is to perform an HTTP ¡ú HTTPS redirect. You can enable the option like this:
 
 ```
 --listen-http=127.0.0.1:80
@@ -4022,9 +3968,9 @@ The proxy supports an HTTP listener, so the only real requirement here is to per
 --enable-https-redirection
 ```
 
-#### 2.4.10. Letâ€™s Encrypt configuration
+#### 2.4.10. Let¡¯s Encrypt configuration {#}
 
-Here is an example of the required configuration for Letâ€™s Encrypt support:
+Here is an example of the required configuration for Let¡¯s Encrypt support:
 
 ```
 listen: 0.0.0.0:443
@@ -4039,16 +3985,16 @@ hostnames:
 
 Listening on port 443 is mandatory.
 
-#### 2.4.11. Access token encryption
+#### 2.4.11. Access token encryption {#}
 
 By default, the session token is placed into a cookie in plaintext. If you prefer to encrypt the session cookie, use the `--enable-encrypted-token` and `--encryption-key` options. Note that the access token forwarded in the X-Auth-Token header to upstream is unaffected.
 
-#### 2.4.12. Upstream headers
+#### 2.4.12. Upstream headers {#}
 
 On protected resources, the upstream endpoint will receive a number of headers added by the proxy, along with custom claims, like this:
 
 ```
-# add the header to the upstream endpoint
+# add the header to the upstream endpoint {#}
 id := user.(*userContext)
 cx.Request().Header.Set("X-Auth-Email", id.email)
 cx.Request().Header.Set("X-Auth-ExpiresIn", id.expiresAt.String())
@@ -4066,7 +4012,7 @@ if r.config.EnableAuthorizationHeader {
 
 To control the `Authorization` header use the `enable-authorization-header` yaml configuration or the `--enable-authorization-header` command line option. By default this option is set to `true`.
 
-#### 2.4.13. Custom claim headers
+#### 2.4.13. Custom claim headers {#}
 
 You can inject additional claims from the access token into the authorization headers with the `--add-claims` option. For example, a token from a Keycloak provider might include the following claims:
 
@@ -4096,7 +4042,7 @@ X-Auth-Given-Name: Beloved
 X-Auth-Name: Beloved User
 ```
 
-#### 2.4.14. Custom headers
+#### 2.4.14. Custom headers {#}
 
 You can inject custom headers using the `--headers="name=value"` option or the configuration file:
 
@@ -4105,13 +4051,13 @@ headers:
   name: value
 ```
 
-#### 2.4.15. Encryption key
+#### 2.4.15. Encryption key {#}
 
 In order to remain stateless and not have to rely on a central cache to persist the refresh_tokens, the refresh token is encrypted and added as a cookie using **crypto/aes**. The key must be the same if you are running behind a load balancer. The key length should be either 16 or 32 bytes, depending or whether you want AES-128 or AES-256.
 
-#### 2.4.16. Claim matching
+#### 2.4.16. Claim matching {#}
 
-The proxy supports adding a variable list of claim matches against the presented tokens for additional access control. You can match the 'iss' or 'aud' to the token or custom attributes; each of the matches are regexâ€™s. For example, `--match-claims 'aud=sso.*'` or `--claim iss=https://.*'` or via the configuration file, like this:
+The proxy supports adding a variable list of claim matches against the presented tokens for additional access control. You can match the 'iss' or 'aud' to the token or custom attributes; each of the matches are regex¡¯s. For example, `--match-claims 'aud=sso.*'` or `--claim iss=https://.*'` or via the configuration file, like this:
 
 ```
 match-claims:
@@ -4150,7 +4096,7 @@ will successfully match
 }
 ```
 
-#### 2.4.17. Group claims
+#### 2.4.17. Group claims {#}
 
 You can match on the group claims within a token via the `groups` parameter available within the resource. While roles are implicitly required, such as `roles=admin,user` where the user MUST have roles 'admin' AND 'user', groups are applied with an OR operation, so `groups=users,testers` requires that the user MUST be within either 'users' OR 'testers'. The claim name is hard-coded to `groups`, so a JWT token would look like this:
 
@@ -4170,7 +4116,7 @@ You can match on the group claims within a token via the `groups` parameter avai
 }
 ```
 
-#### 2.4.18. Custom pages
+#### 2.4.18. Custom pages {#}
 
 By default, Keycloak Gatekeeper will immediately redirect you for authentication and hand back a 403 for access denied. Most users will probably want to present the user with a more friendly sign-in and access denied page. You can pass the command line options (or via config file) paths to the files with `--signin-page=PATH`. The sign-in page will have a 'redirect' variable passed into the scope and holding the oauth redirection url. If you wish to pass additional variables into the templates, such as title, sitename and so on, you can use the -`-tags key=pair` option, like this: `--tags title="This is my site"` and the variable would be accessible from `{{ .title }}`.
 
@@ -4182,9 +4128,9 @@ By default, Keycloak Gatekeeper will immediately redirect you for authentication
 </html>
 ```
 
-#### 2.4.19. White-listed URLâ€™s
+#### 2.4.19. White-listed URL¡¯s {#}
 
-Depending on how the application URLâ€™s are laid out, you might want protect the root / url but have exceptions on a list of paths, for example `/health`. While this is best solved by adjusting the paths, you can add exceptions to the protected resources, like this:
+Depending on how the application URL¡¯s are laid out, you might want protect the root / url but have exceptions on a list of paths, for example `/health`. While this is best solved by adjusting the paths, you can add exceptions to the protected resources, like this:
 
 ```
   resources:
@@ -4206,15 +4152,15 @@ Or on the command line
   --resources "uri=/admin*|roles=admin,superuser|methods=POST,DELETE"
 ```
 
-#### 2.4.20. Mutual TLS
+#### 2.4.20. Mutual TLS {#}
 
 The proxy support enforcing mutual TLS for the clients by adding the `--tls-ca-certificate` command line option or configuration file option. All clients connecting must present a certificate which was signed by the CA being used.
 
-#### 2.4.21. Certificate rotation
+#### 2.4.21. Certificate rotation {#}
 
 The proxy will automatically rotate the server certificates if the files change on disk. Note, no down time will occur as the change is made inline. Clients who connected prior to the certificate rotation will be unaffected and will continue as normal with all new connections presented with the new certificate.
 
-#### 2.4.22. Refresh tokens
+#### 2.4.22. Refresh tokens {#}
 
 If a request for an access token contains a refresh token and `--enable-refresh-tokens` is set to `true`, the proxy will automatically refresh the access token for you. The tokens themselves are kept either as an encrypted **(--encryption-key=KEY)** cookie **(cookie name: kc-state).** or a store **(still requires encryption key)**.
 
@@ -4224,11 +4170,11 @@ To enable a local boltdb store use `--store-url boltdb:///PATH` or using a relat
 
 To enable a local redis store use `redis://[USER:PASSWORD@]HOST:PORT`. In both cases the refresh token is encrypted before being placed into the store.
 
-#### 2.4.23. Logout endpoint
+#### 2.4.23. Logout endpoint {#}
 
 A **/oauth/logout?redirect=url** is provided as a helper to log users out. In addition to dropping any session cookies, we also attempt to revoke access via revocation url (config **revocation-url** or **--revocation-url**) with the provider. For Keycloak, the url for this would be <https://keycloak.example.com/auth/realms/REALM_NAME/protocol/openid-connect/logout>. If the url is not specified we will attempt to grab the url from the OpenID discovery response.
 
-#### 2.4.24. Cross-origin resource sharing (CORS)
+#### 2.4.24. Cross-origin resource sharing (CORS) {#}
 
 You can add a CORS header via the `--cors-[method]` with these configuration options.
 
@@ -4258,11 +4204,11 @@ or via the command line:
 --cors-exposes-headers [--cors-exposes-headers option]  set the expose cors headers access control (Access-Control-Expose-Headers)
 ```
 
-#### 2.4.25. Upstream URL
+#### 2.4.25. Upstream URL {#}
 
 You can control the upstream endpoint via the `--upstream-url` option. Both HTTP and HTTPS are supported with TLS verification and keep-alive support configured via the `--skip-upstream-tls-verify` / `--upstream-keepalives` option. Note, the proxy can also upstream via a UNIX socket, `--upstream-url unix://path/to/the/file.sock`.
 
-#### 2.4.26. Endpoints
+#### 2.4.26. Endpoints {#}
 
 - **/oauth/authorize** is authentication endpoint which will generate the OpenID redirect to the provider
 - **/oauth/callback** is provider OpenID callback endpoint
@@ -4273,17 +4219,17 @@ You can control the upstream endpoint via the `--upstream-url` option. Both HTTP
 - **/oauth/token** is a helper endpoint which will display the current access token for you
 - **/oauth/metrics** is a Prometheus metrics handler
 
-#### 2.4.27. Metrics
+#### 2.4.27. Metrics {#}
 
 Assuming `--enable-metrics` has been set, a Prometheus endpoint can be found on **/oauth/metrics**; at present the only metric being exposed is a counter per HTTP code.
 
-#### 2.4.28. Limitations
+#### 2.4.28. Limitations {#}
 
 Keep in mind [browser cookie limits](http://browsercookielimits.squawky.net/) if you use access or refresh tokens in the browser cookie. Keycloak-generic-adapter divides the cookie automatically if your cookie is longer than 4093 bytes. Real size of the cookie depends on the content of the issued access token. Also, encryption might add additional bytes to the cookie size. If you have large cookies (>200 KB), you might reach browser cookie limits.
 
-All cookies are part of the header request, so you might find a problem with the max headers size limits in your infrastructure (some load balancers have very low this value, such as 8 KB). Be sure that all network devices have sufficient header size limits. Otherwise, your users wonâ€™t be able to obtain an access token.
+All cookies are part of the header request, so you might find a problem with the max headers size limits in your infrastructure (some load balancers have very low this value, such as 8 KB). Be sure that all network devices have sufficient header size limits. Otherwise, your users won¡¯t be able to obtain an access token.
 
-#### 2.4.29. Known Issues
+#### 2.4.29. Known Issues {#}
 
 - There is a known issue with the Keycloak server 4.7.0.Final in which Gatekeeper is unable to find the *client_id* in the *aud*claim. This is due to the fact the *client_id* is not in the audience anymore. The workaround is to add the "Audience" protocol mapper to the client with the audience pointed to the *client_id*. For more information, see [KEYCLOAK-8954](https://issues.jboss.org/browse/KEYCLOAK-8954). ==== mod_auth_openidc Apache HTTPD Module
 
@@ -4291,7 +4237,7 @@ All cookies are part of the header request, so you might find a problem with the
 
 The [mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc) is an Apache HTTP plugin for OpenID Connect. If your language/environment supports using Apache HTTPD as a proxy, then you can use *mod_auth_openidc* to secure your web application with OpenID Connect. Configuration of this module is beyond the scope of this document. Please see the *mod_auth_openidc* GitHub repo for more details on configuration.
 
-To configure *mod_auth_openidc* youâ€™ll need
+To configure *mod_auth_openidc* you¡¯ll need
 
 - The client_id.
 - The client_secret.
@@ -4320,7 +4266,7 @@ ServerName ${HOSTIP}
     OIDCClientSecret ${CLIENT_SECRET}
     OIDCRedirectURI http://${HOSTIP}/${CLIENT_APP_NAME}/redirect_uri
 
-    # maps the prefered_username claim to the REMOTE_USER environment variable
+    # maps the prefered_username claim to the REMOTE_USER environment variable {#}
     OIDCRemoteUserClaim preferred_username
 
     <Location /${CLIENT_APP_NAME}/>
@@ -4332,13 +4278,13 @@ ServerName ${HOSTIP}
 
 Further information on how to configure mod_auth_openidc can be found on the [mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc) project page.
 
-### 2.5. Other OpenID Connect Libraries
+### 2.5. Other OpenID Connect Libraries {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/oidc-generic.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/oidc-generic.adoc)
 
 Keycloak can be secured by supplied adapters that are usually easier to use and provide better integration with Keycloak. However, if an adapter is not available for your programming language, framework, or platform you might opt to use a generic OpenID Connect Resource Provider (RP) library instead. This chapter describes details specific to Keycloak and does not contain specific protocol details. For more information see the [OpenID Connect specifications](https://openid.net/connect/) and [OAuth2 specification](https://tools.ietf.org/html/rfc6749).
 
-#### 2.5.1. Endpoints
+#### 2.5.1. Endpoints {#}
 
 The most important endpoint to understand is the `well-known` configuration endpoint. It lists endpoints and other configuration options relevant to the OpenID Connect implementation in Keycloak. The endpoint is:
 
@@ -4352,7 +4298,7 @@ http://localhost:8080/auth/realms/master/.well-known/openid-configuration
 
 Some RP libraries retrieve all required endpoints from this endpoint, but for others you might need to list the endpoints individually.
 
-##### Authorization Endpoint
+##### Authorization Endpoint {#}
 
 ```
 /realms/{realm-name}/protocol/openid-connect/auth
@@ -4362,7 +4308,7 @@ The authorization endpoint performs authentication of the end-user. This is done
 
 For more details see the [Authorization Endpoint](https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint) section in the OpenID Connect specification.
 
-##### Token Endpoint
+##### Token Endpoint {#}
 
 ```
 /realms/{realm-name}/protocol/openid-connect/token
@@ -4372,7 +4318,7 @@ The token endpoint is used to obtain tokens. Tokens can either be obtained by ex
 
 For more details see the [Token Endpoint](https://openid.net/specs/openid-connect-core-1_0.html#TokenEndpoint) section in the OpenID Connect specification.
 
-##### Userinfo Endpoint
+##### Userinfo Endpoint {#}
 
 ```
 /realms/{realm-name}/protocol/openid-connect/userinfo
@@ -4382,7 +4328,7 @@ The userinfo endpoint returns standard claims about the authenticated user, and 
 
 For more details see the [Userinfo Endpoint](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo) section in the OpenID Connect specification.
 
-##### Logout Endpoint
+##### Logout Endpoint {#}
 
 ```
 /realms/{realm-name}/protocol/openid-connect/logout
@@ -4394,7 +4340,7 @@ The user agent can be redirected to the endpoint, in which case the active user 
 
 The endpoint can also be invoked directly by the application. To invoke this endpoint directly the refresh token needs to be included as well as the credentials required to authenticate the client.
 
-##### Certificate Endpoint
+##### Certificate Endpoint {#}
 
 ```
 /realms/{realm-name}/protocol/openid-connect/certs
@@ -4402,7 +4348,7 @@ The endpoint can also be invoked directly by the application. To invoke this end
 
 The certificate endpoint returns the public keys enabled by the realm, encoded as a JSON Web Key (JWK). Depending on the realm settings there can be one or more keys enabled for verifying tokens. For more information see the [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) and the [JSON Web Key specification](https://tools.ietf.org/html/rfc7517).
 
-##### Introspection Endpoint
+##### Introspection Endpoint {#}
 
 ```
 /realms/{realm-name}/protocol/openid-connect/token/introspect
@@ -4412,7 +4358,7 @@ The introspection endpoint is used to retrieve the active state of a token. In o
 
 For more details on how to invoke on this endpoint, see [OAuth 2.0 Token Introspection specification](https://tools.ietf.org/html/rfc7662).
 
-##### Dynamic Client Registration Endpoint
+##### Dynamic Client Registration Endpoint {#}
 
 ```
 /realms/{realm-name}/clients-registrations/openid-connect
@@ -4422,13 +4368,13 @@ The dynamic client registration endpoint is used to dynamically register clients
 
 For more details see the [Client Registration chapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#_client_registration) and the [OpenID Connect Dynamic Client Registration specification](https://openid.net/specs/openid-connect-registration-1_0.html).
 
-#### 2.5.2. Validating Access Tokens
+#### 2.5.2. Validating Access Tokens {#}
 
-If you need to manually validate access tokens issued by Keycloak you can invoke the [Introspection Endpoint](https://www.keycloak.org/docs/latest/securing_apps/index.html#_token_introspection_endpoint). The downside to this approach is that you have to make a network invocation to the Keycloak server. This can be slow and possibily overload the server if you have too many validation requests going on at the same time. Keycloak issued access tokens are [JSON Web Tokens (JWT)](https://tools.ietf.org/html/rfc7519) digitally signed and encoded using [JSON Web Signature (JWS)](https://www.rfc-editor.org/rfc/rfc7515.txt). Because they are encoded in this way, this allows you to locally validate access tokens using the public key of the issuing realm. You can either hard code the realmâ€™s public key in your validation code, or lookup and cache the public key using the [certificate endpoint](https://www.keycloak.org/docs/latest/securing_apps/index.html#_certificate_endpoint) with the Key ID (KID) embedded within the JWS. Depending what language you code in, there are a multitude of third party libraries out there that can help you with JWS validation.
+If you need to manually validate access tokens issued by Keycloak you can invoke the [Introspection Endpoint](https://www.keycloak.org/docs/latest/securing_apps/index.html#_token_introspection_endpoint). The downside to this approach is that you have to make a network invocation to the Keycloak server. This can be slow and possibily overload the server if you have too many validation requests going on at the same time. Keycloak issued access tokens are [JSON Web Tokens (JWT)](https://tools.ietf.org/html/rfc7519) digitally signed and encoded using [JSON Web Signature (JWS)](https://www.rfc-editor.org/rfc/rfc7515.txt). Because they are encoded in this way, this allows you to locally validate access tokens using the public key of the issuing realm. You can either hard code the realm¡¯s public key in your validation code, or lookup and cache the public key using the [certificate endpoint](https://www.keycloak.org/docs/latest/securing_apps/index.html#_certificate_endpoint) with the Key ID (KID) embedded within the JWS. Depending what language you code in, there are a multitude of third party libraries out there that can help you with JWS validation.
 
-#### 2.5.3. Flows
+#### 2.5.3. Flows {#}
 
-##### Authorization Code
+##### Authorization Code {#}
 
 The Authorization Code flow redirects the user agent to Keycloak. Once the user has successfully authenticated with Keycloak an Authorization Code is created and the user agent is redirected back to the application. The application then uses the authorization code along with its credentials to obtain an Access Token, Refresh Token and ID Token from Keycloak.
 
@@ -4436,19 +4382,19 @@ The flow is targeted towards web applications, but is also recommended for nativ
 
 For more details refer to the [Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth) in the OpenID Connect specification.
 
-##### Implicit
+##### Implicit {#}
 
-The Implicit flow redirects works similarly to the Authorization Code flow, but instead of returning an Authorization Code the Access Token and ID Token is returned. This reduces the need for the extra invocation to exchange the Authorization Code for an Access Token. However, it does not include a Refresh Token. This results in the need to either permit Access Tokens with a long expiration, which is problematic as itâ€™s very hard to invalidate these. Or requires a new redirect to obtain new Access Token once the initial Access Token has expired. The Implicit flow is useful if the application only wants to authenticate the user and deals with logout itself.
+The Implicit flow redirects works similarly to the Authorization Code flow, but instead of returning an Authorization Code the Access Token and ID Token is returned. This reduces the need for the extra invocation to exchange the Authorization Code for an Access Token. However, it does not include a Refresh Token. This results in the need to either permit Access Tokens with a long expiration, which is problematic as it¡¯s very hard to invalidate these. Or requires a new redirect to obtain new Access Token once the initial Access Token has expired. The Implicit flow is useful if the application only wants to authenticate the user and deals with logout itself.
 
-Thereâ€™s also a Hybrid flow where both the Access Token and an Authorization Code is returned.
+There¡¯s also a Hybrid flow where both the Access Token and an Authorization Code is returned.
 
 One thing to note is that both the Implicit flow and Hybrid flow has potential security risks as the Access Token may be leaked through web server logs and browser history. This is somewhat mitigated by using short expiration for Access Tokens.
 
 For more details refer to the [Implicit Flow](https://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth) in the OpenID Connect specification.
 
-##### Resource Owner Password Credentials
+##### Resource Owner Password Credentials {#}
 
-Resource Owner Password Credentials, referred to as Direct Grant in Keycloak, allows exchanging user credentials for tokens. Itâ€™s not recommended to use this flow unless you absolutely need to. Examples where this could be useful are legacy applications and command-line interfaces.
+Resource Owner Password Credentials, referred to as Direct Grant in Keycloak, allows exchanging user credentials for tokens. It¡¯s not recommended to use this flow unless you absolutely need to. Examples where this could be useful are legacy applications and command-line interfaces.
 
 There are a number of limitations of using this flow, including:
 
@@ -4465,7 +4411,7 @@ This flow is not included in OpenID Connect, but is a part of the OAuth 2.0 spec
 
 For more details refer to the [Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3) chapter in the OAuth 2.0 specification.
 
-###### Example using CURL
+###### Example using CURL {#}
 
 The following example shows how to obtain an access token for a user in the realm `master` with username `user` and password `password`. The example is using the confidential client `myclient`:
 
@@ -4479,7 +4425,7 @@ curl \
   "http://localhost:8080/auth/realms/master/protocol/openid-connect/token"
 ```
 
-##### Client Credentials
+##### Client Credentials {#}
 
 Client Credentials is used when clients (applications and services) wants to obtain access on behalf of themselves rather than on behalf of a user. This can for example be useful for background services that applies changes to the system in general rather than for a specific user.
 
@@ -4489,16 +4435,16 @@ This flow is not included in OpenID Connect, but is a part of the OAuth 2.0 spec
 
 For more details refer to the [Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4) chapter in the OAuth 2.0 specification.
 
-#### 2.5.4. Redirect URIs
+#### 2.5.4. Redirect URIs {#}
 
-When using the redirect based flows itâ€™s important to use valid redirect uris for your clients. The redirect uris should be as specific as possible. This especially applies to client-side (public clients) applications. Failing to do so could result in:
+When using the redirect based flows it¡¯s important to use valid redirect uris for your clients. The redirect uris should be as specific as possible. This especially applies to client-side (public clients) applications. Failing to do so could result in:
 
 - Open redirects - this can allow attackers to create spoof links that looks like they are coming from your domain
 - Unauthorized entry - when users are already authenticated with Keycloak an attacker can use a public client where redirect uris have not be configured correctly to gain access by redirecting the user without the users knowledge
 
 In production for web applications always use `https` for all redirect URIs. Do not allow redirects to http.
 
-Thereâ€™s also a few special redirect URIs:
+There¡¯s also a few special redirect URIs:
 
 - `http://localhost`
 
@@ -4508,19 +4454,19 @@ Thereâ€™s also a few special redirect URIs:
 
   If its not possible to start a web server in the client (or a browser is not available) it is possible to use the special `urn:ietf:wg:oauth:2.0:oob` redirect uri. When this redirect uri is used Keycloak displays a page with the code in the title and in a box on the page. The application can either detect that the browser title has changed, or the user can copy/paste the code manually to the application. With this redirect uri it is also possible for a user to use a different device to obtain a code to paste back to the application.
 
-## 3. SAML
+## 3. SAML {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/saml-overview.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/saml-overview.adoc)
 
 This section describes how you can secure applications and services with SAML using either Keycloak client adapters or generic SAML provider libraries.
 
-### 3.1. Java Adapters
+### 3.1. Java Adapters {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/java-adapters.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/java-adapters.adoc)
 
 Keycloak comes with a range of different adapters for Java application. Selecting the correct adapter depends on the target platform.
 
-#### 3.1.1. General Adapter Config
+#### 3.1.1. General Adapter Config {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config.adoc)
 
@@ -4574,9 +4520,9 @@ Each SAML client adapter supported by Keycloak can be configured by a simple XML
 </keycloak-saml-adapter>
 ```
 
-Some of these configuration switches may be adapter specific and some are common across all adapters. For Java adapters you can use `${â€¦}` enclosure as System property replacement. For example `${jboss.server.config.dir}`.
+Some of these configuration switches may be adapter specific and some are common across all adapters. For Java adapters you can use `${¡­}` enclosure as System property replacement. For example `${jboss.server.config.dir}`.
 
-##### SP Element
+##### SP Element {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/sp_element.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/sp_element.adoc)
 
@@ -4625,7 +4571,7 @@ Here is the explanation of the SP element attributes:
 
   This sets the page to display after logout. If the page is a full URL, such as `http://web.example.com/logout.html`, the user is redirected after logout to that page using the HTTP `302` status code. If a link without scheme part is specified, such as `/logout.jsp`, the page is displayed after logout, *regardless of whether it lies in a protected area according to security-constraint declarations in web.xml*, and the page is resolved relative to the deployment context root.
 
-##### Service Provider Keys and Key Elements
+##### Service Provider Keys and Key Elements {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/sp-keys.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/sp-keys.adoc)
 
@@ -4643,7 +4589,7 @@ There are two ways to describe your keys. They can be stored within a Java KeySt
 
 The `Key` element has two optional attributes `signing` and `encryption`. When set to true these tell the adapter what the key will be used for. If both attributes are set to true, then the key will be used for both signing documents and decrypting encrypted assertions. You must set at least one of these attributes to true.
 
-###### KeyStore element
+###### KeyStore element {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/sp-keys/keystore_element.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/sp-keys/keystore_element.adoc)
 
@@ -4676,7 +4622,7 @@ Here are the XML config attributes that are defined with the `KeyStore` element.
 
 If you are defining keys that the SP will use to sign document, you must also specify references to your private keys and certificates within the Java KeyStore. The `PrivateKey` and `Certificate` elements in the above example define an `alias`that points to the key or cert within the keystore. Keystores require an additional password to access private keys. In the `PrivateKey` element you must define this password within a `password` attribute.
 
-###### Key PEMS
+###### Key PEMS {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/sp-keys/key_pems.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/sp-keys/key_pems.adoc)
 
@@ -4695,7 +4641,7 @@ Within the `Key` element you declare your keys and certificates directly using t
 </Keys>
 ```
 
-##### SP PrincipalNameMapping element
+##### SP PrincipalNameMapping element {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/sp_principalname_mapping_element.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/sp_principalname_mapping_element.adoc)
 
@@ -4719,9 +4665,9 @@ The `policy` attribute defines the policy used to populate this value. The possi
 
 - FROM_ATTRIBUTE
 
-  This will pull the value from one of the attributes declared in the SAML assertion received from the server. Youâ€™ll need to specify the name of the SAML assertion attribute to use within the `attribute` XML attribute.
+  This will pull the value from one of the attributes declared in the SAML assertion received from the server. You¡¯ll need to specify the name of the SAML assertion attribute to use within the `attribute` XML attribute.
 
-##### RoleIdentifiers Element
+##### RoleIdentifiers Element {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/roleidentifiers_element.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/roleidentifiers_element.adoc)
 
@@ -4737,7 +4683,7 @@ The `RoleIdentifiers` element defines what SAML attributes within the assertion 
 
 By default `Role` attribute values are converted to Java EE roles. Some IdPs send roles using a `member` or `memberOf`attribute assertion. You can define one or more `Attribute` elements to specify which SAML attributes must be converted into roles.
 
-##### IDP Element
+##### IDP Element {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/idp_element.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/idp_element.adoc)
 
@@ -4774,7 +4720,7 @@ Here are the attribute config options you can specify within the `IDP` element d
 
   The URL used to retrieve the IDP metadata, currently this is only used to pick up signing and encryption keys periodically which allow cycling of these keys on the IDP without manual changes on the SP side.
 
-##### IDP SingleSignOnService sub element
+##### IDP SingleSignOnService sub element {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/idp_singlesignonservice_subelement.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/idp_singlesignonservice_subelement.adoc)
 
@@ -4813,7 +4759,7 @@ Here are the config attributes you can define on this element:
 
   This is the URL for the IDP login service that the client will send requests to. This setting is *REQUIRED*.
 
-##### IDP SingleLogoutService sub element
+##### IDP SingleLogoutService sub element {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/idp_singlelogoutservice_subelement.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/idp_singlelogoutservice_subelement.adoc)
 
@@ -4856,17 +4802,17 @@ The `SingleLogoutService` sub element defines the logout SAML endpoint of the ID
 
 - postBindingUrl
 
-  This is the URL for the IDPâ€™s logout service when using the POST binding. This setting is *REQUIRED* if using the `POST`binding.
+  This is the URL for the IDP¡¯s logout service when using the POST binding. This setting is *REQUIRED* if using the `POST`binding.
 
 - redirectBindingUrl
 
-  This is the URL for the IDPâ€™s logout service when using the REDIRECT binding. This setting is *REQUIRED* if using the REDIRECT binding.
+  This is the URL for the IDP¡¯s logout service when using the REDIRECT binding. This setting is *REQUIRED* if using the REDIRECT binding.
 
-##### IDP Keys sub element
+##### IDP Keys sub element {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/idp_keys_subelement.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/idp_keys_subelement.adoc)
 
-The Keys sub element of IDP is only used to define the certificate or public key to use to verify documents signed by the IDP. It is defined in the same way as the [SPâ€™s Keys element](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-sp-keys). But again, you only have to define one certificate or public key reference. Note that, if both IDP and SP are realized by Keycloak server and adapter, respectively, there is no need to specify the keys for signature validation, see below.
+The Keys sub element of IDP is only used to define the certificate or public key to use to verify documents signed by the IDP. It is defined in the same way as the [SP¡¯s Keys element](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-sp-keys). But again, you only have to define one certificate or public key reference. Note that, if both IDP and SP are realized by Keycloak server and adapter, respectively, there is no need to specify the keys for signature validation, see below.
 
 It is possible to configure SP to obtain public keys for IDP signature validation from published certificates automatically, provided both SP and IDP are implemented by Keycloak. This is done by removing all declarations of signature validation keys in Keys sub element. If the Keys sub element would then remain empty, it can be omitted completely. The keys are then automatically obtained by SP from SAML descriptor, location of which is derived from SAML endpoint URL specified in the [IDP SingleSignOnService sub element](https://www.keycloak.org/docs/latest/securing_apps/index.html#_sp-idp-singlesignonservice). Settings of the HTTP client that is used for SAML descriptor retrieval usually needs no additional configuration, however it can be configured in the [IDP HttpClient sub element](https://www.keycloak.org/docs/latest/securing_apps/index.html#_sp-idp-httpclient).
 
@@ -4887,7 +4833,7 @@ It is not possible to configure Keycloak to both obtain the keys for signature v
         </IDP>
 ```
 
-##### IDP HttpClient sub element
+##### IDP HttpClient sub element {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/idp_httpclient_subelement.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/idp_httpclient_subelement.adoc)
 
@@ -4914,11 +4860,11 @@ The `HttpClient` optional sub element defines the properties of HTTP client used
 
 - allowAnyHostname
 
-  If the Keycloak server requires HTTPS and this config option is set to `true` the Keycloak serverâ€™s certificate is validated via the truststore, but host name validation is not done. This setting should only be used during development and **never** in production as it will partly disable verification of SSL certificates. This seting may be useful in test environments. This is *OPTIONAL*. The default value is `false`.
+  If the Keycloak server requires HTTPS and this config option is set to `true` the Keycloak server¡¯s certificate is validated via the truststore, but host name validation is not done. This setting should only be used during development and **never** in production as it will partly disable verification of SSL certificates. This seting may be useful in test environments. This is *OPTIONAL*. The default value is `false`.
 
 - truststore
 
-  The value is the file path to a truststore file. If you prefix the path with `classpath:`, then the truststore will be obtained from the deploymentâ€™s classpath instead. Used for outgoing HTTPS communications to the Keycloak server. Client making HTTPS requests need a way to verify the host of the server they are talking to. This is what the trustore does. The keystore contains one or more trusted host certificates or certificate authorities. You can create this truststore by extracting the public certificate of the Keycloak serverâ€™s SSL keystore. This is *REQUIRED* unless `disableTrustManager` is `true`.
+  The value is the file path to a truststore file. If you prefix the path with `classpath:`, then the truststore will be obtained from the deployment¡¯s classpath instead. Used for outgoing HTTPS communications to the Keycloak server. Client making HTTPS requests need a way to verify the host of the server they are talking to. This is what the trustore does. The keystore contains one or more trusted host certificates or certificate authorities. You can create this truststore by extracting the public certificate of the Keycloak server¡¯s SSL keystore. This is *REQUIRED* unless `disableTrustManager` is `true`.
 
 - truststorePassword
 
@@ -4930,7 +4876,7 @@ The `HttpClient` optional sub element defines the properties of HTTP client used
 
 - clientKeystorePassword
 
-  Password for the client keystore and for the clientâ€™s key. This is *REQUIRED* if `clientKeystore` is set.
+  Password for the client keystore and for the client¡¯s key. This is *REQUIRED* if `clientKeystore` is set.
 
 - proxyUrl
 
@@ -4938,13 +4884,13 @@ The `HttpClient` optional sub element defines the properties of HTTP client used
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/saml-jboss-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/saml-jboss-adapter.adoc)
 
-#### 3.1.2. JBoss EAP/WildFly Adapter
+#### 3.1.2. JBoss EAP/WildFly Adapter {#}
 
 To be able to secure WAR apps deployed on JBoss EAP or WildFly, you must install and configure the Keycloak SAML Adapter Subsystem.
 
 You then provide a keycloak config, `/WEB-INF/keycloak-saml.xml` file in your WAR and change the auth-method to KEYCLOAK-SAML within web.xml. Both methods are described in this section.
 
-##### Adapter Installation
+##### Adapter Installation {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jboss-adapter/jboss_adapter_installation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jboss-adapter/jboss_adapter_installation.adoc)
 
@@ -4970,9 +4916,9 @@ $ unzip keycloak-saml-eap6-adapter-dist.zip
 
 These zip files create new JBoss Modules specific to the WildFly/JBoss EAP SAML Adapter within your WildFly or JBoss EAP distro.
 
-After adding the modules, you must then enable the Keycloak SAML Subsystem within your app serverâ€™s server configuration: `domain.xml` or `standalone.xml`.
+After adding the modules, you must then enable the Keycloak SAML Subsystem within your app server¡¯s server configuration: `domain.xml` or `standalone.xml`.
 
-There is a CLI script that will help you modify your server configuration. Start the server and run the script from the serverâ€™s bin directory:
+There is a CLI script that will help you modify your server configuration. Start the server and run the script from the server¡¯s bin directory:
 
 WildFly 11 or newer
 
@@ -5024,7 +4970,7 @@ The `keycloak` security domain should be used with EJBs and other components whe
     </security-domains>
 ```
 
-For example, if you have a JAX-RS service that is an EJB within your WEB-INF/classes directory, youâ€™ll want to annotate it with the `@SecurityDomain` annotation as follows:
+For example, if you have a JAX-RS service that is an EJB within your WEB-INF/classes directory, you¡¯ll want to annotate it with the `@SecurityDomain` annotation as follows:
 
 ```
 import org.jboss.ejb3.annotation.SecurityDomain;
@@ -5057,13 +5003,13 @@ public class CustomerService {
 }
 ```
 
-We hope to improve our integration in the future so that you donâ€™t have to specify the `@SecurityDomain` annotation when you want to propagate a keycloak security context to the EJB tier.
+We hope to improve our integration in the future so that you don¡¯t have to specify the `@SecurityDomain` annotation when you want to propagate a keycloak security context to the EJB tier.
 
-##### JBoss SSO
+##### JBoss SSO {#}
 
 WildFly has built-in support for single sign-on for web applications deployed to the same WildFly instance. This should not be enabled when using Keycloak.
 
-#### 3.1.3. Installing JBoss EAP Adapter from an RPM
+#### 3.1.3. Installing JBoss EAP Adapter from an RPM {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jboss-adapter/jboss-adapter-rpms.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jboss-adapter/jboss-adapter-rpms.adoc)
 
@@ -5145,7 +5091,7 @@ $ $EAP_HOME/bin/jboss-cli.sh -c --file=$EAP_HOME/bin/adapter-install-saml.cli
 
 Your installation is complete.
 
-##### Per WAR Configuration
+##### Per WAR Configuration {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jboss-adapter/required_per_war_configuration.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jboss-adapter/required_per_war_configuration.adoc)
 
@@ -5153,7 +5099,7 @@ This section describes how to secure a WAR directly by adding config and editing
 
 The first thing you must do is create a `keycloak-saml.xml` adapter config file within the `WEB-INF` directory of your WAR. The format of this config file is described in the [General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) section.
 
-Next you must set the `auth-method` to `KEYCLOAK-SAML` in `web.xml`. You also have to use standard servlet security to specify role-base constraints on your URLs. Hereâ€™s an example *web.xml* file:
+Next you must set the `auth-method` to `KEYCLOAK-SAML` in `web.xml`. You also have to use standard servlet security to specify role-base constraints on your URLs. Here¡¯s an example *web.xml* file:
 
 ```
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
@@ -5204,11 +5150,11 @@ Next you must set the `auth-method` to `KEYCLOAK-SAML` in `web.xml`. You also ha
 
 All standard servlet settings except the `auth-method` setting.
 
-##### Securing WARs via Keycloak SAML Subsystem
+##### Securing WARs via Keycloak SAML Subsystem {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jboss-adapter/securing_wars.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jboss-adapter/securing_wars.adoc)
 
-You do not have to crack open a WAR to secure it with Keycloak. Alternatively, you can externally secure it via the Keycloak SAML Adapter Subsystem. While you donâ€™t have to specify KEYCLOAK-SAML as an `auth-method`, you still have to define the `security-constraints` in `web.xml`. You do not, however, have to create a `WEB-INF/keycloak-saml.xml` file. This metadata is instead defined within the XML in your serverâ€™s `domain.xml` or `standalone.xml` subsystem configuration section.
+You do not have to crack open a WAR to secure it with Keycloak. Alternatively, you can externally secure it via the Keycloak SAML Adapter Subsystem. While you don¡¯t have to specify KEYCLOAK-SAML as an `auth-method`, you still have to define the `security-constraints` in `web.xml`. You do not, however, have to create a `WEB-INF/keycloak-saml.xml` file. This metadata is instead defined within the XML in your server¡¯s `domain.xml` or `standalone.xml` subsystem configuration section.
 
 ```
 <extensions>
@@ -5278,19 +5224,19 @@ An example configuration:
 </subsystem>
 ```
 
-#### 3.1.4. Tomcat SAML adapters
+#### 3.1.4. Tomcat SAML adapters {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/tomcat-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/tomcat-adapter.adoc)
 
-To be able to secure WAR apps deployed on Tomcat 6, 7 and 8 you must install the Keycloak Tomcat 6, 7 or 8 SAML adapter into your Tomcat installation. You then have to provide some extra configuration in each WAR you deploy to Tomcat. Letâ€™s go over these steps.
+To be able to secure WAR apps deployed on Tomcat 6, 7 and 8 you must install the Keycloak Tomcat 6, 7 or 8 SAML adapter into your Tomcat installation. You then have to provide some extra configuration in each WAR you deploy to Tomcat. Let¡¯s go over these steps.
 
-##### Adapter Installation
+##### Adapter Installation {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/tomcat-adapter/tomcat_adapter_installation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/tomcat-adapter/tomcat_adapter_installation.adoc)
 
 Adapters are no longer included with the appliance or war distribution. Each adapter is a separate download on the Keycloak download site. They are also available as a maven artifact.
 
-You must unzip the adapter distro into Tomcatâ€™s `lib/` directory. Including adapterâ€™s jars within your WEB-INF/lib directory will not work! The Keycloak SAML adapter is implemented as a Valve and valve code must reside in Tomcatâ€™s main lib/ directory.
+You must unzip the adapter distro into Tomcat¡¯s `lib/` directory. Including adapter¡¯s jars within your WEB-INF/lib directory will not work! The Keycloak SAML adapter is implemented as a Valve and valve code must reside in Tomcat¡¯s main lib/ directory.
 
 ```
 $ cd $TOMCAT_HOME/lib
@@ -5301,7 +5247,7 @@ $ unzip keycloak-saml-tomcat7-adapter-dist.zip
 $ unzip keycloak-saml-tomcat8-adapter-dist.zip
 ```
 
-##### Per WAR Configuration
+##### Per WAR Configuration {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/tomcat-adapter/tomcat_adapter_per_war_config.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/tomcat-adapter/tomcat_adapter_per_war_config.adoc)
 
@@ -5317,7 +5263,7 @@ The first thing you must do is create a `META-INF/context.xml` file in your WAR 
 
 Next you must create a `keycloak-saml.xml` adapter config file within the `WEB-INF` directory of your WAR. The format of this config file is described in the [General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) section.
 
-Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Hereâ€™s an example:
+Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Here¡¯s an example:
 
 ```
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
@@ -5351,21 +5297,21 @@ Finally you must specify both a `login-config` and use standard servlet security
 </web-app>
 ```
 
-#### 3.1.5. Jetty SAML Adapters
+#### 3.1.5. Jetty SAML Adapters {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jetty-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jetty-adapter.adoc)
 
-To be able to secure WAR apps deployed on Jetty you must install the Keycloak Jetty 9.x SAML adapter into your Jetty installation. You then have to provide some extra configuration in each WAR you deploy to Jetty. Letâ€™s go over these steps.
+To be able to secure WAR apps deployed on Jetty you must install the Keycloak Jetty 9.x SAML adapter into your Jetty installation. You then have to provide some extra configuration in each WAR you deploy to Jetty. Let¡¯s go over these steps.
 
-##### Jetty 9 Adapter Installation
+##### Jetty 9 Adapter Installation {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jetty-adapter/jetty9_installation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jetty-adapter/jetty9_installation.adoc)
 
-Keycloak has a separate SAML adapter for Jetty 9.x. You then have to provide some extra configuration in each WAR you deploy to Jetty. Letâ€™s go over these steps.
+Keycloak has a separate SAML adapter for Jetty 9.x. You then have to provide some extra configuration in each WAR you deploy to Jetty. Let¡¯s go over these steps.
 
 Adapters are no longer included with the appliance or war distribution. Each adapter is a separate download on the Keycloak download site. They are also available as a maven artifact.
 
-You must unzip the Jetty 9.x distro into Jetty 9.xâ€™s root directory. Including adapterâ€™s jars within your WEB-INF/lib directory will not work!
+You must unzip the Jetty 9.x distro into Jetty 9.x¡¯s root directory. Including adapter¡¯s jars within your WEB-INF/lib directory will not work!
 
 ```
 $ cd $JETTY_HOME
@@ -5379,7 +5325,7 @@ $ cd your-base
 $ java -jar $JETTY_HOME/start.jar --add-to-startd=keycloak
 ```
 
-##### Jetty 9 Per WAR Configuration
+##### Jetty 9 Per WAR Configuration {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jetty-adapter/jetty9_per_war_config.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jetty-adapter/jetty9_per_war_config.adoc)
 
@@ -5402,7 +5348,7 @@ The first thing you must do is create a `WEB-INF/jetty-web.xml` file in your WAR
 
 Next you must create a `keycloak-saml.xml` adapter config file within the `WEB-INF` directory of your WAR. The format of this config file is described in the [General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) section.
 
-Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Hereâ€™s an example:
+Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Here¡¯s an example:
 
 ```
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
@@ -5439,13 +5385,13 @@ Finally you must specify both a `login-config` and use standard servlet security
 </web-app>
 ```
 
-#### 3.1.6. Java Servlet Filter Adapter
+#### 3.1.6. Java Servlet Filter Adapter {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/servlet-filter-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/servlet-filter-adapter.adoc)
 
-If you want to use SAML with a Java servlet application that doesnâ€™t have an adapter for that servlet platform, you can opt to use the servlet filter adapter that Keycloak has. This adapter works a little differently than the other adapters. You still have to specify a `/WEB-INF/keycloak-saml.xml` file as defined in the [General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) section, but you do not define security constraints in *web.xml*. Instead you define a filter mapping using the Keycloak servlet filter adapter to secure the url patterns you want to secure.
+If you want to use SAML with a Java servlet application that doesn¡¯t have an adapter for that servlet platform, you can opt to use the servlet filter adapter that Keycloak has. This adapter works a little differently than the other adapters. You still have to specify a `/WEB-INF/keycloak-saml.xml` file as defined in the [General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) section, but you do not define security constraints in *web.xml*. Instead you define a filter mapping using the Keycloak servlet filter adapter to secure the url patterns you want to secure.
 
-|      | Backchannel logout works a bit differently than the standard adapters. Instead of invalidating the http session it instead marks the session ID as logged out. Thereâ€™s just no way of arbitrarily invalidating an http session based on a session ID. |
+|      | Backchannel logout works a bit differently than the standard adapters. Instead of invalidating the http session it instead marks the session ID as logged out. There¡¯s just no way of arbitrarily invalidating an http session based on a session ID. |
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
@@ -5505,21 +5451,21 @@ In order to use [Multi Tenancy](https://www.keycloak.org/docs/latest/securing_ap
     </filter>
 ```
 
-#### 3.1.7. Registering with an Identity Provider
+#### 3.1.7. Registering with an Identity Provider {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/idp-registration.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/idp-registration.adoc)
 
 For each servlet-based adapter, the endpoint you register for the assert consumer service URL and single logout service must be the base URL of your servlet application with `/saml` appended to it, that is, `https://example.com/contextPath/saml`.
 
-#### 3.1.8. Logout
+#### 3.1.8. Logout {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/logout.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/logout.adoc)
 
 There are multiple ways you can logout from a web application. For Java EE servlet containers, you can call `HttpServletRequest.logout()`. For any other browser application, you can point the browser at any url of your web application that has a security constraint and pass in a query parameter GLO, i.e. `http://myapp?GLO=true`. This will log you out if you have an SSO session with your browser.
 
-##### Logout in Clustered Environment
+##### Logout in Clustered Environment {#}
 
-Internally, the SAML adapter stores a mapping between the SAML session index, principal name (when known), and HTTP session ID. This mapping can be maintained in JBoss application server family (WildFly 10/11, EAP 6/7) across cluster for distributable applications. As a precondition, the HTTP sessions need to be distributed across cluster (i.e. application is marked with `<distributable/>` tag in applicationâ€™s `web.xml`).
+Internally, the SAML adapter stores a mapping between the SAML session index, principal name (when known), and HTTP session ID. This mapping can be maintained in JBoss application server family (WildFly 10/11, EAP 6/7) across cluster for distributable applications. As a precondition, the HTTP sessions need to be distributed across cluster (i.e. application is marked with `<distributable/>` tag in application¡¯s `web.xml`).
 
 To enable the functionality, add the following section to your `/WEB_INF/web.xml` file:
 
@@ -5547,7 +5493,7 @@ By default, the configuration of the SAML mapping cache will be derived from ses
 
 Currently, to provide reliable service, it is recommended to use replicated cache for the SAML session cache. Using distributed cache may lead to results where the SAML logout request would land to a node with no access to SAML session index to HTTP session mapping which would lead to unsuccessful logout.
 
-##### Logout in Cross DC Scenario
+##### Logout in Cross DC Scenario {#}
 
 The cross DC scenario only applies to WildFly 10 and higher, and EAP 7 and higher.
 
@@ -5565,7 +5511,7 @@ To cover this case, the SAML session cache described [above](https://www.keycloa
 
 Once remote store is found to be present on SAML session cache during deployment, it is watched for changes and the local SAML session cache is updated accordingly.
 
-#### 3.1.9. Obtaining Assertion Attributes
+#### 3.1.9. Obtaining Assertion Attributes {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/assertion-api.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/assertion-api.adoc)
 
@@ -5669,7 +5615,7 @@ public class SamlPrincipal implements Serializable, Principal {
 }
 ```
 
-#### 3.1.10. Error Handling
+#### 3.1.10. Error Handling {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/error_handling.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/error_handling.adoc)
 
@@ -5701,13 +5647,13 @@ public class SamlAuthenticationError implements AuthenticationError {
 }
 ```
 
-#### 3.1.11. Troubleshooting
+#### 3.1.11. Troubleshooting {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/debugging.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/debugging.adoc)
 
 The best way to troubleshoot problems is to turn on debugging for SAML in both the client adapter and Keycloak Server. Using your logging framework, set the log level to `DEBUG` for the `org.keycloak.saml`package. Turning this on allows you to see the SAML requests and response documents being sent to and from the server.
 
-#### 3.1.12. Multi Tenancy
+#### 3.1.12. Multi Tenancy {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/multi-tenancy.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/multi-tenancy.adoc)
 
@@ -5719,7 +5665,7 @@ While you could have multiple instances of your WAR with different adapter confi
 
 Keycloak makes it possible to have a custom config resolver, so you can choose which adapter config is used for each request. In SAML, the configuration is only interesting in the login processing; once the user is logged in, the session is authenticated and it does not matter if the `keycloak-saml.xml` returned is different. For that reason, returning the same configuration for the same session is the correct way to go.
 
-To achieve this, create an implementation of `org.keycloak.adapters.saml.SamlConfigResolver`. The following example uses the `Host` header to locate the proper configuration and load it and the associated elements from the applicationsâ€™s Java classpath:
+To achieve this, create an implementation of `org.keycloak.adapters.saml.SamlConfigResolver`. The following example uses the `Host` header to locate the proper configuration and load it and the associated elements from the applications¡¯s Java classpath:
 
 ```
 package example;
@@ -5779,23 +5725,23 @@ You must also configure which `SamlConfigResolver` implementation to use with th
 </web-app>
 ```
 
-#### 3.1.13. Migration from older versions
+#### 3.1.13. Migration from older versions {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/MigrationFromOlderVersions.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/MigrationFromOlderVersions.adoc)
 
-##### Migrating to 1.9.0
+##### Migrating to 1.9.0 {#}
 
-###### SAML SP Client Adapter Changes
+###### SAML SP Client Adapter Changes {#}
 
 Keycloak SAML SP Client Adapter now requires a specific endpoint, `/saml` to be registered with your IdP. The SamlFilter must also be bound to /saml in addition to any other binding it has. This had to be done because SAML POST binding would eat the request input stream and this would be really bad for clients that relied on it.
 
-### 3.2. mod_auth_mellon Apache HTTPD Module
+### 3.2. mod_auth_mellon Apache HTTPD Module {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/mod-auth-mellon.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/mod-auth-mellon.adoc)
 
 The [mod_auth_mellon](https://github.com/UNINETT/mod_auth_mellon) module is an Apache HTTPD plugin for SAML. If your language/environment supports using Apache HTTPD as a proxy, then you can use mod_auth_mellon to secure your web application with SAML. For more details on this module see the *mod_auth_mellon* GitHub repo.
 
-To configure mod_auth_mellon youâ€™ll need:
+To configure mod_auth_mellon you¡¯ll need:
 
 - An Identity Provider (IdP) entity descriptor XML file, which describes the connection to Keycloak or another SAML IdP
 - An SP entity descriptor XML file, which describes the SAML connections and configuration for the application you are securing.
@@ -5815,7 +5761,7 @@ To generate the Apache HTTPD module configuration, complete the following steps:
 
 2. Click **Download** to download a zip file that contains the XML descriptor and PEM files you need.
 
-#### 3.2.1. Configuring mod_auth_mellon with Keycloak
+#### 3.2.1. Configuring mod_auth_mellon with Keycloak {#}
 
 There are two hosts involved:
 
@@ -5824,7 +5770,7 @@ There are two hosts involved:
 
 All of the following steps need to performed on $sp_host with root privileges.
 
-##### Installing the Packages
+##### Installing the Packages {#}
 
 To install the necessary packages, you will need:
 
@@ -5838,9 +5784,9 @@ To install the necessary packages, run this command:
 yum install httpd mod_auth_mellon mod_ssl openssl
 ```
 
-##### Creating a Configuration Directory for Apache SAML
+##### Creating a Configuration Directory for Apache SAML {#}
 
-It is advisable to keep configuration files related to Apacheâ€™s use of SAML in one location.
+It is advisable to keep configuration files related to Apache¡¯s use of SAML in one location.
 
 Create a new directory named saml2 located under the Apache configuration root /etc/httpd:
 
@@ -5848,11 +5794,11 @@ Create a new directory named saml2 located under the Apache configuration root /
 mkdir /etc/httpd/saml2
 ```
 
-##### Configuring the Mellon Service Provider
+##### Configuring the Mellon Service Provider {#}
 
-Configuration files for Apache add-on modules are located in the /etc/httpd/conf.d directory and have a file name extension of .conf. You need to create the /etc/httpd/conf.d/mellon.conf file and place Mellonâ€™s configuration directives in it.
+Configuration files for Apache add-on modules are located in the /etc/httpd/conf.d directory and have a file name extension of .conf. You need to create the /etc/httpd/conf.d/mellon.conf file and place Mellon¡¯s configuration directives in it.
 
-Mellonâ€™s configuration directives can roughly be broken down into two classes of information:
+Mellon¡¯s configuration directives can roughly be broken down into two classes of information:
 
 - Which URLs to protect with SAML authentication
 - What SAML parameters will be used when a protected URL is referenced.
@@ -5885,9 +5831,9 @@ To configure the Mellon service provider, complete the following steps:
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-##### Creating the Service Provider Metadata
+##### Creating the Service Provider Metadata {#}
 
-In SAML IdPs and SPs exchange SAML metadata, which is in XML format. The schema for the metadata is a standard, thus assuring participating SAML entities can consume each otherâ€™s metadata. You need:
+In SAML IdPs and SPs exchange SAML metadata, which is in XML format. The schema for the metadata is a standard, thus assuring participating SAML entities can consume each other¡¯s metadata. You need:
 
 - Metadata for the IdP that the SP utilizes
 - Metadata describing the SP provided to the IdP
@@ -5899,7 +5845,7 @@ One of the components of SAML metadata is X509 certificates. These certificates 
 
 You can use your own certificates if you already have a Certificate Authority (CA) or you can generate a self-signed certificate. For simplicity in this example a self-signed certificate is used.
 
-Because Mellonâ€™s SP metadata must reflect the capabilities of the installed version of mod_auth_mellon, must be valid SP metadata XML, and must contain an X509 certificate (whose creation can be obtuse unless you are familiar with X509 certificate generation) the most expedient way to produce the SP metadata is to use a tool included in the mod_auth_mellon package (mellon_create_metadata.sh). The generated metadata can always be edited later because it is a text file. The tool also creates your X509 key and certificate.
+Because Mellon¡¯s SP metadata must reflect the capabilities of the installed version of mod_auth_mellon, must be valid SP metadata XML, and must contain an X509 certificate (whose creation can be obtuse unless you are familiar with X509 certificate generation) the most expedient way to produce the SP metadata is to use a tool included in the mod_auth_mellon package (mellon_create_metadata.sh). The generated metadata can always be edited later because it is a text file. The tool also creates your X509 key and certificate.
 
 SAML IdPs and SPs identify themselves using a unique name known as an EntityID. To use the Mellon metadata creation tool you need:
 
@@ -5931,7 +5877,7 @@ To create the SP metadata, complete the following steps:
    mv ${file_prefix}.xml /etc/httpd/saml2/mellon_metadata.xml
    ```
 
-##### Adding the Mellon Service Provider to the Keycloak Identity Provider
+##### Adding the Mellon Service Provider to the Keycloak Identity Provider {#}
 
 Assumption: The Keycloak IdP has already been installed on the $idp_host.
 
@@ -5949,13 +5895,13 @@ To complete the following steps:
 
 3. In the Name field type `test_realm` and click **Create**.
 
-###### Adding the Mellon Service Provider as a Client of the Realm
+###### Adding the Mellon Service Provider as a Client of the Realm {#}
 
 In Keycloak SAML SPs are known as clients. To add the SP we must be in the Clients section of the realm.
 
 1. Click the Clients menu item on the left and click **Create** in the upper right corner to create a new client.
 
-###### Adding the Mellon SP Client
+###### Adding the Mellon SP Client {#}
 
 To add the Mellon SP client, complete the following steps:
 
@@ -5963,7 +5909,7 @@ To add the Mellon SP client, complete the following steps:
 2. Provide the Mellon SP metadata file created above (/etc/httpd/saml2/mellon_metadata.xml). Depending on where your browser is running you might have to copy the SP metadata from $sp_host to the machine on which your browser is running so the browser can find the file.
 3. Click **Save**.
 
-###### Editing the Mellon SP Client
+###### Editing the Mellon SP Client {#}
 
 There are several client configuration parameters we suggest setting:
 
@@ -5973,9 +5919,9 @@ There are several client configuration parameters we suggest setting:
   2. Change "postResponse" to "paosResponse". (The paosResponse URL is needed for SAML ECP.)
   3. Click **Save** at the bottom.
 
-Many SAML SPs determine authorization based on a userâ€™s membership in a group. The Keycloak IdP can manage user group information but it does not supply the userâ€™s groups unless the IdP is configured to supply it as a SAML attribute.
+Many SAML SPs determine authorization based on a user¡¯s membership in a group. The Keycloak IdP can manage user group information but it does not supply the user¡¯s groups unless the IdP is configured to supply it as a SAML attribute.
 
-To configure the IdP to supply the userâ€™s groups as as a SAML attribute, complete the following steps:
+To configure the IdP to supply the user¡¯s groups as as a SAML attribute, complete the following steps:
 
 1. Click the Mappers tab of the client.
 2. In the upper right corner of the Mappers page, click **Create**.
@@ -5986,7 +5932,7 @@ To configure the IdP to supply the userâ€™s groups as as a SAML attribute, compl
 
 The remaining steps are performed on $sp_host.
 
-###### Retrieving the Identity Provider Metadata
+###### Retrieving the Identity Provider Metadata {#}
 
 Now that you have created the realm on the IdP you need to retrieve the IdP metadata associated with it so the Mellon SP recognizes it. In the /etc/httpd/conf.d/mellon.conf file created previously, the MellonIdPMetadataFile is specified as /etc/httpd/saml2/idp_metadata.xml but until now that file has not existed on $sp_host. To get that file we will retrieve it from the IdP.
 
@@ -6017,7 +5963,7 @@ Now that you have created the realm on the IdP you need to retrieve the IdP meta
 
 You have now set up both Keycloak as a SAML IdP in the test_realm and mod_auth_mellon as SAML SP protecting the URL $sp_host/protected (and everything beneath it) by authenticating against the `$idp_host` IdP.
 
-## 4. Docker Registry Configuration
+## 4. Docker Registry Configuration {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/docker/docker-overview.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/docker/docker-overview.adoc)
 
@@ -6029,7 +5975,7 @@ This section describes how you can configure a Docker registry to use Keycloak a
 
 For more information on how to set up and configure a Docker registry, see the [Docker Registry Configuration Guide](https://docs.docker.com/registry/configuration/).
 
-### 4.1. Docker Registry Configuration File Installation
+### 4.1. Docker Registry Configuration File Installation {#}
 
 For users with more advanced Docker registry configurations, it is generally recommended to provide your own registry configuration file. The Keycloak Docker provider supports this mechanism via the *Registry Config File* Format Option. Choosing this option will generate output similar to the following:
 
@@ -6043,11 +5989,11 @@ auth:
 
 This output can then be copied into any existing registry config file. See the [registry config file specification](https://docs.docker.com/registry/configuration/) for more information on how the file should be set up, or start with [a basic example](https://github.com/docker/distribution/blob/master/cmd/registry/config-example.yml).
 
-|      | Donâ€™t forget to configure the `rootcertbundle` field with the location of the Keycloak realmâ€™s pulic certificate. The auth configuration will not work without this argument. |
+|      | Don¡¯t forget to configure the `rootcertbundle` field with the location of the Keycloak realm¡¯s pulic certificate. The auth configuration will not work without this argument. |
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-### 4.2. Docker Registry Environment Variable Override Installation
+### 4.2. Docker Registry Environment Variable Override Installation {#}
 
 Often times it is appropriate to use a simple environment variable override for develop or POC Docker registries. While this approach is usually not recommended for production use, it can be helpful when one requires quick-and-dirty way to stand up a registry. Simply use the *Variable Override* Format Option from the client installation tab, and an output should appear like the one below:
 
@@ -6057,11 +6003,11 @@ REGISTRY_AUTH_TOKEN_SERVICE: docker-test
 REGISTRY_AUTH_TOKEN_ISSUER: http://localhost:8080/auth/realms/master
 ```
 
-|      | Donâ€™t forget to configure the `REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE` override with the location of the Keycloak realmâ€™s pulic certificate. The auth configuration will not work without this argument. |
+|      | Don¡¯t forget to configure the `REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE` override with the location of the Keycloak realm¡¯s pulic certificate. The auth configuration will not work without this argument. |
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-### 4.3. Docker Compose YAML File
+### 4.3. Docker Compose YAML File {#}
 
 |      | This installation method is meant to be an easy way to get a docker registry authenticating against a Keycloak server. It is intended for development purposes only and should never be used in a production or production-like environment. |
 | ---- | ------------------------------------------------------------ |
@@ -6069,7 +6015,7 @@ REGISTRY_AUTH_TOKEN_ISSUER: http://localhost:8080/auth/realms/master
 
 The zip file installation mechanism provides a quickstart for developers who want to understand how the Keycloak server can interact with the Docker registry. In order to configure:
 
-1. From the desired realm, create a client configuration. At this point you wonâ€™t have a Docker registry - the quickstart will take care of that part.
+1. From the desired realm, create a client configuration. At this point you won¡¯t have a Docker registry - the quickstart will take care of that part.
 2. Choose the "Docker Compose YAML" option from the installation tab and download the .zip file
 3. Unzip the archive to the desired location, and open the directory.
 4. Start the Docker registry with `docker-compose up`
@@ -6086,7 +6032,7 @@ Password: *******
 Login Succeeded
 ```
 
-## 5. Client Registration
+## 5. Client Registration {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/client-registration.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/client-registration.adoc)
 
@@ -6103,11 +6049,11 @@ The built-in supported `providers` are:
 
 The following sections will describe how to use the different providers.
 
-### 5.1. Authentication
+### 5.1. Authentication {#}
 
 To invoke the Client Registration Services you usually need a token. The token can be a bearer token, an initial access token or a registration access token. There is an alternative to register new client without any token as well, but then you need to configure Client Registration Policies (see below).
 
-#### 5.1.1. Bearer Token
+#### 5.1.1. Bearer Token {#}
 
 The bearer token can be issued on behalf of a user or a Service Account. The following permissions are required to invoke the endpoints (see [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) for more details):
 
@@ -6115,9 +6061,9 @@ The bearer token can be issued on behalf of a user or a Service Account. The fol
 - view-client or manage-client - To view clients
 - manage-client - To update or delete client
 
-If you are using a bearer token to create clients itâ€™s recommend to use a token from a Service Account with only the `create-client` role (see [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) for more details).
+If you are using a bearer token to create clients it¡¯s recommend to use a token from a Service Account with only the `create-client` role (see [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) for more details).
 
-#### 5.1.2. Initial Access Token
+#### 5.1.2. Initial Access Token {#}
 
 The recommended approach to registering new clients is by using initial access tokens. An initial access token can only be used to create clients and has a configurable expiration as well as a configurable limit on how many clients can be created.
 
@@ -6125,7 +6071,7 @@ An initial access token can be created through the admin console. To create a ne
 
 You will now be able to see any existing initial access tokens. If you have access you can delete tokens that are no longer required. You can only retrieve the value of the token when you are creating it. To create a new token click on `Create`. You can now optionally add how long the token should be valid, also how many clients can be created using the token. After you click on `Save` the token value is displayed.
 
-It is important that you copy/paste this token now as you wonâ€™t be able to retrieve it later. If you forget to copy/paste it, then delete the token and create another one.
+It is important that you copy/paste this token now as you won¡¯t be able to retrieve it later. If you forget to copy/paste it, then delete the token and create another one.
 
 The token value is used as a standard bearer token when invoking the Client Registration Services, by adding it to the Authorization header in the request. For example:
 
@@ -6133,13 +6079,13 @@ The token value is used as a standard bearer token when invoking the Client Regi
 Authorization: bearer eyJhbGciOiJSUz...
 ```
 
-#### 5.1.3. Registration Access Token
+#### 5.1.3. Registration Access Token {#}
 
-When you create a client through the Client Registration Service the response will include a registration access token. The registration access token provides access to retrieve the client configuration later, but also to update or delete the client. The registration access token is included with the request in the same way as a bearer token or initial access token. Registration access tokens are only valid once, when itâ€™s used the response will include a new token.
+When you create a client through the Client Registration Service the response will include a registration access token. The registration access token provides access to retrieve the client configuration later, but also to update or delete the client. The registration access token is included with the request in the same way as a bearer token or initial access token. Registration access tokens are only valid once, when it¡¯s used the response will include a new token.
 
-If a client was created outside of the Client Registration Service it wonâ€™t have a registration access token associated with it. You can create one through the admin console. This can also be useful if you loose the token for a particular client. To create a new token find the client in the admin console and click on `Credentials`. Then click on `Generate registration access token`.
+If a client was created outside of the Client Registration Service it won¡¯t have a registration access token associated with it. You can create one through the admin console. This can also be useful if you loose the token for a particular client. To create a new token find the client in the admin console and click on `Credentials`. Then click on `Generate registration access token`.
 
-### 5.2. Keycloak Representations
+### 5.2. Keycloak Representations {#}
 
 The `default` client registration provider can be used to create, retrieve, update and delete a client. It uses Keycloak Client Representation format which provides support for configuring clients exactly as they can be configured through the admin console, including for example configuring protocol mappers.
 
@@ -6157,7 +6103,7 @@ It will also return a new registration access token.
 
 To delete the Client Representation perform an HTTP DELETE request to: `/auth/realms/<realm>/clients-registrations/default/<client id>`
 
-### 5.3. Keycloak Adapter Configuration
+### 5.3. Keycloak Adapter Configuration {#}
 
 The `installation` client registration provider can be used to retrieve the adapter configuration for a client. In addition to token authentication you can also authenticate with client credentials using HTTP basic authentication. To do this include the following header in the request:
 
@@ -6169,7 +6115,7 @@ To retrieve the Adapter Configuration then perform an HTTP GET request to `/auth
 
 No authentication is required for public clients. This means that for the JavaScript adapter you can load the client configuration directly from Keycloak using the above URL.
 
-### 5.4. OpenID Connect Dynamic Client Registration
+### 5.4. OpenID Connect Dynamic Client Registration {#}
 
 Keycloak implements [OpenID Connect Dynamic Client Registration](https://openid.net/specs/openid-connect-registration-1_0.html), which extends [OAuth 2.0 Dynamic Client Registration Protocol](https://tools.ietf.org/html/rfc7591) and [OAuth 2.0 Dynamic Client Registration Management Protocol](https://tools.ietf.org/html/rfc7592).
 
@@ -6177,15 +6123,15 @@ The endpoint to use these specifications to register clients in Keycloak is `/au
 
 This endpoint can also be found in the OpenID Connect Discovery endpoint for the realm, `/auth/realms/<realm>/.well-known/openid-configuration`.
 
-### 5.5. SAML Entity Descriptors
+### 5.5. SAML Entity Descriptors {#}
 
-The SAML Entity Descriptor endpoint only supports using SAML v2 Entity Descriptors to create clients. It doesnâ€™t support retrieving, updating or deleting clients. For those operations the Keycloak representation endpoints should be used. When creating a client a Keycloak Client Representation is returned with details about the created client, including a registration access token.
+The SAML Entity Descriptor endpoint only supports using SAML v2 Entity Descriptors to create clients. It doesn¡¯t support retrieving, updating or deleting clients. For those operations the Keycloak representation endpoints should be used. When creating a client a Keycloak Client Representation is returned with details about the created client, including a registration access token.
 
 To create a client perform an HTTP POST request with the SAML Entity Descriptor to `/auth/realms/<realm>/clients-registrations/saml2-entity-descriptor`.
 
-### 5.6. Example using CURL
+### 5.6. Example using CURL {#}
 
-The following example creates a client with the clientId `myclient` using CURL. You need to replace `eyJhbGciOiJSUzâ€¦` with a proper initial access token or bearer token.
+The following example creates a client with the clientId `myclient` using CURL. You need to replace `eyJhbGciOiJSUz¡­` with a proper initial access token or bearer token.
 
 ```
 curl -X POST \
@@ -6195,11 +6141,11 @@ curl -X POST \
     http://localhost:8080/auth/realms/master/clients-registrations/default
 ```
 
-### 5.7. Example using Java Client Registration API
+### 5.7. Example using Java Client Registration API {#}
 
 The Client Registration Java API makes it easy to use the Client Registration Service using Java. To use include the dependency `org.keycloak:keycloak-client-registration-api:>VERSION<` from Maven.
 
-For full instructions on using the Client Registration refer to the JavaDocs. Below is an example of creating a client. You need to replace `eyJhbGciOiJSUzâ€¦` with a proper initial access token or bearer token.
+For full instructions on using the Client Registration refer to the JavaDocs. Below is an example of creating a client. You need to replace `eyJhbGciOiJSUz¡­` with a proper initial access token or bearer token.
 
 ```
 String token = "eyJhbGciOiJSUz...";
@@ -6218,32 +6164,32 @@ client = reg.create(client);
 String registrationAccessToken = client.getRegistrationAccessToken();
 ```
 
-### 5.8. Client Registration Policies
+### 5.8. Client Registration Policies {#}
 
 Keycloak currently supports 2 ways how can be new clients registered through Client Registration Service.
 
 - Authenticated requests - Request to register new client must contain either `Initial Access Token` or `Bearer Token`as mentioned above.
-- Anonymous requests - Request to register new client doesnâ€™t need to contain any token at all
+- Anonymous requests - Request to register new client doesn¡¯t need to contain any token at all
 
-Anonymous client registration requests are very interesting and powerful feature, however you usually donâ€™t want that anyone is able to register new client without any limitations. Hence we have `Client Registration Policy SPI`, which provide a way to limit who can register new clients and under which conditions.
+Anonymous client registration requests are very interesting and powerful feature, however you usually don¡¯t want that anyone is able to register new client without any limitations. Hence we have `Client Registration Policy SPI`, which provide a way to limit who can register new clients and under which conditions.
 
 In Keycloak admin console, you can click to `Client Registration` tab and then `Client Registration Policies` sub-tab. Here you will see what policies are configured by default for anonymous requests and what policies are configured for authenticated requests.
 
-|      | The anonymous requests (requests without any token) are allowed just for creating (registration) of new clients. So when you register new client through anonymous request, the response will contain Registration Access Token, which must be used for Read, Update or Delete request of particular client. However using this Registration Access Token from anonymous registration will be then subject to Anonymous Policy too! This means that for example request for update client also needs to come from Trusted Host if you have `Trusted Hosts` policy. Also for example it wonâ€™t be allowed to disable `Consent Required` when updating client and when `Consent Required` policy is present etc. |
+|      | The anonymous requests (requests without any token) are allowed just for creating (registration) of new clients. So when you register new client through anonymous request, the response will contain Registration Access Token, which must be used for Read, Update or Delete request of particular client. However using this Registration Access Token from anonymous registration will be then subject to Anonymous Policy too! This means that for example request for update client also needs to come from Trusted Host if you have `Trusted Hosts` policy. Also for example it won¡¯t be allowed to disable `Consent Required` when updating client and when `Consent Required` policy is present etc. |
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
 Currently we have these policy implementations:
 
-- Trusted Hosts Policy - You can configure list of trusted hosts and trusted domains. Request to Client Registration Service can be sent just from those hosts or domains. Request sent from some untrusted IP will be rejected. URLs of newly registered client must also use just those trusted hosts or domains. For example it wonâ€™t be allowed to set `Redirect URI`of client pointing to some untrusted host. By default, there is not any whitelisted host, so anonymous client registration is de-facto disabled.
-- Consent Required Policy - Newly registered clients will have `Consent Allowed` switch enabled. So after successful authentication, user will always see consent screen when he needs to approve permissions (client scopes). It means that client wonâ€™t have access to any personal info or permission of user unless user approves it.
-- Protocol Mappers Policy - Allows to configure list of whitelisted protocol mapper implementations. New client canâ€™t be registered or updated if it contains some non-whitelisted protocol mapper. Note that this policy is used for authenticated requests as well, so even for authenticated request there are some limitations which protocol mappers can be used.
+- Trusted Hosts Policy - You can configure list of trusted hosts and trusted domains. Request to Client Registration Service can be sent just from those hosts or domains. Request sent from some untrusted IP will be rejected. URLs of newly registered client must also use just those trusted hosts or domains. For example it won¡¯t be allowed to set `Redirect URI`of client pointing to some untrusted host. By default, there is not any whitelisted host, so anonymous client registration is de-facto disabled.
+- Consent Required Policy - Newly registered clients will have `Consent Allowed` switch enabled. So after successful authentication, user will always see consent screen when he needs to approve permissions (client scopes). It means that client won¡¯t have access to any personal info or permission of user unless user approves it.
+- Protocol Mappers Policy - Allows to configure list of whitelisted protocol mapper implementations. New client can¡¯t be registered or updated if it contains some non-whitelisted protocol mapper. Note that this policy is used for authenticated requests as well, so even for authenticated request there are some limitations which protocol mappers can be used.
 - Client Scope Policy - Allow to whitelist `Client Scopes`, which can be used with newly registered or updated clients. There are no whitelisted scopes by default; only the client scopes, which are defined as `Realm Default Client Scopes` are whitelisted by default.
-- Full Scope Policy - Newly registered clients will have `Full Scope Allowed` switch disabled. This means they wonâ€™t have any scoped realm roles or client roles of other clients.
-- Max Clients Policy - Rejects registration if current number of clients in the realm is same or bigger than specified limit. Itâ€™s 200 by default for anonymous registrations.
+- Full Scope Policy - Newly registered clients will have `Full Scope Allowed` switch disabled. This means they won¡¯t have any scoped realm roles or client roles of other clients.
+- Max Clients Policy - Rejects registration if current number of clients in the realm is same or bigger than specified limit. It¡¯s 200 by default for anonymous registrations.
 - Client Disabled Policy - Newly registered client will be disabled. This means that admin needs to manually approve and enable all newly registered clients. This policy is not used by default even for anonymous registration.
 
-## 6. Client Registration CLI
+## 6. Client Registration CLI {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/client-registration/client-registration-cli.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/client-registration/client-registration-cli.adoc)
 
@@ -6255,7 +6201,7 @@ You can configure application clients from a command line with the Client Regist
 
 To allow a particular user to use `Client Registration CLI` the Keycloak administrator typically uses the Admin Console to configure a new user with proper roles or to configure a new client and client secret to grant access to the Client Registration REST API.
 
-### 6.1. Configuring a new regular user for use with Client Registration CLI
+### 6.1. Configuring a new regular user for use with Client Registration CLI {#}
 
 1. Log in to the Admin Console (for example, <http://localhost:8080/auth/admin>) as `admin`.
 
@@ -6275,7 +6221,7 @@ It is possible to not assign any `realm-management` roles to a user. In that cas
 
 The Administrator can issue Initial Access Tokens from the Admin Console through the **Realm Settings > Client Registration > Initial Access Token** menu.
 
-### 6.2. Configuring a client for use with the Client Registration CLI
+### 6.2. Configuring a client for use with the Client Registration CLI {#}
 
 By default, the server recognizes the Client Registration CLI as the `admin-cli` client, which is configured automatically for every new realm. No additional client configuration is necessary when logging in with a user name.
 
@@ -6293,7 +6239,7 @@ You can configure either `Client Id and Secret` or `Signed JWT` under the **Cred
 4. Specify which `clientId` to use (for example, `--client reg-cli`) when running `kcreg config credentials`.
 5. With the service account enabled, you can omit specifying the user when running `kcreg config credentials` and only provide the client secret or keystore information.
 
-### 6.3. Installing the Client Registration CLI
+### 6.3. Installing the Client Registration CLI {#}
 
 The Client Registration CLI is packaged inside the Keycloak Server distribution. You can find execution scripts inside the `bin`directory. The Linux script is called `kcreg.sh`, and the Windows script is called `kcreg.bat`.
 
@@ -6317,7 +6263,7 @@ c:\> kcreg
 
 `KEYCLOAK_HOME` refers to a directory where the Keycloak Server distribution was unpacked.
 
-### 6.4. Using the Client Registration CLI
+### 6.4. Using the Client Registration CLI {#}
 
 1. Start an authenticated session by logging in with your credentials.
 
@@ -6345,7 +6291,7 @@ c:\> kcreg
      | ---- | ------------------------------------------------------------ |
      |      |                                                              |
 
-3. If a serverâ€™s certificate is not issued by one of the trusted certificate authorities (CAs) that are included in Javaâ€™s default certificate truststore, prepare a `truststore.jks` file and instruct the Client Registration CLI to use it.
+3. If a server¡¯s certificate is not issued by one of the trusted certificate authorities (CAs) that are included in Java¡¯s default certificate truststore, prepare a `truststore.jks` file and instruct the Client Registration CLI to use it.
 
    For example, on:
 
@@ -6361,7 +6307,7 @@ c:\> kcreg
      c:\> kcreg config truststore --trustpass %PASSWORD% %HOMEPATH%\.keycloak\truststore.jks
      ```
 
-#### 6.4.1. Logging in
+#### 6.4.1. Logging in {#}
 
 1. Specify a server endpoint URL and a realm when you log in with the Client Registration CLI.
 2. Specify a user name or a client id, which results in a special service account being used. When using a user name, you must use a password for the specified user. When using a client ID, you use a client secret or a `Signed JWT` instead of a password.
@@ -6390,9 +6336,9 @@ c:\> kcreg help
 
 See `kcreg config credentials --help` for more information about starting an authenticated session.
 
-#### 6.4.2. Working with alternative configurations
+#### 6.4.2. Working with alternative configurations {#}
 
-By default, the Client Registration CLI automatically maintains a configuration file at a default location, `./.keycloak/kcreg.config`, under the userâ€™s home directory. You can use the `--config` option to point to a different file or location to mantain multiple authenticated sessions in parallel. It is the safest way to perform operations tied to a single configuration file from a single thread.
+By default, the Client Registration CLI automatically maintains a configuration file at a default location, `./.keycloak/kcreg.config`, under the user¡¯s home directory. You can use the `--config` option to point to a different file or location to mantain multiple authenticated sessions in parallel. It is the safest way to perform operations tied to a single configuration file from a single thread.
 
 |      | Do not make the configuration file visible to other users on the system. The configuration file contains access tokens and secrets that should be kept private. |
 | ---- | ------------------------------------------------------------ |
@@ -6400,7 +6346,7 @@ By default, the Client Registration CLI automatically maintains a configuration 
 
 You might want to avoid storing secrets inside a configuration file by using the `--no-config` option with all of your commands, even though it is less convenient and requires more token requests to do so. Specify all authentication information with each `kcreg` invocation.
 
-#### 6.4.3. Initial Access and Registration Access Tokens
+#### 6.4.3. Initial Access and Registration Access Tokens {#}
 
 Developers who do not have an account configured at the Keycloak server they want to use can use the Client Registration CLI. This is possible only when the realm administrator issues a developer an Initial Access Token. It is up to the realm administrator to decide how and when to issue and distribute these tokens. The realm administrator can limit the maximum age of the Initial Access Token and the total number of clients that can be created with it.
 
@@ -6442,7 +6388,7 @@ See [Client Registration](https://www.keycloak.org/docs/latest/securing_apps/ind
 
 Run the `kcreg config initial-token --help` and `kcreg config registration-token --help` commands for more information on how to configure tokens with the Client Registration CLI.
 
-#### 6.4.4. Creating a client configuration
+#### 6.4.4. Creating a client configuration {#}
 
 The first task after authenticating with credentials or configuring an Initial Access Token is usually to create a new client. Often you might want to use a prepared JSON file as a template and set or override some of the attributes.
 
@@ -6464,7 +6410,7 @@ Run the `kcreg create --help` for more information about the `kcreg create` comm
 
 You can use `kcreg attrs` to list available attributes. Keep in mind that many configuration attributes are not checked for validity or consistency. It is up to you to specify proper values. Remember that you should not have any id fields in your template and should not specify them as arguments to the `kcreg create` command.
 
-#### 6.4.5. Retrieving a client configuration
+#### 6.4.5. Retrieving a client configuration {#}
 
 You can retrieve an existing client by using the `kcreg get` command.
 
@@ -6500,7 +6446,7 @@ C:\> kcreg get myclient -e install > keycloak.json
 
 Run the `kcreg get --help` command for more information about the `kcreg get` command.
 
-#### 6.4.6. Modifying a client configuration
+#### 6.4.6. Modifying a client configuration {#}
 
 There are two methods for updating a client configuration.
 
@@ -6558,7 +6504,7 @@ C:\> kcreg update myclient --merge -d redirectUris -f mychanges.json
 
 Run the `kcreg update --help` command for more information about the `kcreg update` command.
 
-#### 6.4.7. Deleting a client configuration
+#### 6.4.7. Deleting a client configuration {#}
 
 Use the following example to delete a client.
 
@@ -6576,7 +6522,7 @@ C:\> kcreg delete myclient
 
 Run the `kcreg delete --help` command for more information about the `kcreg delete` command.
 
-#### 6.4.8. Refreshing invalid Registration Access Tokens
+#### 6.4.8. Refreshing invalid Registration Access Tokens {#}
 
 When performing a create, read, update, and delete (CRUD) operation using the `--no-config` mode, the Client Registration CLI cannot handle Registration Access Tokens for you. In that case, it is possible to lose track of the most recently issued Registration Access Token for a client, which makes it impossible to perform any further CRUD operations on that client without authenticating with an account that has **manage-clients** permissions.
 
@@ -6584,13 +6530,13 @@ If you have permissions, you can issue a new Registration Access Token for the c
 
 Run the `kcreg update-token --help` command for more information about the `kcreg update-token` command.
 
-### 6.5. Troubleshooting
+### 6.5. Troubleshooting {#}
 
 - Q: When logging in, I get an error: *Parameter client_assertion_type is missing [invalid_client].
 
   A: This error means your client is configured with `Signed JWT` token credentials, which means you have to use the `--keystore` parameter when logging in.
 
-## 7. Token Exchange
+## 7. Token Exchange {#}
 
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/token-exchange/token-exchange.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/token-exchange/token-exchange.adoc)
 
@@ -6598,20 +6544,20 @@ Run the `kcreg update-token --help` command for more information about the `kcre
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-In Keycloak, token exchange is the process of using a set of credentials or token to obtain an entirely different token. A client may want to invoke on a less trusted application so it may want to downgrade the current token it has. A client may want to exchange a Keycloak token for a token stored for a linked social provider account. You may want to trust external tokens minted by other Keycloak realms or foreign IDPs. A client may have a need to impersonate a user. Hereâ€™s a short summary of the current capabilities of Keycloak around token exchange.
+In Keycloak, token exchange is the process of using a set of credentials or token to obtain an entirely different token. A client may want to invoke on a less trusted application so it may want to downgrade the current token it has. A client may want to exchange a Keycloak token for a token stored for a linked social provider account. You may want to trust external tokens minted by other Keycloak realms or foreign IDPs. A client may have a need to impersonate a user. Here¡¯s a short summary of the current capabilities of Keycloak around token exchange.
 
 - A client can exchange an existing Keycloak token created for a specific client for a new token targeted to a different client
 - A client can exchange an existing Keycloak token for an external token, i.e. a linked Facebook account
 - A client can exchange an external token for a Keycloak token.
 - A client can impersonate a user
 
-Token exchange in Keycloak is a very loose implementation of the [OAuth Token Exchange](https://tools.ietf.org/html/draft-ietf-oauth-token-exchange-16) specification at the IETF. We have extended it a little, ignored some of it, and loosely interpreted other parts of the specification. It is a simple grant type invocation on a realmâ€™s OpenID Connect token endpoint.
+Token exchange in Keycloak is a very loose implementation of the [OAuth Token Exchange](https://tools.ietf.org/html/draft-ietf-oauth-token-exchange-16) specification at the IETF. We have extended it a little, ignored some of it, and loosely interpreted other parts of the specification. It is a simple grant type invocation on a realm¡¯s OpenID Connect token endpoint.
 
 ```
 /auth/realms/{realm}/protocol/openid-connect/token
 ```
 
-It accepts form parameters (`application/x-www-form-urlencoded`) as input and the output depends on the type of token you requested an exchange for. Token exchange is a client endpoint so requests must provide authentication information for the calling client. Public clients specify their client identifier as a form parameter. Confidential clients can also use form parameters to pass their client id and secret, Basic Auth, or however your admin has configured the client authentication flow in your realm. Hereâ€™s a list of form parameters
+It accepts form parameters (`application/x-www-form-urlencoded`) as input and the output depends on the type of token you requested an exchange for. Token exchange is a client endpoint so requests must provide authentication information for the calling client. Public clients specify their client identifier as a form parameter. Confidential clients can also use form parameters to pass their client id and secret, Basic Auth, or however your admin has configured the client authentication flow in your realm. Here¡¯s a list of form parameters
 
 - client_id
 
@@ -6688,15 +6634,15 @@ Additional error claims may be returned depending on the exchange type. For exam
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-The rest of this chapter discusses the setup requirements and provides examples for different exchange scenarios. For simplicityâ€™s sake, letâ€™s call a token minted by the current realm as an *internal* token and a token minted by an external realm or identity provider as an *external* token.
+The rest of this chapter discusses the setup requirements and provides examples for different exchange scenarios. For simplicity¡¯s sake, let¡¯s call a token minted by the current realm as an *internal* token and a token minted by an external realm or identity provider as an *external* token.
 
-### 7.1. Internal Token to Internal Token Exchange
+### 7.1. Internal Token to Internal Token Exchange {#}
 
-With an internal token to token exchange you have an existing token minted to a specific client and you want to exchange this token for a new one minted for a different target client. Why would you want to do this? This generally happens when a client has a token minted for itself, and needs to make additional requests to other applications that require different claims and permissions within the access token. Other reasons this type of exchange might be required is if you need to perform a "permission downgrade" where your app needs to invoke on a less trusted app and you donâ€™t want to propagate your current access token.
+With an internal token to token exchange you have an existing token minted to a specific client and you want to exchange this token for a new one minted for a different target client. Why would you want to do this? This generally happens when a client has a token minted for itself, and needs to make additional requests to other applications that require different claims and permissions within the access token. Other reasons this type of exchange might be required is if you need to perform a "permission downgrade" where your app needs to invoke on a less trusted app and you don¡¯t want to propagate your current access token.
 
-#### 7.1.1. Granting Permission for the Exchange
+#### 7.1.1. Granting Permission for the Exchange {#}
 
-Clients that want to exchange tokens for a different client need to be authorized in the admin console to do so. Youâ€™ll need to define a `token-exchange` fine grain permission in the target client you want permission to exchange to.
+Clients that want to exchange tokens for a different client need to be authorized in the admin console to do so. You¡¯ll need to define a `token-exchange` fine grain permission in the target client you want permission to exchange to.
 
 Target Client Permission
 
@@ -6714,13 +6660,13 @@ Target Client Exchange Permission Setup
 
 ![exchange target client permission setup](https://www.keycloak.org/docs/latest/securing_apps/keycloak-images/exchange-target-client-permission-setup.png)
 
-Youâ€™ll have to define a policy for this permission. Click the `Authorization` link, go to the `Policies` tab and create a `Client` Policy.
+You¡¯ll have to define a policy for this permission. Click the `Authorization` link, go to the `Policies` tab and create a `Client` Policy.
 
 Client Policy Creation
 
 ![exchange target client policy](https://www.keycloak.org/docs/latest/securing_apps/keycloak-images/exchange-target-client-policy.png)
 
-Here you enter in the starting client, that is the authenticated client that is requesting a token exchange. After you create this policy, go back to the target clientâ€™s `token-exchange` permission and add the client policy you just defined.
+Here you enter in the starting client, that is the authenticated client that is requesting a token exchange. After you create this policy, go back to the target client¡¯s `token-exchange` permission and add the client policy you just defined.
 
 Apply Client Policy
 
@@ -6728,7 +6674,7 @@ Apply Client Policy
 
 Your client now has permission to invoke. If you do not do this correctly, you will get a 403 Forbidden response if you try to make an exchange.
 
-#### 7.1.2. Making the Request
+#### 7.1.2. Making the Request {#}
 
 When your client is exchanging an existing token for a token targeting another client, you must use the `audience`parameter. This parameter must be the client identifier for the target client that you configured in the admin console.
 
@@ -6743,7 +6689,7 @@ curl -X POST \
     http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/token
 ```
 
-The `subject_token` parameter must be an access token for the target realm. If your `requested_token_type` parameter is a refresh token type, then the response will contain both an access token, refresh token, and expiration. Hereâ€™s an example JSON response you get back from this call.
+The `subject_token` parameter must be an access token for the target realm. If your `requested_token_type` parameter is a refresh token type, then the response will contain both an access token, refresh token, and expiration. Here¡¯s an example JSON response you get back from this call.
 
 ```
 {
@@ -6753,7 +6699,7 @@ The `subject_token` parameter must be an access token for the target realm. If y
 }
 ```
 
-### 7.2. Internal Token to External Token Exchange
+### 7.2. Internal Token to External Token Exchange {#}
 
 You can exchange a realm token for an externl token minted by an external identity provider. This external identity provider must be configured within the `Identity Provider` section of the admin console. Currently only OAuth/OpenID Connect based external identity providers are supported, this includes all social providers. Keycloak does not perform a backchannel exchange to the external provider. So if the account is not linked, you will not be able to get the external token. To be able to obtain an external token one of these conditions must be met:
 
@@ -6765,9 +6711,9 @@ Finally, the external identity provider must have been configured to store token
 
 If the account is not linked, the exchange response will contain a link you can use to establish it. This is discussed more in the [Making the Request](https://www.keycloak.org/docs/latest/securing_apps/index.html#_internal_external_making_request) section.
 
-#### 7.2.1. Granting Permission for the Exchange
+#### 7.2.1. Granting Permission for the Exchange {#}
 
-Internal to external token exchange requests will be denied with a 403, Forbidden response until you grant permission for the calling client to exchange tokens with the external identity provider. To grant permission to the client you must go to the identity providerâ€™s configuration page to the `Permissions` tab.
+Internal to external token exchange requests will be denied with a 403, Forbidden response until you grant permission for the calling client to exchange tokens with the external identity provider. To grant permission to the client you must go to the identity provider¡¯s configuration page to the `Permissions` tab.
 
 Identity Provider Permission
 
@@ -6785,13 +6731,13 @@ Identity Provider Exchange Permission Setup
 
 ![exchange idp permission setup](assets/exchange-idp-permission-setup.png)
 
-Youâ€™ll have to define a policy for this permission. Click the `Authorization` link, go to the `Policies` tab and create a `Client` Policy.
+You¡¯ll have to define a policy for this permission. Click the `Authorization` link, go to the `Policies` tab and create a `Client` Policy.
 
 Client Policy Creation
 
 ![exchange idp client policy](assets/exchange-idp-client-policy.png)
 
-Here you enter in the starting client, that is the authenticated client that is requesting a token exchange. After you create this policy, go back to the identity providersâ€™s `token-exchange` permission and add the client policy you just defined.
+Here you enter in the starting client, that is the authenticated client that is requesting a token exchange. After you create this policy, go back to the identity providers¡¯s `token-exchange` permission and add the client policy you just defined.
 
 Apply Client Policy
 
@@ -6799,7 +6745,7 @@ Apply Client Policy
 
 Your client now has permission to invoke. If you do not do this correctly, you will get a 403 Forbidden response if you try to make an exchange.
 
-#### 7.2.2. Making the Request
+#### 7.2.2. Making the Request {#}
 
 When your client is exchanging an existing internal token to an external one, you must provide the `requested_issuer`parameter. The parameter must be the alias of a configured identity provider.
 
@@ -6814,7 +6760,7 @@ curl -X POST \
     http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/token
 ```
 
-The `subject_token` parameter must be an access token for the target realm. The `requested_token_type` parameter must be `urn:ietf:params:oauth:token-type:access_token` or left blank. No other requested token type is supported at this time. Hereâ€™s an example successful JSON response you get back from this call.
+The `subject_token` parameter must be an access token for the target realm. The `requested_token_type` parameter must be `urn:ietf:params:oauth:token-type:access_token` or left blank. No other requested token type is supported at this time. Here¡¯s an example successful JSON response you get back from this call.
 
 ```
 {
@@ -6836,9 +6782,9 @@ If the external identity provider is not linked for whatever reason, you will ge
 
 The `error` claim will be either `token_expired` or `not_linked`. The `account-link-url` claim is provided so that the client can perform [Client Initiated Account Linking](https://www.keycloak.org/docs/6.0/server_development/). Most (all?) providers are requiring linking through browser OAuth protocol. With the `account-link-url` just add a `redirect_uri` query parameter to it and you can forward browsers to perform the link.
 
-### 7.3. External Token to Internal Token Exchange
+### 7.3. External Token to Internal Token Exchange {#}
 
-You can trust and exchange external tokens minted by external identity providers for internal tokens. This can be used to bridge between realms or just to trust tokens from your social provider. It works similarly to an identity provider browser login in that a new user is imported into your realm if it doesnâ€™t exist.
+You can trust and exchange external tokens minted by external identity providers for internal tokens. This can be used to bridge between realms or just to trust tokens from your social provider. It works similarly to an identity provider browser login in that a new user is imported into your realm if it doesn¡¯t exist.
 
 |      | The current limitation on external token exchanges is that if the external token maps to an existing user an exchange will not be allowed unless the existing user already has an account link to the external identity provider. |
 | ---- | ------------------------------------------------------------ |
@@ -6852,19 +6798,19 @@ These types of changes required a configured identity provider in the admin cons
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-#### 7.3.1. Granting Permission for the Exchange
+#### 7.3.1. Granting Permission for the Exchange {#}
 
 Before external token exchanges can be done, you must grant permission for the calling client to make the exchange. This permission is granted in the same manner as [internal to external permission is granted](https://www.keycloak.org/docs/latest/securing_apps/index.html#_grant_permission_external_exchange).
 
 If you also provide an `audience` parameter whose value points to a different client other than the calling one, you must also grant the calling client permission to exchange to the target client specific in the `audience` parameter. How to do this is [discussed earlier](https://www.keycloak.org/docs/latest/securing_apps/index.html#_client_to_client_permission) in this section.
 
-#### 7.3.2. Making the Request
+#### 7.3.2. Making the Request {#}
 
 The `subject_token_type` must either be `urn:ietf:params:oauth:token-type:access_token` or `urn:ietf:params:oauth:token-type:jwt`. If the type is `urn:ietf:params:oauth:token-type:access_token` you must specify the `subject_issuer` parameter and it must be the alias of the configured identity provider. If the type is `urn:ietf:params:oauth:token-type:jwt`, the provider will be matched via the `issuer` claim within the JWT which must be the alias of the provider, or a registered issuer within the providers configuration.
 
-For validation, if the token is an access token, the providerâ€™s user info service will be invoked to validate the token. A successful call will mean that the access token is valid. If the subject token is a JWT and if the provider has signature validation enabled, that will be attempted, otherwise, it will default to also invoking on the user info service to validate the token.
+For validation, if the token is an access token, the provider¡¯s user info service will be invoked to validate the token. A successful call will mean that the access token is valid. If the subject token is a JWT and if the provider has signature validation enabled, that will be attempted, otherwise, it will default to also invoking on the user info service to validate the token.
 
-By default, the internal token minted will use the calling client to determine whatâ€™s in the token using the protocol mappers defined for the calling client. Alternatively, you can specify a different target client using the `audience` parameter.
+By default, the internal token minted will use the calling client to determine what¡¯s in the token using the protocol mappers defined for the calling client. Alternatively, you can specify a different target client using the `audience` parameter.
 
 ```
 curl -X POST \
@@ -6878,7 +6824,7 @@ curl -X POST \
     http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/token
 ```
 
-If your `requested_token_type` parameter is a refresh token type, then the response will contain both an access token, refresh token, and expiration. Hereâ€™s an example JSON response you get back from this call.
+If your `requested_token_type` parameter is a refresh token type, then the response will contain both an access token, refresh token, and expiration. Here¡¯s an example JSON response you get back from this call.
 
 ```
 {
@@ -6888,15 +6834,15 @@ If your `requested_token_type` parameter is a refresh token type, then the respo
 }
 ```
 
-### 7.4. Impersonation
+### 7.4. Impersonation {#}
 
 For internal and external token exchanges, the client can request on behalf of a user to impersonate a different user. For example, you may have an admin application that needs to impersonate a user so that a support engineer can debug a problem.
 
-#### 7.4.1. Granting Permission for the Exchange
+#### 7.4.1. Granting Permission for the Exchange {#}
 
 The user that the subject token represents must have permission to impersonate other users. See the [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) on how to enable this permission. It can be done through a role or through fine grain admin permissions.
 
-#### 7.4.2. Making the Request
+#### 7.4.2. Making the Request {#}
 
 Make the request as described in other chapters except additionally specify the `request_subject` parameter. The value of this parameter must be a username or user id.
 
@@ -6912,15 +6858,15 @@ curl -X POST \
     http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/token
 ```
 
-### 7.5. Direct Naked Impersonation
+### 7.5. Direct Naked Impersonation {#}
 
 You can make an internal token exchange request without providing a `subject_token`. This is called a direct naked impersonation because it places a lot of trust in a client as that client can impersonate any user in the realm. You might need this to bridge for applications where it is impossible to obtain a subject token to exchange. For example, you may be integrating a legacy application that performs login directly with LDAP. In that case, the legacy app is able to authenticate users itself, but not able to obtain a token.
 
-|      | It is very risky to enable direct naked impersonation for a client. If the clientâ€™s credentials are ever stolen, that client can impersonate any user in the system. |
+|      | It is very risky to enable direct naked impersonation for a client. If the client¡¯s credentials are ever stolen, that client can impersonate any user in the system. |
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-#### 7.5.1. Granting Permission for the Exchange
+#### 7.5.1. Granting Permission for the Exchange {#}
 
 If the `audience` parameter is provided, then the calling client must have permission to exchange to the client. How to set this up is discussed earlier in this chapter.
 
@@ -6942,7 +6888,7 @@ Users Impersonation Permission Setup
 
 ![exchange users permission setup](assets/exchange-users-permission-setup.png)
 
-Youâ€™ll have to define a policy for this permission. Click the `Authorization` link, go to the `Policies` tab and create a `Client` Policy.
+You¡¯ll have to define a policy for this permission. Click the `Authorization` link, go to the `Policies` tab and create a `Client` Policy.
 
 Client Policy Creation
 
@@ -6960,7 +6906,7 @@ Your client now has permission to impersonate users. If you do not do this corre
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-#### 7.5.2. Making the Request
+#### 7.5.2. Making the Request {#}
 
 To make the request, simply specify the `requested_subject` parameter. This must be the username or user id of a valid user. You can also specify an `audience` parameter if you wish.
 
@@ -6973,17 +6919,17 @@ curl -X POST \
     http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/token
 ```
 
-### 7.6. Expand Permission Model With Service Accounts
+### 7.6. Expand Permission Model With Service Accounts {#}
 
-When granting clients permission to exchange, you donâ€™t necessarily have to manually enable those permissions for each and every client. If the client has a service account associated with it, you can use a role to group permissions together and assign exchange permissions by assigning a role to the clientâ€™s service account. For example, you might define a `naked-exchange` role and any service account that has that role can do a naked exchange.
+When granting clients permission to exchange, you don¡¯t necessarily have to manually enable those permissions for each and every client. If the client has a service account associated with it, you can use a role to group permissions together and assign exchange permissions by assigning a role to the client¡¯s service account. For example, you might define a `naked-exchange` role and any service account that has that role can do a naked exchange.
 
-### 7.7. Exchange Vulnerabilities
+### 7.7. Exchange Vulnerabilities {#}
 
-When you start allowing token exchanges, thereâ€™s various things you have to both be aware of and careful of.
+When you start allowing token exchanges, there¡¯s various things you have to both be aware of and careful of.
 
 The first is public clients. Public clients do not have or require a client credential in order to perform an exchange. Anybody that has a valid token will be able to *impersonate* the public client and perform the exchanges that public client is allowed to perform. If there are any untrustworthy clients that are managed by your realm, public clients may open up vulnerabilities in your permission models. This is why direct naked exchanges do not allow public clients and will abort with an error if the calling client is public.
 
 It is possible to exchange social tokens provided by Facebook, Google, etc. for a realm token. Be careful and vigilante on what the exchange token is allowed to do as its not hard to create fake accounts on these social websites. Use default roles, groups, and identity provider mappers to control what attributes and roles are assigned to the external social user.
 
-Direct naked exchanges are quite dangerous. You are putting a lot of trust in the calling client that it will never leak out its client credentials. If those credentials are leaked, then the thief can impersonate anybody in your system. This is in direct contrast to confidential clients that have existing tokens. You have two factors of authentication, the access token and the client credentials, and youâ€™re only dealing with one user. So use direct naked exchanges sparingly.
+Direct naked exchanges are quite dangerous. You are putting a lot of trust in the calling client that it will never leak out its client credentials. If those credentials are leaked, then the thief can impersonate anybody in your system. This is in direct contrast to confidential clients that have existing tokens. You have two factors of authentication, the access token and the client credentials, and you¡¯re only dealing with one user. So use direct naked exchanges sparingly.
 
