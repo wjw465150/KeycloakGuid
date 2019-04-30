@@ -1,2 +1,3 @@
 REM gitbook install
-gitbook build . ./docs
+REM gitbook serve . ./docs
+REM gitbook build . ./docs
