@@ -1325,24 +1325,24 @@ service:jmx:rmi://localhost:44444/jndi/rmi://localhost:1099/karaf-root
 
    请注意，用户需要具有适当的领域角色才能成功向Hawtio进行身份验证。 可用角色在`hawtio.roles`中的`$FUSE_HOME/etc/system.properties`文件中配置。
 
-###### Securing Hawtio on JBoss EAP 6.4 {#Securing_Hawtio_on_JBoss_EAP_6_4}
-To run Hawtio on the JBoss EAP 6.4 server, complete the following steps:
+###### 保护JBoss EAP 6.4上的Hawtio {#Securing_Hawtio_on_JBoss_EAP_6_4}
+要在JBoss EAP 6.4服务器上运行Hawtio，请完成以下步骤:
 
-1. Set up Keycloak as described in the previous section, Securing the Hawtio Administration Console. It is assumed that:
+1. 按照上一节“保护Hawtio管理控制台”中的说明设置Keycloak。 假设：
 
-   - you have a Keycloak realm `demo` and client `hawtio-client`
-   - your Keycloak is running on `localhost:8080`
-   - the JBoss EAP 6.4 server with deployed Hawtio will be running on `localhost:8181`. The directory with this server is referred in next steps as `$EAP_HOME`.
+   - 你有一个Keycloak领域`demo`和客户`hawtio-client`
+   - 你的Keycloak在`localhost:8080`上运行
+   - 部署了Hawtio的JBoss EAP 6.4服务器将在`localhost:8181`上运行。 具有此服务器的目录在后续步骤中称为`$EAP_HOME`。
 
-2. Copy the `hawtio-wildfly-1.4.0.redhat-630254.war` archive to the `$EAP_HOME/standalone/configuration`directory. For more details about deploying Hawtio see the [Fuse Hawtio documentation](https://access.redhat.com/documentation/en-us/red_hat_jboss_fuse/6.3/html-single/deploying_into_a_web_server/).
+2. 将`hawtio-wildfly-1.4.0.redhat-630254.war`存档复制到`$EAP_HOME/standalone/configuration`目录。 有关部署Hawtio的更多详细信息，请参阅[Fuse Hawtio文档](https://access.redhat.com/documentation/en-us/red_hat_jboss_fuse/6.3/html-single/deploying_into_a_web_server/)。
 
-3. Copy the `keycloak-hawtio.json` and `keycloak-hawtio-client.json` files with the above content to the `$EAP_HOME/standalone/configuration` directory.
+3. 将带有上述内容的`keycloak-hawtio.json`和`keycloak-hawtio-client.json`文件复制到`$EAP_HOME/standalone/configuration`目录。
 
-4. Install the Keycloak adapter subsystem to your JBoss EAP 6.4 server as described in the [JBoss adapter documentation](https://www.keycloak.org/docs/latest/securing_apps/index.html#_jboss_adapter).
+4. 按照[JBoss适配器文档](https://www.keycloak.org/docs/latest/securing_apps/index.html#_jboss_adapter)中的说明，将Keycloak适配器子系统安装到JBoss EAP 6.4服务器上。
 
-5. In the `$EAP_HOME/standalone/configuration/standalone.xml` file configure the system properties as in this example:
+5. 在`$EAP_HOME/standalone/configuration/standalone.xml`文件中配置系统属性，如下例所示：
 
-   ```
+   ```xml
    <extensions>
    ...
    </extensions>
@@ -1358,9 +1358,9 @@ To run Hawtio on the JBoss EAP 6.4 server, complete the following steps:
    </system-properties>
    ```
 
-6. Add the Hawtio realm to the same file in the `security-domains` section:
+6. 将Hawtio域添加到`security-domains`部分中的同一文件：
 
-   ```
+   ```xml
    <security-domain name="hawtio" cache-type="default">
        <authentication>
            <login-module code="org.keycloak.adapters.jaas.BearerTokenLoginModule" flag="required">
@@ -1370,121 +1370,116 @@ To run Hawtio on the JBoss EAP 6.4 server, complete the following steps:
    </security-domain>
    ```
 
-7. Add the `secure-deployment` section `hawtio` to the adapter subsystem. This ensures that the Hawtio WAR is able to find the JAAS login module classes.
+7. 将`secure-deployment`部分`hawtio`添加到适配器子系统。 这可确保Hawtio WAR能够找到JAAS登录模块类。
 
-   ```
+   ```xml
    <subsystem xmlns="urn:jboss:domain:keycloak:1.1">
        <secure-deployment name="hawtio-wildfly-1.4.0.redhat-630254.war" />
    </subsystem>
    ```
 
-8. Restart the JBoss EAP 6.4 server with Hawtio:
+8. 使用Hawtio重新启动JBoss EAP 6.4服务器：
 
-   ```
+   ```bash
    cd $EAP_HOME/bin
    ./standalone.sh -Djboss.socket.binding.port-offset=101
    ```
 
-9. Access Hawtio at <http://localhost:8181/hawtio>. It is secured by Keycloak.
+9. 在<http://localhost:8181/hawtio>访问Hawtio。 它由Keycloak保护。
 
-#### 2.1.5. JBoss Fuse 7 Adapter {#JBoss_Fuse_7_Adapter}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7-adapter.adoc)
+#### 2.1.5. JBoss Fuse 7 适配器 {#JBoss_Fuse_7_Adapter}
 
-Keycloak supports securing your web applications running inside [JBoss Fuse 7](https://developers.redhat.com/products/fuse/overview/).
+Keycloak支持保护在[JBoss Fuse 7](https://developers.redhat.com/products/fuse/overview/)中运行的Web应用程序。
 
-JBoss Fuse 7 leverages Undertow adapter which is essentially the same as [EAP 7 / WildFly Adapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#_jboss_adapter) as JBoss Fuse 7.2.0 is bundled with [Undertow HTTP engine](http://undertow.io/) under the covers and Undertow is used for running various kinds of web applications.
+JBoss Fuse 7利用了Undertow适配器，它与[EAP 7 / WildFly适配器](https://www.keycloak.org/docs/latest/securing_apps/index.html#_jboss_adapter)基本相同，因为捆绑了JBoss Fuse 7.2.0 使用[Undertow HTTP引擎](http://undertow.io/)，Undertow用于运行各种Web应用程序。
 
-|      | The only supported version of Fuse 7 is the latest release. If you use earlier versions of Fuse 7, it is possible that some functions will not work correctly. In particular, integration will not work at all for versions of Fuse 7 lower than 7.0.1. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 唯一受支持的Fuse 7版本是最新版本。 如果使用早期版本的Fuse 7，则某些功能可能无法正常工作。 特别是，对于低于7.0.1的Fuse 7版本，集成将完全不起作用。
 
-Security for the following items is supported for Fuse:
+Fuse支持以下项目的安全性:
 
-- Classic WAR applications deployed on Fuse with Pax Web War Extender
-- Servlets deployed on Fuse as OSGI services with Pax Web Whiteboard Extender and additionally servlets registered through org.osgi.service.http.HttpService#registerServlet() which is standard OSGi Enterprise HTTP Service
-- [Apache Camel](http://camel.apache.org/) Undertow endpoints running with the [Camel Undertow](http://camel.apache.org/undertow.html) component
-- [Apache CXF](http://cxf.apache.org/) endpoints running on their own separate Undertow engine
-- [Apache CXF](http://cxf.apache.org/) endpoints running on the default engine provided by the CXF servlet
-- SSH and JMX admin access
-- [Hawtio administration console](https://hawt.io/)
+- 使用Pax Web War Extender部署在Fuse上的经典WAR应用程序
+- 使用Pax Web Whiteboard Extender作为OSGI服务部署在Fuse上的Servlet以及通过org.osgi.service.http.HttpService#registerServlet()注册的servlet，这是标准的OSGi Enterprise HTTP服务
+- [Apache Camel](http://camel.apache.org/) 使用[Camel Undertow](http://camel.apache.org/undertow.html)组件运行的端点
+- [Apache CXF](http://cxf.apache.org/) 端点在他们自己独立的Undertow引擎上运行
+- [Apache CXF](http://cxf.apache.org/) 在CXF servlet提供的默认引擎上运行的端点
+- SSH和JMX管理员访问权限
+- [Hawtio管理控制台](https://hawt.io/)
 
-##### Securing Your Web Applications Inside Fuse 7 {#Securing_Your_Web_Applications_Inside_Fuse_7}
-You must first install the Keycloak Karaf feature. Next you will need to perform the steps according to the type of application you want to secure. All referenced web applications require injecting the Keycloak Undertow authentication mechanism into the underlying web server. The steps to achieve this depend on the application type. The details are described below.
+##### 在Fuse 7中保护Web应用程序 {#Securing_Your_Web_Applications_Inside_Fuse_7}
+您必须先安装Keycloak Karaf功能。 接下来，您需要根据要保护的应用程序类型执行这些步骤。 所有引用的Web应用程序都需要将Keycloak Undertow身份验证机制注入底层Web服务器。 实现此目标的步骤取决于应用程序类型。 细节描述如下。
 
-The best place to start is look at Fuse demo bundled as part of Keycloak examples in directory `fuse` . Most of the steps should be understandable from testing and understanding the demo.
+最好的起点是看看作为`fuse`目录中Keycloak示例的一部分捆绑的Fuse演示。 通过测试和理解演示，大多数步骤都应该是可以理解的。
 
-##### Installing the Keycloak Feature {#Installing_the_Keycloak_Feature}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/install-feature.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/install-feature.adoc)
+##### 安装Keycloak功能 {#Installing_the_Keycloak_Feature}
 
-You must first install the `keycloak-pax-http-undertow` and `keycloak-jaas` features in the JBoss Fuse environment. The `keycloak-pax-http-undertow` feature includes the Fuse adapter and all third-party dependencies. The `keycloak-jaas` contains JAAS module used in realm for SSH and JMX authentication. You can install it either from the Maven repository or from an archive.
+您必须首先在JBoss Fuse环境中安装`keycloak-pax-http-afow`和`keycloak-jaas`功能。 `keycloak-pax-http-undertow`功能包括Fuse适配器和所有第三方依赖项。 `keycloak-jaas`包含用于SSH和JMX身份验证的领域中的JAAS模块。 您可以从Maven存储库或存档中安装它。
 
-###### Installing from the Maven Repository {#Installing_from_the_Maven_Repository}
-As a prerequisite, you must be online and have access to the Maven repository.
+###### 从Maven存储库安装 {#Installing_from_the_Maven_Repository}
+作为先决条件，您必须在线并且可以访问Maven存储库。
 
-For community it’s sufficient to be online as all the artifacts and 3rd party dependencies should be available in the maven central repository.
+对于社区来说，只要在maven中央存储库中提供所有工件和第三方依赖项就足够了。
 
-To install the keycloak feature using the Maven repository, complete the following steps:
+要使用Maven存储库安装keycloak功能，请完成以下步骤：
 
-1. Start JBoss Fuse 7.2.0; then in the Karaf terminal type:
+1. 启动JBoss Fuse 7.2.0; 然后在Karaf终端类型：
 
    ```
    feature:repo-add mvn:org.keycloak/keycloak-osgi-features/6.0.1/xml/features
    feature:install keycloak-pax-http-undertow keycloak-jaas
    ```
 
-2. You might also need to install the Undertow feature:
+2. 您可能还需要安装Undertow功能：
 
    ```
    feature:install pax-http-undertow
    ```
 
-3. Ensure that the features were installed:
+3. 确保已安装功能：
 
 ```
 feature:list | grep keycloak
 ```
 
-###### Installing from the ZIP bundle {#Installing_from_the_ZIP_bundle}
-This is useful if you are offline or do not want to use Maven to obtain the JAR files and other artifacts.
+###### 从ZIP捆绑包安装 {#Installing_from_the_ZIP_bundle}
+如果您处于脱机状态或不想使用Maven获取JAR文件和其他工件，这将非常有用。
 
-To install the Fuse adapter from the ZIP archive, complete the following steps:
+要从ZIP存档安装Fuse适配器，请完成以下步骤：
 
-1. Download the Keycloak Fuse adapter ZIP archive.
+1. 下载Keycloak Fuse适配器ZIP存档。
 
-2. Unzip it into the root directory of JBoss Fuse. The dependencies are then installed under the `system` directory. You can overwrite all existing jar files.
+2. 将其解压缩到JBoss Fuse的根目录中。 然后将依赖项安装在`system`目录下。 您可以覆盖所有现有的jar文件。
 
-   Use this for JBoss Fuse 7.2.0:
+   用于JBoss Fuse 7.2.0：
 
-   ```
+   ```bash
    cd /path-to-fuse/fuse-karaf-7.z
    unzip -q /path-to-adapter-zip/keycloak-fuse-adapter-6.0.1.zip
    ```
 
-3. Start Fuse and run these commands in the fuse/karaf terminal:
+3. 启动Fuse并在Fuse /karaf终端中运行以下命令:
 
    ```
    feature:repo-add mvn:org.keycloak/keycloak-osgi-features/6.0.1/xml/features
    feature:install keycloak-pax-http-undertow keycloak-jaas
    ```
 
-4. Install the corresponding Undertow adapter. Since the artifacts are available directly in the JBoss Fuse `system` directory, you do not need to use the Maven repository.
+4. 安装相应的Undertow适配器。 由于工件可直接在JBoss Fuse`system`目录中使用，因此您无需使用Maven存储库。
 
-##### Securing a Classic WAR Application {#Securing_a_Classic_WAR_Application}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/classic-war.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/classic-war.adoc)
+##### 保护经典WAR应用程序 {#Securing_a_Classic_WAR_Application}
 
-The needed steps to secure your WAR application are:
+保护WAR应用程序所需的步骤如下：
 
-1. In the `/WEB-INF/web.xml` file, declare the necessary:
+1. 在`/WEB-INF/web.xml`文件中，声明必要的：
 
-   - security constraints in the <security-constraint> element
+   - <security-constraint>元素中的安全性约束
 
-   - login configuration in the <login-config> element. Make sure that the `<auth-method>` is `KEYCLOAK`.
+   - <login-config>元素中的登录配置。 确保`<auth-method>`是`KEYCLOAK`。
 
-   - security roles in the <security-role> element
+   - <security-role>元素中的安全角色
 
-     For example:
+     例如：
 
-     ```
+     ```xml
      <?xml version="1.0" encoding="UTF-8"?>
      <web-app xmlns="http://java.sun.com/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1521,11 +1516,11 @@ The needed steps to secure your WAR application are:
      </web-app>
      ```
 
-2. Within the `/WEB-INF/` directory of your WAR, create a new file, keycloak.json. The format of this configuration file is described in the [Java Adapters Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config) section. It is also possible to make this file available externally as described in [Configuring the External Adapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#config_external_adapter).
+2. 在WAR的`/WEB-INF/`目录中，创建一个新文件keycloak.json。 该配置文件的格式在[Java Adapters Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config)部分中进行了描述。 也可以按[配置外部适配器](https://www.keycloak.org/docs/latest/securing_apps/index.html#config_external_adapter)中的说明在外部使用此文件。
 
-   For example:
+   例如：
 
-   ```
+   ```json
    {
        "realm": "demo",
        "resource": "customer-portal",
@@ -1537,42 +1532,41 @@ The needed steps to secure your WAR application are:
    }
    ```
 
-3. Contrary to the Fuse 6 adapter, there are no special OSGi imports needed in MANIFEST.MF.
+3. 与Fuse 6适配器相反，MANIFEST.MF中不需要特殊的OSGi导入。
 
-###### Configuration Resolvers {#Configuration_Resolvers}
-The `keycloak.json` adapter configuration file can be stored inside a bundle, which is default behaviour, or in a directory on a filesystem. To specify the actual source of the configuration file, set the `keycloak.config.resolver` deployment parameter to the desired configuration resolver class. For example, in a classic WAR application, set the `keycloak.config.resolver` context parameter in `web.xml` file like this:
+###### 配置解析器 {#Configuration_Resolvers}
+`keycloak.json`适配器配置文件可以存储在捆绑包中，这是默认行为，也可以存储在文件系统的目录中。 要指定配置文件的实际源，请将`keycloak.config.resolver`部署参数设置为所需的配置解析程序类。 例如，在经典的WAR应用程序中，在`web.xml`文件中设置`keycloak.config.resolver`上下文参数，如下所示：
 
-```
+```xml
 <context-param>
     <param-name>keycloak.config.resolver</param-name>
     <param-value>org.keycloak.adapters.osgi.PathBasedKeycloakConfigResolver</param-value>
 </context-param>
 ```
 
-The following resolvers are available for `keycloak.config.resolver`:
+以下解析器可用于`keycloak.config.resolver`：
 
 - org.keycloak.adapters.osgi.BundleBasedKeycloakConfigResolver
 
-  This is the default resolver. The configuration file is expected inside the OSGi bundle that is being secured. By default, it loads file named `WEB-INF/keycloak.json` but this file name can be configured via `configLocation` property.
+  这是默认的解析器。 预期配置文件位于受保护的OSGi包中。 默认情况下，它加载名为`WEB-INF/keycloak.json`的文件，但可以通过`configLocation`属性配置此文件名。
 
 - org.keycloak.adapters.osgi.PathBasedKeycloakConfigResolver
 
-  This resolver searches for a file called `<your_web_context>-keycloak.json` inside a folder that is specified by `keycloak.config` system property. If `keycloak.config` is not set, `karaf.etc` system property is used instead.For example, if your web application is deployed into context `my-portal`, then your adapter configuration would be loaded either from the `${keycloak.config}/my-portal-keycloak.json` file, or from `${karaf.etc}/my-portal-keycloak.json`.
+  此解析程序在`keycloak.config`系统属性指定的文件夹中搜索名为`<your_web_context>-keycloak.json`的文件。 如果未设置`keycloak.config`，则使用`karaf.etc`系统属性。例如，如果您的Web应用程序部署到上下文`my-portal`中，那么您的适配器配置将从`${keycloak.config}/my-portal-keycloak.json`文件加载，或来自`${karaf.etc}/my-portal-keycloak.json`。
 
 - org.keycloak.adapters.osgi.HierarchicalPathBasedKeycloakConfigResolver
 
-  This resolver is similar to `PathBasedKeycloakConfigResolver` above, where for given URI path, configuration locations are checked from most to least specific.For example, for `/my/web-app/context` URI, the following configuration locations are searched for existence until the first one exists:`${karaf.etc}/my-web-app-context-keycloak.json``${karaf.etc}/my-web-app-keycloak.json``${karaf.etc}/my-keycloak.json``${karaf.etc}/keycloak.json`
+  这个解析器类似于上面的`PathBasedKeycloakConfigResolver`，对于给定的URI路径，配置位置会从最特定到最不特定地进行检查。例如，对于`/my/web-app/context`URI，将搜索以下配置位置，直到第一个配置位置存在:`${karaf.etc}/my-web-app-context-keycloak.json``${karaf.etc}/my-web-app-keycloak.json``${karaf.etc}/my-keycloak.json``${karaf.etc}/keycloak.json`
 
-##### Securing a Servlet Deployed as an OSGI Service {#Securing_a_Servlet_Deployed_as_an_OSGI_Service}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/servlet-whiteboard.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/servlet-whiteboard.adoc)
+##### 保护部署为OSGI服务的Servlet {#Securing_a_Servlet_Deployed_as_an_OSGI_Service}
 
-You can use this method if you have a servlet class inside your OSGI bundled project that is not deployed as a classic WAR application. Fuse uses Pax Web Whiteboard Extender to deploy such servlets as web applications.
+如果在OSGI捆绑项目中有一个未部署为经典WAR应用程序的servlet类，则可以使用此方法。 Fuse使用Pax Web Whiteboard Extender将这些servlet部署为Web应用程序。
 
-To secure your servlet with Keycloak, complete the following steps:
+要使用Keycloak保护您的servlet，请完成以下步骤：
 
-1. Keycloak provides `org.keycloak.adapters.osgi.undertow.PaxWebIntegrationService`, which allows configuring authentication method and security constraints for your application. You need to declare such services in the `OSGI-INF/blueprint/blueprint.xml` file inside your application. Note that your servlet needs to depend on it. An example configuration:
+1. Keycloak提供了`org.keycloak.adapters.osgi.undertow.PaxWebIntegrationService`，它允许为您的应用程序配置身份验证方法和安全性约束。 您需要在应用程序内的`OSGI-INF/blueprint/blueprint.xml`文件中声明此类服务。 请注意，您的servlet需要依赖它。 配置示例：
 
-   ```
+   ```xml
    <?xml version="1.0" encoding="UTF-8"?>
    <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1611,23 +1605,22 @@ To secure your servlet with Keycloak, complete the following steps:
    </blueprint>
    ```
 
-   - You might need to have the `WEB-INF` directory inside your project (even if your project is not a web application) and create the `/WEB-INF/keycloak.json` file as described in the [Classic WAR application](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_adapter_classic_war) section. Note you don’t need the `web.xml` file as the security-constraints are declared in the blueprint configuration file.
+   - 您可能需要在项目中包含`WEB-INF`目录（即使您的项目不是Web应用程序）并创建`/WEB-INF/keycloak.json`文件，如[Classic WAR application](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_adapter_classic_war)中所述部分。 请注意，您不需要`web.xml`文件，因为在蓝图配置文件中声明了安全性约束。
 
-2. Contrary to the Fuse 6 adapter, there are no special OSGi imports needed in MANIFEST.MF.
+2. 与Fuse 6适配器相反，MANIFEST.MF中不需要特殊的OSGi导入。
 
-##### Securing an Apache Camel Application {#Securing_an_Apache_Camel_Application}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/camel.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/camel.adoc)
+##### 保护Apache Camel应用程序 {#Securing_an_Apache_Camel_Application}
 
-You can secure Apache Camel endpoints implemented with the [camel-undertow](http://camel.apache.org/undertow.html) component by injecting the proper security constraints via blueprint and updating the used component to `undertow-keycloak`. You have to add the `OSGI-INF/blueprint/blueprint.xml` file to your Camel application with a similar configuration as below. The roles and security constraint mappings, and adapter configuration might differ slightly depending on your environment and needs.
+您可以通过蓝图注入适当的安全约束并将使用过的组件更新为`undertow-keycloak`来保护使用[camel-undertow](http://camel.apache.org/undertow.html)组件实现的Apache Camel端点。 您必须使用类似以下配置将`OSGI-INF/blueprint/blueprint.xml`文件添加到Camel应用程序中。 角色和安全性约束映射以及适配器配置可能略有不同，具体取决于您的环境和需求。
 
-Compared to the standard `undertow` component, `undertow-keycloak` component adds two new properties:
+与标准的`undertow`组件相比，`undertow-keycloak`组件增加了两个新属性：
 
-- `configResolver` is a resolver bean that supplies Keycloak adapter configuration. Available resolvers are listed in [Configuration Resolvers](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_config_external_adapter) section.
-- `allowedRoles` is a comma-separated list of roles. User accessing the service has to have at least one role to be permitted the access.
+- `configResolver`是一个解析器bean，提供Keycloak适配器配置。 可用的解析器列在[配置解析器](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_config_external_adapter)部分中。
+- `allowedRoles`是以逗号分隔的角色列表。 访问服务的用户必须至少具有一个允许访问的角色。
 
-For example:
+例如：
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1657,9 +1650,9 @@ For example:
 </blueprint>
 ```
 
-- The `Import-Package` in `META-INF/MANIFEST.MF` needs to contain these imports:
+- `META-INF/MANIFEST.MF`中的`Import-Package`需要包含这些导入：
 
-```
+```properties
 javax.servlet;version="[3,4)",
 javax.servlet.http;version="[3,4)",
 javax.net.ssl,
@@ -1672,13 +1665,13 @@ org.osgi.service.blueprint.container
 ```
 
 ##### Camel RestDSL {#Camel_RestDSL}
-Camel RestDSL is a Camel feature used to define your REST endpoints in a fluent way. But you must still use specific implementation classes and provide instructions on how to integrate with Keycloak.
+Camel Rest DSL是一种Camel功能，用于以流畅的方式定义REST端点。 但您仍必须使用特定的实现类，并提供有关如何与Keycloak集成的说明。
 
-The way to configure the integration mechanism depends on the Camel component for which you configure your RestDSL-defined routes.
+配置集成机制的方法取决于您为其配置RestDSL定义的路由的Camel组件。
 
-The following example shows how to configure integration using the `undertow-keycloak` component, with references to some of the beans defined in previous Blueprint example.
+以下示例显示如何使用`undertow-keycloak`组件配置集成，并引用前一个Blueprint示例中定义的一些bean。
 
-```
+```xml
 <camelContext id="blueprintContext"
               trace="false"
               xmlns="http://camel.apache.org/schema/blueprint">
@@ -1710,14 +1703,13 @@ The following example shows how to configure integration using the `undertow-key
 </camelContext>
 ```
 
-##### Securing an Apache CXF Endpoint on a Separate Undertow Engine {#Securing_an_Apache_CXF_Endpoint_on_a_Separate_Undertow_Engine}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/cxf-separate.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/cxf-separate.adoc)
+##### 在单独的Undertow引擎上保护Apache CXF端点 {#Securing_an_Apache_CXF_Endpoint_on_a_Separate_Undertow_Engine}
 
-To run your CXF endpoints secured by Keycloak on a separate Undertow engine, complete the following steps:
+要在单独的Undertow引擎上运行Keycloak保护的CXF端点，请完成以下步骤：
 
-1. Add `OSGI-INF/blueprint/blueprint.xml` to your application, and in it, add the proper configuration resolver bean similarly to [Camel configuration](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_adapter_camel). In the `httpu:engine-factory` declare `org.keycloak.adapters.osgi.undertow.CxfKeycloakAuthHandler` handler using that camel configuration. The configuration for a CFX JAX-WS application might resemble this one:
+1. 将`OSGI-INF/blueprint/blueprint.xml`添加到您的应用程序中，并在其中添加与[Camel配置](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_adapter_camel)类似的正确配置解析程序bean。 在`httpu:engine-factory`中使用该camel配置声明`org.keycloak.adapters.osgi.undertow.CxfKeycloakAuthHandler`处理程序。 CFX JAX-WS应用程序的配置可能类似于以下内容：
 
-   ```
+   ```xml
    <?xml version="1.0" encoding="UTF-8"?>
    <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1760,9 +1752,9 @@ To run your CXF endpoints secured by Keycloak on a separate Undertow engine, com
    </jaxrs:server>
    ```
 
-2. The `Import-Package` in `META-INF/MANIFEST.MF` must contain those imports:
+2. `META-INF/MANIFEST.MF`中的`Import-Package`必须包含那些导入：
 
-```
+```properties
 META-INF.cxf;version="[2.7,3.3)",
 META-INF.cxf.osgi;version="[2.7,3.3)";resolution:=optional,
 org.apache.cxf.bus;version="[2.7,3.3)",
@@ -1774,14 +1766,13 @@ org.springframework.beans.factory.config,
 org.keycloak.*;version="6.0.1"
 ```
 
-##### Securing an Apache CXF Endpoint on the Default Undertow Engine {#Securing_an_Apache_CXF_Endpoint_on_the_Default_Undertow_Engine}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/cxf-builtin.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/cxf-builtin.adoc)
+##### 在默认的Undertow引擎上保护Apache CXF端点 {#Securing_an_Apache_CXF_Endpoint_on_the_Default_Undertow_Engine}
 
-Some services automatically come with deployed servlets on startup. One such service is the CXF servlet running in the http://localhost:8181/cxf context. Fuse’s Pax Web supports altering existing contexts via configuration admin. This can be used to secure endpoints by Keycloak.
+某些服务会在启动时自动附带已部署的servlet。 一个这样的服务是在http:// localhost:8181/cxf上下文中运行的CXF servlet。 Fuse的Pax Web支持通过配置管理改变现有的上下文。 这可用于通过Keycloak保护端点。
 
-The configuration file `OSGI-INF/blueprint/blueprint.xml` inside your application might resemble the one below. Note that it adds the JAX-RS `customerservice` endpoint, which is endpoint-specific to your application.
+应用程序中的配置文件`OSGI-INF/blueprint/blueprint.xml`可能类似于下面的那个。 请注意，它添加了JAX-RS `customerservice`端点，该端点是特定于端点的应用程序。
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1804,9 +1795,9 @@ The configuration file `OSGI-INF/blueprint/blueprint.xml` inside your applicatio
 </blueprint>
 ```
 
-Furthermore, you have to create `${karaf.etc}/org.ops4j.pax.web.context-*anyName*.cfg file`. It will be treated as factory PID configuration that is tracked by `pax-web-runtime` bundle. Such configuration may contain the following properties that correspond to some of the properties of standard `web.xml`:
+此外，您必须创建`${karaf.etc}/org.ops4j.pax.web.context-*anyName*.cfg file`。 它将被视为工厂PID配置，由`pax-web-runtime`包跟踪。 此类配置可能包含以下属性，这些属性对应于标准`web.xml`的某些属性：
 
-```
+```properties
 bundle.symbolicName = org.apache.cxf.cxf-rt-transports-http
 context.id = default
 
@@ -1818,27 +1809,27 @@ security.cxf.url = /cxf/customerservice/*
 security.cxf.roles = admin, user
 ```
 
-For full description of available properties in configuration admin file, please refer to Fuse documentation. The properties above have the following meaning:
+有关配置管理文件中可用属性的完整说明，请参阅Fuse文档。 上述属性具有以下含义：
 
-- `bundle.symbolicName` and `context.id`
+- `bundle.symbolicName` 和 `context.id`
 
-  Identification of the bundle and its deployment context within `org.ops4j.pax.web.service.WebContainer`.
+  在`org.ops4j.pax.web.service.WebContainer`中标识bundle及其部署上下文。
 
 - `context.param.keycloak.config.resolver`
 
-  Provides value of `keycloak.config.resolver` context parameter to the bundle just the same as in `web.xml` for classic WARs. Available resolvers are described in [Configuration Resolvers](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_config_external_adapter) section.
+  为bundle提供`keycloak.config.resolver`上下文参数的值，与经典WAR中的`web.xml`相同。 可用的解析器在[配置解析器](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_config_external_adapter)部分中进行了描述。
 
 - `login.config.authMethod`
 
-  Authentication method. Must be `KEYCLOAK`.
+  身份验证方法。 必须是`KEYCLOAK`。
 
-- `security.*anyName*.url` and `security.*anyName*.roles`
+- `security.*anyName*.url` 和 `security.*anyName*.roles`
 
-  Values of properties of individual security constraints just as they would be set in `security-constraint/web-resource-collection/url-pattern` and `security-constraint/auth-constraint/role-name` in `web.xml`, respectively. Roles are separated by comma and whitespace around it. The `*anyName*` identifier can be arbitrary but must match for individual properties of the same security constraint.Some Fuse versions contain a bug that requires roles to be separated by `", "` (comma and single space). Make sure you use precisely this notation for separating the roles.
+  各个安全约束的属性值就像在`web.xml`中的`security-constraint/web-resource-collection/url-pattern` 和 `security-constraint/auth-constraint/role-name`中设置的那样， 分别。 角色由逗号和周围的空格分隔。 `* anyName*`标识符可以是任意的，但必须匹配相同安全约束的各个属性。一些Fuse版本包含一个错误，需要将角色分隔为`", "`（逗号和单个空格）。 确保使用这种表示法来分离角色。
 
-The `Import-Package` in `META-INF/MANIFEST.MF` must contain at least these imports:
+`META-INF/MANIFEST.MF`中的`Import-Package`必须至少包含以下导入：
 
-```
+```properties
 javax.ws.rs;version="[2,3)",
 META-INF.cxf;version="[2.7,3.3)",
 META-INF.cxf.osgi;version="[2.7,3.3)";resolution:=optional,
@@ -1847,25 +1838,24 @@ org.apache.cxf.*;version="[2.7,3.3)",
 com.fasterxml.jackson.jaxrs.json;version="${jackson.version}"
 ```
 
-##### Securing Fuse Administration Services {#Securing_Fuse_Administration_Services}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/fuse-admin.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/fuse-admin.adoc)
+##### 保护Fuse管理服务 {#Securing_Fuse_Administration_Services}
 
-###### Using SSH Authentication to Fuse Terminal {#Using_SSH_Authentication_to_Fuse_Terminal}
-Keycloak mainly addresses use cases for authentication of web applications; however, if your other web services and applications are protected with Keycloak, protecting non-web administration services such as SSH with Keycloak credentials is a best pracrice. You can do this using the JAAS login module, which allows remote connection to Keycloak and verifies credentials based on [Resource Owner Password Credentials](https://www.keycloak.org/docs/latest/securing_apps/index.html#_resource_owner_password_credentials_flow).
+###### 使用SSH身份验证来Fuse终端 {#Using_SSH_Authentication_to_Fuse_Terminal}
+Keycloak主要处理用于Web应用程序身份验证的用例; 但是，如果您的其他Web服务和应用程序受Keycloak保护，则使用Keycloak凭据保护非Web管理服务（如SSH）是最佳实践。 您可以使用JAAS登录模块执行此操作，该模块允许远程连接到Keycloak并根据[资源所有者密码凭据](https://www.keycloak.org/docs/latest/securing_apps/index.html#_resource_owner_password_credentials_flow)验证凭据。
 
-To enable SSH authentication, complete the following steps:
+要启用SSH身份验证，请完成以下步骤：
 
-1. In Keycloak create a client (for example, `ssh-jmx-admin-client`), which will be used for SSH authentication. This client needs to have `Direct Access Grants Enabled` selected to `On`.
+1. 在Keycloak中创建一个客户端（例如，`ssh-jmx-admin-client`），它将用于SSH身份验证。 此客户端需要将`Direct Access Grants Enabled`选为`On`。
 
-2. In the `$FUSE_HOME/etc/org.apache.karaf.shell.cfg` file, update or specify this property:
+2. 在`$FUSE_HOME/etc/org.apache.karaf.shell.cfg`文件中，更新或指定此属性：
 
-   ```
+   ```properties
    sshRealm=keycloak
    ```
 
-3. Add the `$FUSE_HOME/etc/keycloak-direct-access.json` file with content similar to the following (based on your environment and Keycloak client settings):
+3. 添加`$FUSE_HOME/etc/ keycloak-direct-access.json`文件，其内容类似于以下内容（基于您的环境和Keycloak客户端设置）：
 
-   ```
+   ```json
    {
        "realm": "demo",
        "resource": "ssh-jmx-admin-client",
@@ -1877,62 +1867,59 @@ To enable SSH authentication, complete the following steps:
    }
    ```
 
-   This file specifies the client application configuration, which is used by JAAS DirectAccessGrantsLoginModule from the `keycloak` JAAS realm for SSH authentication.
+   此文件指定客户端应用程序配置，该命令由来自`keycloak` JAAS领域的JAAS DirectAccessGrantsLoginModule用于SSH身份验证。
 
-4. Start Fuse and install the `keycloak` JAAS realm. The easiest way is to install the `keycloak-jaas` feature, which has the JAAS realm predefined. You can override the feature’s predefined realm by using your own `keycloak` JAAS realm with higher ranking. For details see the [JBoss Fuse documentation](https://access.redhat.com/documentation/en-us/red_hat_fuse/7.2/html-single/apache_karaf_security_guide/index#ESBSecureContainer).
+4. 启动Fuse并安装`keycloak` JAAS领域。 最简单的方法是安装`keycloak-jaas`功能，它具有预定义的JAAS领域。 您可以使用自己的`keycloak` JAAS领域覆盖该功能的预定义领域。 有关详细信息，请参阅[JBoss Fuse文档](https://access.redhat.com/documentation/en-us/red_hat_fuse/7.2/html-single/apache_karaf_security_guide/index#ESBSecureContainer)。
 
-   Use these commands in the Fuse terminal:
+   在Fuse终端中使用以下命令：
 
    ```
    features:addurl mvn:org.keycloak/keycloak-osgi-features/6.0.1/xml/features
    features:install keycloak-jaas
    ```
 
-5. Log in using SSH as `admin` user by typing the following in the terminal:
+5. 通过在终端中键入以下内容，使用SSH作为`admin`用户登录：
 
-   ```
+   ```bash
    ssh -o PubkeyAuthentication=no -p 8101 admin@localhost
    ```
 
-6. Log in with password `password`.
+6. 使用密码`password`登录。
 
-|      | On some later operating systems, you might also need to use the SSH command’s -o option `-o HostKeyAlgorithms=+ssh-dss` because later SSH clients do not allow use of the `ssh-dss` algorithm, by default. However, by default, it is currently used in JBoss Fuse 7.2.0. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 在某些更高版本的操作系统上，您可能还需要使用SSH命令的-o选项`-o HostKeyAlgorithms=+ssh-dss`，因为以后的SSH客户端默认情况下不允许使用`ssh-dss`算法。 但是，默认情况下，它目前在JBoss Fuse 7.2.0中使用。
 
-Note that the user needs to have realm role `admin` to perform all operations or another role to perform a subset of operations (for example, the **viewer** role that restricts the user to run only read-only Karaf commands). The available roles are configured in `$FUSE_HOME/etc/org.apache.karaf.shell.cfg` or `$FUSE_HOME/etc/system.properties`.
+请注意，用户需要具有领域角色`admin`来执行所有操作或其他角色来执行操作子集（例如，**viewer**角色限制用户仅运行只读的Karaf命令）。 可用角色在`$FUSE_HOME/etc/ org.apache.karaf.shell.cfg`或`$FUSE_HOME/etc/system.properties`中配置。
 
-###### Using JMX Authentication {#Using_JMX_Authentication}
-JMX authentication might be necessary if you want to use jconsole or another external tool to remotely connect to JMX through RMI. Otherwise it might be better to use hawt.io/jolokia, since the jolokia agent is installed in hawt.io by default. For more details see [Hawtio Admin Console](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_hawtio).
+###### 使用JMX身份验证 {#Using_JMX_Authentication}
+如果要使用jconsole或其他外部工具通过RMI远程连接到JMX，则可能需要JMX身份验证。 否则最好使用hawt.io/jolokia，因为jolokia代理默认安装在hawt.io中。 有关详细信息，请参阅[Hawtio管理控制台](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_hawtio)。
 
-To use JMX authentication, complete the following steps:
+要使用JMX身份验证，请完成以下步骤：
 
-1. In the `$FUSE_HOME/etc/org.apache.karaf.management.cfg` file, change the jmxRealm property to:
+1. 在`$FUSE_HOME/etc/org.apache.karaf.management.cfg`文件中，将jmxRealm属性更改为：
 
-   ```
+   ```properties
    jmxRealm=keycloak
    ```
 
-2. Install the `keycloak-jaas` feature and configure the `$FUSE_HOME/etc/keycloak-direct-access.json` file as described in the SSH section above.
+2. 安装`keycloak-jaas`功能并配置`$FUSE_HOME/etc/keycloak-direct-access.json`文件，如上面的SSH部分所述。
 
-3. In jconsole you can use a URL such as:
+3. 在jconsole中，您可以使用以下URL：
 
 ```
 service:jmx:rmi://localhost:44444/jndi/rmi://localhost:1099/karaf-root
 ```
 
-and credentials: admin/password (based on the user with admin privileges according to your environment).
+和凭据：admin/password（根据您的环境，具有管理员权限的用户）。
 
-##### Securing the Hawtio Administration Console {#Securing_the_Hawtio_Administration_Console}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/fuse7/hawtio.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/fuse7/hawtio.adoc)
+##### 保护Hawtio管理控制台 {#Securing_the_Hawtio_Administration_Console}
 
-To secure the Hawtio Administration Console with Keycloak, complete the following steps:
+要使用Keycloak保护Hawtio管理控制台，请完成以下步骤：
 
-1. Create a client in the Keycloak administration console in your realm. For example, in the Keycloak `demo`realm, create a client `hawtio-client`, specify `public` as the Access Type, and specify a redirect URI pointing to Hawtio: http://localhost:8181/hawtio/*. Configure corresponding Web Origin (in this case, http://localhost:8181). Setup client scope mapping to include *view-profile* client role of *account* client in *Scope* tab in `hawtio-client` client detail.
+1. 在您的领域的Keycloak管理控制台中创建一个客户端。 例如，在Keycloak`demo`realm中，创建一个客户端`hawtio-client`，指定`public`作为Access Type，并指定一个指向Hawtio的重定向URI：http://localhost:8181/hawtio/*。 配置相应的Web Origin(在本例中为http://localhost:8181)。 设置客户端范围映射，在`hawtio-client`客户端详细信息中的*scope*选项卡中包含*view-profile* client角色*account* client。
 
-2. Create the `keycloak-hawtio-client.json` file in the `$FUSE_HOME/etc` directory using content similar to that shown in the example below. Change the `realm`, `resource`, and `auth-server-url` properties according to your Keycloak environment. The `resource` property must point to the client created in the previous step. This file is used by the client (Hawtio JavaScript application) side.
+2. 使用类似于下面示例中所示的内容在`$FUSE_HOME/etc`目录中创建`keycloak-hawtio-client.json`文件。 根据您的Keycloak环境更改`realm`，`resource`和`auth-server-url`属性。 `resource`属性必须指向上一步中创建的客户端。 该文件由客户端（Hawtio JavaScript应用程序）使用。
 
-   ```
+   ```json
    {
      "realm" : "demo",
      "clientId" : "hawtio-client",
@@ -1942,9 +1929,9 @@ To secure the Hawtio Administration Console with Keycloak, complete the followin
    }
    ```
 
-3. Create the `keycloak-direct-access.json` file in the `$FUSE_HOME/etc` directory using content similar to that shown in the example below. Change the `realm` and `url` properties according to your Keycloak environment. This file is used by JavaScript client.
+3. 使用类似于下面示例中所示的内容在`$ FUSE_HOME/etc`目录中创建`keycloak-direct-access.json`文件。 根据您的Keycloak环境更改`realm`和`url`属性。 该文件由JavaScript客户端使用。
 
-   ```
+   ```json
    {
      "realm" : "demo",
      "resource" : "ssh-jmx-admin-client",
@@ -1956,9 +1943,9 @@ To secure the Hawtio Administration Console with Keycloak, complete the followin
    }
    ```
 
-4. Create the `keycloak-hawtio.json` file in the `$FUSE_HOME/etc` dicrectory using content similar to that shown in the example below. Change the `realm` and `auth-server-url` properties according to your Keycloak environment. This file is used by the adapters on the server (JAAS Login module) side.
+4. 使用类似于下面示例中所示的内容在`$FUSE_HOME/etc` 目录中创建`keycloak-hawtio.json` 文件。 根据您的Keycloak环境更改`realm`和`auth-server-url`属性。 此文件由服务器（JAAS登录模块）端的适配器使用。
 
-   ```
+   ```json
    {
      "realm" : "demo",
      "resource" : "jaas",
@@ -1970,9 +1957,9 @@ To secure the Hawtio Administration Console with Keycloak, complete the followin
    }
    ```
 
-5. Start JBoss Fuse 7.2.0, [install the Keycloak feature](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_install_feature). Then type in the Karaf terminal:
+5. 启动JBoss Fuse 7.2.0，[安装Keycloak功能](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_install_feature)。 然后输入Karaf终端：
 
-   ```
+   ```properties
    system:property -p hawtio.keycloakEnabled true
    system:property -p hawtio.realm keycloak
    system:property -p hawtio.keycloakClientConfig file://\${karaf.base}/etc/keycloak-hawtio-client.json
@@ -1980,9 +1967,9 @@ To secure the Hawtio Administration Console with Keycloak, complete the followin
    restart io.hawt.hawtio-war
    ```
 
-6. Go to <http://localhost:8181/hawtio> and log in as a user from your Keycloak realm.
+6. 转到<http://localhost:8181/hawtio>并以Keycloak领域的用户身份登录。
 
-   Note that the user needs to have the proper realm role to successfully authenticate to Hawtio. The available roles are configured in the `$FUSE_HOME/etc/system.properties` file in `hawtio.roles`.
+   请注意，用户需要具有适当的领域角色才能成功向Hawtio进行身份验证。 可用角色在`hawtio.roles`中的`$FUSE_HOME/etc/system.properties`文件中配置。
 
 #### 2.1.6. Spring Boot 适配器 {#Spring_Boot_Adapter}
 
@@ -2124,33 +2111,32 @@ $ unzip keycloak-tomcat8-adapter-dist.zip
 </web-app>
 ```
 
-#### 2.1.8. Jetty 9.x Adapters {#Jetty_9_x_Adapters}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/jetty9-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/jetty9-adapter.adoc)
+#### 2.1.8. Jetty 9.x 适配器 {#Jetty_9_x_Adapters}
 
-Keycloak has a separate adapter for Jetty 9.2.x, Jetty 9.3.x and Jetty 9.4.x that you will have to install into your Jetty installation. You then have to provide some extra configuration in each WAR you deploy to Jetty. Let’s go over these steps.
+Keycloak有一个单独的适配器，适用于Jetty 9.2.x，Jetty 9.3.x和Jetty 9.4.x，您必须安装到Jetty安装中。 然后，您必须在部署到Jetty的每个WAR中提供一些额外的配置。 我们来看看这些步骤。
 
-##### Adapter Installation {#Adapter_Installation}
-Adapters are no longer included with the appliance or war distribution. Each adapter is a separate download on the Keycloak download site. They are also available as a maven artifact.
+##### 适配器安装 {#Adapter_Installation}
+适配器不再包含在设备或war分发版中。每个适配器在Keycloak下载站点上都是单独的下载。它们也可以作为maven构件使用。
 
-You must unzip the Jetty 9.x distro into Jetty 9.x’s [base directory](https://www.eclipse.org/jetty/documentation/current/startup-base-and-home.html). Including adapter’s jars within your WEB-INF/lib directory will not work! In the example below, the Jetty base is named `your-base`:
+您必须将Jetty 9.x发行版解压缩到Jetty 9.x的[基本目录](https://www.eclipse.org/jetty/documentation/current/startup-base-and-home.html)。 在WEB-INF/lib目录中包含适配器的jar将不起作用！ 在下面的例子中，Jetty基本名为`your-base`：
 
-```
+```bash
 $ cd your-base
 $ unzip keycloak-jetty93-adapter-dist-2.5.0.Final.zip
 ```
 
-Next, you will have to enable the `keycloak` module for your Jetty base:
+接下来，您必须为Jetty基础启用`keycloak`模块：
 
-```
+```bash
 $ java -jar $JETTY_HOME/start.jar --add-to-startd=keycloak
 ```
 
-##### Required Per WAR Configuration {#Required_Per_WAR_Configuration}
-This section describes how to secure a WAR directly by adding config and editing files within your WAR package.
+##### 每个WAR配置必需 {#Required_Per_WAR_Configuration}
+本节介绍如何通过在WAR包中添加配置和编辑文件来直接保护WAR。
 
-The first thing you must do is create a `WEB-INF/jetty-web.xml` file in your WAR package. This is a Jetty specific config file and you must define a Keycloak specific authenticator within it.
+您必须做的第一件事是在WAR包中创建一个`WEB-INF/jetty-web.xml`文件。 这是Jetty特定的配置文件，您必须在其中定义Keycloak特定的身份验证器。
 
-```
+```xml
 <?xml version="1.0"?>
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
@@ -2163,17 +2149,15 @@ The first thing you must do is create a `WEB-INF/jetty-web.xml` file in your WAR
 </Configure>
 ```
 
-Next you must create a `keycloak.json` adapter config file within the `WEB-INF` directory of your WAR.
+接下来，您必须在WAR的`WEB-INF`目录中创建一个`keycloak.json`适配器配置文件。
 
-The format of this config file is described in the [Java adapter configuration](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config) section.
+该配置文件的格式在[Java适配器配置](https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config) 部分中进行了描述。
 
-|      | The Jetty 9.x adapter will not be able to find the `keycloak.json` file. You will have to define all adapter settings within the `jetty-web.xml` file as described below. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> Jetty 9.x适配器将无法找到`keycloak.json`文件。 您必须在`jetty-web.xml`文件中定义所有适配器设置，如下所述。
 
-Instead of using keycloak.json, you can define everything within the `jetty-web.xml`. You’ll just have to figure out how the json settings match to the `org.keycloak.representations.adapters.config.AdapterConfig` class.
+您可以在`jetty-web.xml`中定义所有内容，而不是使用keycloak.json。 您只需要弄清楚json设置如何与`org.keycloak.representations.adapters.config.AdapterConfig`类匹配。
 
-```
+```xml
 <?xml version="1.0"?>
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
@@ -2202,11 +2186,11 @@ Instead of using keycloak.json, you can define everything within the `jetty-web.
 </Configure>
 ```
 
-You do not have to crack open your WAR to secure it with keycloak. Instead create the jetty-web.xml file in your webapps directory with the name of yourwar.xml. Jetty should pick it up. In this mode, you’ll have to declare keycloak.json configuration directly within the xml file.
+您不必破解打开WAR以使用keycloak保护它。 而是使用yourwar.xml的名称在webapps目录中创建jetty-web.xml文件。 Jetty应该捡起来。 在此模式下，您必须直接在xml文件中声明keycloak.json配置。
 
-Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Here’s an example:
+最后，您必须同时指定`login-config`并使用标准servlet安全性来指定URL上的角色基础约束。 这是一个例子：
 
-```
+```xml
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
@@ -2241,17 +2225,16 @@ Finally you must specify both a `login-config` and use standard servlet security
 </web-app>
 ```
 
-#### 2.1.9. Spring Security Adapter {#Spring_Security_Adapter}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/spring-security-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/spring-security-adapter.adoc)
+#### 2.1.9. Spring Security 适配器 {#Spring_Security_Adapter}
 
-To secure an application with Spring Security and Keycloak, add this adapter as a dependency to your project. You then have to provide some extra beans in your Spring Security configuration file and add the Keycloak security filter to your pipeline.
+要使用Spring Security和Keycloak保护应用程序，请将此适配器添加为项目的依赖项。 然后，您必须在Spring Security配置文件中提供一些额外的bean，并将Keycloak安全过滤器添加到管道中。
 
-Unlike the other Keycloak Adapters, you should not configure your security in web.xml. However, keycloak.json is still required.
+与其他Keycloak Adapters不同，您不应在web.xml中配置安全性。 但是，仍然需要keycloak.json。
 
-##### Adapter Installation {#Adapter_Installation}
-Add Keycloak Spring Security adapter as a dependency to your Maven POM or Gradle build.
+##### 适配器安装 {#Adapter_Installation}
+添加Keycloak Spring Security适配器作为Maven POM或Gradle构建的依赖项。
 
-```
+```xml
 <dependency>
     <groupId>org.keycloak</groupId>
     <artifactId>keycloak-spring-security-adapter</artifactId>
@@ -2259,13 +2242,13 @@ Add Keycloak Spring Security adapter as a dependency to your Maven POM or Gradle
 </dependency>
 ```
 
-##### Spring Security Configuration {#Spring_Security_Configuration}
-The Keycloak Spring Security adapter takes advantage of Spring Security’s flexible security configuration syntax.
+##### Spring安全配置 {#Spring_Security_Configuration}
+Keycloak Spring Security适配器利用Spring Security灵活的安全配置语法。
 
-###### Java Configuration {#Java_Configuration}
-Keycloak provides a KeycloakWebSecurityConfigurerAdapter as a convenient base class for creating a [WebSecurityConfigurer](https://docs.spring.io/spring-security/site/docs/4.0.x/apidocs/org/springframework/security/config/annotation/web/WebSecurityConfigurer.html)instance. The implementation allows customization by overriding methods. While its use is not required, it greatly simplifies your security context configuration.
+###### Java配置 {#Java_Configuration}
+Keycloak提供了一个KeycloakWebSecurityConfigurerAdapter作为创建[WebSecurityConfigurer](https://docs.spring.io/spring-security/site/docs/4.0.x/apidocs/org/springframework/security/config/annotation/web/WebSecurityConfigurer.html)实例。 该实现允许通过重写方法进行自定义。 虽然不需要使用它，但它极大地简化了安全上下文配置。
 
-```
+```java
 @KeycloakConfiguration
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 {
@@ -2299,18 +2282,16 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 }
 ```
 
-You must provide a session authentication strategy bean which should be of type `RegisterSessionAuthenticationStrategy` for public or confidential applications and `NullAuthenticatedSessionStrategy` for bearer-only applications.
+您必须为公共或机密应用程序提供一个会话身份验证策略bean，其类型应为`RegisterSessionAuthenticationStrategy`，对于仅承载应用程序，您必须提供`NullAuthenticatedSessionStrategy`。
 
-Spring Security’s `SessionFixationProtectionStrategy` is currently not supported because it changes the session identifier after login via Keycloak. If the session identifier changes, universal log out will not work because Keycloak is unaware of the new session identifier.
+目前不支持Spring Security的`SessionFixationProtectionStrategy`，因为它在通过Keycloak登录后更改会话标识符。 如果会话标识符更改，则通用注销将不起作用，因为Keycloak不知道新的会话标识符。
 
-|      | The `@KeycloakConfiguration` annotation is a metadata annotion that defines all annotations that are needed to integrate Keycloak in Spring Security. If you have a complexe Spring Security setup you can simply have a look ath the annotations of the `@KeycloakConfiguration` annotation and create your own custom meta annotation or just use specific Spring annotations for the Keycloak adapter. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> `@KeycloakConfiguration`注释是一个元数据注释，它定义了在Spring Security中集成Keycloak所需的所有注释。 如果你有一个复杂的Spring Security设置，你可以简单地看一下`@KeycloakConfiguration`注释的注释，并创建你自己的自定义元注释，或者只是为Keycloak适配器使用特定的Spring注释。
 
-###### XML Configuration {#XML_Configuration}
-While Spring Security’s XML namespace simplifies configuration, customizing the configuration can be a bit verbose.
+###### XML配置 {#XML_Configuration}
+虽然Spring Security的XML命名空间简化了配置，但自定义配置可能有点冗长。
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -2372,20 +2353,20 @@ While Spring Security’s XML namespace simplifies configuration, customizing th
 </beans>
 ```
 
-##### Multi Tenancy {#Multi_Tenancy}
-The Keycloak Spring Security adapter also supports multi tenancy. Instead of injecting `AdapterDeploymentContextFactoryBean` with the path to `keycloak.json` you can inject an implementation of the `KeycloakConfigResolver` interface. More details on how to implement the `KeycloakConfigResolver` can be found in [Multi Tenancy](https://www.keycloak.org/docs/latest/securing_apps/index.html#_multi_tenancy).
+##### 多租户 {#Multi_Tenancy}
+Keycloak Spring Security适配器还支持多租户。 而不是使用`keycloak.json`的路径注入`AdapterDeploymentContextFactoryBean`，您可以注入`KeycloakConfigResolver`接口的实现。 有关如何实现`KeycloakConfigResolver`的更多详细信息，请参见[多租户](https://www.keycloak.org/docs/latest/securing_apps/index.html#_multi_tenancy)。
 
-##### Naming Security Roles {#Naming_Security_Roles}
-Spring Security, when using role-based authentication, requires that role names start with `ROLE_`. For example, an administrator role must be declared in Keycloak as `ROLE_ADMIN` or similar, not simply `ADMIN`.
+##### 命名安全角色 {#Naming_Security_Roles}
+使用基于角色的身份验证时，Spring Security要求角色名称以`ROLE_`开头。 例如，必须在Keycloak中将管理员角色声明为`ROLE_ADMIN`或类似名称，而不仅仅是`ADMIN`。
 
-The class `org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider` supports an optional `org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper` which can be used to map roles coming from Keycloak to roles recognized by Spring Security. Use, for example, `org.springframework.security.core.authority.mapping.SimpleAuthorityMapper` to insert the `ROLE_` prefix and convert the role name to upper case. The class is part of Spring Security Core module.
+类`org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider`支持可选的`org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper`，它可用于将来自Keycloak的角色映射到Spring Security认可的角色。 例如，使用`org.springframework.security.core.authority.mapping.SimpleAuthorityMapper`插入`ROLE_`前缀并将角色名称转换为大写。 该类是Spring Security Core模块的一部分。
 
-##### Client to Client Support {#Client_to_Client_Support}
-To simplify communication between clients, Keycloak provides an extension of Spring’s `RestTemplate` that handles bearer token authentication for you. To enable this feature your security configuration must add the `KeycloakRestTemplate`bean. Note that it must be scoped as a prototype to function correctly.
+##### 客户端到客户端的支持 {#Client_to_Client_Support}
+为了简化客户端之间的通信，Keycloak提供了Spring的`RestTemplate`的扩展，为您处理承载令牌认证。 要启用此功能，您的安全配置必须添加`KeycloakRestTemplate`bean。 请注意，它必须作为原型确定范围才能正常运行。
 
-For Java configuration:
+对于Java配置：
 
-```
+```java
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
@@ -2406,17 +2387,17 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 }
 ```
 
-For XML configuration:
+对于XML配置：
 
-```
+```xml
 <bean id="keycloakRestTemplate" class="org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate" scope="prototype">
     <constructor-arg name="factory" ref="keycloakClientRequestFactory" />
 </bean>
 ```
 
-Your application code can then use `KeycloakRestTemplate` any time it needs to make a call to another client. For example:
+然后，只要需要调用另一个客户端，您的应用程序代码就可以使用`KeycloakRestTemplate`。 例如：
 
-```
+```java
 @Service
 public class RemoteProductService implements ProductService {
 
@@ -2433,34 +2414,34 @@ public class RemoteProductService implements ProductService {
 }
 ```
 
-##### Spring Boot Integration {#Spring_Boot_Integration}
-The Spring Boot and the Spring Security adapters can be combined.
+##### Spring Boot集成 {#Spring_Boot_Integration}
+可以组合Spring Boot和Spring Security适配器。
 
-If you are using the Keycloak Spring Boot Starter to make use of the Spring Security adapter you just need to add the Spring Security starter :
+如果您使用Keycloak Spring Boot Starter来使用Spring Security适配器，您只需添加Spring Security启动器：
 
-```
+```xml
 <dependency>
   <groupId>org.springframework.boot</groupId>
   <artifactId>spring-boot-starter-security</artifactId>
 </dependency>
 ```
 
-###### Using Spring Boot Configuration {#Using_Spring_Boot_Configuration}
-By Default, the Spring Security Adapter looks for a `keycloak.json` configuration file. You can make sure it looks at the configuration provided by the Spring Boot Adapter by adding this bean :
+###### 使用Spring Boot配置 {#Using_Spring_Boot_Configuration}
+默认情况下，Spring Security Adapter会查找`keycloak.json`配置文件。 您可以通过添加此bean来确保它查看Spring Boot Adapter提供的配置：
 
-```
+```java
 @Bean
 public KeycloakConfigResolver KeycloakConfigResolver() {
     return new KeycloakSpringBootConfigResolver();
 }
 ```
 
-###### Avoid double bean registration {#Avoid_double_bean_registration}
-Spring Boot attempts to eagerly register filter beans with the web application context. Therefore, when running the Keycloak Spring Security adapter in a Spring Boot environment, it may be necessary to add `FilterRegistrationBean`s to your security configuration to prevent the Keycloak filters from being registered twice.
+###### 避免Bean注册两次 {#Avoid_double_bean_registration}
+Spring Boot尝试使用Web应用程序上下文急切地注册过滤器bean。 因此，在Spring Boot环境中运行Keycloak Spring Security适配器时，可能需要将`FilterRegistrationBean`添加到安全配置中，以防止Keycloak过滤器被注册两次。
 
-Spring Boot 2.1 also disables `spring.main.allow-bean-definition-overriding` by default. This can mean that an `BeanDefinitionOverrideException` will be encountered if a `Configuration` class extending `KeycloakWebSecurityConfigurerAdapter` registers a bean that is already detected by a `@ComponentScan`. This can be avoided by overriding the registration to use the Boot-specific `@ConditionalOnMissingBean` annotation, as with `HttpSessionManager` below.
+Spring Boot 2.1默认情况下也会禁用`spring.main.allow-bean-definition-overriding`。 这可能意味着如果扩展`KeycloakWebSecurityConfigurerAdapter`的`Configuration`类注册了一个已被`@ComponentScan`检测到的bean，则会遇到`BeanDefinitionOverrideException`。 通过覆盖注册以使用特定于Boot的`@ConditionalOnMissingBean`注释可以避免这种情况，如下面的`HttpSessionManager`。
 
-```
+```java
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
@@ -2509,16 +2490,13 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 }
 ```
 
-#### 2.1.10. Java Servlet Filter Adapter {#Java_Servlet_Filter_Adapter}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/servlet-filter-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/servlet-filter-adapter.adoc)
+#### 2.1.10. Java Servlet Filter 适配器 {#Java_Servlet_Filter_Adapter}
 
-If you are deploying your Java Servlet application on a platform where there is no Keycloak adapter you opt to use the servlet filter adapter. This adapter works a bit differently than the other adapters. You do not define security constraints in web.xml. Instead you define a filter mapping using the Keycloak servlet filter adapter to secure the url patterns you want to secure.
+如果要在没有Keycloak适配器的平台上部署Java Servlet应用程序，则选择使用servlet过滤器适配器。 此适配器的工作方式与其他适配器略有不同。 您没有在web.xml中定义安全性约束。 而是使用Keycloak servlet过滤器适配器定义过滤器映射，以保护要保护的URL模式。
 
-|      | Backchannel logout works a bit differently than the standard adapters. Instead of invalidating the HTTP session it marks the session id as logged out. There’s no standard way to invalidate an HTTP session based on a session id. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> Backchannel注销与标准适配器的工作方式略有不同。 它不会使HTTP会话无效，而是将会话ID标记为已注销。 没有标准方法可以根据会话ID使HTTP会话无效。
 
-```
+```xml
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
@@ -2538,28 +2516,28 @@ If you are deploying your Java Servlet application on a platform where there is 
 </web-app>
 ```
 
-In the snippet above there are two url-patterns. */protected/** are the files we want protected, while the */keycloak/** url-pattern handles callbacks from the Keycloak server.
+在上面的代码片段中有两个url模式。 `/protected/*` 是我们想要保护的文件，而`/keycloak/*` url-pattern处理来自Keycloak服务器的回调。
 
-If you need to exclude some paths beneath the configured `url-patterns` you can use the Filter init-param `keycloak.config.skipPattern` to configure a regular expression that describes a path-pattern for which the keycloak filter should immediately delegate to the filter-chain. By default no skipPattern is configured.
+如果需要在配置的`url-patterns`下面排除一些路径，可以使用Filter init-param`keycloak.config.skipPattern`来配置一个正则表达式，该表达式描述了keycloak过滤器应立即委托给的路径模式。 过滤链。 默认情况下，不配置skipPattern。
 
-Patterns are matched against the `requestURI` without the `context-path`. Given the context-path `/myapp` a request for `/myapp/index.html` will be matched with `/index.html` against the skip pattern.
+模式与`requestURI`匹配，没有`context-path`。 给定context-path `/myapp`，对`/myapp/index.html`的请求将与`/index.html`匹配跳过模式。
 
-```
+```xml
 <init-param>
     <param-name>keycloak.config.skipPattern</param-name>
     <param-value>^/(path1|path2|path3).*</param-value>
 </init-param>
 ```
 
-Note that you should configure your client in the Keycloak Admin Console with an Admin URL that points to a secured section covered by the filter’s url-pattern.
+请注意，您应该在Keycloak管理控制台中使用管理URL配置客户端，该URL指向过滤器的url-pattern所涵盖的安全部分。
 
-The Admin URL will make callbacks to the Admin URL to do things like backchannel logout. So, the Admin URL in this example should be `http[s]://hostname/{context-root}/keycloak`.
+管理员URL将对管理员URL进行回调，以执行backchannel注销等操作。 因此，此示例中的Admin URL应为`http[s]://hostname/{context-root}/keycloak`。
 
-The Keycloak filter has the same configuration parameters as the other adapters except you must define them as filter init params instead of context params.
+Keycloak过滤器具有与其他适配器相同的配置参数，除非您必须将它们定义为过滤器init参数而不是上下文参数。
 
-To use this filter, include this maven artifact in your WAR poms:
+要使用此过滤器，请在WAR poms中包含此maven工件：
 
-```
+```xml
 <dependency>
     <groupId>org.keycloak</groupId>
     <artifactId>keycloak-servlet-filter-adapter</artifactId>
@@ -2567,29 +2545,27 @@ To use this filter, include this maven artifact in your WAR poms:
 </dependency>
 ```
 
-##### Using on OSGi {#Using_on_OSGi}
-The servlet filter adapter is packaged as an OSGi bundle, and thus is usable in a generic OSGi environment (R6 and above) with HTTP Service and HTTP Whiteboard.
+##### 在OSGi上使用 {#Using_on_OSGi}
+servlet过滤器适配器打包为OSGi包，因此可以在具有HTTP服务和HTTP白板的通用OSGi环境（R6及更高版本）中使用。
 
-###### Installation {#Installation}
-The adapter and its dependencies are distributed as Maven artifacts, so you’ll need either working Internet connection to access Maven Central, or have the artifacts cached in your local Maven repo.
+###### 安装 {#Installation}
+适配器及其依赖项作为Maven工件分发，因此您需要使用Internet连接来访问Maven Central，或者将工件缓存在本地Maven存储库中。
 
-If you are using Apache Karaf, you can simply install a feature from the Keycloak feature repo:
+如果您使用的是Apache Karaf，则可以直接从Keycloak功能仓库安装一个功能：
 
 ```
 karaf@root()> feature:repo-add mvn:org.keycloak/keycloak-osgi-features/6.0.1/xml/features
 karaf@root()> feature:install keycloak-servlet-filter-adapter
 ```
 
-For other OSGi runtimes, please refer to the runtime documentation on how to install the adapter bundle and its dependencies.
+对于其他OSGi运行时，请参阅运行时文档，了解如何安装适配器包及其依赖项。
 
-|      | If your OSGi platform is Apache Karaf with Pax Web, you should consider using [JBoss Fuse 6](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse_adapter) or [JBoss Fuse 7](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_adapter)adapters instead. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 如果你的OSGi平台是带有Pax Web的Apache Karaf，你应该考虑使用[JBoss Fuse 6](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse_adapter)或[JBoss Fuse 7](https://www.keycloak.org/docs/latest/securing_apps/index.html#_fuse7_adapter)适配器。
 
-###### Configuration {#Configuration}
-First, the adapter needs to be registered as a servlet filter with the OSGi HTTP Service. The most common ways to do this are programmatic (e.g. via bundle activator) and declarative (using OSGi annotations). We recommend using the latter since it simplifies the process of dynamically registering and un-registering the filter:
+###### 配置 {#Configuration}
+首先，需要使用OSGi HTTP服务将适配器注册为servlet过滤器。 最常见的方法是编程（例如通过bundle激活器）和声明（使用OSGi注释）。 我们建议使用后者，因为它简化了动态注册和取消注册过滤器的过程：
 
-```
+```java
 package mypackage;
 
 import javax.servlet.Filter;
@@ -2611,16 +2587,16 @@ public class KeycloakFilter extends KeycloakOIDCFilter {
 }
 ```
 
-The above snippet uses OSGi declarative service specification to expose the filter as an OSGI service under `javax.servlet.Filter` class. Once the class is published in the OSGi service registry, it is going to be picked up by OSGi HTTP Service implementation and used for filtering requests for the specified servlet context. This will trigger Keycloak adapter for every request that matches servlet context path + filter path.
+上面的代码片段使用OSGi声明性服务规范将过滤器公开为`javax.servlet.Filter`类下的OSGI服务。 一旦在OSGi服务注册表中发布了类，它将由OSGi HTTP服务实现获取并用于过滤对指定servlet上下文的请求。 这将为每个匹配servlet上下文路径+过滤器路径的请求触发Keycloak适配器。
 
-Since the component is put under the control of OSGi Configuration Admin Service, it’s properties can be configured dynamically. To do that, either create a `mypackage.KeycloakFilter.cfg` file under the standard config location for your OSGi runtime:
+由于组件处于OSGi Configuration Admin Service的控制之下，因此可以动态配置其属性。 为此，要在OSGi运行时的标准配置位置下创建一个`mypackage.KeycloakFilter.cfg`文件：
 
-```
+```properties
 keycloak.config.file = /path/to/keycloak.json
 osgi.http.whiteboard.filter.pattern = /secure/*
 ```
 
-or use interactive console, if your runtime allows for that:
+或者使用交互式控制台，如果您的运行时允许：
 
 ```
 karaf@root()> config:edit mypackage.KeycloakFilter
@@ -2628,9 +2604,9 @@ karaf@root()> config:property-set keycloak.config.file '${karaf.etc}/keycloak.js
 karaf@root()> config:update
 ```
 
-If you need more control, like e.g. providing custom `KeycloakConfigResolver` to implement [multi tenancy](https://www.keycloak.org/docs/latest/securing_apps/index.html#_multi_tenancy), you can register the filter programmatically:
+如果您需要更多控制权，例如 提供自定义`KeycloakConfigResolver`来实现[多租户](https://www.keycloak.org/docs/latest/securing_apps/index.html#_multi_tenancy)，您可以通过编程方式注册过滤器：
 
-```
+```java
 public class Activator implements BundleActivator {
 
   private ServiceRegistration registration;
@@ -2649,38 +2625,37 @@ public class Activator implements BundleActivator {
 }
 ```
 
-Please refer to [Apache Felix HTTP Service](http://felix.apache.org/documentation/subprojects/apache-felix-http-service.html#using-the-osgi-http-whiteboard) for more info on programmatic registration.
+有关程序化注册的更多信息，请参阅[Apache Felix HTTP服务](http://felix.apache.org/documentation/subprojects/apache-felix-http-service.html#using-the-osgi-http-whiteboard)。
 
-#### 2.1.11. JAAS plugin {#JAAS_plugin}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/jaas.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/jaas.adoc)
+#### 2.1.11. JAAS 插件 {#JAAS_plugin}
 
-It’s generally not needed to use JAAS for most of the applications, especially if they are HTTP based, and you should most likely choose one of our other adapters. However, some applications and systems may still rely on pure legacy JAAS solution. Keycloak provides two login modules to help in these situations.
+通常不需要在大多数应用程序中使用JAAS，特别是如果它们是基于HTTP的，并且您最有可能选择我们的其他适配器之一。 但是，某些应用程序和系统仍可能依赖纯粹的传统JAAS解决方案。 Keycloak提供了两个登录模块来帮助解决这些问题。
 
-The provided login modules are:
+提供的登录模块是：
 
 - org.keycloak.adapters.jaas.DirectAccessGrantsLoginModule
 
-  This login module allows to authenticate with username/password from Keycloak. It’s using [Resource Owner Password Credentials](https://www.keycloak.org/docs/latest/securing_apps/index.html#_resource_owner_password_credentials_flow) flow to validate if the provided username/password is valid. It’s useful for non-web based systems, which need to rely on JAAS and want to use Keycloak, but can’t use the standard browser based flows due to their non-web nature. Example of such application could be messaging or SSH.
+  此登录模块允许使用Keycloak中的用户名/密码进行身份验证。 它使用[资源所有者密码凭证](https://www.keycloak.org/docs/latest/securing_apps/index.html#_resource_owner_password_credentials_flow)流来验证提供的用户名/密码是否有效。 它对非基于Web的系统非常有用，它需要依赖JAAS并希望使用Keycloak，但由于其非Web性质而无法使用基于标准浏览器的流程。 此类应用程序的示例可以是消息传递或SSH。
 
 - org.keycloak.adapters.jaas.BearerTokenLoginModule
 
-  This login module allows to authenticate with Keycloak access token passed to it through CallbackHandler as password. It may be useful for example in case, when you have Keycloak access token from standard based authentication flow and your web application then needs to talk to external non-web based system, which rely on JAAS. For example a messaging system.
+  此登录模块允许通过CallbackHandler作为密码传递给它的Keycloak访问令牌进行身份验证。 例如，当您从基于标准的身份验证流程获得Keycloak访问令牌并且您的Web应用程序需要与依赖于JAAS的外部非基于Web的系统进行通信时，它可能很有用。 例如，消息传递系统。
 
-Both modules use the following configuration properties:
+两个模块都使用以下配置属性：
 
 - keycloak-config-file
 
-  The location of the `keycloak.json` configuration file. The configuration file can either be located on the filesystem or on the classpath. If it’s located on the classpath you need to prefix the location with `classpath:` (for example `classpath:/path/keycloak.json`). This is *REQUIRED.*
+  `keycloak.json`配置文件的位置。 配置文件可以位于文件系统上，也可以位于类路径上。 如果它位于类路径上，则需要在该位置前加上`classpath:`（例如`classpath:/path/keycloak.json`）。 这是*REQUIRED*
 
 - `role-principal-class`
 
-  Configure alternative class for Role principals attached to JAAS Subject. Default value is `org.keycloak.adapters.jaas.RolePrincipal`. Note: The class is required to have a constructor with a single `String`argument.
+  为附加到JAAS Subject的Role主体配置备用类。 默认值为`org.keycloak.adapters.jaas.RolePrincipal`。 注意：该类需要具有带有单个`String`参数的构造函数。
 
 - `scope`
 
-  This option is only applicable to the `DirectAccessGrantsLoginModule`. The specified value will be used as the OAuth2 `scope` parameter in the Resource Owner Password Credentials Grant request.
+  此选项仅适用于`DirectAccessGrantsLoginModule`。 指定的值将用作资源所有者密码凭据授予请求中的OAuth2 `scope` 参数。
 
-#### 2.1.12. CLI / Desktop Applications {#CLI___Desktop_Applications}
+#### 2.1.12. CLI / Desktop 应用 {#CLI___Desktop_Applications}
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/installed-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/installed-adapter.adoc)
 
 Keycloak supports securing desktop (e.g. Swing, JavaFX) or CLI applications via the `KeycloakInstalled`adapter by performing the authentication step via the system browser.
@@ -2809,7 +2784,7 @@ public class DesktopApp {
 }
 ```
 
-#### 2.1.13. Security Context {#Security_Context}
+#### 2.1.13. 安全上下文 {#Security_Context}
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/adapter-context.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/adapter-context.adoc)
 
 The `KeycloakSecurityContext` interface is available if you need to access to the tokens directly. This could be useful if you want to retrieve additional details from the token (such as user profile information) or you want to invoke a RESTful service that is protected by Keycloak.
@@ -2828,7 +2803,7 @@ httpServletRequest.getSession()
     .getAttribute(KeycloakSecurityContext.class.getName());
 ```
 
-#### 2.1.14. Error Handling {#Error_Handling}
+#### 2.1.14. 错误处理 {#Error_Handling}
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/adapter_error_handling.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/adapter_error_handling.adoc)
 
 Keycloak has some error handling facilities for servlet based client adapters. When an error is encountered in authentication, Keycloak will call `HttpServletResponse.sendError()`. You can set up an error-page within your `web.xml` file to handle the error however you want. Keycloak can throw 400, 401, 403, and 500 errors.
@@ -2856,7 +2831,7 @@ Reason reason = error.getReason();
 System.out.println(reason.name());
 ```
 
-#### 2.1.15. Logout {#Logout}
+#### 2.1.15. 注销 {#Logout}
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/logout.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/logout.adoc)
 
 You can log out of a web application in multiple ways. For Java EE servlet containers, you can call `HttpServletRequest.logout()`. For other browser applications, you can redirect the browser to`http://auth-server/auth/realms/{realm-name}/protocol/openid-connect/logout?redirect_uri=encodedRedirectUri`, which logs you out if you have an SSO session with your browser.
@@ -2865,7 +2840,7 @@ When using the `HttpServletRequest.logout()` option the adapter executes a back-
 
 If you want to avoid logging out of an external identity provider as part of the logout process, you can supply the parameter `initiating_idp`, with the value being the identity (alias) of the identity provider in question. This is useful when the logout endpoint is invoked as part of single logout initiated by the external identity provider.
 
-#### 2.1.16. Parameters Forwarding {#Parameters_Forwarding}
+#### 2.1.16. 参数转发 {#Parameters_Forwarding}
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/params_forwarding.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/params_forwarding.adoc)
 
 The Keycloak initial authorization endpoint request has support for various parameters. Most of the parameters are described in [OIDC specification](https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint). Some parameters are added automatically by the adapter based on the adapter configuration. However, there are also a few parameters that can be added on a per-invocation basis. When you open the secured application URI, the particular parameter will be forwarded to the Keycloak authorization endpoint.
@@ -2895,7 +2870,7 @@ Most of the parameters are described in the [OIDC specification](https://openid.
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-#### 2.1.17. Client Authentication {#Client_Authentication}
+#### 2.1.17. 客户端身份验证 {#Client_Authentication}
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/client-authentication.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/client-authentication.adoc)
 
 When a confidential OIDC client needs to send a backchannel request (for example, to exchange code for the token, or to refresh the token) it needs to authenticate against the Keycloak server. By default, there are three ways to authenticate the client: client ID and client secret, client authentication with signed JWT, or client authentication with signed JWT using client secret.
@@ -2954,7 +2929,7 @@ The client has a secret, which needs to be known to both the adapter (applicatio
 ##### Add Your Own Client Authentication Method {#Add_Your_Own_Client_Authentication_Method}
 You can add your own client authentication method as well. You will need to implement both client-side and server-side providers. For more details see the `Authentication SPI` section in [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/).
 
-#### 2.1.18. Multi Tenancy {#Multi_Tenancy}
+#### 2.1.18. 多租户 {#Multi_Tenancy}
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/multi-tenancy.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/multi-tenancy.adoc)
 
 Multi Tenancy, in our context, means that a single target application (WAR) can be secured with multiple Keycloak realms. The realms can be located one the same Keycloak instance or on different instances.
@@ -3005,7 +2980,7 @@ You also need to configure which `KeycloakConfigResolver` implementation to use 
 </web-app>
 ```
 
-#### 2.1.19. Application Clustering {#Application_Clustering}
+#### 2.1.19. 应用程序集群 {#Application_Clustering}
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/application-clustering.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/application-clustering.adoc)
 
 This chapter is related to supporting clustered applications deployed to JBoss EAP, WildFly and JBoss AS.
