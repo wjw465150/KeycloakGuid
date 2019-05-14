@@ -2656,31 +2656,28 @@ public class Activator implements BundleActivator {
   此选项仅适用于`DirectAccessGrantsLoginModule`。 指定的值将用作资源所有者密码凭据授予请求中的OAuth2 `scope` 参数。
 
 #### 2.1.12. CLI / Desktop 应用 {#CLI___Desktop_Applications}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/installed-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/installed-adapter.adoc)
 
-Keycloak supports securing desktop (e.g. Swing, JavaFX) or CLI applications via the `KeycloakInstalled`adapter by performing the authentication step via the system browser.
+Keycloak支持通过系统浏览器执行身份验证步骤，通过`KeycloakInstalled`adapter保护桌面（例如Swing，JavaFX）或CLI应用程序。
 
-The `KeycloakInstalled` adapter supports a `desktop` and a `manual` variant. The desktop variant uses the system browser to gather the user credentials. The manual variant reads the user credentials from `STDIN`.
+`KeycloakInstalled`适配器支持`desktop`和`manual`变体。 桌面版本使用系统浏览器来收集用户凭据。 手动变体从`STDIN`读取用户凭据。
 
-Tip: Google provides some more information about this approach on at [OAuth2InstalledApp](https://developers.google.com/identity/protocols/OAuth2InstalledApp).
+提示：Google在[OAuth2InstalledApp](https://developers.google.com/identity/protocols/OAuth2InstalledApp)上提供了有关此方法的更多信息。
 
-##### How it works {#How_it_works}
-To authenticate a user with the `desktop` variant the `KeycloakInstalled` adapter opens a desktop browser window where a user uses the regular Keycloak login pages to login when the `loginDesktop()` method is called on the `KeycloakInstalled` object.
+##### 它是如何工作的 {#How_it_works}
+为了使用`desktop`变体对用户进行身份验证，`KeycloakInstalled`适配器打开一个桌面浏览器窗口，当在`KeycloakInstalled`对象上调用`loginDesktop()`方法时，用户使用常规的Keycloak登录页面进行登录。
 
-The login page URL is opened with redirect parameter that points to a local `ServerSocket` listening on a free ephemeral port on `localhost` which is started by the adapter.
+使用redirect参数打开登录页面URL，该参数指向本地`ServerSocket`，该地址`ServerSocket`在由适配器启动的`localhost`上的空闲临时端口上进行侦听。
 
-After a succesful login the `KeycloakInstalled` receives the authorization code from the incoming HTTP request and performs the authorization code flow. Once the code to token exchange is completed the `ServerSocket` is shutdown.
+成功登录后，`KeycloakInstalled`从传入的HTTP请求接收授权代码并执行授权代码流。 一旦令牌交换的代码完成，`ServerSocket`就会关闭。
 
-|      | If the user already has an active Keycloak session then the login form is not shown but the code to token exchange is continued, which enables a smooth Web based SSO experience. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 如果用户已经有一个活动的Keycloak会话，则不会显示登录表单，但会继续进行令牌交换的代码，这样可以实现基于Web的SSO平滑体验。
 
-The client eventually receives the tokens (access_token, refresh_token, id_token) which can then be used to call backend services.
+客户端最终会收到令牌（access_token，refresh_token，id_token），然后可以使用这些令牌来调用后端服务。
 
-The `KeycloakInstalled` adapter provides support for renewal of stale tokens.
+`KeycloakInstalled`适配器支持更新陈旧令牌。
 
-##### Adapter Installation {#Adapter_Installation}
-```
+##### 适配器安装 {#Adapter_Installation}
+```xml
 <dependency>
         <groupId>org.keycloak</groupId>
         <artifactId>keycloak-installed-adapter</artifactId>
@@ -2688,15 +2685,15 @@ The `KeycloakInstalled` adapter provides support for renewal of stale tokens.
 </dependency>
 ```
 
-##### Client Configuration {#Client_Configuration}
-The application needs to be configured as a `public` OpenID Connect client with `Standard Flow Enabled` and http://localhost:* as an allowed `Valid Redirect URI`.
+##### 客户端配置 {#Client_Configuration}
+应用程序需要配置为`public` OpenID Connect客户端，其中`Standard Flow Enabled`和 http://localhost:*作为允许的`Valid Redirect URI`。
 
-##### Usage {#Usage}
-The `KeycloakInstalled` adapter reads it’s configuration from `META-INF/keycloak.json` on the classpath. Custom configurations can be supplied with an `InputStream` or a `KeycloakDeployment` through the `KeycloakInstalled`constructor.
+##### 用法 {#Usage}
+`KeycloakInstalled`适配器从类路径上的`META-INF/keycloak.json`读取它的配置。 可以通过`KeycloakInstalled`constructor为`InputStream`或`KeycloakDeployment`提供自定义配置。
 
-In the example below, the client configuration for `desktop-app` uses the following `keycloak.json`:
+在下面的示例中，`desktop-app`的客户端配置使用以下`keycloak.json`：
 
-```
+```json
 {
   "realm": "desktop-app-auth",
   "auth-server-url": "http://localhost:8081/auth",
@@ -2707,9 +2704,9 @@ In the example below, the client configuration for `desktop-app` uses the follow
 }
 ```
 
-the following sketch demonstrates working with the `KeycloakInstalled` adapter:
+下面的草图演示了如何使用`KeycloakInstalled`适配器：
 
-```
+```java
 // reads the configuration from classpath: META-INF/keycloak.json
 KeycloakInstalled keycloak = new KeycloakInstalled();
 
@@ -2728,14 +2725,12 @@ String tokenString = keycloak.getTokenString(minValidity, TimeUnit.SECONDS);
 keycloak.logout();
 ```
 
-|      | The `KeycloakInstalled` class supports customization of the http responses returned by login / logout requests via the `loginResponseWriter` and `logoutResponseWriter` attributes. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> `KeycloakInstalled`类支持通过`loginResponseWriter`和`logoutResponseWriter`属性自定义登录/注销请求返回的http响应。
 
-##### Example {#Example}
-The following provides an example for the configuration mentioned above.
+##### 例子 {#Example}
+以下提供了上述配置的示例。
 
-```
+```java
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -2785,18 +2780,17 @@ public class DesktopApp {
 ```
 
 #### 2.1.13. 安全上下文 {#Security_Context}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/adapter-context.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/adapter-context.adoc)
 
-The `KeycloakSecurityContext` interface is available if you need to access to the tokens directly. This could be useful if you want to retrieve additional details from the token (such as user profile information) or you want to invoke a RESTful service that is protected by Keycloak.
+如果您需要直接访问令牌，则可以使用`KeycloakSecurityContext`接口。 如果要从令牌中检索其他详细信息（例如用户配置文件信息），或者要调用受Keycloak保护的RESTful服务，这可能很有用。
 
-In servlet environments it is available in secured invocations as an attribute in HttpServletRequest:
+在servlet环境中，它在安全调用中可用作HttpServletRequest中的属性：
 
-```
+```java
 httpServletRequest
     .getAttribute(KeycloakSecurityContext.class.getName());
 ```
 
-Or, it is available in insecured requests in the HttpSession:
+或者，它在HttpSession中的不安全请求中可用：
 
 ```
 httpServletRequest.getSession()
@@ -2804,22 +2798,21 @@ httpServletRequest.getSession()
 ```
 
 #### 2.1.14. 错误处理 {#Error_Handling}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/adapter_error_handling.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/adapter_error_handling.adoc)
 
-Keycloak has some error handling facilities for servlet based client adapters. When an error is encountered in authentication, Keycloak will call `HttpServletResponse.sendError()`. You can set up an error-page within your `web.xml` file to handle the error however you want. Keycloak can throw 400, 401, 403, and 500 errors.
+Keycloak为基于servlet的客户端适配器提供了一些错误处理功能。 在身份验证中遇到错误时，Keycloak将调用`HttpServletResponse.sendError()`。 您可以在`web.xml`文件中设置一个错误页面来处理您想要的错误。 Keycloak可能会丢失400,401,403和500错误。
 
-```
+```xml
 <error-page>
     <error-code>403</error-code>
     <location>/ErrorHandler</location>
 </error-page>
 ```
 
-Keycloak also sets a `HttpServletRequest` attribute that you can retrieve. The attribute name is `org.keycloak.adapters.spi.AuthenticationError`, which should be casted to `org.keycloak.adapters.OIDCAuthenticationError`.
+Keycloak还设置了一个可以检索的`HttpServletRequest`属性。 属性名称是`org.keycloak.adapters.spi.AuthenticationError`，应该将其转换为`org.keycloak.adapters.OIDCAuthenticationError`。
 
-For example:
+例如：
 
-```
+```java
 import org.keycloak.adapters.OIDCAuthenticationError;
 import org.keycloak.adapters.OIDCAuthenticationError.Reason;
 ...
@@ -2832,71 +2825,66 @@ System.out.println(reason.name());
 ```
 
 #### 2.1.15. 注销 {#Logout}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/logout.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/logout.adoc)
 
-You can log out of a web application in multiple ways. For Java EE servlet containers, you can call `HttpServletRequest.logout()`. For other browser applications, you can redirect the browser to`http://auth-server/auth/realms/{realm-name}/protocol/openid-connect/logout?redirect_uri=encodedRedirectUri`, which logs you out if you have an SSO session with your browser.
+您可以通过多种方式注销Web应用程序。 对于Java EE servlet容器，可以调用`HttpServletRequest.logout()`。 对于其他浏览器应用程序，您可以将浏览器重定向到`http://auth-server/auth/realms/{realm-name}/protocol/openid-connect/logout?redirect_uri=encodedRedirectUri`，如果您有与您的浏览器进行SSO会话。
 
-When using the `HttpServletRequest.logout()` option the adapter executes a back-channel POST call against the Keycloak server passing the refresh token. If the method is executed from an unprotected page (a page that does not check for a valid token) the refresh token can be unavailable and, in that case, the adapter skips the call. For this reason, using a protected page to execute `HttpServletRequest.logout()` is recommended so that current tokens are always taken into account and an interaction with the Keycloak server is performed if needed.
+当使用`HttpServletRequest.logout()`选项时，适配器对传递刷新令牌的Keycloak服务器执行反向通道POST调用。 如果该方法是从未受保护的页面（不检查有效令牌的页面）执行的，则刷新令牌可能不可用，在这种情况下，适配器会跳过该调用。 因此，建议使用受保护的页面来执行`HttpServletRequest.logout()`，以便始终考虑当前令牌，并在需要时执行与Keycloak服务器的交互。
 
-If you want to avoid logging out of an external identity provider as part of the logout process, you can supply the parameter `initiating_idp`, with the value being the identity (alias) of the identity provider in question. This is useful when the logout endpoint is invoked as part of single logout initiated by the external identity provider.
+如果您希望在注销过程中避免注销外部身份提供程序，则可以提供参数`initiating_idp`，其值为相关身份提供程序的标识（别名）。 当注销端点作为外部身份提供程序启动的单一注销的一部分进行调用时，这非常有用。
 
 #### 2.1.16. 参数转发 {#Parameters_Forwarding}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/params_forwarding.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/params_forwarding.adoc)
 
-The Keycloak initial authorization endpoint request has support for various parameters. Most of the parameters are described in [OIDC specification](https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint). Some parameters are added automatically by the adapter based on the adapter configuration. However, there are also a few parameters that can be added on a per-invocation basis. When you open the secured application URI, the particular parameter will be forwarded to the Keycloak authorization endpoint.
+Keycloak初始授权端点请求支持各种参数。 大多数参数在[OIDC规范](https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint)中描述。 某些参数由适配器根据适配器配置自动添加。 但是，还可以在每次调用的基础上添加一些参数。 打开受保护的应用程序URI时，特定参数将转发到Keycloak授权端点。
 
-For example, if you request an offline token, then you can open the secured application URI with the `scope` parameter like:
+例如，如果您请求脱机令牌，则可以使用`scope`参数打开受保护的应用程序URI，如：
 
 ```
 http://myappserver/mysecuredapp?scope=offline_access
 ```
 
-and the parameter `scope=offline_access` will be automatically forwarded to the Keycloak authorization endpoint.
+并且参数`scope = offline_access`将自动转发到Keycloak授权端点。
 
-The supported parameters are:
+支持的参数是：
 
-- scope - Use a space-delimited list of scopes. A space-delimited list typically references [Client scopes](https://www.keycloak.org/docs/6.0/server_admin/#_client_scopes) defined on particular client. Note that the scope `openid` will be always be added to the list of scopes by the adapter. For example, if you enter the scope options `address phone`, then the request to Keycloak will contain the scope parameter `scope=openid address phone`.
-- prompt - Keycloak supports these settings:
-  - `login` - SSO will be ignored and the Keycloak login page will be always shown, even if the user is already authenticated
-  - `consent` - Applicable only for the clients with `Consent Required`. If it is used, the Consent page will always be displayed, even if the user previously granted consent to this client.
-  - `none` - The login page will never be shown; instead the user will be redirected to the application, with an error if the user is not yet authenticated. This setting allows you to create a filter/interceptor on the application side and show a custom error page to the user. See more details in the specification.
-- max_age - Used only if a user is already authenticated. Specifies maximum permitted time for the authentication to persist, measured from when the user authenticated. If user is authenticated longer than `maxAge`, the SSO is ignored and he must re-authenticate.
-- login_hint - Used to pre-fill the username/email field on the login form.
-- kc_idp_hint - Used to tell Keycloak to skip showing login page and automatically redirect to specified identity provider instead. More info in the [Identity Provider documentation](https://www.keycloak.org/docs/6.0/server_admin/#_client_suggested_idp).
+- scope - 使用以空格分隔的范围列表。 以空格分隔的列表通常引用在特定客户端上定义的[客户端范围](https://www.keycloak.org/docs/6.0/server_admin/#_client_scopes)。 请注意，范围`openid`将始终由适配器添加到作用域列表中。 例如，如果输入范围选项`address phone`，则对Keycloak的请求将包含范围参数`scope=openid address phone`。
+- prompt - Keycloak支持以下设置：
+  - `login` - 即使用户已经过身份验证，也会忽略SSO并始终显示Keycloak登录页面
+  - `consent` - 仅适用于`Consent Required(需要同意)`的客户。 如果使用它，即使用户先前已同意此客户端，也将始终显示“同意”页面。
+  - `none` - 登录页面永远不会显示; 相反，如果用户尚未通过身份验证，则会将用户重定向到应用程序，并显示错误。 此设置允许您在应用程序端创建过滤器/拦截器，并向用户显示自定义错误页面。 请参阅规范中的更多详细信息。
+- max_age - 仅在用户已经过身份验证时使用。 指定身份验证持续的最长允许时间（从用户进行身份验证时开始计算）。 如果用户的身份验证时间超过`maxAge`，则会忽略SSO并且必须重新进行身份验证。
+- login_hint - 用于预填充登录表单上的用户名/电子邮件字段。
+- kc_idp_hint - 用于告诉Keycloak跳过显示登录页面并自动重定向到指定的身份提供者。 [身份提供商文档](https://www.keycloak.org/docs/6.0/server_admin/#_client_suggested_idp)中的更多信息。
 
-Most of the parameters are described in the [OIDC specification](https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint). The only exception is parameter `kc_idp_hint`, which is specific to Keycloak and contains the name of the identity provider to automatically use. For more information see the `Identity Brokering` section in [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/).
+大多数参数在[OIDC规范](https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint)中描述。 唯一的例外是参数`kc_idp_hint`，它特定于Keycloak并包含要自动使用的身份提供者的名称。 有关更多信息，请参阅[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/)中的`Identity Brokering`部分。
 
-|      | If you open the URL using the attached parameters, the adapter will not redirect you to Keycloak if you are already authenticated in the application. For example, opening http://myappserver/mysecuredapp?prompt=login will not automatically redirect you to the Keycloak login page if you are already authenticated to the application `mysecredapp` . This behavior may be changed in the future. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 如果使用附加参数打开URL，则如果已在应用程序中进行了身份验证，则适配器不会将您重定向到Keycloak。 例如，如果您已经对应用程序`mysecredapp`进行了身份验证，则打开`http://myappserver/mysecuredapp?prompt=login`将不会自动将您重定向到Keycloak登录页面。 将来可能会更改此行为。
 
 #### 2.1.17. 客户端身份验证 {#Client_Authentication}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/client-authentication.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/client-authentication.adoc)
 
-When a confidential OIDC client needs to send a backchannel request (for example, to exchange code for the token, or to refresh the token) it needs to authenticate against the Keycloak server. By default, there are three ways to authenticate the client: client ID and client secret, client authentication with signed JWT, or client authentication with signed JWT using client secret.
+当机密OIDC客户端需要发送反向信道请求（例如，交换令牌代码或刷新令牌）时，它需要针对Keycloak服务器进行身份验证。 默认情况下，有三种方法可以对客户端进行身份验证：客户端ID和客户端密钥，使用签名JWT的客户端身份验证，或使用客户端密钥的签名JWT进行客户端身份验证。
 
-##### Client ID and Client Secret {#Client_ID_and_Client_Secret}
-This is the traditional method described in the OAuth2 specification. The client has a secret, which needs to be known to both the adapter (application) and the Keycloak server. You can generate the secret for a particular client in the Keycloak administration console, and then paste this secret into the `keycloak.json` file on the application side:
+##### 客户端ID和客户端Secret {#Client_ID_and_Client_Secret}
+这是OAuth2规范中描述的传统方法。 客户端有一个secret，需要知道适配器（应用程序）和Keycloak服务器。 您可以在Keycloak管理控制台中为特定客户端生成密码，然后将此密钥粘贴到应用程序端的`keycloak.json`文件中：
 
-```
+```java
 "credentials": {
     "secret": "19666a4f-32dd-4049-b082-684c74115f28"
 }
 ```
 
-##### Client Authentication with Signed JWT {#Client_Authentication_with_Signed_JWT}
-This is based on the [RFC7523](https://tools.ietf.org/html/rfc7523) specification. It works this way:
+##### 使用签名JWT的客户端身份验证 {#Client_Authentication_with_Signed_JWT}
+这基于[RFC7523](https://tools.ietf.org/html/rfc7523)规范。 它以这种方式工作：
 
-- The client must have the private key and certificate. For Keycloak this is available through the traditional `keystore` file, which is either available on the client application’s classpath or somewhere on the file system.
-- Once the client application is started, it allows to download its public key in [JWKS](https://self-issued.info/docs/draft-ietf-jose-json-web-key.html) format using a URL such as http://myhost.com/myapp/k_jwks, assuming that http://myhost.com/myapp is the base URL of your client application. This URL can be used by Keycloak (see below).
-- During authentication, the client generates a JWT token and signs it with its private key and sends it to Keycloak in the particular backchannel request (for example, code-to-token request) in the `client_assertion` parameter.
-- Keycloak must have the public key or certificate of the client so that it can verify the signature on JWT. In Keycloak you need to configure client credentials for your client. First you need to choose `Signed JWT` as the method of authenticating your client in the tab `Credentials` in administration console. Then you can choose to either:
-  - Configure the JWKS URL where Keycloak can download the client’s public keys. This can be a URL such as http://myhost.com/myapp/k_jwks (see details above). This option is the most flexible, since the client can rotate its keys anytime and Keycloak then always downloads new keys when needed without needing to change the configuration. More accurately, Keycloak downloads new keys when it sees the token signed by an unknown `kid` (Key ID).
-  - Upload the client’s public key or certificate, either in PEM format, in JWK format, or from the keystore. With this option, the public key is hardcoded and must be changed when the client generates a new key pair. You can even generate your own keystore from the Keycloak admininstration console if you don’t have your own available. For more details on how to set up the Keycloak administration console see [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/).
+- 客户端必须具有私钥和证书。 对于Keycloak，可以通过传统的`keystore`文件获得，该文件可以在客户端应用程序的类路径上或文件系统上的某个位置获得。
+- 启动客户端应用程序后，它允许使用URL等[JWKS](https://self-issued.info/docs/draft-ietf-jose-json-web-key.html)格式下载其公钥。 作为http://myhost.com/myapp/k_jwks，假设http://myhost.com/myapp是客户端应用程序的基本URL。 Keycloak可以使用此URL（见下文）。
+- 在身份验证期间，客户端生成JWT令牌并使用其私钥对其进行签名，并在`client_assertion`参数中的特定反向通道请求（例如，代码到令牌请求）中将其发送到Keycloak。
+- Keycloak必须具有客户端的公钥或证书，以便它可以验证JWT上的签名。 在Keycloak中，您需要为客户端配置客户端凭据。 首先，您需要选择`Signed JWT`作为在管理控制台的“凭据”选项卡中验证客户端的方法。 然后你可以选择：
+  - 配置JWKS URL，Keycloak可以在其中下载客户端的公钥。 这可以是诸如http://myhost.com/myapp/k_jwks之类的URL（参见上面的详细信息）。 此选项是最灵活的，因为客户端可以随时旋转其键，然后Keycloak总是在需要时下载新密钥而无需更改配置。 更准确地说，Keycloak在看到由未知的`kid`（密钥ID）签名的令牌时下载新密钥。
+  - 以PEM格式，JWK格式或从密钥库上载客户端的公钥或证书。 使用此选项，公钥是硬编码的，必须在客户端生成新密钥对时进行更改。 如果您没有自己的密钥库，您甚至可以从Keycloak管理控制台生成自己的密钥库。 有关如何设置Keycloak管理控制台的更多详细信息，请参阅[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/)。
 
-For set up on the adapter side you need to have something like this in your `keycloak.json` file:
+要在适配器端进行设置，您需要在`keycloak.json`文件中使用这样的内容：
 
-```
+```json
 "credentials": {
   "jwt": {
     "client-keystore-file": "classpath:keystore-client.jks",
@@ -2909,16 +2897,16 @@ For set up on the adapter side you need to have something like this in your `key
 }
 ```
 
-With this configuration, the keystore file `keystore-client.jks` must be available on classpath in your WAR. If you do not use the prefix `classpath:` you can point to any file on the file system where the client application is running.
+使用此配置，密钥库文件`keystore-client.jks`必须在WAR中的类路径上可用。 如果不使用前缀`classpath:`，则可以指向运行客户端应用程序的文件系统上的任何文件。
 
-For inspiration, you can take a look at the examples distribution into the main demo example into the `product-portal`application.
+为了获得灵感，您可以查看示例分发到主要演示示例中的`product-portal`应用程序。
 
-##### Client Authentication with Signed JWT using Client Secret {#Client_Authentication_with_Signed_JWT_using_Client_Secret}
-This is the same as Client Authentication with Signed JWT except for using the client secret instead of the private key and certificate.
+##### 使用客户端密钥使用签名JWT进行客户端身份验证 {#Client_Authentication_with_Signed_JWT_using_Client_Secret}
+这与使用签名JWT的客户端身份验证相同，除了使用客户端密钥而不是私钥和证书。
 
-The client has a secret, which needs to be known to both the adapter (application) and the Keycloak server. You need to choose `Signed JWT with Client Secret` as the method of authenticating your client in the tab `Credentials` in administration console, and then paste this secret into the `keycloak.json` file on the application side:
+客户端有一个`secret(秘密)`，需要知道适配器（应用程序）和Keycloak服务器。 您需要选择`Signed JWT with Client Secret`作为在管理控制台的`Credentials凭据`选项卡中验证客户端的方法，然后将此`secret(秘密)`粘贴到应用程序端的`keycloak.json`文件中：
 
-```
+```json
 "credentials": {
   "secret-jwt": {
     "secret": "19666a4f-32dd-4049-b082-684c74115f28"
@@ -2926,23 +2914,22 @@ The client has a secret, which needs to be known to both the adapter (applicatio
 }
 ```
 
-##### Add Your Own Client Authentication Method {#Add_Your_Own_Client_Authentication_Method}
-You can add your own client authentication method as well. You will need to implement both client-side and server-side providers. For more details see the `Authentication SPI` section in [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/).
+##### 添加自己的客户端身份验证方法 {#Add_Your_Own_Client_Authentication_Method}
+您也可以添加自己的客户端身份验证方法。 您将需要实现客户端和服务器端提供程序。 有关更多详细信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)中的`Authentication SPI`部分。
 
 #### 2.1.18. 多租户 {#Multi_Tenancy}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/multi-tenancy.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/multi-tenancy.adoc)
 
-Multi Tenancy, in our context, means that a single target application (WAR) can be secured with multiple Keycloak realms. The realms can be located one the same Keycloak instance or on different instances.
+在我们的上下文中，多租户意味着可以使用多个Keycloak领域来保护单个目标应用程序（WAR）。 领域可以位于同一个Keycloak实例中，也可以位于不同的实例上。
 
-In practice, this means that the application needs to have multiple `keycloak.json` adapter configuration files.
+实际上，这意味着应用程序需要有多个`keycloak.json`适配器配置文件。
 
-You could have multiple instances of your WAR with different adapter configuration files deployed to different context-paths. However, this may be inconvenient and you may also want to select the realm based on something else than context-path.
+您可以拥有多个WAR实例，并将不同的适配器配置文件部署到不同的上下文路径。 但是，这可能不方便，您可能还希望基于上下文之外的其他内容选择领域。
 
-Keycloak makes it possible to have a custom config resolver so you can choose what adapter config is used for each request.
+Keycloak可以使用自定义配置解析器，因此您可以选择每个请求使用的适配器配置。
 
-To achieve this first you need to create an implementation of `org.keycloak.adapters.KeycloakConfigResolver`. For example:
+要实现此目的，首先需要创建`org.keycloak.adapters.KeycloakConfigResolver`的实现。 例如：
 
-```
+```java
 package example;
 
 import org.keycloak.adapters.KeycloakConfigResolver;
@@ -2968,9 +2955,9 @@ public class PathBasedKeycloakConfigResolver implements KeycloakConfigResolver {
 }
 ```
 
-You also need to configure which `KeycloakConfigResolver` implementation to use with the `keycloak.config.resolver`context-param in your `web.xml`:
+您还需要配置与`web.xml`中的`keycloak.config.resolver`context-param一起使用的`KeycloakConfigResolver`实现：
 
-```
+```xml
 <web-app>
     ...
     <context-param>
@@ -2981,100 +2968,92 @@ You also need to configure which `KeycloakConfigResolver` implementation to use 
 ```
 
 #### 2.1.19. 应用程序集群 {#Application_Clustering}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/java/application-clustering.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/java/application-clustering.adoc)
 
-This chapter is related to supporting clustered applications deployed to JBoss EAP, WildFly and JBoss AS.
+本章涉及支持部署到JBoss EAP，WildFly和JBoss AS的集群应用程序。
 
-There are a few options available depending on whether your application is:
+根据您的应用程序是否有以下几种选项：
 
-- Stateless or stateful
-- Distributable (replicated http session) or non-distributable
-- Relying on sticky sessions provided by load balancer
-- Hosted on same domain as Keycloak
+- 无状态或有状态
+- 可分发的(复制的http会话)或不可分发的
+- 依赖负载均衡器提供的粘性会话
+- 与Keycloak在同一个域名中托管
 
-Dealing with clustering is not quite as simple as for a regular application. Mainly due to the fact that both the browser and the server-side application sends requests to Keycloak, so it’s not as simple as enabling sticky sessions on your load balancer.
+处理群集并不像普通应用程序那么简单。 主要是因为浏览器和服务器端应用程序都向Keycloak发送请求，因此它不像在负载均衡器上启用粘性会话那么简单。
 
-##### Stateless token store {#Stateless_token_store}
-By default, the web application secured by Keycloak uses the HTTP session to store security context. This means that you either have to enable sticky sessions or replicate the HTTP session.
+##### 无状态令牌存储 {#Stateless_token_store}
+默认情况下，Keycloak保护的Web应用程序使用HTTP会话来存储安全上下文。 这意味着您必须启用粘性会话或复制HTTP会话。
 
-As an alternative to storing the security context in the HTTP session the adapter can be configured to store this in a cookie instead. This is useful if you want to make your application stateless or if you don’t want to store the security context in the HTTP session.
+作为在HTTP会话中存储安全上下文的替代方法，可以将适配器配置为将其存储在cookie中。 如果要使应用程序无状态或者您不希望在HTTP会话中存储安全上下文，这将非常有用。
 
-To use the cookie store for saving the security context, edit your applications `WEB-INF/keycloak.json` and add:
+要使用cookie存储来保存安全上下文，请编辑应用程序`WEB-INF/keycloak.json`并添加：
 
 ```
 "token-store": "cookie"
 ```
 
-|      | The default value for `token-store` is `session`, which stores the security context in the HTTP session. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> `token-store`的默认值是`session`，它将安全上下文存储在HTTP会话中。
 
-One limitation of using the cookie store is that the whole security context is passed in the cookie for every HTTP request. This may impact performance.
+使用cookie存储的一个限制是整个安全上下文在cookie中传递给每个HTTP请求。 这可能会影响性能。
 
-Another small limitation is limited support for Single-Sign Out. It works without issues if you init servlet logout (HttpServletRequest.logout) from the application itself as the adapter will delete the KEYCLOAK_ADAPTER_STATE cookie. However, back-channel logout initialized from a different application isn’t propagated by Keycloak to applications using cookie store. Hence it’s recommended to use a short value for the access token timeout (for example 1 minute).
+另一个小限制是对单点登出的有限支持。 如果您从应用程序本身初始化servlet注销（HttpServletRequest.logout），它将正常工作，因为适配器将删除KEYCLOAK_ADAPTER_STATE cookie。 但是，Keycloak不会将从其他应用程序初始化的反向通道注销传播到使用cookie存储的应用程序。 因此，建议对访问令牌超时使用短值（例如1分钟）。
 
-|      | Some load balancers do not allow any configuration of the sticky session cookie name or contents, such as Amazon ALB. For these, it is recommended to set the `shouldAttachRoute` option to `false`. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 某些负载均衡器不允许任何配置粘性会话cookie名称或内容，例如Amazon ALB。 对于这些，建议将`shouldAttachRoute`选项设置为`false`。
 
-##### Relative URI optimization {#Relative_URI_optimization}
-In deployment scenarios where Keycloak and the application is hosted on the same domain (through a reverse proxy or load balancer) it can be convenient to use relative URI options in your client configuration.
+##### 相对URI优化 {#Relative_URI_optimization}
+在Keycloak和应用程序托管在同一域（通过反向代理或负载平衡器）的部署方案中，在客户端配置中使用相对URI选项会很方便。
 
-With relative URIs the URI is resolved as relative to the URL used to access Keycloak.
+使用相对URI，URI将相对于用于访问Keycloak的URL进行解析。
 
-For example if the URL to your application is `https://acme.org/myapp` and the URL to Keycloak is `https://acme.org/auth`, then you can use the redirect-uri `/myapp` instead of `https://acme.org/myapp`.
+例如，如果您的应用程序的URL是`https://acme.org/myapp`，而Keycloak的URL是`https://acme.org/auth`，那么您可以使用redirect-uri `/myapp` 而不是 `https://acme.org/myapp`。
 
-##### Admin URL configuration {#Admin_URL_configuration}
-Admin URL for a particular client can be configured in the Keycloak Administration Console. It’s used by the Keycloak server to send backend requests to the application for various tasks, like logout users or push revocation policies.
+##### 管理员URL配置 {#Admin_URL_configuration}
+可以在Keycloak管理控制台中配置特定客户端的管理URL。 它由Keycloak服务器用于向应用程序发送后端请求以执行各种任务，例如注销用户或推送撤销策略。
 
-For example the way backchannel logout works is:
+例如，反向通道注销的工作方式是：
 
-1. User sends logout request from one application
-2. The application sends logout request to Keycloak
-3. The Keycloak server invalidates the user session
-4. The Keycloak server then sends a backchannel request to application with an admin url that are associated with the session
-5. When an application receives the logout request it invalidates the corresponding HTTP session
+1. 用户从一个应用程序发送注销请求
+2. 应用程序向Keycloak发送注销请求
+3. Keycloak服务器使用户会话无效
+4. 然后，Keycloak服务器向应用程序发送反向通道请求，其中包含与会话关联的管理URL
+5. 当应用程序收到注销请求时，它会使相应的HTTP会话无效
 
-If admin URL contains `${application.session.host}` it will be replaced with the URL to the node associated with the HTTP session.
+如果admin URL包含 `${application.session.host}` ，它将被替换为与HTTP会话关联的节点的URL。
 
-##### Registration of application nodes {#Registration_of_application_nodes}
-The previous section describes how Keycloak can send logout request to node associated with a specific HTTP session. However, in some cases admin may want to propagate admin tasks to all registered cluster nodes, not just one of them. For example to push a new not before policy to the application or to logout all users from the application.
+##### 注册应用程序节点 {#Registration_of_application_nodes}
+上一节描述了Keycloak如何向与特定HTTP会话关联的节点发送注销请求。 但是，在某些情况下，管理员可能希望将管理任务传播到所有已注册的群集节点，而不仅仅是其中一个。 例如，将新的not before策略推送到应用程序或从应用程序注销所有用户。
 
-In this case Keycloak needs to be aware of all application cluster nodes, so it can send the event to all of them. To achieve this, we support auto-discovery mechanism:
+在这种情况下，Keycloak需要知道所有应用程序集群节点，因此它可以将事件发送给所有这些节点。 为此，我们支持自动发现机制：
 
-1. When a new application node joins the cluster, it sends a registration request to the Keycloak server
-2. The request may be re-sent to Keycloak in configured periodic intervals
-3. If the Keycloak server doesn’t receive a re-registration request within a specified timeout then it automatically unregisters the specific node
-4. The node is also unregistered in Keycloak when it sends an unregistration request, which is usually during node shutdown or application undeployment. This may not work properly for forced shutdown when undeployment listeners are not invoked, which results in the need for automatic unregistration
+1. 当新的应用程序节点加入群集时，它会向Keycloak服务器发送注册请求
+2. 该请求可以以配置的周期性间隔重新发送到Keycloak
+3. 如果Keycloak服务器在指定的超时内未收到重新注册请求，则它会自动取消注册特定节点
+4. 当Keycloak发送取消注册请求时，该节点也会在Keycloak中取消注册，这通常是在节点关闭或应用程序取消部署期间。 当未调用未部署侦听器时，这可能无法正常执行强制关闭，这导致需要自动取消注册
 
-Sending startup registrations and periodic re-registration is disabled by default as it’s only required for some clustered applications.
+默认情况下禁用发送启动注册和定期重新注册，因为只有某些群集应用程序才需要它。
 
-To enable the feature edit the `WEB-INF/keycloak.json` file for your application and add:
+要启用该功能，请编辑应用程序的`WEB-INF/keycloak.json`文件并添加：
 
 ```
 "register-node-at-startup": true,
 "register-node-period": 600,
 ```
 
-This means the adapter will send the registration request on startup and re-register every 10 minutes.
+这意味着适配器将在启动时发送注册请求，并每10分钟重新注册一次。
 
-In the Keycloak Administration Console you can specify the maximum node re-registration timeout (should be larger than *register-node-period* from the adapter configuration). You can also manually add and remove cluster nodes in through the Adminstration Console, which is useful if you don’t want to rely on the automatic registration feature or if you want to remove stale application nodes in the event your not using the automatic unregistration feature.
+在Keycloak管理控制台中，您可以指定最大节点重新注册超时（应该大于适配器配置中的*register-node-period*）。 您还可以通过管理控制台手动添加和删除群集节点，如果您不想依赖自动注册功能，或者如果您想要在不使用自动注销功能的情况下删除陈旧的应用程序节点，这将非常有用。
 
-##### Refresh token in each request {#Refresh_token_in_each_request}
-By default the application adapter will only refresh the access token when it’s expired. However, you can also configure the adapter to refresh the token on every request. This may have a performance impact as your application will send more requests to the Keycloak server.
+##### 刷新每个请求中的令牌 {#Refresh_token_in_each_request}
+默认情况下，应用程序适配器仅在访问令牌过期时刷新。 但是，您还可以配置适配器以在每个请求上刷新令牌。 这可能会对性能产生影响，因为您的应用程序将向Keycloak服务器发送更多请求。
 
-To enable the feature edit the `WEB-INF/keycloak.json` file for your application and add:
+要启用该功能，请编辑应用程序的`WEB-INF/keycloak.json`文件并添加：
 
 ```
 "always-refresh-token": true
 ```
 
-|      | This may have a significant impact on performance. Only enable this feature if you can’t rely on backchannel messages to propagate logout and not before policies. Another thing to consider is that by default access tokens has a short expiration so even if logout is not propagated the token will expire within minutes of the logout. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 这可能会对性能产生重大影响。 如果您不能依赖反向通道消息传播注销而不是策略之前，则仅启用此功能。 另一件需要考虑的事情是，默认情况下，访问令牌的到期时间很短，因此即使未传播注销，令牌也会在注销后的几分钟内到期。
 
 ### 2.2. JavaScript 适配器 {#JavaScript_Adapter}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/javascript-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/javascript-adapter.adoc)
 
 Keycloak comes with a client-side JavaScript library that can be used to secure HTML5/JavaScript applications. The JavaScript adapter has built-in support for Cordova applications.
 
