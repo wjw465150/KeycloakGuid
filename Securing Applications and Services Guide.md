@@ -3434,35 +3434,35 @@ keycloak.onAuthSuccess = function() { alert('authenticated'); }
 
 ### 2.3. Node.js 适配器 {#Node_js_Adapter}
 
-Keycloak provides a Node.js adapter built on top of [Connect](https://github.com/senchalabs/connect) to protect server-side JavaScript apps - the goal was to be flexible enough to integrate with frameworks like [Express.js](https://expressjs.com/).
+Keycloak提供了一个构建在[Connect](https://github.com/senchalabs/connect)之上的Node.js适配器，以保护服务器端JavaScript应用程序 - 目标是足够灵活，可以与[Express.js](https://expressjs.com/)等框架集成。
 
-The library can be downloaded directly from [Keycloak organization](https://www.npmjs.com/package/keycloak-connect) and the source is available at [GitHub](https://github.com/keycloak/keycloak-nodejs-connect).
+该库可以直接从[Keycloak组织](https://www.npmjs.com/package/keycloak-connect)下载，源代码可以在[GitHub](https://github.com/keycloak/keycloak-nodejs-connect)上获得。
 
-To use the Node.js adapter, first you must create a client for your application in the Keycloak Administration Console. The adapter supports public, confidential, and bearer-only access type. Which one to choose depends on the use-case scenario.
+要使用Node.js适配器，首先必须在Keycloak管理控制台中为应用程序创建客户端。 适配器支持公共，机密和仅承载访问类型。 选择哪一个取决于用例场景。
 
-Once the client is created click the `Installation` tab, select `Keycloak OIDC JSON` for `Format Option`, and then click `Download`. The downloaded `keycloak.json` file should be at the root folder of your project.
+创建客户端后，单击`Installation`选项卡，为`Format Option`选择`Keycloak OIDC JSON`，然后单击`Download`。 下载的`keycloak.json`文件应该位于项目的根文件夹中。
 
-#### 2.3.1. Installation {#Installation}
-Assuming you’ve already installed [Node.js](https://nodejs.org/), create a folder for your application:
+#### 2.3.1. 安装 {#Installation}
+假设您已经安装了[Node.js](https://nodejs.org/)，请为您的应用程序创建一个文件夹：
 
-```
+```bash
 mkdir myapp && cd myapp
 ```
 
-Use `npm init` command to create a `package.json` for your application. Now add the Keycloak connect adapter in the dependencies list:
+使用`npm init`命令为您的应用程序创建`package.json`。 现在在依赖项列表中添加Keycloak连接适配器：
 
-```
+```json
     "dependencies": {
         "keycloak-connect": "6.0.1"
     }
 ```
 
-#### 2.3.2. Usage {#Usage}
-- Instantiate a Keycloak class
+#### 2.3.2. 用法 {#Usage}
+- 实例化Keycloak类
 
-  The `Keycloak` class provides a central point for configuration and integration with your application. The simplest creation involves no arguments.
+  `Keycloak`类提供了与应用程序配置和集成的中心点。 最简单的创建不涉及任何参数。
 
-```
+```javascript
     var session = require('express-session');
     var Keycloak = require('keycloak-connect');
 
@@ -3470,11 +3470,11 @@ Use `npm init` command to create a `package.json` for your application. Now add 
     var keycloak = new Keycloak({ store: memoryStore });
 ```
 
-By default, this will locate a file named `keycloak.json` alongside the main executable of your application to initialize keycloak-specific settings (public key, realm name, various URLs). The `keycloak.json` file is obtained from the Keycloak Admin Console.
+默认情况下，这将在应用程序的主要可执行文件旁边找到名为`keycloak.json`的文件，以初始化特定于keycloak的设置（公钥，域名，各种URL）。 `keycloak.json`文件是从Keycloak管理控制台获得的。
 
-Instantiation with this method results in all of the reasonable defaults being used. As alternative, it’s also possible to provide a configuration object, rather than the `keycloak.json` file:
+使用此方法进行实例化会导致使用所有合理的默认值。 作为替代方案，也可以提供配置对象，而不是`keycloak.json`文件：
 
-```
+```javascript
     let kcConfig = {
         clientId: 'myclient',
         bearerOnly: true,
@@ -3486,81 +3486,81 @@ Instantiation with this method results in all of the reasonable defaults being u
     let keycloak = new Keycloak({ store: memoryStore }, kcConfig);
 ```
 
-Applications can also redirect users to their preferred identity provider by using:
+应用程序还可以使用以下方法将用户重定向到其首选身份提供程
 
-```
+```javascript
     let keycloak = new Keycloak({ store: memoryStore, idpHint: myIdP }, kcConfig);
 ```
 
-- Configuring a web session store
+- 配置Web会话存储
 
-  If you want to use web sessions to manage server-side state for authentication, you need to initialize the `Keycloak(…)`with at least a `store` parameter, passing in the actual session store that `express-session` is using.
+  如果要使用Web会话来管理服务器端状态以进行身份验证，则需要使用至少一个`store`参数初始化`Keycloak(...)`，传入`express-session`正在使用的实际会话存储。
 
-```
+```javascript
     var session = require('express-session');
     var memoryStore = new session.MemoryStore();
 
     var keycloak = new Keycloak({ store: memoryStore });
 ```
 
-- Passing a custom scope value
+- 传递自定义范围值
 
-  By default, the scope value `openid` is passed as a query parameter to Keycloak’s login URL, but you can add an additional custom value:
+  默认情况下，范围值`openid`作为查询参数传递给Keycloak的登录URL，但您可以添加其他自定义值：
 
-```
+```javascript
     var keycloak = new Keycloak({ scope: 'offline_access' });
 ```
 
-#### 2.3.3. Installing Middleware {#Installing_Middleware}
-Once instantiated, install the middleware into your connect-capable app:
+#### 2.3.3. 安装中间件 {#Installing_Middleware}
+实例化后，将中间件安装到支持connect的应用程序中：
 
-```
+```javascript
     var app = express();
 
     app.use( keycloak.middleware() );
 ```
 
-#### 2.3.4. Checking Authentication {#Checking_Authentication}
-To check that a user is authenticated before accessing a resource, simply use `keycloak.checkSso()`. It will only authenticate if the user is already logged-in. If the user is not logged-in, the browser will be redirected back to the originally-requested URL and remain unauthenticated:
+#### 2.3.4. 检查身份验证 {#Checking_Authentication}
+要在访问资源之前检查用户是否已通过身份验证，只需使用`keycloak.checkSso()`。 它只会在用户已登录时进行身份验证。 如果用户未登录，浏览器将重定向回原始请求的URL并保持未经身份验证：
 
-```
+```javascript
     app.get( '/check-sso', keycloak.checkSso(), checkSsoHandler );
 ```
 
-#### 2.3.5. Protecting Resources {#Protecting_Resources}
-- Simple authentication
+#### 2.3.5. 保护资源 {#Protecting_Resources}
+- 简单认证
 
-  To enforce that a user must be authenticated before accessing a resource, simply use a no-argument version of `keycloak.protect()`:
+  要强制在访问资源之前必须对用户进行身份验证，只需使用`keycloak.protect()`的无参数版本：
 
-```
+```javascript
     app.get( '/complain', keycloak.protect(), complaintHandler );
 ```
 
-- Role-based authorization
+- 基于角色的授权
 
-  To secure a resource with an application role for the current app:
+  要保护具有当前应用程序的应用程序角色的资源：
 
-```
+```javascript
     app.get( '/special', keycloak.protect('special'), specialHandler );
 ```
 
-To secure a resource with an application role for a **different** app:
+要保护具有**不同**应用程序的应用程序角色的资源：
 
-```
+```javascript
     app.get( '/extra-special', keycloak.protect('other-app:special'), extraSpecialHandler );
 ```
 
-To secure a resource with a realm role:
+要保护具有领域角色的资源：
 
-```
+```javascript
     app.get( '/admin', keycloak.protect( 'realm:admin' ), adminHandler );
 ```
 
-- Advanced authorization
+- 高级授权
 
-  To secure resources based on parts of the URL itself, assuming a role exists for each section:
+  为了保护基于URL本身部分的资源，假设每个部分都存在一个角色：
 
-```
+```javascript
     function protectBySection(token, request) {
       return token.hasRole( request.params.section );
     }
@@ -3568,54 +3568,51 @@ To secure a resource with a realm role:
     app.get( '/:section/:page', keycloak.protect( protectBySection ), sectionHandler );
 ```
 
-#### 2.3.6. Additional URLs {#Additional_URLs}
-- Explicit user-triggered logout
+#### 2.3.6. 其他URLs {#Additional_URLs}
+- 显式用户触发的注销
 
-  By default, the middleware catches calls to `/logout` to send the user through a Keycloak-centric logout workflow. This can be changed by specifying a `logout` configuration parameter to the `middleware()` call:
+  默认情况下，中间件捕获对`/logout`的调用，以通过以Keycloak为中心的注销工作流发送用户。 这可以通过为`middleware()`调用指定`logout`配置参数来改变：
 
-```
+```javascript
     app.use( keycloak.middleware( { logout: '/logoff' } ));
 ```
 
 - Keycloak Admin Callbacks
 
-  Also, the middleware supports callbacks from the Keycloak console to log out a single session or all sessions. By default, these type of admin callbacks occur relative to the root URL of `/` but can be changed by providing an `admin` parameter to the `middleware()` call:
+  此外，中间件支持来自Keycloak控制台的回调，以注销单个会话或所有会话。 默认情况下，这些类型的管理回调相对于`/`的根URL发生，但可以通过向`middleware()`调用提供`admin`参数来更改：
 
-```
+```javascript
     app.use( keycloak.middleware( { admin: '/callbacks' } );
 ```
 
 ### 2.4. Keycloak 看门人 {#Keycloak_Gatekeeper}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/keycloak-gatekeeper.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/keycloak-gatekeeper.adoc)
 
-Keycloak provides a Go programming language adapter for use with OpenID Connect (OIDC) that supports both access tokens in a browser cookie or bearer tokens.
+Keycloak提供了一个Go编程语言适配器，用于OpenID Connect（OIDC），它支持浏览器cookie或承载令牌中的访问令牌。
 
-This documentation details how to build and configure keycloak-gatekeeper followed by details of how to use each of its features.
+本文档详细介绍了如何构建和配置keycloak-gatekeeper，以及如何使用其每个功能的详细信息。
 
-For further information, see the included help file which includes a full list of commands and switches. View the file by entering the following at the command line (modify the location to match where you install keycloak-gatekeeper):
+有关详细信息，请参阅随附的帮助文件，其中包含命令和开关的完整列表。 通过在命令行输入以下内容来查看文件（修改位置以匹配安装keycloak-gatekeeper的位置）：
 
-```
+```bash
     $ bin/keycloak-gatekeeper help
 ```
 
-#### 2.4.1. Building {#Building}
-Prerequisites
+#### 2.4.1. 构建 {#Building}
+先决条件
 
-- Golang must be installed.
-- Make must be installed.
+- Golang 必须安装.
+- Make 必须安装.
 
-Procedure
+过程
 
-- Run `make dep-install` to install all needed dependencies.
-- Run `make test` to run the included tests.
-- Run `make` to build the project. You can instead use `make static` if you prefer to build a binary that includes within it all of the required dependencies.
+- 运行`make dep-install`来安装所有需要的依赖项。
+- 运行`make test`来运行包含的测试。
+- 运行`make`来构建项目。 如果您希望构建一个包含所有必需依赖项的二进制文件，则可以使用`make static`。
 
-|      | You can also build via docker container: `make docker-build`. A Docker image is available at <https://hub.docker.com/r/keycloak/keycloak-gatekeeper/>. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 您还可以通过docker容器构建：`make docker-build`。 Docker镜像可在<https://hub.docker.com/r/keycloak/keycloak-gatekeeper/>上找到。
 
-#### 2.4.2. Configuration options {#Configuration_options}
-Configuration can come from a yaml/json file or by using command line options. Here is a list of options.
+#### 2.4.2. 配置选项 {#Configuration_options}
+配置可以来自yaml/json文件或使用命令行选项。 这是一个选项列表。
 
 ```
 # is the url for retrieve the OpenID configuration - normally the <server>/auth/realm/<realm_name>
@@ -3662,17 +3659,17 @@ resources:
   - openvpn:commons-prod-vpn
 ```
 
-Options issued at the command line have a higher priority and will override or merge with options referenced in a config file. Examples of each style are shown here.
+在命令行发出的选项具有更高的优先级，并将覆盖或合并配置文件中引用的选项。 这里显示了每种样式的示例。
 
-#### 2.4.3. Example usage and configuration {#Example_usage_and_configuration}
-Assuming you have some web service you wish protected by Keycloak:
+#### 2.4.3. 示例用法和配置 {#Example_usage_and_configuration}
+假设您有一些Web服务，您希望受到Keycloak的保护：
 
-- Create the **client** using the Keycloak GUI or CLI; the client protocol is **'openid-connect'**, access-type: **confidential**.
-- Add a Valid Redirect URI of **http://127.0.0.1:3000/oauth/callback**.
-- Grab the client id and client secret.
-- Create the various roles under the client or existing clients for authorization purposes.
+- 使用Keycloak GUI或CLI创建**客户端**; 客户端协议是**'openid-connect'**，访问类型：**confidential**。
+- 添加**http://127.0.0.1:3000/oauth/callback**的有效重定向URI。
+- 抓住客户端ID和客户端密钥。
+- 在客户端或现有客户端下创建各种角色以进行授权。
 
-Here is an example configuration file.
+这是一个示例配置文件。
 
 ```
 client-id: <CLIENT_ID>
@@ -3711,9 +3708,9 @@ headers:
   myheader2: value_2
 ```
 
-Anything defined in a configuration file can also be configured using command line options, such as in this example.
+也可以使用命令行选项配置配置文件中定义的任何内容，例如在此示例中。
 
-```
+```bash
 bin/keycloak-gatekeeper \
     --discovery-url=https://keycloak.example.com/auth/realms/<REALM_NAME> \
     --client-id=<CLIENT_ID> \
@@ -3733,37 +3730,37 @@ bin/keycloak-gatekeeper \
     --headers="myheader2=value2"
 ```
 
-By default the roles defined on a resource perform a logical `AND` so all roles specified must be present in the claims, this behavior can be altered by the `require-any-role` option, however, so as long as one role is present the permission is granted.
+默认情况下，资源上定义的角色执行逻辑`AND`，因此指定的所有角色必须存在于声明中，但是，这种行为可以通过`require-any-role`选项进行更改，因此只要一个角色是 目前授予许可。
 
-#### 2.4.4. OpenID Provider Communication {#OpenID_Provider_Communication}
-By default the communication with the OpenID provider is direct. If you wish, you can specify a forwarding proxy server in your configuration file:
+#### 2.4.4. OpenID提供商通信 {#OpenID_Provider_Communication}
+默认情况下，与OpenID提供程序的通信是直接的。 如果您愿意，可以在配置文件中指定转发代理服务器：
 
 ```
 openid-provider-proxy: http://proxy.example.com:8080
 ```
 
-#### 2.4.5. HTTP routing {#HTTP_routing}
-By default all requests will be proxyed on to the upstream, if you wish to ensure all requests are authentication you can use this:
+#### 2.4.5. HTTP路由 {#HTTP_routing}
+默认情况下，所有请求都将代理到上游，如果您希望确保所有请求都是身份验证，您可以使用此命令：
 
 ```
 --resource=uri=/* # note, unless specified the method is assumed to be 'any|ANY'
 ```
 
-The HTTP routing rules follow the guidelines from [chi](https://github.com/go-chi/chi#router-design). The ordering of the resources do not matter, the router will handle that for you.
+HTTP路由规则遵循[chi](https://github.com/go-chi/chi#router-design)的指导原则。 资源的排序无关紧要，路由器将为您处理。
 
-#### 2.4.6. Session-only cookies {#Session-only_cookies}
-By default the access and refresh cookies are session-only and disposed of on browser close; you can disable this feature using the `--enable-session-cookies` option.
+#### 2.4.6. 仅限会话的cookie {#Session-only_cookies}
+默认情况下，访问和刷新cookie仅限会话，并在浏览器关闭时处理; 您可以使用`--enable-session-cookies`选项禁用此功能。
 
-#### 2.4.7. Forward-signing proxy {#Forward-signing_proxy}
-Forward-signing provides a mechanism for authentication and authorization between services using tokens issued from the IdP. When operating in this mode the proxy will automatically acquire an access token (handling the refreshing or logins on your behalf) and tag outbound requests with a Authorization header. You can control which domains are tagged with the --forwarding-domains option. Note, this option use a **contains** comparison on domains. So, if you wanted to match all domains under *.svc.cluster.local you can use: --forwarding-domain=svc.cluster.local.
+#### 2.4.7. 转发签名代理 {#Forward-signing_proxy}
+转发签名提供了一种使用IdP发出的令牌在服务之间进行身份验证和授权的机制。 在此模式下运行时，代理将自动获取访问令牌（代表您处理刷新或登录）并使用Authorization标头标记出站请求。 您可以使用--forwarding-domains选项控制标记哪些域。 注意，此选项在域上使用**contains**比较。 因此，如果您想匹配*.svc.cluster.local下的所有域，您可以使用： - forwarding-domain=svc.cluster.local。
 
-At present the service performs a login using oauth client_credentials grant type, so your IdP service must support direct (username/password) logins.
+目前，该服务使用oauth client_credentials授权类型执行登录，因此您的IdP服务必须支持直接（用户名/密码）登录。
 
-Example setup:
+示例设置：
 
-You have collection of micro-services which are permitted to speak to one another; you have already set up the credentials, roles, and clients in Keycloak, providing granular role controls over issue tokens.
+您收集了允许彼此交谈的微服务; 您已经在Keycloak中设置了凭据，角色和客户端，为问题令牌提供了精细的角色控制。
 
-```
+```bash
 - name: keycloak-gatekeeper
   image: quay.io/gambol99/keycloak-generic-adapter:latest
   args:
@@ -3787,12 +3784,12 @@ You have collection of micro-services which are permitted to speak to one anothe
 $ curl -k --proxy http://127.0.0.1:3000 https://test.projesta.svc.cluster.local
 ```
 
-On the receiver side you could set up the Keycloak Gatekeeper (--no=redirects=true) and permit this to verify and handle admission for you. Alternatively, the access token can found as a bearer token in the request.
+在接收方，您可以设置Keycloak Gatekeeper（--no=redirects=true）并允许此项验证并处理您的入场许可。 或者，可以在请求中找到访问令牌作为承载令牌。
 
-#### 2.4.8. Forwarding signed HTTPS connections {#Forwarding_signed_HTTPS_connections}
-Handling HTTPS requires a man-in-the-middle sort of TLS connection. By default, if no `--tls-ca-certificate` and `--tls-ca-key` are provided the proxy will use the default certificate. If you wish to verify the trust, you’ll need to generate a CA, for example.
+#### 2.4.8. 转发已签名的HTTPS连接 {#Forwarding_signed_HTTPS_connections}
+处理HTTPS需要中间人进行TLS连接。 默认情况下，如果没有提供`--tls-ca-certificate`和`--tls-ca-key`，代理将使用默认证书。 如果您希望验证信任，则需要生成CA.
 
-```
+```bash
 $ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ca.key -out ca.pem
 $ bin/keycloak-gatekeeper \
   --enable-forwarding \
@@ -3805,19 +3802,19 @@ $ bin/keycloak-gatekeeper \
   --tls-ca-key=ca-key.pem
 ```
 
-#### 2.4.9. HTTPS redirect {#HTTPS_redirect}
-The proxy supports an HTTP listener, so the only real requirement here is to perform an HTTP → HTTPS redirect. You can enable the option like this:
+#### 2.4.9. HTTPS重定向 {#HTTPS_redirect}
+代理支持HTTP侦听器，因此这里唯一真正的要求是执行HTTP→HTTPS重定向。 您可以启用以下选项：
 
-```
+```yaml
 --listen-http=127.0.0.1:80
 --enable-security-filter=true  # is required for the https redirect
 --enable-https-redirection
 ```
 
-#### 2.4.10. Let’s Encrypt configuration {#Let’s_Encrypt_configuration}
-Here is an example of the required configuration for Let’s Encrypt support:
+#### 2.4.10. 我们加密配置 {#Let’s_Encrypt_configuration}
+以下是Let's Encrypt支持所需配置的示例：
 
-```
+```yaml
 listen: 0.0.0.0:443
 enable-https-redirection: true
 enable-security-filter: true
@@ -3828,15 +3825,15 @@ hostnames:
   - domain.tld
 ```
 
-Listening on port 443 is mandatory.
+必须通过端口443进行侦听。
 
-#### 2.4.11. Access token encryption {#Access_token_encryption}
-By default, the session token is placed into a cookie in plaintext. If you prefer to encrypt the session cookie, use the `--enable-encrypted-token` and `--encryption-key` options. Note that the access token forwarded in the X-Auth-Token header to upstream is unaffected.
+#### 2.4.11. 访问令牌加密 {#Access_token_encryption}
+默认情况下，会话令牌以明文形式放入cookie中。 如果您更喜欢加密会话cookie，请使用`--enable-encrypted-token`和`--encryption-key`选项。 请注意，在X-Auth-Token标头中转发到上游的访问令牌不受影响。
 
-#### 2.4.12. Upstream headers {#Upstream_headers}
-On protected resources, the upstream endpoint will receive a number of headers added by the proxy, along with custom claims, like this:
+#### 2.4.12. 上游标题 {#Upstream_headers}
+在受保护的资源上，上游端点将接收代理添加的多个标头以及自定义声明，如下所示：
 
-```
+```javascript
 # add the header to the upstream endpoint
 id := user.(*userContext)
 cx.Request().Header.Set("X-Auth-Email", id.email)
@@ -3853,12 +3850,12 @@ if r.config.EnableAuthorizationHeader {
 }
 ```
 
-To control the `Authorization` header use the `enable-authorization-header` yaml configuration or the `--enable-authorization-header` command line option. By default this option is set to `true`.
+要控制`Authorization`头，请使用`enable-authorization-header` yaml配置或`--enable-authorization-header`命令行选项。 默认情况下，此选项设置为`true`。
 
-#### 2.4.13. Custom claim headers {#Custom_claim_headers}
-You can inject additional claims from the access token into the authorization headers with the `--add-claims` option. For example, a token from a Keycloak provider might include the following claims:
+#### 2.4.13. 自定义声明标头 {#Custom_claim_headers}
+您可以使用`--add-claims`选项将访问令牌中的其他声明注入到授权标头中。 例如，来自Keycloak提供商的令牌可能包含以下声明：
 
-```
+```yaml
 "resource_access": {},
 "name": "Beloved User",
 "preferred_username": "beloved.user",
@@ -3867,67 +3864,67 @@ You can inject additional claims from the access token into the authorization he
 "email": "beloved@example.com"
 ```
 
-In order to request you receive the given_name, family_name and name in the authentication header we would add `--add-claims=given_name` and `--add-claims=family_name` and so on, or we can do it in the configuration file, like this:
+为了请求您在身份验证标头中收到given_name，family_name和name，我们将添加`--add-claims=given_name` 和 `--add-claims=family_name`等等，或者我们可以在配置中执行此操作 文件，像这样：
 
-```
+```yaml
 add-claims:
 - given_name
 - family_name
 - name
 ```
 
-This would add the additional headers to the authenticated request along with standard ones.
+这会将附加标头与标准请求一起添加到经过身份验证的请求中。
 
-```
+```yaml
 X-Auth-Family-Name: User
 X-Auth-Given-Name: Beloved
 X-Auth-Name: Beloved User
 ```
 
-#### 2.4.14. Custom headers {#Custom_headers}
-You can inject custom headers using the `--headers="name=value"` option or the configuration file:
+#### 2.4.14. 自定义标题 {#Custom_headers}
+您可以使用`--headers="name=value"`选项或配置文件注入自定义标头：
 
-```
+```yaml
 headers:
   name: value
 ```
 
-#### 2.4.15. Encryption key {#Encryption_key}
-In order to remain stateless and not have to rely on a central cache to persist the refresh_tokens, the refresh token is encrypted and added as a cookie using **crypto/aes**. The key must be the same if you are running behind a load balancer. The key length should be either 16 or 32 bytes, depending or whether you want AES-128 or AES-256.
+#### 2.4.15. 加密密钥 {#Encryption_key}
+为了保持无状态而不必依赖中央缓存来持久化refresh_tokens，刷新令牌被加密并使用**crypto/aes **作为cookie添加。 如果您在负载均衡器后面运行，则密钥必须相同。 密钥长度应为16或32字节，具体取决于您是否需要AES-128或AES-256。
 
-#### 2.4.16. Claim matching {#Claim_matching}
-The proxy supports adding a variable list of claim matches against the presented tokens for additional access control. You can match the 'iss' or 'aud' to the token or custom attributes; each of the matches are regex’s. For example, `--match-claims 'aud=sso.*'` or `--claim iss=https://.*'` or via the configuration file, like this:
+#### 2.4.16. 要求匹配 {#Claim_matching}
+代理支持针对所呈现的令牌添加声明匹配的变量列表以用于附加访问控制。 您可以将'iss'或'aud'与令牌或自定义属性进行匹配; 每个匹配都是正则表达式。 例如，`--match-claims'aud=sso.*'`或`--claim iss = https//.*'`或通过配置文件，如下所示：
 
-```
+```yaml
 match-claims:
   aud: openvpn
   iss: https://keycloak.example.com/auth/realms/commons
 ```
 
-or via the CLI, like this:
+或者通过CLI，像这样：
 
-```
+```yaml
 --match-claims=auth=openvpn
 --match-claims=iss=http://keycloak.example.com/realms/commons
 ```
 
-You can limit the email domain permitted; for example if you want to limit to only users on the example.com domain:
+您可以限制允许的电子邮件域; 例如，如果您要仅限于example.com域上的用户：
 
-```
+```yaml
 match-claims:
   email: ^.*@example.com$
 ```
 
-The adapter supports matching on multi-value strings claims. The match will succeed if one of the values matches, for example:
+适配器支持匹配多值字符串声明。 如果其中一个值匹配，匹配将成功，例如：
 
-```
+```yaml
 match-claims:
   perms: perm1
 ```
 
-will successfully match
+将成功匹配
 
-```
+```json
 {
   "iss": "https://sso.example.com",
   "sub": "",
@@ -3935,10 +3932,10 @@ will successfully match
 }
 ```
 
-#### 2.4.17. Group claims {#Group_claims}
-You can match on the group claims within a token via the `groups` parameter available within the resource. While roles are implicitly required, such as `roles=admin,user` where the user MUST have roles 'admin' AND 'user', groups are applied with an OR operation, so `groups=users,testers` requires that the user MUST be within either 'users' OR 'testers'. The claim name is hard-coded to `groups`, so a JWT token would look like this:
+#### 2.4.17. 组要求 {#Group_claims}
+您可以通过资源中可用的`groups`参数匹配令牌中的组声明。 虽然隐含地要求角色，例如`roles=admin,user`，其中用户必须具有角色'admin'和'user'，组应用OR操作，因此`groups=users,testers`要求用户必须 在'users'或'testers'中。 声明名称被硬编码为`groups`，因此JWT标记看起来像这样：
 
-```
+```java
 {
   "iss": "https://sso.example.com",
   "sub": "",
@@ -3954,10 +3951,10 @@ You can match on the group claims within a token via the `groups` parameter avai
 }
 ```
 
-#### 2.4.18. Custom pages {#Custom_pages}
-By default, Keycloak Gatekeeper will immediately redirect you for authentication and hand back a 403 for access denied. Most users will probably want to present the user with a more friendly sign-in and access denied page. You can pass the command line options (or via config file) paths to the files with `--signin-page=PATH`. The sign-in page will have a 'redirect' variable passed into the scope and holding the oauth redirection url. If you wish to pass additional variables into the templates, such as title, sitename and so on, you can use the -`-tags key=pair` option, like this: `--tags title="This is my site"` and the variable would be accessible from `{{ title }}`.
+#### 2.4.18. 自定义页面 {#Custom_pages}
+默认情况下，Keycloak Gatekeeper会立即重定向您进行身份验证，并返回403以拒绝访问。 大多数用户可能希望向用户显示更友好的登录和访问被拒绝的页面。 您可以使用`--signin-page=PATH`将命令行选项（或通过配置文件）路径传递给文件。 登录页面将有一个“重定向”变量传递到作用域并保存oauth重定向URL。 如果你想将其他变量传递给模板，比如title，sitename等，你可以使用`--tags key=pair`选项，如下所示：`--tags title="This is my site"`并且可以从`{{title}}`访问该变量。
 
-```
+```html
 <html>
 <body>
 <a href="{{ redirect }}">Sign-in</a>
@@ -3965,10 +3962,10 @@ By default, Keycloak Gatekeeper will immediately redirect you for authentication
 </html>
 ```
 
-#### 2.4.19. White-listed URL’s {#White-listed_URL’s}
-Depending on how the application URL’s are laid out, you might want protect the root / url but have exceptions on a list of paths, for example `/health`. While this is best solved by adjusting the paths, you can add exceptions to the protected resources, like this:
+#### 2.4.19. 白名单 URL’s {#White-listed_URLs}
+根据应用程序URL的布局方式，您可能需要保护根/ URL，但在路径列表中有例外，例如`/health`。 虽然通过调整路径可以最好地解决这个问题，但您可以向受保护资源添加例外，如下所示：
 
-```
+```yaml
   resources:
   - uri: /some_white_listed_url
     white-listed: true
@@ -3980,34 +3977,34 @@ Depending on how the application URL’s are laid out, you might want protect th
       - <CLIENT_APP_NAME>:<ROLE_NAME>
 ```
 
-Or on the command line
+或者在命令行上
 
-```
+```bash
   --resources "uri=/some_white_listed_url|white-listed=true"
   --resources "uri=/*"  # requires authentication on the rest
   --resources "uri=/admin*|roles=admin,superuser|methods=POST,DELETE"
 ```
 
-#### 2.4.20. Mutual TLS {#Mutual_TLS}
-The proxy support enforcing mutual TLS for the clients by adding the `--tls-ca-certificate` command line option or configuration file option. All clients connecting must present a certificate which was signed by the CA being used.
+#### 2.4.20. 交互 TLS {#Mutual_TLS}
+代理支持通过添加`--tls-ca-certificate`命令行选项或配置文件选项为客户端强制执行相互TLS。 连接的所有客户端必须提供由正在使用的CA签名的证书。
 
-#### 2.4.21. Certificate rotation {#Certificate_rotation}
-The proxy will automatically rotate the server certificates if the files change on disk. Note, no down time will occur as the change is made inline. Clients who connected prior to the certificate rotation will be unaffected and will continue as normal with all new connections presented with the new certificate.
+#### 2.4.21. 证书轮换 {#Certificate_rotation}
+如果文件在磁盘上更改，代理将自动轮换服务器证书。 请注意，内联更改不会发生停机时间。 在证书轮换之前连接的客户端将不受影响，并且将继续正常使用新证书提供的所有新连接。
 
-#### 2.4.22. Refresh tokens {#Refresh_tokens}
-If a request for an access token contains a refresh token and `--enable-refresh-tokens` is set to `true`, the proxy will automatically refresh the access token for you. The tokens themselves are kept either as an encrypted **(--encryption-key=KEY)** cookie **(cookie name: kc-state).** or a store **(still requires encryption key)**.
+#### 2.4.22. 刷新 tokens {#Refresh_tokens}
+如果对访问令牌的请求包含刷新令牌并且`--enable-refresh-tokens`设置为`true`，则代理将自动为您刷新访问令牌。 令牌本身保存为加密的 **(--encryption-key=KEY)** cookie **(cookie name: kc-state).**。或存储 **(still requires encryption key)**。
 
-At present the only store options supported are [Redis](https://github.com/antirez/redis) and [Boltdb](https://github.com/boltdb/bolt).
+目前支持的唯一存储选项是[Redis](https://github.com/antirez/redis) 和[Boltdb](https://github.com/boltdb/bolt)。
 
-To enable a local boltdb store use `--store-url boltdb:///PATH` or using a relative path `boltdb://PATH`.
+要启用本地boltdb存储，请使用`--store-url boltdb:///PATH`或使用相对路径`boltdb://PATH`。
 
-To enable a local redis store use `redis://[USER:PASSWORD@]HOST:PORT`. In both cases the refresh token is encrypted before being placed into the store.
+要启用本地redis存储，请使用`redis://[USER:PASSWORD@]HOST:PORT`。 在这两种情况下，刷新令牌在放入商店之前都会被加密。
 
-#### 2.4.23. Logout endpoint {#Logout_endpoint}
-A **/oauth/logout?redirect=url** is provided as a helper to log users out. In addition to dropping any session cookies, we also attempt to revoke access via revocation url (config **revocation-url** or **--revocation-url**) with the provider. For Keycloak, the url for this would be <https://keycloak.example.com/auth/realms/REALM_NAME/protocol/openid-connect/logout>. If the url is not specified we will attempt to grab the url from the OpenID discovery response.
+#### 2.4.23. 注销端点 {#Logout_endpoint}
+提供**/oauth/logout?redirect=url**作为帮助记录用户的帮助程序。 除了删除任何会话cookie之外，我们还尝试通过提供者撤销通过吊销URL(config **revocation-url** or **--revocation-url**)的访问权限。 对于Keycloak，其网址为<https://keycloak.example.com/auth/realms/REALM_NAME/protocol/openid-connect/logout>。 如果未指定url，我们将尝试从OpenID发现响应中获取url。
 
-#### 2.4.24. Cross-origin resource sharing (CORS) {#Cross-origin_resource_sharing__CORS_}
-You can add a CORS header via the `--cors-[method]` with these configuration options.
+#### 2.4.24. 跨域资源共享 (CORS) {#Cross_origin_resource_sharing__CORS_}
+您可以使用这些配置选项通过`--cors-[method]`添加CORS头。
 
 - Access-Control-Allow-Origin
 - Access-Control-Allow-Methods
@@ -4016,9 +4013,9 @@ You can add a CORS header via the `--cors-[method]` with these configuration opt
 - Access-Control-Allow-Credentials
 - Access-Control-Max-Age
 
-You can add using the config file:
+您可以使用配置文件添加：
 
-```
+```yaml
 cors-origins:
 - '*'
 cors-methods:
@@ -4026,52 +4023,50 @@ cors-methods:
 - POST
 ```
 
-or via the command line:
+或通过命令行：
 
 ```
---cors-origins [--cors-origins option]                  a set of origins to add to the CORS access control (Access-Control-Allow-Origin)
---cors-methods [--cors-methods option]                  the method permitted in the access control (Access-Control-Allow-Methods)
---cors-headers [--cors-headers option]                  a set of headers to add to the CORS access control (Access-Control-Allow-Headers)
---cors-exposes-headers [--cors-exposes-headers option]  set the expose cors headers access control (Access-Control-Expose-Headers)
+--cors-origins [--cors-origins option]                  一组要添加到CORS访问控制的起源 (Access-Control-Allow-Origin)
+--cors-methods [--cors-methods option]                  访问控制中允许的方法 (Access-Control-Allow-Methods)
+--cors-headers [--cors-headers option]                  要添加到CORS访问控制的一组标头 (Access-Control-Allow-Headers)
+--cors-exposes-headers [--cors-exposes-headers option]  设置公开的cors标头访问控制 (Access-Control-Expose-Headers)
 ```
 
-#### 2.4.25. Upstream URL {#Upstream_URL}
-You can control the upstream endpoint via the `--upstream-url` option. Both HTTP and HTTPS are supported with TLS verification and keep-alive support configured via the `--skip-upstream-tls-verify` / `--upstream-keepalives` option. Note, the proxy can also upstream via a UNIX socket, `--upstream-url unix://path/to/the/file.sock`.
+#### 2.4.25. 上游URL {#Upstream_URL}
+您可以通过`--upstream-url`选项控制上游端点。 通过`--skip-upstream-tls-verify` / `--upstream-keepalives`选项配置TLS验证和保持活动支持，支持HTTP和HTTPS。 注意，代理也可以通过UNIX套接字上游，`--upstream-url unix://path/to/the/file.sock`。
 
-#### 2.4.26. Endpoints {#Endpoints}
-- **/oauth/authorize** is authentication endpoint which will generate the OpenID redirect to the provider
-- **/oauth/callback** is provider OpenID callback endpoint
-- **/oauth/expired** is a helper endpoint to check if a access token has expired, 200 for ok and, 401 for no token and 401 for expired
-- **/oauth/health** is the health checking endpoint for the proxy, you can also grab version from headers
-- **/oauth/login** provides a relay endpoint to login via `grant_type=password`, for example, `POST /oauth/login` form values are `username=USERNAME&password=PASSWORD` (must be enabled)
-- **/oauth/logout** provides a convenient endpoint to log the user out, it will always attempt to perform a back channel log out of offline tokens
-- **/oauth/token** is a helper endpoint which will display the current access token for you
-- **/oauth/metrics** is a Prometheus metrics handler
+#### 2.4.26. 端点 {#Endpoints}
+- **/oauth/authorize** 是身份验证端点，它将生成OpenID重定向到提供程序
+- **/oauth/callback** 是提供者OpenID回调端点
+- **/oauth/expired** 是一个辅助端点，用于检查访问令牌是否已过期，200表示ok，401表示无令牌，401表示已过期
+- **/oauth/health** 是代理的运行状况检查端点，您也可以从标头中获取版本
+- **/oauth/login** 提供一个通过`grant_type=password`登录的中继端点，例如，POST /oauth/login`表单值为`username=USERNAME＆password=PASSWORD`（必须启用）
+- **/oauth/logout** 提供了一个方便的端点来记录用户，它总是会尝试从脱机令牌中执行反向通道注销
+- **/oauth/token** 是一个帮助端点，它将为您显示当前的访问令牌
+- **/oauth/metrics** 是一个Prometheus指标处理程序
 
-#### 2.4.27. Metrics {#Metrics}
-Assuming `--enable-metrics` has been set, a Prometheus endpoint can be found on **/oauth/metrics**; at present the only metric being exposed is a counter per HTTP code.
+#### 2.4.27. 度量 {#Metrics}
+假设已经设置了`--enable-metrics`，可以在**/oauth/metrics **上找到Prometheus端点; 目前，唯一公开的度量标准是每个HTTP代码的计数器。
 
-#### 2.4.28. Limitations {#Limitations}
-Keep in mind [browser cookie limits](http://browsercookielimits.squawky.net/) if you use access or refresh tokens in the browser cookie. Keycloak-generic-adapter divides the cookie automatically if your cookie is longer than 4093 bytes. Real size of the cookie depends on the content of the issued access token. Also, encryption might add additional bytes to the cookie size. If you have large cookies (>200 KB), you might reach browser cookie limits.
+#### 2.4.28. 限制 {#Limitations}
+如果您在浏览器cookie中使用访问权限或刷新令牌，请记住[浏览器cookie限制]（http://browsercookielimits.squawky.net/）。 如果您的cookie超过4093字节，Keycloak-generic-adapter会自动划分cookie。 cookie的实际大小取决于发布的访问令牌的内容。 此外，加密可能会为cookie大小添加额外的字节。 如果您有大型Cookie（> 200 KB），则可能会达到浏览器Cookie限制。
 
-All cookies are part of the header request, so you might find a problem with the max headers size limits in your infrastructure (some load balancers have very low this value, such as 8 KB). Be sure that all network devices have sufficient header size limits. Otherwise, your users won’t be able to obtain an access token.
+所有cookie都是标头请求的一部分，因此您可能会发现基础结构中的最大标头大小限制存在问题（某些负载平衡器的此值非常低，例如8 KB）。 确保所有网络设备都有足够的标头大小限制。 否则，您的用户将无法获得访问令牌。
 
-#### 2.4.29. Known Issues {#Known_Issues}
-- There is a known issue with the Keycloak server 4.7.0.Final in which Gatekeeper is unable to find the *client_id* in the *aud*claim. This is due to the fact the *client_id* is not in the audience anymore. The workaround is to add the "Audience" protocol mapper to the client with the audience pointed to the *client_id*. For more information, see [KEYCLOAK-8954](https://issues.jboss.org/browse/KEYCLOAK-8954). ==== mod_auth_openidc Apache HTTPD Module
+#### 2.4.29. 已知的问题 {#Known_Issues}
+- Keycloak服务器4.7.0.Final存在一个已知问题，其中Gatekeeper无法在*aud*声明中找到*client_id*。 这是因为*client_id*不再在观众中。 解决方法是将“Audience(受众)”协议映射器添加到客户端，并将受众指向*client_id*。 有关详细信息，请参阅[KEYCLOAK-8954](https://issues.jboss.org/browse/KEYCLOAK-8954)。 ==== mod_auth_openidc Apache HTTPD模块
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/mod-auth-openidc.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/mod-auth-openidc.adoc)
+[mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc)是OpenID Connect的Apache HTTP插件。 如果您的语言/环境支持使用Apache HTTPD作为代理，那么您可以使用*mod_auth_openidc*来使用OpenID Connect保护您的Web应用程序。 此模块的配置超出了本文档的范围。 有关配置的更多详细信息，请参阅*mod_auth_openidc* GitHub 仓库。
 
-The [mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc) is an Apache HTTP plugin for OpenID Connect. If your language/environment supports using Apache HTTPD as a proxy, then you can use *mod_auth_openidc* to secure your web application with OpenID Connect. Configuration of this module is beyond the scope of this document. Please see the *mod_auth_openidc* GitHub repo for more details on configuration.
-
-To configure *mod_auth_openidc* you’ll need
+要配置*mod_auth_openidc*，您需要
 
 - The client_id.
 - The client_secret.
-- The redirect_uri to your application.
-- The Keycloak openid-configuration url
-- *mod_auth_openidc* specific Apache HTTPD module config.
+- redirect_uri到您的应用程序。
+- Keycloak openid配置网址
+- *mod_auth_openidc*特定的Apache HTTPD模块配置。
 
-An example configuration would look like the following.
+示例配置如下所示。
 
 ```
 LoadModule auth_openidc_module modules/mod_auth_openidc.so
@@ -4102,131 +4097,130 @@ ServerName ${HOSTIP}
 </VirtualHost>
 ```
 
-Further information on how to configure mod_auth_openidc can be found on the [mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc) project page.
+有关如何配置mod_auth_openidc的更多信息，请参见[mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc) 项目页面。
 
 ### 2.5. 其他OpenID连接库 {#Other_OpenID_Connect_Libraries}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/oidc-generic.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/oidc-generic.adoc)
 
-Keycloak can be secured by supplied adapters that are usually easier to use and provide better integration with Keycloak. However, if an adapter is not available for your programming language, framework, or platform you might opt to use a generic OpenID Connect Resource Provider (RP) library instead. This chapter describes details specific to Keycloak and does not contain specific protocol details. For more information see the [OpenID Connect specifications](https://openid.net/connect/) and [OAuth2 specification](https://tools.ietf.org/html/rfc6749).
+Keycloak可以通过提供的适配器进行保护，这些适配器通常更易于使用，并且可以更好地与Keycloak集成。 但是，如果适配器不适用于您的编程语言，框架或平台，则可以选择使用通用OpenID Connect资源提供程序（RP）库。 本章介绍了Keycloak的具体细节，但不包含特定的协议详细信息。 有关详细信息，请参阅[OpenID Connect规范](https://openid.net/connect/)和[OAuth2规范](https://tools.ietf.org/html/rfc6749)。
 
-#### 2.5.1. Endpoints {#Endpoints}
-The most important endpoint to understand is the `well-known` configuration endpoint. It lists endpoints and other configuration options relevant to the OpenID Connect implementation in Keycloak. The endpoint is:
+#### 2.5.1. 端点 {#Endpoints}
+要了解的最重要的端点是`well-known(众所周知的)`配置端点。 它列出了与Keycloak中的OpenID Connect实现相关的端点和其他配置选项。 端点是：
 
 ```
 /realms/{realm-name}/.well-known/openid-configuration
 ```
 
-To obtain the full URL, add the base URL for Keycloak and replace `{realm-name}` with the name of your realm. For example:
+要获取完整的URL，请添加Keycloak的基本URL，并将`{realm-name}`替换为您的域的名称。 例如：
 
 http://localhost:8080/auth/realms/master/.well-known/openid-configuration
 
-Some RP libraries retrieve all required endpoints from this endpoint, but for others you might need to list the endpoints individually.
+某些RP库从此端点检索所有必需的端点，但对于其他端点，您可能需要单独列出端点。
 
-##### Authorization Endpoint {#Authorization_Endpoint}
+##### 授权端点 {#Authorization_Endpoint}
 ```
 /realms/{realm-name}/protocol/openid-connect/auth
 ```
 
-The authorization endpoint performs authentication of the end-user. This is done by redirecting the user agent to this endpoint.
+授权端点执行最终用户的身份验证。 这是通过将用户代理重定向到此端点来完成的。
 
-For more details see the [Authorization Endpoint](https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint) section in the OpenID Connect specification.
+有关更多详细信息，请参阅OpenID Connect规范中的[授权端点](https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint) 部分。
 
-##### Token Endpoint {#Token_Endpoint}
+##### 令牌端点 {#Token_Endpoint}
 ```
 /realms/{realm-name}/protocol/openid-connect/token
 ```
 
-The token endpoint is used to obtain tokens. Tokens can either be obtained by exchanging an authorization code or by supplying credentials directly depending on what flow is used. The token endpoint is also used to obtain new access tokens when they expire.
+令牌端点用于获取令牌。 可以通过交换授权代码或直接提供凭证来获取令牌，具体取决于使用的流程。 令牌端点还用于在到期时获取新的访问令牌。
 
-For more details see the [Token Endpoint](https://openid.net/specs/openid-connect-core-1_0.html#TokenEndpoint) section in the OpenID Connect specification.
+有关更多详细信息，请参阅OpenID Connect规范中的[令牌端点](https://openid.net/specs/openid-connect-core-1_0.html#TokenEndpoint)部分。
 
-##### Userinfo Endpoint {#Userinfo_Endpoint}
+##### Userinfo端点 {#Userinfo_Endpoint}
 ```
 /realms/{realm-name}/protocol/openid-connect/userinfo
 ```
 
-The userinfo endpoint returns standard claims about the authenticated user, and is protected by a bearer token.
+userinfo端点返回有关经过身份验证的用户的标准声明，并受承载令牌保护。
 
-For more details see the [Userinfo Endpoint](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo) section in the OpenID Connect specification.
+有关更多详细信息，请参阅OpenID Connect规范中的[Userinfo端点](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo)部分。
 
-##### Logout Endpoint {#Logout_Endpoint}
+##### 注销端点 {#Logout_Endpoint}
 ```
 /realms/{realm-name}/protocol/openid-connect/logout
 ```
 
-The logout endpoint logs out the authenticated user.
+注销端点注销经过身份验证的用户。
 
-The user agent can be redirected to the endpoint, in which case the active user session is logged out. Afterward the user agent is redirected back to the application.
+可以将用户代理重定向到端点，在这种情况下，将注销活动用户会话。 之后，用户代理将重定向回应用程序。
 
-The endpoint can also be invoked directly by the application. To invoke this endpoint directly the refresh token needs to be included as well as the credentials required to authenticate the client.
+端点也可以由应用程序直接调用。 要直接调用此端点，需要包含刷新令牌以及验证客户端所需的凭据。
 
-##### Certificate Endpoint {#Certificate_Endpoint}
+##### 证书端点 {#Certificate_Endpoint}
 ```
 /realms/{realm-name}/protocol/openid-connect/certs
 ```
 
-The certificate endpoint returns the public keys enabled by the realm, encoded as a JSON Web Key (JWK). Depending on the realm settings there can be one or more keys enabled for verifying tokens. For more information see the [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) and the [JSON Web Key specification](https://tools.ietf.org/html/rfc7517).
+证书端点返回由领域启用的公钥，编码为JSON Web密钥（JWK）。 根据领域设置，可以启用一个或多个密钥来验证令牌。 有关详细信息，请参阅[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/) 和[JSON Web密钥规范](https://tools.ietf.org/html/rfc7517)。
 
-##### Introspection Endpoint {#Introspection_Endpoint}
+##### 内省端点 {#Introspection_Endpoint}
 ```
 /realms/{realm-name}/protocol/openid-connect/token/introspect
 ```
 
-The introspection endpoint is used to retrieve the active state of a token. In other words, you can use it to validate an access or refresh token. It can only be invoked by confidential clients.
+内省端点用于检索令牌的活动状态。 换句话说，您可以使用它来验证访问或刷新令牌。 它只能由机密客户端调用。
 
-For more details on how to invoke on this endpoint, see [OAuth 2.0 Token Introspection specification](https://tools.ietf.org/html/rfc7662).
+有关如何在此端点上调用的更多详细信息，请参阅[OAuth 2.0 Token Introspection规范](https://tools.ietf.org/html/rfc7662)。
 
-##### Dynamic Client Registration Endpoint {#Dynamic_Client_Registration_Endpoint}
+##### 动态客户端注册端点 {#Dynamic_Client_Registration_Endpoint}
 ```
 /realms/{realm-name}/clients-registrations/openid-connect
 ```
 
-The dynamic client registration endpoint is used to dynamically register clients.
+动态客户端注册端点用于动态注册客户端。
 
-For more details see the [Client Registration chapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#_client_registration) and the [OpenID Connect Dynamic Client Registration specification](https://openid.net/specs/openid-connect-registration-1_0.html).
+有关详细信息，请参阅[客户端注册章节](https://www.keycloak.org/docs/latest/securing_apps/index.html#_client_registration)和[OpenID Connect动态客户端注册规范](https://openid.net/specs/openid-connect-registration-1_0.html)。
 
-#### 2.5.2. Validating Access Tokens {#Validating_Access_Tokens}
-If you need to manually validate access tokens issued by Keycloak you can invoke the [Introspection Endpoint](https://www.keycloak.org/docs/latest/securing_apps/index.html#_token_introspection_endpoint). The downside to this approach is that you have to make a network invocation to the Keycloak server. This can be slow and possibily overload the server if you have too many validation requests going on at the same time. Keycloak issued access tokens are [JSON Web Tokens (JWT)](https://tools.ietf.org/html/rfc7519) digitally signed and encoded using [JSON Web Signature (JWS)](https://www.rfc-editor.org/rfc/rfc7515.txt). Because they are encoded in this way, this allows you to locally validate access tokens using the public key of the issuing realm. You can either hard code the realm’s public key in your validation code, or lookup and cache the public key using the [certificate endpoint](https://www.keycloak.org/docs/latest/securing_apps/index.html#_certificate_endpoint) with the Key ID (KID) embedded within the JWS. Depending what language you code in, there are a multitude of third party libraries out there that can help you with JWS validation.
+#### 2.5.2. 验证访问令牌 {#Validating_Access_Tokens}
+如果您需要手动验证Keycloak发出的访问令牌，您可以调用[内省端点](https://www.keycloak.org/docs/latest/securing_apps/index.html#_token_introspection_endpoint)。 这种方法的缺点是您必须对Keycloak服务器进行网络调用。 如果您同时进行太多验证请求，这可能会很慢并且可能会使服务器过载。 Keycloak颁发的访问令牌是[JSON Web令牌（JWT）](https://tools.ietf.org/html/rfc7519)，使用[JSON Web签名（JWS）](https://www.rfc-editor.org/rfc/rfc7515.txt)进行数字签名和编码。 因为它们是以这种方式编码的，所以这允许您使用发布领域的公钥在本地验证访问令牌。 您可以在验证代码中对域的公钥进行硬编码，也可以使用[证书端点]查找和缓存公钥(https://www.keycloak.org/docs/latest/securing_apps/index.html#_certificate_endpoint)使用JWS中嵌入的密钥ID（KID）。 根据您编写的语言，有许多第三方库可以帮助您进行JWS验证。
 
-#### 2.5.3. Flows {#Flows}
-##### Authorization Code {#Authorization_Code}
-The Authorization Code flow redirects the user agent to Keycloak. Once the user has successfully authenticated with Keycloak an Authorization Code is created and the user agent is redirected back to the application. The application then uses the authorization code along with its credentials to obtain an Access Token, Refresh Token and ID Token from Keycloak.
+#### 2.5.3. 流 {#Flows}
+##### 授权码 {#Authorization_Code}
+授权代码流将用户代理重定向到Keycloak。 一旦用户成功通过Keycloak进行身份验证，就会创建一个授权码，并将用户代理重定向回应用程序。 然后，应用程序使用授权代码及其凭据从Keycloak获取访问令牌，刷新令牌和ID令牌。
 
-The flow is targeted towards web applications, but is also recommended for native applications, including mobile applications, where it is possible to embed a user agent.
+该流程针对Web应用程序，但也建议用于本机应用程序，包括可以嵌入用户代理的移动应用程序。
 
-For more details refer to the [Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth) in the OpenID Connect specification.
+有关更多详细信息，请参阅OpenID Connect规范中的[授权代码流程](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth) 。
 
-##### Implicit {#Implicit}
-The Implicit flow redirects works similarly to the Authorization Code flow, but instead of returning an Authorization Code the Access Token and ID Token is returned. This reduces the need for the extra invocation to exchange the Authorization Code for an Access Token. However, it does not include a Refresh Token. This results in the need to either permit Access Tokens with a long expiration, which is problematic as it’s very hard to invalidate these. Or requires a new redirect to obtain new Access Token once the initial Access Token has expired. The Implicit flow is useful if the application only wants to authenticate the user and deals with logout itself.
+##### 隐式 {#Implicit}
+隐式流重定向的工作方式与授权代码流类似，但不返回授权代码，而是返回访问令牌和ID令牌。 这减少了额外调用以交换访问令牌的授权码的需要。 但是，它不包括刷新令牌。 这导致需要允许具有长期到期的访问令牌，这是有问题的，因为很难使这些无效。 或者在初始访问令牌过期后需要新的重定向来获取新的访问令牌。 如果应用程序只想验证用户并处理注销本身，则隐式流非常有用。
 
-There’s also a Hybrid flow where both the Access Token and an Authorization Code is returned.
+还有一个混合流程，其中返回访问令牌和授权代码。
 
-One thing to note is that both the Implicit flow and Hybrid flow has potential security risks as the Access Token may be leaked through web server logs and browser history. This is somewhat mitigated by using short expiration for Access Tokens.
+需要注意的一点是，隐式流和混合流都存在潜在的安全风险，因为访问令牌可能会通过Web服务器日志和浏览器历史泄漏。 通过使用访问令牌的短期到期，可以稍微减轻这种情况。
 
-For more details refer to the [Implicit Flow](https://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth) in the OpenID Connect specification.
+有关更多详细信息，请参阅OpenID Connect规范中的[Implicit Flow](https://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth)。
 
-##### Resource Owner Password Credentials {#Resource_Owner_Password_Credentials}
-Resource Owner Password Credentials, referred to as Direct Grant in Keycloak, allows exchanging user credentials for tokens. It’s not recommended to use this flow unless you absolutely need to. Examples where this could be useful are legacy applications and command-line interfaces.
+##### 资源所有者密码凭据 {#Resource_Owner_Password_Credentials}
+资源所有者密码凭据（在Keycloak中称为直接授权）允许为令牌交换用户凭据。 除非您绝对需要，否则不建议使用此流程。 这可能有用的示例是遗留应用程序和命令行界面。
 
-There are a number of limitations of using this flow, including:
+使用此流程有许多限制，包括：
 
-- User credentials are exposed to the application
-- Applications need login pages
-- Application needs to be aware of the authentication scheme
-- Changes to authentication flow requires changes to application
-- No support for identity brokering or social login
-- Flows are not supported (user self-registration, required actions, etc.)
+- 用户凭据将公开给应用程序
+- 应用需要登录页面
+- 应用程序需要了解身份验证方案
+- 对身份验证流程的更改需要更改应用程序
+- 不支持身份代理或社交登录
+- 不支持流程（用户自行注册，所需操作等）
 
-For a client to be permitted to use the Resource Owner Password Credentials grant the client has to have the `Direct Access Grants Enabled` option enabled.
+要允许客户端使用资源所有者密码凭据授予，客户端必须启用`Direct Access Grants Enabled`选项。
 
-This flow is not included in OpenID Connect, but is a part of the OAuth 2.0 specification.
+此流程不包含在OpenID Connect中，但是是OAuth 2.0规范的一部分。
 
-For more details refer to the [Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3) chapter in the OAuth 2.0 specification.
+有关更多详细信息，请参阅OAuth 2.0规范中的[资源所有者密码凭据授权](https://tools.ietf.org/html/rfc6749#section-4.3)章节。
 
-###### Example using CURL {#Example_using_CURL}
-The following example shows how to obtain an access token for a user in the realm `master` with username `user` and password `password`. The example is using the confidential client `myclient`:
+###### 使用CURL的示例 {#Example_using_CURL}
+以下示例显示如何使用用户名`user`和密码`password`为领域`master`中的用户获取访问令牌。 示例使用机密客户端`myclient`：
 
-```
+```bash
 curl \
   -d "client_id=myclient" \
   -d "client_secret=40cc097b-2a57-4c17-b36a-8fdf3fc2d578" \
@@ -4236,36 +4230,34 @@ curl \
   "http://localhost:8080/auth/realms/master/protocol/openid-connect/token"
 ```
 
-##### Client Credentials {#Client_Credentials}
-Client Credentials is used when clients (applications and services) wants to obtain access on behalf of themselves rather than on behalf of a user. This can for example be useful for background services that applies changes to the system in general rather than for a specific user.
+##### 客户端凭据 {#Client_Credentials}
+客户端（应用程序和服务）希望代表自己而不是代表用户获取访问权限时使用客户端凭据。 例如，这对于通常而不是针对特定用户应用对系统的更改的后台服务是有用的。
 
-Keycloak provides support for clients to authenticate either with a secret or with public/private keys.
+Keycloak支持客户端使用密钥或公钥/私钥进行身份验证。
 
-This flow is not included in OpenID Connect, but is a part of the OAuth 2.0 specification.
+此流程不包含在OpenID Connect中，但是是OAuth 2.0规范的一部分。
 
-For more details refer to the [Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4) chapter in the OAuth 2.0 specification.
+有关更多详细信息，请参阅OAuth 2.0规范中的[Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)章节。
 
-#### 2.5.4. Redirect URIs {#Redirect_URIs}
-When using the redirect based flows it’s important to use valid redirect uris for your clients. The redirect uris should be as specific as possible. This especially applies to client-side (public clients) applications. Failing to do so could result in:
+#### 2.5.4. 重定向URI {#Redirect_URIs}
+使用基于重定向的流时，为您的客户使用有效的重定向uris很重要。 重定向uris应尽可能具体。 这尤其适用于客户端（公共客户端）应用程序。 如果不这样做可能会导致：
 
-- Open redirects - this can allow attackers to create spoof links that looks like they are coming from your domain
-- Unauthorized entry - when users are already authenticated with Keycloak an attacker can use a public client where redirect uris have not be configured correctly to gain access by redirecting the user without the users knowledge
+- Open redirects - 这可以允许攻击者创建看似他们来自您的域的欺骗链接
+- Unauthorized entry - 当用户已经使用Keycloak进行身份验证时，攻击者可以使用公共客户端，其中未正确配置重定向uris以通过重定向用户而无需用户知识来获取访问权限
 
-In production for web applications always use `https` for all redirect URIs. Do not allow redirects to http.
+在Web应用程序的生产中，始终对所有重定向URI使用`https`。 不允许重定向到http。
 
-There’s also a few special redirect URIs:
+还有一些特殊的重定向URI：
 
 - `http://localhost`
 
-  This redirect URI is useful for native applications and allows the native application to create a web server on a random port that can be used to obtain the authorization code. This redirect uri allows any port.
+  此重定向URI对本机应用程序很有用，并允许本机应用程序在随机端口上创建可用于获取授权代码的Web服务器。 这个重定向uri允许任何端口。
 
 - `urn:ietf:wg:oauth:2.0:oob`
 
-  If its not possible to start a web server in the client (or a browser is not available) it is possible to use the special `urn:ietf:wg:oauth:2.0:oob` redirect uri. When this redirect uri is used Keycloak displays a page with the code in the title and in a box on the page. The application can either detect that the browser title has changed, or the user can copy/paste the code manually to the application. With this redirect uri it is also possible for a user to use a different device to obtain a code to paste back to the application.
+  如果无法在客户端启动Web服务器（或浏览器不可用），则可以使用特殊的`urn:ietf:wg:oauth:2.0:oob`重定向uri。 使用此重定向uri时，Keycloak会显示一个页面，其中包含标题中的代码和页面上的框。 应用程序可以检测到浏览器标题已更改，或者用户可以手动将代码复制/粘贴到应用程序。 通过此重定向uri，用户还可以使用不同的设备来获取要粘贴回应用程序的代码。
 
 ## 3. SAML {#SAML}
-
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/saml-overview.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/saml-overview.adoc)
 
 This section describes how you can secure applications and services with SAML using either Keycloak client adapters or generic SAML provider libraries.
 
