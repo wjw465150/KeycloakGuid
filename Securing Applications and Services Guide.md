@@ -3055,25 +3055,25 @@ public class PathBasedKeycloakConfigResolver implements KeycloakConfigResolver {
 
 ### 2.2. JavaScript 适配器 {#JavaScript_Adapter}
 
-Keycloak comes with a client-side JavaScript library that can be used to secure HTML5/JavaScript applications. The JavaScript adapter has built-in support for Cordova applications.
+Keycloak附带了一个客户端JavaScript库，可以用来保护HTML5/JavaScript应用程序。JavaScript适配器内置了对Cordova应用程序的支持。
 
-The library can be retrieved directly from the Keycloak server at `/auth/js/keycloak.js` and is also distributed as a ZIP archive.
+该库可以直接从Keycloak服务器检索到`/auth/js/keycloak.js`，也可以作为ZIP存档分发。
 
-A best practice is to load the JavaScript adapter directly from Keycloak Server as it will automatically be updated when you upgrade the server. If you copy the adapter to your web application instead, make sure you upgrade the adapter only after you have upgraded the server.
+最佳做法是直接从Keycloak Server加载JavaScript适配器，因为它会在升级服务器时自动更新。 如果将适配器复制到Web应用程序，请确保仅在升级服务器后升级适配器。
 
-One important thing to note about using client-side applications is that the client has to be a public client as there is no secure way to store client credentials in a client-side application. This makes it very important to make sure the redirect URIs you have configured for the client are correct and as specific as possible.
+关于使用客户端应用程序的一个重要注意事项是客户端必须是公共客户端，因为没有安全的方法来在客户端应用程序中存储客户端凭据。 这使得确保为客户端配置的重定向URI正确且尽可能具体非常重要。
 
-To use the JavaScript adapter you must first create a client for your application in the Keycloak Administration Console. Make sure `public` is selected for `Access Type`.
+要使用JavaScript适配器，必须首先在Keycloak管理控制台中为您的应用程序创建客户端。 确保为`Access Type`选择`public`。
 
-You also need to configure valid redirect URIs and valid web origins. Be as specific as possible as failing to do so may result in a security vulnerability.
+您还需要配置有效的重定向URI和有效的Web源。 尽可能具体，因为未能这样做可能会导致安全漏洞。
 
-Once the client is created click on the `Installation` tab select `Keycloak OIDC JSON` for `Format Option` then click `Download`. The downloaded `keycloak.json` file should be hosted on your web server at the same location as your HTML pages.
+创建客户端后，单击`Installation(安装)`选项卡，选择`Format Option(格式选项)`的`Keycloak OIDC JSON`，然后单击`Download(下载)`。 下载的`keycloak.json`文件应该存放在您的Web服务器上与HTML页面相同的位置。
 
-Alternatively, you can skip the configuration file and manually configure the adapter.
+或者，您可以跳过配置文件并手动配置适配器。
 
-The following example shows how to initialize the JavaScript adapter:
+以下示例显示如何初始化JavaScript适配器：
 
-```
+```html
 <head>
     <script src="keycloak.js"></script>
     <script>
@@ -3087,15 +3087,15 @@ The following example shows how to initialize the JavaScript adapter:
 </head>
 ```
 
-If the `keycloak.json` file is in a different location you can specify it:
+如果`keycloak.json`文件位于不同的位置，您可以指定它：
 
-```
+```javascript
 var keycloak = Keycloak('http://localhost:8080/myapp/keycloak.json');
 ```
 
-Alternatively, you can pass in a JavaScript object with the required configuration instead:
+或者，您可以使用所需的配置传入JavaScript对象：
 
-```
+```javascript
 var keycloak = Keycloak({
     url: 'http://keycloak-server/auth',
     realm: 'myrealm',
@@ -3103,17 +3103,17 @@ var keycloak = Keycloak({
 });
 ```
 
-By default to authenticate you need to call the `login` function. However, there are two options available to make the adapter automatically authenticate. You can pass `login-required` or `check-sso` to the init function. `login-required`will authenticate the client if the user is logged-in to Keycloak or display the login page if not. `check-sso` will only authenticate the client if the user is already logged-in, if the user is not logged-in the browser will be redirected back to the application and remain unauthenticated.
+默认情况下，您需要调用`login`函数进行身份验证。 但是，有两个选项可用于使适配器自动进行身份验证。 您可以将`login-required`或`check-sso`传递给init函数。 如果用户登录到Keycloak，则`login-required`将对客户端进行身份验证，否则将显示登录页面。 `check-sso`将仅在用户已登录时验证客户端，如果用户未登录，则浏览器将被重定向回应用程序并保持未经身份验证。
 
-To enable `login-required` set `onLoad` to `login-required` and pass to the init method:
+要启用`login-required`，请将`onLoad`设置为`login-required`并传递给init方法：
 
-```
+```javascript
 keycloak.init({ onLoad: 'login-required' })
 ```
 
-After the user is authenticated the application can make requests to RESTful services secured by Keycloak by including the bearer token in the `Authorization` header. For example:
+在对用户进行身份验证之后，应用程序可以通过在`Authorization`标头中包含承载令牌来向Keycloak保护对RESTful服务的请求。 例如：
 
-```
+```javascript
 var loadData = function () {
     document.getElementById('username').innerText = keycloak.subject;
 
@@ -3140,7 +3140,7 @@ var loadData = function () {
 
 One thing to keep in mind is that the access token by default has a short life expiration so you may need to refresh the access token prior to sending the request. You can do this by the `updateToken` method. The `updateToken` method returns a promise object which makes it easy to invoke the service only if the token was successfully refreshed and for example display an error to the user if it wasn’t. For example:
 
-```
+```javascript
 keycloak.updateToken(30).success(function() {
     loadData();
 }).error(function() {
@@ -3148,239 +3148,239 @@ keycloak.updateToken(30).success(function() {
 });
 ```
 
-#### 2.2.1. Session Status iframe {#Session_Status_iframe}
-By default, the JavaScript adapter creates a hidden iframe that is used to detect if a Single-Sign Out has occurred. This does not require any network traffic, instead the status is retrieved by looking at a special status cookie. This feature can be disabled by setting `checkLoginIframe: false` in the options passed to the `init` method.
+#### 2.2.1. 会话状态iframe {#Session_Status_iframe}
+默认情况下，JavaScript适配器会创建一个隐藏的iframe，用于检测是否已发生单一注销。 这不需要任何网络流量，而是通过查看特殊状态cookie来检索状态。 可以通过在传递给`init`方法的选项中设置`checkLoginIframe:false`来禁用此功能。
 
-You should not rely on looking at this cookie directly. Its format can change and it’s also associated with the URL of the Keycloak server, not your application.
+你不应该直接看这个cookie。 它的格式可以更改，它也与Keycloak服务器的URL相关联，而不是与您的应用程序相关联。
 
-#### 2.2.2. Implicit and Hybrid Flow {#Implicit_and_Hybrid_Flow}
-By default, the JavaScript adapter uses the [Authorization Code](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth) flow.
+#### 2.2.2. 隐式和混合流 {#Implicit_and_Hybrid_Flow}
+默认情况下，JavaScript适配器使用[授权代码](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth) 流程。
 
-With this flow the Keycloak server returns an authorization code, not an authentication token, to the application. The JavaScript adapter exchanges the `code` for an access token and a refresh token after the browser is redirected back to the application.
+通过此流程，Keycloak服务器向应用程序返回授权代码，而不是身份验证令牌。 在将浏览器重定向回应用程序后，JavaScript适配器会交换访问令牌和刷新令牌的`code`。
 
-Keycloak also supports the [Implicit](https://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth) flow where an access token is sent immediately after successful authentication with Keycloak. This may have better performance than standard flow, as there is no additional request to exchange the code for tokens, but it has implications when the access token expires.
+Keycloak还支持[Implicit](https://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth) 流程，其中在使用Keycloak成功进行身份验证后立即发送访问令牌。 这可能比标准流具有更好的性能，因为没有额外的请求来交换令牌的代码，但是当访问令牌到期时它会产生影响。
 
-However, sending the access token in the URL fragment can be a security vulnerability. For example the token could be leaked through web server logs and or browser history.
+但是，在URL片段中发送访问令牌可能是一个安全漏洞。 例如，令牌可以通过Web服务器日志和/或浏览器历史记录泄露。
 
-To enable implicit flow, you need to enable the `Implicit Flow Enabled` flag for the client in the Keycloak Administration Console. You also need to pass the parameter `flow` with value `implicit` to `init` method:
+要启用隐式流，您需要在Keycloak管理控制台中为客户端启用`Implicit Flow Enabled`标志。 您还需要将值为`implicit`的参数`flow`传递给`init`方法：
 
-```
+```javascript
 keycloak.init({ flow: 'implicit' })
 ```
 
-One thing to note is that only an access token is provided and there is no refresh token. This means that once the access token has expired the application has to do the redirect to the Keycloak again to obtain a new access token.
+需要注意的一点是，只提供了访问令牌，并且没有刷新令牌。 这意味着一旦访问令牌到期，应用程序必须再次重定向到Keycloak以获取新的访问令牌。
 
-Keycloak also supports the [Hybrid](https://openid.net/specs/openid-connect-core-1_0.html#HybridFlowAuth) flow.
+Keycloak还支持[Hybrid](https://openid.net/specs/openid-connect-core-1_0.html#HybridFlowAuth) 流程。
 
-This requires the client to have both the `Standard Flow Enabled` and `Implicit Flow Enabled` flags enabled in the admin console. The Keycloak server will then send both the code and tokens to your application. The access token can be used immediately while the code can be exchanged for access and refresh tokens. Similar to the implicit flow, the hybrid flow is good for performance because the access token is available immediately. But, the token is still sent in the URL, and the security vulnerability mentioned earlier may still apply.
+这要求客户端在管理控制台中启用`Standard Flow Enabled`和`Implicit Flow Enabled`标志。 然后Keycloak服务器将代码和令牌发送到您的应用程序。 可以立即使用访问令牌，同时可以交换代码以访问和刷新令牌。 与隐式流类似，混合流有利于提高性能，因为访问令牌可立即使用。 但是，令牌仍然在URL中发送，前面提到的安全漏洞可能仍然适用。
 
-One advantage in the Hybrid flow is that the refresh token is made available to the application.
+混合流程的一个优点是刷新令牌可供应用程序使用。
 
-For the Hybrid flow, you need to pass the parameter `flow` with value `hybrid` to the `init` method:
+对于Hybrid流，您需要将值为`hybrid`的参数`flow`传递给`init`方法：
 
-```
+```javascript
 keycloak.init({ flow: 'hybrid' })
 ```
 
-#### 2.2.3. Hybrid Apps with Cordova   {#Hybrid_Apps_with_Cordova}
-Keycloak support hybrid mobile apps developed with [Apache Cordova](https://cordova.apache.org/). The Javascript adapter has two modes for this: `cordova` and `cordova-native`:
+#### 2.2.3. 与Cordova的混合应用程序   {#Hybrid_Apps_with_Cordova}
+Keycloak支持使用[Apache Cordova](https://cordova.apache.org/)开发的混合移动应用程序。 Javascript适配器有两种模式：`cordova`和`cordova-native`：
 
-The default is cordova, which the adapter will automatically select if no adapter type has been configured and window.cordova is present. When logging in, it will open an [InApp Browser](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-inappbrowser/) that lets the user interact with Keycloak and afterwards returns to the app by redirecting to `http://localhost`. Because of this, you must whitelist this URL as a valid redirect-uri in the client configuration section of the Administration Console.
+默认值为cordova，如果未配置适配器类型且window.cordova存在，则适配器将自动选择。 登录时，它将打开[InApp浏览器](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-inappbrowser/)，让用户与Keycloak交互，然后返回到app通过重定向到`http://localhost`。 因此，您必须将此URL列入白名单，作为管理控制台的客户端配置部分中的有效redirect-uri。
 
-While this mode is easy to setup, it also has some disadvantages: * The InApp-Browser is a browser embedded in the app and is not the phone’s default browser. Therefore it will have different settings and stored credentials will not be available. * The InApp-Browser might also be slower, especially when rendering more complex themes. * There are security concerns to consider, before using this mode, such as that it is possible for the app to gain access to the credentials of the user, as it has full control of the browser rendering the login page, so do not allow its use in apps you do not trust.
+虽然这种模式易于设置，但它也有一些缺点：*InApp-Browser是嵌入在应用程序中的浏览器，不是手机的默认浏览器。 因此，它将具有不同的设置，并且存储的凭据将不可用. * InApp-Browser可能也会更慢，尤其是在渲染更复杂的主题时。 * 在使用此模式之前，需要考虑安全问题，例如应用程序可以访问用户的凭据，因为它可以完全控制浏览器呈现登录页面，因此不要允许 在您不信任的应用中使用。
 
-Use this example app to help you get started: <https://github.com/keycloak/keycloak/tree/master/examples/cordova>
+使用此示例应用程序可帮助您入门：<https://github.com/keycloak/keycloak/tree/master/examples/cordova>
 
-The alternative mode `cordova-nativei` takes a different approach. It opens the login page using the system’s browser. After the user has authenticated, the browser redirects back into the app using a special URL. From there, the Keycloak adapter can finish the login by reading the code or token from the URL.
+替代模式`cordova-nativei`采用不同的方法。 它使用系统的浏览器打开登录页面。 用户通过身份验证后，浏览器会使用特殊URL重定向回应用程序。 从那里，Keycloak适配器可以通过从URL读取代码或令牌来完成登录。
 
-You can activate the native mode by passing the adapter type `cordova-native` to the `init` method:
+您可以通过将适配器类型`cordova-native`传递给`init`方法来激活本机模式：
 
-```
+```javascript
 keycloak.init({ adapter: 'cordova-native' })
 ```
 
-This adapter required two additional plugins:
+此适配器需要两个额外的插件：
 
-- [cordova-plugin-browsertab](https://github.com/google/cordova-plugin-browsertab): allows the app to open webpages in the system’s browser
-- [cordova-plugin-deeplinks](https://github.com/e-imaxina/cordova-plugin-deeplinks): allow the browser to redirect back to your app by special URLs
+- [cordova-plugin-browsertab](https://github.com/google/cordova-plugin-browsertab): 允许该应用在系统浏览器中打开网页
+- [cordova-plugin-deeplinks](https://github.com/e-imaxina/cordova-plugin-deeplinks): 允许浏览器通过特殊网址重定向回您的应用
 
-The technical details for linking to an app differ on each plattform and special setup is needed. Please refer to the Android and iOS sections of the [deeplinks plugin documentation](https://github.com/e-imaxina/cordova-plugin-deeplinks/blob/master/README.md) for further instructions.
+链接到应用程序的技术细节在每个平台上都有所不同，需要进行特殊设置。 有关详细说明，请参阅[deeplinks插件文档](https://github.com/e-imaxina/cordova-plugin-deeplinks/blob/master/README.md)的Android和iOS部分。
 
-There are different kinds of links for opening apps: custom schemes (i.e. `myapp://login` or `android-app://com.example.myapp/https/example.com/login`) and [Universal Links (iOS)](https://developer.apple.com/ios/universal-links/)) / [Deep Links (Android)](https://developer.android.com/training/app-links/deep-linking). While the former are easier to setup and tend to work more reliably, the later offer extra security as they are unique and only the owner of a domain can register them. Custom-URLs are deprecated on iOS. We recommend that you use universal links, combined with a fallback site with a custom-url link on it for best reliability.
+打开应用程序有不同类型的链接:自定义方案(即`myapp://login`或`android-app://com.example.myapp/https/example.com/login`)和[Universal Links(iOS) )]((https://developer.apple.com/ios/universal-links/))/ [Deep Links(Android)](https://developer.android.com/training/app-links/deep-linking). 虽然前者更容易设置并且更容易工作,但后者提供了额外的安全性,因为它们是唯一的,只有域的所有者才能注册它们. iOS上不推荐使用自定义网址. 我们建议您使用通用链接,并在其上附带自定义网址链接的备用网站,以获得最佳可靠性.
 
-Furthermore, we recommend the following steps to improve compatibility with the Keycloak Adapter:
+此外，我们建议采用以下步骤来改善与Keycloak适配器的兼容性：
 
-- Universal Links on iOS seem to work more reliably with `response-mode` set to `query`
-- To prevent Android from opening a new instance of your app on redirect add the following snippet to `config.xml`:
+- 当`response-mode`设置为`query`时，iOS上的Universal Links似乎更可靠
+- 为防止Android在重定向上打开您的应用的新实例，请将以下代码段添加到`config.xml`：
 
-```
+```xml
 <preference name="AndroidLaunchMode" value="singleTask" />
 ```
 
-There is an example app that shows how to use the native-mode: <https://github.com/keycloak/keycloak/tree/master/examples/cordova-native>
+有一个示例应用程序，显示如何使用本机模式：<https://github.com/keycloak/keycloak/tree/master/examples/cordova-native>
 
-#### 2.2.4. Earlier Browsers {#Earlier_Browsers}
-The JavaScript adapter depends on Base64 (window.btoa and window.atob), HTML5 History API and optionally the Promise API. If you need to support browsers that do not have these available (for example, IE9) you need to add polyfillers.
+#### 2.2.4. 早期的浏览器 {#Earlier_Browsers}
+JavaScript适配器依赖于Base64（window.btoa和window.atob），HTML5 History API和可选的Promise API。 如果您需要支持那些没有这些的浏览器（例如，IE9），则需要添加polyfillers。
 
-Example polyfill libraries:
+示例polyfill库：
 
 - Base64 - <https://github.com/davidchambers/Base64.js>
 - HTML5 History - <https://github.com/devote/HTML5-History-API>
 - Promise - <https://github.com/stefanpenner/es6-promise>
 
-#### 2.2.5. JavaScript Adapter Reference {#JavaScript_Adapter_Reference}
-##### Constructor {#Constructor}
-```
+#### 2.2.5. JavaScript适配器参考 {#JavaScript_Adapter_Reference}
+##### 构造函数 {#Constructor}
+```javascript
 new Keycloak();
 new Keycloak('http://localhost/keycloak.json');
 new Keycloak({ url: 'http://localhost/auth', realm: 'myrealm', clientId: 'myApp' });
 ```
 
-##### Properties {#Properties}
+##### 属性 {#Properties}
 - authenticated
 
-  Is `true` if the user is authenticated, `false` otherwise.
+  如果用户通过身份验证，则为`true`，否则为`false`。
 
 - token
 
-  The base64 encoded token that can be sent in the `Authorization` header in requests to services.
+  base64编码的令牌，可以在对服务的请求中的`Authorization`头中发送。
 
 - tokenParsed
 
-  The parsed token as a JavaScript object.
+  解析后的令牌作为JavaScript对象。
 
 - subject
 
-  The user id.
+  用户ID。
 
 - idToken
 
-  The base64 encoded ID token.
+  base64编码的ID令牌。
 
 - idTokenParsed
 
-  The parsed id token as a JavaScript object.
+  解析的id令牌作为JavaScript对象。
 
 - realmAccess
 
-  The realm roles associated with the token.
+  与令牌关联的域角色。
 
 - resourceAccess
 
-  The resource roles associated with the token.
+  与令牌关联的资源角色。
 
 - refreshToken
 
-  The base64 encoded refresh token that can be used to retrieve a new token.
+  base64编码的刷新令牌，可用于检索新令牌。
 
 - refreshTokenParsed
 
-  The parsed refresh token as a JavaScript object.
+  解析后的刷新令牌作为JavaScript对象。
 
 - timeSkew
 
-  The estimated time difference between the browser time and the Keycloak server in seconds. This value is just an estimation, but is accurate enough when determining if a token is expired or not.
+  浏览器时间与Keycloak服务器之间的估计时间差，以秒为单位。 此值只是一个估计值，但在确定令牌是否已过期时足够准确。
 
 - responseMode
 
-  Response mode passed in init (default value is fragment).
+  在init中传递的响应模式（默认值为fragment）。
 
 - flow
 
-  Flow passed in init.
+  流程在init中传递。
 
 - adapter
 
-  Allows you to override the way that redirects and other browser-related functions will be handled by the library. Available options:"default" - the library uses the browser api for redirects (this is the default)"cordova" - the library will try to use the InAppBrowser cordova plugin to load keycloak login/registration pages (this is used automatically when the library is working in a cordova ecosystem)"cordova-native" - the library tries to open the login and registration page using the phone’s system browser using the BrowserTabs cordova plugin. This requires extra setup for redirecting back to the app (see [Hybrid Apps with Cordova](https://www.keycloak.org/docs/latest/securing_apps/index.html#hybrid-apps-with-cordova)).custom - allows you to implement a custom adapter (only for advanced use cases)
+  允许您覆盖重定向的方式以及库处理其他与浏览器相关的函数。 可用选项：“default(默认)” - 库使用浏览器api进行重定向（这是默认设置）“cordova” - 库将尝试使用InAppBrowser cordova插件加载keycloak登录/注册页面（这在库时自动使用） 正在使用Cordova生态系统）“cordova-native” - 图书馆尝试使用BrowserTabs cordova插件使用手机的系统浏览器打开登录和注册页面。 这需要额外设置以重定向回应用程序(请参阅[使用Cordova的混合应用程序](https://www.keycloak.org/docs/latest/securing_apps/index.html#hybrid-apps-with-cordova)).custom - 允许您实现自定义适配器（仅适用于高级用例）
 
 - responseType
 
-  Response type sent to Keycloak with login requests. This is determined based on the flow value used during initialization, but can be overridden by setting this value.
+  响应类型通过登录请求发送到Keycloak。 这是根据初始化期间使用的流量值确定的，但可以通过设置此值来覆盖。
 
-##### Methods {#Methods}
-###### init(options) {#init_options_}
-Called to initialize the adapter.
+##### 方法 {#Methods}
+###### init（选项） {#init_options_}
+调用初始化适配器。
 
-Options is an Object, where:
+选项是一个对象，其中：
 
-- onLoad - Specifies an action to do on load. Supported values are 'login-required' or 'check-sso'.
-- token - Set an initial value for the token.
-- refreshToken - Set an initial value for the refresh token.
-- idToken - Set an initial value for the id token (only together with token or refreshToken).
-- timeSkew - Set an initial value for skew between local time and Keycloak server in seconds (only together with token or refreshToken).
-- checkLoginIframe - Set to enable/disable monitoring login state (default is true).
-- checkLoginIframeInterval - Set the interval to check login state (default is 5 seconds).
-- responseMode - Set the OpenID Connect response mode send to Keycloak server at login request. Valid values are query or fragment . Default value is fragment, which means that after successful authentication will Keycloak redirect to javascript application with OpenID Connect parameters added in URL fragment. This is generally safer and recommended over query.
-- flow - Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
-- promiseType - If set to `native` all methods returning a promise will return a native JavaScript promise. If not set will return Keycloak specific promise objects.
+- onLoad - 指定要在加载时执行的操作。 支持的值为`login-required`或`check-sso`。
+- token - 设置令牌的初始值。
+- refreshToken - 设置刷新令牌的初始值。
+- idToken - 设置id令牌的初始值（仅与token或refreshToken一起）。
+- timeSkew - 在几秒钟内设置本地时间和Keycloak服务器之间的偏差初始值（仅与token或refreshToken一起）。
+- checkLoginIframe - 设置为启用/禁用监控登录状态（默认为true）。
+- checkLoginIframeInterval - 设置检查登录状态的时间间隔（默认为5秒）。
+- responseMode - 将OpenID Connect响应模式设置为在登录请求时发送到Keycloak服务器。 有效值是查询或片段。 默认值为fragment，这意味着在成功进行身份验证后，Keycloak将重定向到javascript应用程序，并在URL片段中添加OpenID Connect参数。 这通常比查询更安全和推荐。
+- flow - 设置OpenID Connect流程。 有效值是standard(标准值)，implicit (隐式值)或hybrid(混合值)。
+- promiseType - 如果设置为`native`，则返回promise的所有方法都将返回本机JavaScript promise。 如果未设置，将返回Keycloak特定的promise对象。
 
-Returns promise to set functions to be invoked on success or error.
+返回promise设置在成功或错误时调用的函数。
 
-###### login(options) {#login_options_}
-Redirects to login form on (options is an optional object with redirectUri and/or prompt fields).
+###### login(选项) {#login_options_}
+重定向到登录表单（选项是带有redirectUri和/或提示字段的可选对象）。
 
-Options is an Object, where:
+选项是一个对象，其中：
 
-- redirectUri - Specifies the uri to redirect to after login.
-- prompt - This parameter allows to slightly customize the login flow on the Keycloak server side. For example enforce displaying the login screen in case of value `login`. See [Parameters Forwarding Section](https://www.keycloak.org/docs/latest/securing_apps/index.html#_params_forwarding) for the details and all the possible values of the `prompt` parameter.
-- maxAge - Used just if user is already authenticated. Specifies maximum time since the authentication of user happened. If user is already authenticated for longer time than `maxAge`, the SSO is ignored and he will need to re-authenticate again.
-- loginHint - Used to pre-fill the username/email field on the login form.
-- scope - Used to forward the scope parameter to the Keycloak login endpoint. Use a space-delimited list of scopes. Those typically reference [Client scopes](https://www.keycloak.org/docs/6.0/server_admin/#_client_scopes) defined on particular client. Note that the scope `openid` will be always be added to the list of scopes by the adapter. For example, if you enter the scope options `address phone`, then the request to Keycloak will contain the scope parameter `scope=openid address phone`.
-- idpHint - Used to tell Keycloak to skip showing the login page and automatically redirect to the specified identity provider instead. More info in the [Identity Provider documentation](https://www.keycloak.org/docs/6.0/server_admin/#_client_suggested_idp).
-- action - If value is 'register' then user is redirected to registration page, otherwise to login page.
-- locale - Sets the 'ui_locales' query param in compliance with section 3.1.2.1 of the OIDC 1.0 specification.
-- kcLocale - Specifies the desired Keycloak locale for the UI. This differs from the locale param in that it tells the Keycloak server to set a cookie and update the user’s profile to a new preferred locale.
-- cordovaOptions - Specifies the arguments that are passed to the Cordova in-app-browser (if applicable). Options `hidden`and `location` are not affected by these arguments. All available options are defined at <https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-inappbrowser/>. Example of use: `{ zoom: "no", hardwareback: "yes" }`;
+- redirectUri - 指定登录后要重定向到的URI。
+- prompt - 此参数允许稍微自定义Keycloak服务器端的登录流程。 例如，在值为`login`的情况下强制显示登录屏幕。 有关`prompt`参数的详细信息和所有可能值，请参见[参数转发部分](https://www.keycloak.org/docs/latest/securing_apps/index.html#_params_forwarding) 。
+- maxAge - 仅在用户已经过身份验证时使用。 指定自用户身份验证以来的最长时间。 如果用户的身份验证时间比`maxAge`长，则会忽略SSO，并且需要重新进行身份验证。
+- loginHint - 用于预填充登录表单上的用户名/电子邮件字段。
+- scope - 用于将scope参数转发到Keycloak登录端点。 使用以空格分隔的范围列表。 这些通常引用在特定客户端上定义的[客户端范围](https://www.keycloak.org/docs/6.0/server_admin/#_client_scopes)。 请注意，范围`openid`将始终由适配器添加到作用域列表中。 例如，如果输入范围选项`address phone`，则对Keycloak的请求将包含范围参数`scope=openid address phone`。
+- idpHint - 用于告诉Keycloak跳过显示登录页面并自动重定向到指定的身份提供者。 [身份提供商文档]中的更多信息(https://www.keycloak.org/docs/6.0/server_admin/#_client_suggested_idp)。
+- action - 如果值为'register'，则将用户重定向到注册页面，否则重定向到登录页面。
+- locale - 根据OIDC 1.0规范的3.1.2.1节设置'ui_locales'查询参数。
+- kcLocale - 为UI指定所需的Keycloak语言环境。 这与locale param的不同之处在于它告诉Keycloak服务器设置cookie并将用户的配置文件更新为新的首选语言环境。
+- cordovaOptions - 指定传递给Cordova应用程序内浏览器的参数（如果适用）。 选项`hidden`和`location`不受这些参数的影响。 所有可用选项均在<https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-inappbrowser/>中定义。 使用示例：`{ zoom: "no", hardwareback: "yes" }`;
 
-###### createLoginUrl(options) {#createLoginUrl_options_}
-Returns the URL to login form on (options is an optional object with redirectUri and/or prompt fields).
+###### createLoginUrl(选项) {#createLoginUrl_options_}
+返回登录表单的URL（选项是带有redirectUri和/或提示字段的可选对象）。
 
-Options is an Object, which supports same options like the function `login` .
+Options是一个Object，它支持相同的选项，如函数`login`。
 
-###### logout(options) {#logout_options_}
-Redirects to logout.
+###### logout(选项) {#logout_options_}
+重定向到注销。
 
-Options is an Object, where:
+选项是一个对象，其中：
 
-- redirectUri - Specifies the uri to redirect to after logout.
+- redirectUri - 指定注销后要重定向到的URI。
 
-###### createLogoutUrl(options) {#createLogoutUrl_options_}
-Returns the URL to logout the user.
+###### createLogoutUrl(选项) {#createLogoutUrl_options_}
+返回用于注销用户的URL。
 
-Options is an Object, where:
+选项是一个对象，其中：
 
-- redirectUri - Specifies the uri to redirect to after logout.
+- redirectUri - 指定注销后要重定向到的URI。
 
-###### register(options) {#register_options_}
-Redirects to registration form. Shortcut for login with option action = 'register'
+###### register(选项) {#register_options_}
+重定向到注册表单。 使用选项 action = 'register'登录的快捷方式
 
-Options are same as for the login method but 'action' is set to 'register'
+选项与登录方法相同，但'action'设置为'register'
 
-###### createRegisterUrl(options) {#createRegisterUrl_options_}
-Returns the url to registration page. Shortcut for createLoginUrl with option action = 'register'
+###### createRegisterUrl(选项) {#createRegisterUrl_options_}
+返回注册页面的url。 带有选项action = 'register'的createLoginUrl的快捷方式
 
-Options are same as for the createLoginUrl method but 'action' is set to 'register'
+选项与createLoginUrl方法相同，但'action'设置为'register'
 
 ###### accountManagement() {#accountManagement__}
-Redirects to the Account Management Console.
+重定向到帐户管理控制台。
 
 ###### createAccountUrl() {#createAccountUrl__}
-Returns the URL to the Account Management Console.
+返回帐户管理控制台的URL。
 
 ###### hasRealmRole(role) {#hasRealmRole_role_}
-Returns true if the token has the given realm role.
+如果令牌具有给定的域角色，则返回true。
 
 ###### hasResourceRole(role, resource) {#hasResourceRole_role,_resource_}
-Returns true if the token has the given role for the resource (resource is optional, if not specified clientId is used).
+如果令牌具有资源的给定角色，则返回true（如果未使用指定的clientId，则资源是可选的）。
 
 ###### loadUserProfile() {#loadUserProfile__}
-Loads the users profile.
+加载用户个人资料。
 
-Returns promise to set functions to be invoked if the profile was loaded successfully, or if the profile could not be loaded.
+如果成功加载配置文件，或者无法加载配置文件，则返回promise设置要调用的函数。
 
-For example:
+例如：
 
-```
+```javascript
 keycloak.loadUserProfile().success(function(profile) {
         alert(JSON.stringify(profile, null, "  "));
     }).error(function() {
@@ -3389,14 +3389,14 @@ keycloak.loadUserProfile().success(function(profile) {
 ```
 
 ###### isTokenExpired(minValidity) {#isTokenExpired_minValidity_}
-Returns true if the token has less than minValidity seconds left before it expires (minValidity is optional, if not specified 0 is used).
+如果令牌在到期之前的剩余时间小于minValidity秒，则返回true（minValidity是可选的，如果未指定0则使用）。
 
 ###### updateToken(minValidity) {#updateToken_minValidity_}
-If the token expires within minValidity seconds (minValidity is optional, if not specified 5 is used) the token is refreshed. If the session status iframe is enabled, the session status is also checked.
+如果令牌在minValidity秒内到期（minValidity是可选的，如果未指定5，则使用）令牌将被刷新。 如果启用了会话状态iframe，则还会检查会话状态。
 
-Returns promise to set functions that can be invoked if the token is still valid, or if the token is no longer valid. For example:
+如果令牌仍然有效，或者令牌不再有效，则返回承诺设置可以调用的函数。 例如：
 
-```
+```javascript
 keycloak.updateToken(5).success(function(refreshed) {
         if (refreshed) {
             alert('Token was successfully refreshed');
@@ -3409,31 +3409,30 @@ keycloak.updateToken(5).success(function(refreshed) {
 ```
 
 ###### clearToken() {#clearToken__}
-Clear authentication state, including tokens. This can be useful if application has detected the session was expired, for example if updating token fails.
+清除身份验证状态，包括令牌。 如果应用程序检测到会话已过期，例如更新令牌失败，则此功能非常有用。
 
-Invoking this results in onAuthLogout callback listener being invoked.
+调用此结果会导致调用onAuthLogout回调侦听器。
 
 ##### Callback Events {#Callback_Events}
-The adapter supports setting callback listeners for certain events.
+适配器支持为某些事件设置回调侦听器。
 
-For example:
+例如：
 
-```
+```javascript
 keycloak.onAuthSuccess = function() { alert('authenticated'); }
 ```
 
-The available events are:
+可用的事件是：
 
-- onReady(authenticated) - Called when the adapter is initialized.
-- onAuthSuccess - Called when a user is successfully authenticated.
-- onAuthError - Called if there was an error during authentication.
-- onAuthRefreshSuccess - Called when the token is refreshed.
-- onAuthRefreshError - Called if there was an error while trying to refresh the token.
-- onAuthLogout - Called if the user is logged out (will only be called if the session status iframe is enabled, or in Cordova mode).
-- onTokenExpired - Called when the access token is expired. If a refresh token is available the token can be refreshed with updateToken, or in cases where it is not (that is, with implicit flow) you can redirect to login screen to obtain a new access token.
+- onReady(authenticated) - 初始化适配器时调用。
+- onAuthSuccess - 在成功验证用户时调用。
+- onAuthError - 如果在身份验证期间出错，则调用。
+- onAuthRefreshSuccess - 刷新令牌时调用。
+- onAuthRefreshError - 如果在尝试刷新令牌时出现错误，则调用此方法。
+- onAuthLogout - 如果用户已注销，则调用（仅在启用会话状态iframe时或在Cordova模式下调用）。
+- onTokenExpired - 访问令牌过期时调用。 如果刷新令牌可用，则可以使用updateToken刷新令牌，或者在不使用updateToken的情况下（即使用implicit flow<隐式流>），您可以重定向到登录屏幕以获取新的访问令牌。
 
 ### 2.3. Node.js 适配器 {#Node_js_Adapter}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/nodejs-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/oidc/nodejs-adapter.adoc)
 
 Keycloak provides a Node.js adapter built on top of [Connect](https://github.com/senchalabs/connect) to protect server-side JavaScript apps - the goal was to be flexible enough to integrate with frameworks like [Express.js](https://expressjs.com/).
 
