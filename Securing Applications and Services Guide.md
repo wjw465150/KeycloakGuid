@@ -4259,20 +4259,17 @@ Keycloak支持客户端使用密钥或公钥/私钥进行身份验证。
 
 ## 3. SAML {#SAML}
 
-This section describes how you can secure applications and services with SAML using either Keycloak client adapters or generic SAML provider libraries.
+本节介绍如何使用Keycloak客户端适配器或通用SAML提供程序库使用SAML保护应用程序和服务。
 
 ### 3.1. Java 适配器 {#Java_Adapters}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/java-adapters.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/java-adapters.adoc)
 
-Keycloak comes with a range of different adapters for Java application. Selecting the correct adapter depends on the target platform.
+Keycloak为Java应用程序提供了一系列不同的适配器。 选择正确的适配器取决于目标平台。
 
-#### 3.1.1. General Adapter Config {#General_Adapter_Config}
+#### 3.1.1. 通用适配器配置 {#General_Adapter_Config}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config.adoc)
+Keycloak支持的每个SAML客户端适配器都可以通过简单的XML文本文件进行配置。 这可能是这样的：
 
-Each SAML client adapter supported by Keycloak can be configured by a simple XML text file. This is what one might look like:
-
-```
+```xml
 <keycloak-saml-adapter xmlns="urn:keycloak:saml:adapter"
                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                        xsi:schemaLocation="urn:keycloak:saml:adapter https://www.keycloak.org/schema/keycloak_saml_adapter_1_10.xsd">
@@ -4320,14 +4317,13 @@ Each SAML client adapter supported by Keycloak can be configured by a simple XML
 </keycloak-saml-adapter>
 ```
 
-Some of these configuration switches may be adapter specific and some are common across all adapters. For Java adapters you can use `${…}` enclosure as System property replacement. For example `${jboss.server.config.dir}`.
+其中一些配置开关可能是适配器特定的，有些在所有适配器上都是通用的。 对于Java适配器，您可以使用`${…}`enclosure作为System属性替换。 例如`${jboss.server.config.dir}`。
 
-##### SP Element {#SP_Element}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/sp_element.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/sp_element.adoc)
+##### SP元素 {#SP_Element}
 
-Here is the explanation of the SP element attributes:
+以下是SP元素属性的说明：
 
-```
+```xml
 <SP entityID="sp"
     sslPolicy="ssl"
     nameIDPolicyFormat="format"
@@ -4340,44 +4336,43 @@ Here is the explanation of the SP element attributes:
 
 - entityID
 
-  This is the identifier for this client. The IdP needs this value to determine who the client is that is communicating with it. This setting is *REQUIRED*.
+  这是此客户端的标识符。 IdP需要此值来确定与之通信的客户端。 此设置为*REQUIRED*。
 
 - sslPolicy
 
-  This is the SSL policy the adapter will enforce. Valid values are: `ALL`, `EXTERNAL`, and `NONE`. For `ALL`, all requests must come in via HTTPS. For `EXTERNAL`, only non-private IP addresses must come over the wire via HTTPS. For `NONE`, no requests are required to come over via HTTPS. This setting is *OPTIONAL*. Default value is `EXTERNAL`.
+  这是适配器将强制执行的SSL策略。 有效值为：`ALL`，`EXTERNAL`和`NONE`。 对于`ALL`，所有请求必须通过HTTPS进入。 对于`EXTERNAL`，只有非私有IP地址必须通过HTTPS连接。 对于`NONE`，不需要通过HTTPS接收请求。 此设置为*OPTIONAL*。 默认值为`EXTERNAL`。
 
 - nameIDPolicyFormat
 
-  SAML clients can request a specific NameID Subject format. Fill in this value if you want a specific format. It must be a standard SAML format identifier: `urn:oasis:names:tc:SAML:2.0:nameid-format:transient`. This setting is *OPTIONAL*. By default, no special format is requested.
+  SAML客户端可以请求特定的NameID主题格式。 如果需要特定格式，请填写此值。 它必须是标准的SAML格式标识符：`urn:oasis:names:tc:SAML:2.0:nameid-format:transient`。 此设置为*OPTIONAL*。 默认情况下，不请求特殊格式。
 
 - forceAuthentication
 
-  SAML clients can request that a user is re-authenticated even if they are already logged in at the IdP. Set this to `true` to enable. This setting is *OPTIONAL*. Default value is `false`.
+  SAML客户端可以请求用户重新进行身份验证，即使他们已经在IdP登录也是如此。 将其设置为`true`以启用。 此设置为*OPTIONAL*。 默认值为`false`。
 
 - isPassive
 
-  SAML clients can request that a user is never asked to authenticate even if they are not logged in at the IdP. Set this to `true` if you want this. Do not use together with `forceAuthentication` as they are opposite. This setting is *OPTIONAL*. Default value is `false`.
+  SAML客户端可以请求永远不会要求用户进行身份验证，即使他们未在IdP登录也是如此。 如果你想要这个，请将其设置为`true`。 不要与`forceAuthentication`一起使用，因为它们相反。 此设置为*OPTIONAL*。 默认值为`false`。
 
 - turnOffChangeSessionIdOnLogin
 
-  The session ID is changed by default on a successful login on some platforms to plug a security attack vector. Change this to `true` to disable this. It is recommended you do not turn it off. Default value is `false`.
+  默认情况下，在某些平台上成功登录时会更改会话ID以插入安全攻击媒介。 将其更改为`true`以禁用此功能。 建议您不要将其关闭。 默认值为`false`。
 
 - autodetectBearerOnly
 
-  This should be set to *true* if your application serves both a web application and web services (e.g. SOAP or REST). It allows you to redirect unauthenticated users of the web application to the Keycloak login page, but send an HTTP `401` status code to unauthenticated SOAP or REST clients instead as they would not understand a redirect to the login page. Keycloak auto-detects SOAP or REST clients based on typical headers like `X-Requested-With`, `SOAPAction` or `Accept`. The default value is *false*.
+  如果您的应用程序同时提供Web应用程序和Web服务（例如SOAP或REST），则应将其设置为*true*。 它允许您将未经身份验证的Web应用程序用户重定向到Keycloak登录页面，但是将HTTP`401`状态代码发送给未经身份验证的SOAP或REST客户端，因为他们无法理解重定向到登录页面。 Keycloak基于典型的标题自动检测SOAP或REST客户端，如`X-Requested-With`，`SOAPAction`或`Accept`。 默认值为*false*。
 
 - logoutPage
 
-  This sets the page to display after logout. If the page is a full URL, such as `http://web.example.com/logout.html`, the user is redirected after logout to that page using the HTTP `302` status code. If a link without scheme part is specified, such as `/logout.jsp`, the page is displayed after logout, *regardless of whether it lies in a protected area according to security-constraint declarations in web.xml*, and the page is resolved relative to the deployment context root.
+  这会将页面设置为在注销后显示。 如果页面是完整的URL，例如`http://web.example.com/logout.html`，则在使用HTTP`302`状态代码注销到该页面后，将重定向用户。 如果指定了没有scheme部分的链接，例如`/ logout.jsp`，则在注销后会显示该页面， *根据web.xml中的安全性约束声明，它是否位于受保护区域中*，并且相对于部署上下文根解析页面。
 
-##### Service Provider Keys and Key Elements {#Service_Provider_Keys_and_Key_Elements}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/sp-keys.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/sp-keys.adoc)
+##### 服务提供商密钥和关键元素 {#Service_Provider_Keys_and_Key_Elements}
 
-If the IdP requires that the client application (or SP) sign all of its requests and/or if the IdP will encrypt assertions, you must define the keys used to do this. For client-signed documents you must define both the private and public key or certificate that is used to sign documents. For encryption, you only have to define the private key that is used to decrypt it.
+如果IdP要求客户端应用程序（或SP）签署其所有请求和/或IdP将加密断言，则必须定义用于执行此操作的密钥。 对于客户端签名的文档，您必须定义用于签署文档的私钥和公钥或证书。 对于加密，您只需定义用于解密它的私钥。
 
-There are two ways to describe your keys. They can be stored within a Java KeyStore or you can copy/paste the keys directly within `keycloak-saml.xml` in the PEM format.
+有两种方法可以描述您的密钥。 它们可以存储在Java KeyStore中，也可以直接在PEM格式的`keycloak-saml.xml`中复制/粘贴密钥。
 
-```
+```xml
         <Keys>
             <Key signing="true" >
                ...
@@ -4385,14 +4380,13 @@ There are two ways to describe your keys. They can be stored within a Java KeySt
         </Keys>
 ```
 
-The `Key` element has two optional attributes `signing` and `encryption`. When set to true these tell the adapter what the key will be used for. If both attributes are set to true, then the key will be used for both signing documents and decrypting encrypted assertions. You must set at least one of these attributes to true.
+`Key`元素有两个可选属性`signing`和`encryption`。 设置为true时，这些将告诉适配器密钥的用途。 如果两个属性都设置为true，则密钥将用于签名文档和解密加密断言。 您必须将这些属性中的至少一个设置为true。
 
-###### KeyStore element {#KeyStore_element}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/sp-keys/keystore_element.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/sp-keys/keystore_element.adoc)
+###### KeyStore元素 {#KeyStore_element}
 
-Within the `Key` element you can load your keys and certificates from a Java Keystore. This is declared within a `KeyStore` element.
+在`Key`元素中，您可以从Java Keystore加载密钥和证书。 这是在`KeyStore`元素中声明的。
 
-```
+```xml
         <Keys>
             <Key signing="true" >
                 <KeyStore resource="/WEB-INF/keystore.jks" password="store123">
@@ -4403,28 +4397,27 @@ Within the `Key` element you can load your keys and certificates from a Java Key
         </Keys>
 ```
 
-Here are the XML config attributes that are defined with the `KeyStore` element.
+以下是使用`KeyStore`元素定义的XML配置属性。
 
 - file
 
-  File path to the key store. This option is *OPTIONAL*. The file or resource attribute must be set.
+  密钥库的文件路径。 此选项为*OPTIONAL*。 必须设置文件或资源属性。
 
 - resource
 
-  WAR resource path to the KeyStore. This is a path used in method call to ServletContext.getResourceAsStream(). This option is *OPTIONAL*. The file or resource attribute must be set.
+  KeyStore的WAR资源路径。 这是对ServletContext.getResourceAsStream()的方法调用中使用的路径。 此选项为*OPTIONAL*。 必须设置文件或资源属性。
 
 - password
 
-  The password of the KeyStore. This option is *REQUIRED*.
+  KeyStore的密码。 此选项为*REQUIRED*。
 
-If you are defining keys that the SP will use to sign document, you must also specify references to your private keys and certificates within the Java KeyStore. The `PrivateKey` and `Certificate` elements in the above example define an `alias`that points to the key or cert within the keystore. Keystores require an additional password to access private keys. In the `PrivateKey` element you must define this password within a `password` attribute.
+如果要定义SP将用于签署文档的密钥，则还必须在Java KeyStore中指定对私钥和证书的引用。 上例中的`PrivateKey`和`Certificate`元素定义了一个指向密钥库中的密钥或证书的`alias`。 密钥库需要额外的密码才能访问私钥。 在`PrivateKey`元素中，您必须在`password`属性中定义此密码。
 
 ###### Key PEMS {#Key_PEMS}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/sp-keys/key_pems.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/sp-keys/key_pems.adoc)
 
-Within the `Key` element you declare your keys and certificates directly using the sub elements`PrivateKeyPem`, `PublicKeyPem`, and `CertificatePem`. The values contained in these elements must conform to the PEM key format. You usually use this option if you are generating keys using `openssl` or similar command line tool.
+在`Key`元素中，您使用子元素`PrivateKeyPem`，`PublicKeyPem`和`CertificatePem`直接声明您的键和证书。 这些元素中包含的值必须符合PEM密钥格式。 如果使用`openssl`或类似的命令行工具生成密钥，通常使用此选项。
 
-```
+```xml
 <Keys>
    <Key signing="true">
       <PrivateKeyPem>
@@ -4437,12 +4430,11 @@ Within the `Key` element you declare your keys and certificates directly using t
 </Keys>
 ```
 
-##### SP PrincipalNameMapping element {#SP_PrincipalNameMapping_element}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/sp_principalname_mapping_element.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/sp_principalname_mapping_element.adoc)
+##### SP PrincipalNameMapping 元素 {#SP_PrincipalNameMapping_element}
 
-This element is optional. When creating a Java Principal object that you obtain from methods such as `HttpServletRequest.getUserPrincipal()`, you can define what name is returned by the `Principal.getName()` method.
+此元素是可选的。 在创建从诸如`HttpServletRequest.getUserPrincipal()`之类的方法获得的Java Principal对象时，可以定义`Principal.getName()`方法返回的名称。
 
-```
+```xml
 <SP ...>
   <PrincipalNameMapping policy="FROM_NAME_ID"/>
 </SP>
@@ -4452,22 +4444,21 @@ This element is optional. When creating a Java Principal object that you obtain 
 </SP>
 ```
 
-The `policy` attribute defines the policy used to populate this value. The possible values for this attribute are:
+`policy`属性定义用于填充此值的策略。 此属性的可能值为：
 
 - FROM_NAME_ID
 
-  This policy just uses whatever the SAML subject value is. This is the default setting
+  此策略仅使用SAML主题值。 这是默认设置
 
 - FROM_ATTRIBUTE
 
-  This will pull the value from one of the attributes declared in the SAML assertion received from the server. You’ll need to specify the name of the SAML assertion attribute to use within the `attribute` XML attribute.
+  这将从服务器收到的SAML断言中声明的其中一个属性中提取值。 您需要指定要在`attribute` XML属性中使用的SAML断言属性的名称。
 
-##### RoleIdentifiers Element {#RoleIdentifiers_Element}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/roleidentifiers_element.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/roleidentifiers_element.adoc)
+##### RoleIdentifiers 元素 {#RoleIdentifiers_Element}
 
-The `RoleIdentifiers` element defines what SAML attributes within the assertion received from the user should be used as role identifiers within the Java EE Security Context for the user.
+`RoleIdentifiers`元素定义从用户接收的断言中的SAML属性应该用作用户的Java EE安全上下文中的角色标识符。
 
-```
+```xml
 <RoleIdentifiers>
      <Attribute name="Role"/>
      <Attribute name="member"/>
@@ -4475,14 +4466,13 @@ The `RoleIdentifiers` element defines what SAML attributes within the assertion 
 </RoleIdentifiers>
 ```
 
-By default `Role` attribute values are converted to Java EE roles. Some IdPs send roles using a `member` or `memberOf`attribute assertion. You can define one or more `Attribute` elements to specify which SAML attributes must be converted into roles.
+默认情况下，`Role`属性值将转换为Java EE角色。 一些IdP使用`member`或`memberOf`attribute断言发送角色。 您可以定义一个或多个`Attribute`元素，以指定必须将哪些SAML属性转换为角色。
 
-##### IDP Element {#IDP_Element}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/idp_element.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/idp_element.adoc)
+##### IDP 元素 {#IDP_Element}
 
-Everything in the IDP element describes the settings for the identity provider (authentication server) the SP is communicating with.
+IDP元素中的所有内容都描述了SP正在与之通信的身份提供者（身份验证服务器）的设置。
 
-```
+```xml
 <IDP entityID="idp"
      signaturesRequired="true"
      signatureAlgorithm="RSA_SHA1"
@@ -4491,72 +4481,70 @@ Everything in the IDP element describes the settings for the identity provider (
 </IDP>
 ```
 
-Here are the attribute config options you can specify within the `IDP` element declaration.
+以下是您可以在`IDP`元素声明中指定的属性配置选项。
 
 - entityID
 
-  This is the issuer ID of the IDP. This setting is *REQUIRED*.
+  这是IDP的发行者ID。 此设置为*REQUIRED*。
 
 - signaturesRequired
 
-  If set to `true`, the client adapter will sign every document it sends to the IDP. Also, the client will expect that the IDP will be signing any documents sent to it. This switch sets the default for all request and response types, but you will see later that you have some fine grain control over this. This setting is *OPTIONAL* and will default to `false`.
+  如果设置为`true`，则客户端适配器将对它发送给IDP的每个文档进行签名。 此外，客户将期望IDP将签署发送给它的任何文件。 此开关设置所有请求和响应类型的默认值，但稍后您将看到您对此有一些细粒度控制。 此设置为*OPTIONAL*，默认为`false`。
 
 - signatureAlgorithm
 
-  This is the signature algorithm that the IDP expects signed documents to use. Allowed values are: `RSA_SHA1`, `RSA_SHA256`, `RSA_SHA512`, and `DSA_SHA1`. This setting is *OPTIONAL* and defaults to `RSA_SHA256`.
+  这是IDP期望签名文档使用的签名算法。 允许的值为：`RSA_SHA1`，`RSA_SHA256`，`RSA_SHA512`和`DSA_SHA1`。 此设置为*OPTIONAL*，默认为`RSA_SHA256`。
 
 - signatureCanonicalizationMethod
 
-  This is the signature canonicalization method that the IDP expects signed documents to use. This setting is *OPTIONAL*. The default value is `http://www.w3.org/2001/10/xml-exc-c14n#` and should be good for most IDPs.
+  这是IDP期望签名文档使用的签名规范化方法。 此设置为*OPTIONAL*。 默认值为`http://www.w3.org/2001/10/xml-exc-c14n#`，对大多数IPDs应该是好的。
 
 - metadataUrl
 
-  The URL used to retrieve the IDP metadata, currently this is only used to pick up signing and encryption keys periodically which allow cycling of these keys on the IDP without manual changes on the SP side.
+  用于检索IDP元数据的URL，目前仅用于定期获取签名和加密密钥，允许在IDP上循环使用这些密钥，而无需在SP端手动更改。
 
-##### IDP SingleSignOnService sub element {#IDP_SingleSignOnService_sub_element}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/idp_singlesignonservice_subelement.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/idp_singlesignonservice_subelement.adoc)
+##### IDP SingleSignOnService 子元素 {#IDP_SingleSignOnService_sub_element}
 
-The `SingleSignOnService` sub element defines the login SAML endpoint of the IDP. The client adapter will send requests to the IDP formatted via the settings within this element when it wants to login.
+`SingleSignOnService`子元素定义IDP的登录SAML端点。 当客户端适配器要登录时，它将通过此元素中的设置向IDP发送请求。
 
-```
+```xml
 <SingleSignOnService signRequest="true"
                      validateResponseSignature="true"
                      requestBinding="post"
                      bindingUrl="url"/>
 ```
 
-Here are the config attributes you can define on this element:
+以下是您可以在此元素上定义的配置属性：
 
 - signRequest
 
-  Should the client sign authn requests? This setting is *OPTIONAL*. Defaults to whatever the IDP `signaturesRequired`element value is.
+  客户应该签署authn请求吗？ 此设置为*OPTIONAL*。 默认为IDP`ignaturesRequired`元素值。
 
 - validateResponseSignature
 
-  Should the client expect the IDP to sign the assertion response document sent back from an auhtn request? This setting *OPTIONAL*. Defaults to whatever the IDP `signaturesRequired` element value is.
+  客户是否希望IDP签署从auhtn请求发回的断言响应文档？ 此设置*OPTIONAL*。 默认为IDP`validateResponseSignature`元素值。
 
 - requestBinding
 
-  This is the SAML binding type used for communicating with the IDP. This setting is *OPTIONAL*. The default value is `POST`, but you can set it to `REDIRECT` as well.
+  这是用于与IDP通信的SAML绑定类型。 此设置为*OPTIONAL*。 默认值为`POST`，但您也可以将其设置为`REDIRECT`。
 
 - responseBinding
 
-  SAML allows the client to request what binding type it wants authn responses to use. The values of this can be `POST` or `REDIRECT`. This setting is *OPTIONAL*. The default is that the client will not request a specific binding type for responses.
+  SAML允许客户端请求它想要authn响应使用的绑定类型。 这个值可以是`POST`或`REDIRECT`。 此设置为*OPTIONAL*。 默认情况下，客户端不会为响应请求特定的绑定类型。
 
 - assertionConsumerServiceUrl
 
-  URL of the assertion consumer service (ACS) where the IDP login service should send responses to. This setting is *OPTIONAL*. By default it is unset, relying on the configuration in the IdP. When set, it must end in `/saml`, e.g. `http://sp.domain.com/my/endpoint/for/saml`. The value of this property is sent in `AssertionConsumerServiceURL`attribute of SAML `AuthnRequest` message. This property is typically accompanied by the `responseBinding` attribute.
+  IDP登录服务应向其发送响应的断言使用者服务（ACS）的URL。 此设置为*OPTIONAL*。 默认情况下，它取消设置，依赖于IdP中的配置。 设置时，它必须以`/saml`结尾，例如`http://sp.domain.com/my/endpoint/for/saml`。 此属性的值在SAML`AuthnRequest`消息的`AssertionConsumerServiceURL`属性中发送。 该属性通常伴随着`responseBinding`属性。
 
 - bindingUrl
 
-  This is the URL for the IDP login service that the client will send requests to. This setting is *REQUIRED*.
+  这是客户端将请求发送到的IDP登录服务的URL。 此设置为*REQUIRED*。
 
-##### IDP SingleLogoutService sub element {#IDP_SingleLogoutService_sub_element}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/idp_singlelogoutservice_subelement.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/idp_singlelogoutservice_subelement.adoc)
+##### IDP SingleLogoutService 子元素 {#IDP_SingleLogoutService_sub_element}
 
-The `SingleLogoutService` sub element defines the logout SAML endpoint of the IDP. The client adapter will send requests to the IDP formatted via the settings within this element when it wants to logout.
+`SingleLogoutService`子元素定义IDP的注销SAML端点。 当客户端适配器要注销时，它将通过此元素中的设置向IDP发送请求。
 
-```
+```xml
 <SingleLogoutService validateRequestSignature="true"
                      validateResponseSignature="true"
                      signRequest="true"
@@ -4569,38 +4557,37 @@ The `SingleLogoutService` sub element defines the logout SAML endpoint of the ID
 
 - signRequest
 
-  Should the client sign logout requests it makes to the IDP? This setting is *OPTIONAL*. Defaults to whatever the IDP `signaturesRequired` element value is.
+  客户应该签署注销请求吗？ 此设置为*OPTIONAL*。 默认为IDP`signaturesRequired`元素值。
 
 - signResponse
 
-  Should the client sign logout responses it sends to the IDP requests? This setting is *OPTIONAL*. Defaults to whatever the IDP `signaturesRequired` element value is.
+  如果客户端签署注销响应，它会发送给IDP请求吗？ 此设置为*OPTIONAL*。 默认为IDP`signaturesRequired`元素值。
 
 - validateRequestSignature
 
-  Should the client expect signed logout request documents from the IDP? This setting is *OPTIONAL*. Defaults to whatever the IDP `signaturesRequired` element value is.
+  客户是否应该期待来自IDP的签名退出请求文件？ 此设置为*OPTIONAL*。 默认为IDP`signaturesRequired`元素值。
 
 - validateResponseSignature
 
-  Should the client expect signed logout response documents from the IDP? This setting is *OPTIONAL*. Defaults to whatever the IDP `signaturesRequired` element value is.
+  客户是否应该期待来自IDP的签名注销响应文档？ 此设置为*OPTIONAL*。 默认为IDP`signaturesRequired`元素值。
 
 - requestBinding
 
-  This is the SAML binding type used for communicating SAML requests to the IDP. This setting is *OPTIONAL*. The default value is `POST`, but you can set it to REDIRECT as well.
+  这是用于将SAML请求传递给IDP的SAML绑定类型。 此设置为*OPTIONAL*。 默认值为`POST`，但您也可以将其设置为REDIRECT。
 
 - responseBinding
 
-  This is the SAML binding type used for communicating SAML responses to the IDP. The values of this can be `POST` or `REDIRECT`. This setting is *OPTIONAL*. The default value is `POST`, but you can set it to `REDIRECT` as well.
+  这是用于将SAML响应传递给IDP的SAML绑定类型。 这个值可以是`POST`或`REDIRECT`。 此设置为*OPTIONAL*。 默认值为`POST`，但您也可以将其设置为`REDIRECT`。
 
 - postBindingUrl
 
-  This is the URL for the IDP’s logout service when using the POST binding. This setting is *REQUIRED* if using the `POST`binding.
+  这是使用POST绑定时IDP注销服务的URL。 如果使用`POST`绑定，则此设置为*REQUIRED*。
 
 - redirectBindingUrl
 
-  This is the URL for the IDP’s logout service when using the REDIRECT binding. This setting is *REQUIRED* if using the REDIRECT binding.
+  这是使用REDIRECT绑定时IDP注销服务的URL。 如果使用REDIRECT绑定，此设置为*REQUIRED*。
 
-##### IDP Keys sub element {#IDP_Keys_sub_element}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/idp_keys_subelement.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/idp_keys_subelement.adoc)
+##### IDP Keys 子元素 {#IDP_Keys_sub_element}
 
 The Keys sub element of IDP is only used to define the certificate or public key to use to verify documents signed by the IDP. It is defined in the same way as the [SP’s Keys element](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-sp-keys). But again, you only have to define one certificate or public key reference. Note that, if both IDP and SP are realized by Keycloak server and adapter, respectively, there is no need to specify the keys for signature validation, see below.
 
@@ -4671,7 +4658,6 @@ The `HttpClient` optional sub element defines the properties of HTTP client used
 
   URL to HTTP proxy to use for HTTP connections. This is *OPTIONAL*.
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/saml-jboss-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/saml-jboss-adapter.adoc)
 
 #### 3.1.2. JBoss EAP/WildFly Adapter {# JBoss_EAP_WildFly_Adapter}
 
