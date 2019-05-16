@@ -3138,7 +3138,7 @@ var loadData = function () {
 };
 ```
 
-One thing to keep in mind is that the access token by default has a short life expiration so you may need to refresh the access token prior to sending the request. You can do this by the `updateToken` method. The `updateToken` method returns a promise object which makes it easy to invoke the service only if the token was successfully refreshed and for example display an error to the user if it wasn’t. For example:
+需要记住的一件事是，默认情况下，访问令牌的生命周期很短，因此您可能需要在发送请求之前刷新访问令牌。 您可以通过`updateToken`方法执行此操作。 `updateToken`方法返回一个promise对象，只有在成功刷新令牌时才能轻松调用服务，例如，如果不是，则向用户显示错误。 例如：
 
 ```javascript
 keycloak.updateToken(30).success(function() {
@@ -4589,15 +4589,15 @@ IDP元素中的所有内容都描述了SP正在与之通信的身份提供者（
 
 ##### IDP Keys 子元素 {#IDP_Keys_sub_element}
 
-The Keys sub element of IDP is only used to define the certificate or public key to use to verify documents signed by the IDP. It is defined in the same way as the [SP’s Keys element](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-sp-keys). But again, you only have to define one certificate or public key reference. Note that, if both IDP and SP are realized by Keycloak server and adapter, respectively, there is no need to specify the keys for signature validation, see below.
+IDP的Keys子元素仅用于定义用于验证IDP签名的文档的证书或公钥。 它的定义方式与[SP的Keys元素](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-sp-keys)相同。 但同样，您只需要定义一个证书或公钥引用。 请注意，如果IDP和SP分别由Keycloak服务器和适配器实现，则无需指定用于签名验证的密钥，请参阅下文。
 
-It is possible to configure SP to obtain public keys for IDP signature validation from published certificates automatically, provided both SP and IDP are implemented by Keycloak. This is done by removing all declarations of signature validation keys in Keys sub element. If the Keys sub element would then remain empty, it can be omitted completely. The keys are then automatically obtained by SP from SAML descriptor, location of which is derived from SAML endpoint URL specified in the [IDP SingleSignOnService sub element](https://www.keycloak.org/docs/latest/securing_apps/index.html#_sp-idp-singlesignonservice). Settings of the HTTP client that is used for SAML descriptor retrieval usually needs no additional configuration, however it can be configured in the [IDP HttpClient sub element](https://www.keycloak.org/docs/latest/securing_apps/index.html#_sp-idp-httpclient).
+如果SP和IDP都由Keycloak实现，则可以将SP配置为自动从已发布的证书获取IDP签名验证的公钥。 这是通过删除Keys子元素中签名验证密钥的所有声明来完成的。 如果Keys子元素将保持为空，则可以完全省略它。 然后，SP从SAML描述符自动获取密钥，其位置来自[IDP SingleSignOnService子元素](https://www.keycloak.org/docs/latest/securing_apps/index.html#_sp-idp-singlesignonservice)中指定的SAML端点URL。用于SAML描述符检索的HTTP客户端的设置通常不需要额外配置，但可以在[IDP HttpClient子元素](https://www.keycloak.org/docs/latest/securing_apps/index.html#_sp-idp-httpclient)中配置。
 
-It is also possible to specify multiple keys for signature verification. This is done by declaring multiple Key elements within Keys sub element that have `signing` attribute set to `true`. This is useful for example in situation when the IDP signing keys are rotated: There is usually a transition period when new SAML protocol messages and assertions are signed with the new key but those signed by previous key should still be accepted.
+还可以为签名验证指定多个密钥。 这是通过在Keys子元素中声明`signed`属性设置为`true`的多个Key元素来完成的。 例如，在旋转IDP签名密钥的情况下，这很有用：通常有一个过渡期，当新的SAML协议消息和断言用新密钥签名但仍应接受由先前密钥签名的那些消息和断言。
 
-It is not possible to configure Keycloak to both obtain the keys for signature verification automatically and define additional static signature verification keys.
+无法将Keycloak配置为自动获取签名验证密钥并定义其他静态签名验证密钥。
 
-```
+```xml
        <IDP entityID="idp">
             ...
             <Keys>
@@ -4610,12 +4610,11 @@ It is not possible to configure Keycloak to both obtain the keys for signature v
         </IDP>
 ```
 
-##### IDP HttpClient sub element {#IDP_HttpClient_sub_element}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/general-config/idp_httpclient_subelement.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/general-config/idp_httpclient_subelement.adoc)
+##### IDP HttpClient 子元素 {#IDP_HttpClient_sub_element}
 
-The `HttpClient` optional sub element defines the properties of HTTP client used for automatic obtaining of certificates containing public keys for IDP signature verification via SAML descriptor of the IDP when [enabled](https://www.keycloak.org/docs/latest/securing_apps/index.html#_sp-idp-keys-automatic).
+`HttpClient`可选子元素定义HTTP客户端的属性，用于在[启用](https://www.keycloak.org/docs/latest/securing_apps/index.html#_sp-idp-keys-automatic)时通过IDP的SAML描述符自动获取包含用于IDP签名验证的公钥的证书。
 
-```
+```xml
 <HttpClient connectionPoolSize="10"
             disableTrustManager="false"
             allowAnyHostname="false"
@@ -4628,93 +4627,88 @@ The `HttpClient` optional sub element defines the properties of HTTP client used
 
 - connectionPoolSize
 
-  Adapters will make separate HTTP invocations to the Keycloak server to turn an access code into an access token. This config option defines how many connections to the Keycloak server should be pooled. This is *OPTIONAL*. The default value is `10`.
+  适配器将对Keycloak服务器进行单独的HTTP调用，以将访问代码转换为访问令牌。 此配置选项定义应该合并到Keycloak服务器的连接数。 这是*OPTIONAL*。 默认值为`10`。
 
 - disableTrustManager
 
-  If the Keycloak server requires HTTPS and this config option is set to `true` you do not have to specify a truststore. This setting should only be used during development and **never** in production as it will disable verification of SSL certificates. This is *OPTIONAL*. The default value is `false`.
+  如果Keycloak服务器需要HTTPS并且此配置选项设置为`true`，则不必指定信任库。 此设置仅应在开发期间使用，**永远**不会在生产中使用，因为它将禁用SSL证书的验证。 这是*OPTIONAL*。 默认值为`false`。
 
 - allowAnyHostname
 
-  If the Keycloak server requires HTTPS and this config option is set to `true` the Keycloak server’s certificate is validated via the truststore, but host name validation is not done. This setting should only be used during development and **never** in production as it will partly disable verification of SSL certificates. This seting may be useful in test environments. This is *OPTIONAL*. The default value is `false`.
+  如果Keycloak服务器需要HTTPS并且此配置选项设置为`true`，则通过信任库验证Keycloak服务器的证书，但不会进行主机名验证。 此设置应仅在开发期间使用，**永远**不会在生产中使用，因为它将部分禁用SSL证书的验证。 这种设置在测试环境中可能很有用。 这是*OPTIONAL*。 默认值为`false`。
 
 - truststore
 
-  The value is the file path to a truststore file. If you prefix the path with `classpath:`, then the truststore will be obtained from the deployment’s classpath instead. Used for outgoing HTTPS communications to the Keycloak server. Client making HTTPS requests need a way to verify the host of the server they are talking to. This is what the trustore does. The keystore contains one or more trusted host certificates or certificate authorities. You can create this truststore by extracting the public certificate of the Keycloak server’s SSL keystore. This is *REQUIRED* unless `disableTrustManager` is `true`.
+  该值是信任库文件的文件路径。 如果在路径前加上`classpath:`，那么将从部署的类路径中获取信任库。 用于与Keycloak服务器的传出HTTPS通信。 发出HTTPS请求的客户端需要一种方法来验证他们正在与之通信的服务器的主机。 这就是委托人所做的。 密钥库包含一个或多个可信主机证书或证书颁发机构。 您可以通过提取Keycloak服务器的SSL密钥库的公共证书来创建此信任库。 除非`disableTrustManager`为'true`，否则这是*REQUIRED*。
 
 - truststorePassword
 
-  Password for the truststore. This is *REQUIRED* if `truststore` is set and the truststore requires a password.
+  信任库的密码。 如果设置了`truststore`并且信任库需要密码，那么这是*REQUIRED*。
 
 - clientKeystore
 
-  This is the file path to a keystore file. This keystore contains client certificate for two-way SSL when the adapter makes HTTPS requests to the Keycloak server. This is *OPTIONAL*.
+  这是密钥库文件的文件路径。 当适配器向Keycloak服务器发出HTTPS请求时，此密钥库包含双向SSL的客户端证书。 这是*OPTIONAL*。
 
 - clientKeystorePassword
 
-  Password for the client keystore and for the client’s key. This is *REQUIRED* if `clientKeystore` is set.
+  客户端密钥库和客户端密钥的密码。 如果设置了`clientKeystore`，这是*REQUIRED*。
 
 - proxyUrl
 
-  URL to HTTP proxy to use for HTTP connections. This is *OPTIONAL*.
+  用于HTTP连接的HTTP代理的URL。 这是*OPTIONAL*。
 
 
-#### 3.1.2. JBoss EAP/WildFly Adapter {# JBoss_EAP_WildFly_Adapter}
+#### 3.1.2. JBoss EAP/WildFly 适配器 {# JBoss_EAP_WildFly_Adapter}
 
-To be able to secure WAR apps deployed on JBoss EAP or WildFly, you must install and configure the Keycloak SAML Adapter Subsystem.
+为了能够保护部署在JBoss EAP或WildFly上的WAR应用程序，您必须安装和配置Keycloak SAML适配器子系统。
 
-You then provide a keycloak config, `/WEB-INF/keycloak-saml.xml` file in your WAR and change the auth-method to KEYCLOAK-SAML within web.xml. Both methods are described in this section.
+然后，在WAR中提供keycloak配置，`/WEB-INF/keycloak-saml.xml`文件，并在web.xml中将auth-method更改为KEYCLOAK-SAML。 本节将介绍这两种方法。
 
-##### Adapter Installation {#Adapter_Installation}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jboss-adapter/jboss_adapter_installation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jboss-adapter/jboss_adapter_installation.adoc)
+##### 适配器安装 {#Adapter_Installation}
 
-Each adapter is a separate download on the Keycloak download site.
+每个适配器都是Keycloak下载站点上的单独下载。
 
-|      | We only test and maintain adapter with the most recent version of WildFly available upon the release. Once new version of WildFly is released, the current adapters become deprecated and support for them will be removed after next WildFly release. The other alternative is to switch your applications from WildFly to the JBoss EAP, as the JBoss EAP adapter is supported for much longer period. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 我们只测试和维护适配器，并在发布时提供最新版本的WildFly。 一旦发布了新版本的WildFly，当前的适配器将被弃用，并且在下一个WildFly版本发布后将删除对它们的支持。 另一种方法是将应用程序从WildFly切换到JBoss EAP，因为JBoss EAP适配器的支持时间更长。
 
-Install on WildFly 9 or newer or on JBoss EAP 7:
+在WildFly 9或更高版本或JBoss EAP 7上安装：
 
-```
+```bash
 $ cd $WILDFLY_HOME
 $ unzip keycloak-saml-wildfly-adapter-dist.zip
 ```
 
-Install on JBoss EAP 6.x:
+在JBoss EAP 6.x上安装：
 
-```
+```bash
 $ cd $JBOSS_HOME
 $ unzip keycloak-saml-eap6-adapter-dist.zip
 ```
 
-These zip files create new JBoss Modules specific to the WildFly/JBoss EAP SAML Adapter within your WildFly or JBoss EAP distro.
+这些zip文件在WildFly或JBoss EAP发行版中创建特定于WildFly/JBoss EAP SAML适配器的新JBoss模块。
 
-After adding the modules, you must then enable the Keycloak SAML Subsystem within your app server’s server configuration: `domain.xml` or `standalone.xml`.
+添加模块后，必须在应用服务器的服务器配置中启用Keycloak SAML子系统：`domain.xml`或`standalone.xml`。
 
-There is a CLI script that will help you modify your server configuration. Start the server and run the script from the server’s bin directory:
+有一个CLI脚本可以帮助您修改服务器配置。 启动服务器并从服务器的bin目录运行脚本：
 
-WildFly 11 or newer
+WildFly 11或更新版本
 
-```
+```bash
 $ cd $JBOSS_HOME
 $ ./bin/jboss-cli.sh -c --file=bin/adapter-elytron-install-saml.cli
 ```
 
-WildFly 10 and older
+WildFly 10或更老版本
 
-```
+```bash
 $ cd $JBOSS_HOME
 $ /bin/boss-cli.sh -c --file=bin/adapter-install-saml.cli
 ```
 
-|      | It is possible to use the legacy non-Elytron adapter on WildFly 11 or newer as well, meaning you can use `adapter-install-saml.cli` even on those versions. However, we recommend to use the newer Elytron adapter. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 可以在WildFly 11或更新版本上使用传统的非Elytron适配器，这意味着您甚至可以在这些版本上使用`adapter-install-saml.cli`。 但是，我们建议使用较新的Elytron适配器。
 
-The script will add the extension, subsystem, and optional security-domain as described below.
+该脚本将添加扩展，子系统和可选的安全域，如下所述。
 
-```
+```xml
 <server xmlns="urn:jboss:domain:1.4">
 
     <extensions>
@@ -4728,9 +4722,9 @@ The script will add the extension, subsystem, and optional security-domain as de
     </profile>
 ```
 
-The `keycloak` security domain should be used with EJBs and other components when you need the security context created in the secured web tier to be propagated to the EJBs (other EE component) you are invoking. Otherwise this configuration is optional.
+当您需要在安全Web层中创建的安全上下文传播到您正在调用的EJB（其他EE组件）时，`keycloak`安全域应该与EJB和其他组件一起使用。 否则此配置是可选的。
 
-```
+```xml
 <server xmlns="urn:jboss:domain:1.4">
  <subsystem xmlns="urn:jboss:domain:security:1.2">
     <security-domains>
@@ -4744,9 +4738,9 @@ The `keycloak` security domain should be used with EJBs and other components whe
     </security-domains>
 ```
 
-For example, if you have a JAX-RS service that is an EJB within your WEB-INF/classes directory, you’ll want to annotate it with the `@SecurityDomain` annotation as follows:
+例如，如果您的WEB-INF/classes目录中有一个EJB的JAX-RS服务，则需要使用`@SecurityDomain`注释对其进行注释，如下所示：
 
-```
+```java
 import org.jboss.ejb3.annotation.SecurityDomain;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
@@ -4777,103 +4771,91 @@ public class CustomerService {
 }
 ```
 
-We hope to improve our integration in the future so that you don’t have to specify the `@SecurityDomain` annotation when you want to propagate a keycloak security context to the EJB tier.
+我们希望将来改进我们的集成，以便在您希望将keycloak安全上下文传播到EJB层时不必指定`@SecurityDomain`注释。
 
 ##### JBoss SSO {#JBoss_SSO}
-WildFly has built-in support for single sign-on for web applications deployed to the same WildFly instance. This should not be enabled when using Keycloak.
+WildFly内置支持部署到同一WildFly实例的Web应用程序的单点登录。 使用Keycloak时不应启用此功能。
 
-#### 3.1.3. Installing JBoss EAP Adapter from an RPM {#Installing_JBoss_EAP_Adapter_from_an_RPM}
+#### 3.1.3. 从RPM安装JBoss EAP适配器 {#Installing_JBoss_EAP_Adapter_from_an_RPM}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jboss-adapter/jboss-adapter-rpms.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jboss-adapter/jboss-adapter-rpms.adoc)
+从RPM安装EAP 7适配器：
 
-Install the EAP 7 Adapters from an RPM:
+> 在Red Hat Enterprise Linux 7中，术语channel被替换为术语库。 在这些说明中，仅使用术语库。
 
-|      | With Red Hat Enterprise Linux 7, the term channel was replaced with the term repository. In these instructions only the term repository is used. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+您必须先订阅JBoss EAP 7存储库，然后才能从RPM安装EAP 7适配器。
 
-You must subscribe to the JBoss EAP 7 repository before you can install the EAP 7 adapters from an RPM.
+先决条件
 
-Prerequisites
+1. 确保您的Red Hat Enterprise Linux系统已使用Red Hat Subscription Manager注册到您的帐户。 有关更多信息，请参阅[Red Hat订阅管理文档](https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html-single/quick_registration_for_rhel/index)。
+2. 如果您已经订阅了另一个JBoss EAP存储库，则必须先取消订阅该存储库。
 
-1. Ensure that your Red Hat Enterprise Linux system is registered to your account using Red Hat Subscription Manager. For more information see the [Red Hat Subscription Management documentation](https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html-single/quick_registration_for_rhel/index).
-2. If you are already subscribed to another JBoss EAP repository, you must unsubscribe from that repository first.
+使用Red Hat Subscription Manager，使用以下命令订阅JBoss EAP 7存储库。 将<RHEL_VERSION>替换为6或7，具体取决于您的Red Hat Enterprise Linux版本。
 
-Using Red Hat Subscription Manager, subscribe to the JBoss EAP 7 repository using the following command. Replace <RHEL_VERSION> with either 6 or 7 depending on your Red Hat Enterprise Linux version.
-
-```
+```bash
 $ sudo subscription-manager repos --enable=jb-eap-7-for-rhel-<RHEL_VERSION>-server-rpms
 ```
 
-Install the EAP 7 adapters for SAML using the following command:
+使用以下命令为SAML安装EAP 7适配器：
 
-```
+```bash
 $ sudo yum install eap7-keycloak-saml-adapter-sso7_2
 ```
 
-|      | The default EAP_HOME path for the RPM installation is /opt/rh/eap7/root/usr/share/wildfly. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> RPM安装的默认EAP_HOME路径是`/opt/rh/eap7/root/usr/share/wildfly`。 
 
-Run the appropriate module installation script.
+运行相应的模块安装脚本。
 
-For the SAML module, enter the following command:
+对于SAML模块，请输入以下命令：
 
-```
+```bash
 $ $EAP_HOME/bin/jboss-cli.sh -c --file=$EAP_HOME/bin/adapter-install-saml.cli
 ```
 
-Your installation is complete.
+您的安装已完成。
 
-Install the EAP 6 Adapters from an RPM:
+从RPM安装EAP 6适配器：
 
-|      | With Red Hat Enterprise Linux 7, the term channel was replaced with the term repository. In these instructions only the term repository is used. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 在Red Hat Enterprise Linux 7中，术语channel被替换为术语库。 在这些说明中，仅使用术语库。
 
-You must subscribe to the JBoss EAP 6 repository before you can install the EAP 6 adapters from an RPM.
+您必须先订阅JBoss EAP 6存储库，然后才能从RPM安装EAP 6适配器。
 
-Prerequisites
+先决条件
 
-1. Ensure that your Red Hat Enterprise Linux system is registered to your account using Red Hat Subscription Manager. For more information see the [Red Hat Subscription Management documentation](https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html-single/quick_registration_for_rhel/index).
-2. If you are already subscribed to another JBoss EAP repository, you must unsubscribe from that repository first.
+1. 确保您的Red Hat Enterprise Linux系统已使用Red Hat Subscription Manager注册到您的帐户。 有关更多信息，请参阅[Red Hat订阅管理文档](https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html-single/quick_registration_for_rhel/index)。
+2. 如果您已经订阅了另一个JBoss EAP存储库，则必须先取消订阅该存储库。
 
-Using Red Hat Subscription Manager, subscribe to the JBoss EAP 6 repository using the following command. Replace <RHEL_VERSION> with either 6 or 7 depending on your Red Hat Enterprise Linux version.
+使用Red Hat Subscription Manager，使用以下命令订阅JBoss EAP 6存储库。 将<RHEL_VERSION>替换为6或7，具体取决于您的Red Hat Enterprise Linux版本。
 
-```
+```bash
 $ sudo subscription-manager repos --enable=jb-eap-6-for-rhel-<RHEL_VERSION>-server-rpms
 ```
 
-Install the EAP 6 adapters for SAML using the following command:
+使用以下命令为SAML安装EAP 6适配器：
 
-```
+```bash
 $ sudo yum install keycloak-saml-adapter-sso7_2-eap6
 ```
 
-|      | The default EAP_HOME path for the RPM installation is /opt/rh/eap6/root/usr/share/wildfly. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> RPM安装的默认EAP_HOME路径是`/opt/rh/eap6/root/usr/share/wildfly`。 
+运行相应的模块安装脚本。
 
-Run the appropriate module installation script.
+对于SAML模块，请输入以下命令：
 
-For the SAML module, enter the following command:
-
-```
+```bash
 $ $EAP_HOME/bin/jboss-cli.sh -c --file=$EAP_HOME/bin/adapter-install-saml.cli
 ```
 
-Your installation is complete.
+您的安装已完成。
 
-##### Per WAR Configuration {#Per_WAR_Configuration}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jboss-adapter/required_per_war_configuration.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jboss-adapter/required_per_war_configuration.adoc)
+##### 每个WAR配置 {#Per_WAR_Configuration}
 
-This section describes how to secure a WAR directly by adding config and editing files within your WAR package.
+本节介绍如何通过在WAR包中添加配置和编辑文件来直接保护WAR。
 
-The first thing you must do is create a `keycloak-saml.xml` adapter config file within the `WEB-INF` directory of your WAR. The format of this config file is described in the [General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) section.
+您必须做的第一件事是在WAR的`WEB-INF`目录中创建一个`keycloak-saml.xml`适配器配置文件。 该配置文件的格式在[General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config)部分中描述。
 
-Next you must set the `auth-method` to `KEYCLOAK-SAML` in `web.xml`. You also have to use standard servlet security to specify role-base constraints on your URLs. Here’s an example *web.xml* file:
+接下来，您必须在`web.xml`中将`auth-method`设置为`KEYCLOAK-SAML`。 您还必须使用标准servlet安全性来指定URL上的角色基础约束。 这是一个示例*web.xml*文件：
 
-```
+```xml
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
@@ -4920,14 +4902,13 @@ Next you must set the `auth-method` to `KEYCLOAK-SAML` in `web.xml`. You also ha
 </web-app>
 ```
 
-All standard servlet settings except the `auth-method` setting.
+除了`auth-method`设置之外的所有标准servlet设置。
 
-##### Securing WARs via Keycloak SAML Subsystem {#Securing_WARs_via_Keycloak_SAML_Subsystem}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jboss-adapter/securing_wars.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jboss-adapter/securing_wars.adoc)
+##### 通过Keycloak SAML子系统保护WAR {#Securing_WARs_via_Keycloak_SAML_Subsystem}
 
-You do not have to crack open a WAR to secure it with Keycloak. Alternatively, you can externally secure it via the Keycloak SAML Adapter Subsystem. While you don’t have to specify KEYCLOAK-SAML as an `auth-method`, you still have to define the `security-constraints` in `web.xml`. You do not, however, have to create a `WEB-INF/keycloak-saml.xml` file. This metadata is instead defined within the XML in your server’s `domain.xml` or `standalone.xml` subsystem configuration section.
+您不必破解打开WAR以使用Keycloak保护它。 或者，您可以通过Keycloak SAML适配器子系统从外部保护它。 虽然您不必将KEYCLOAK-SAML指定为`auth-method`，但仍需要在`web.xml`中定义`security-constraints`。 但是，您不必创建`WEB-INF/keycloak-saml.xml`文件。 而是在服务器的`domain.xml`或`standalone.xml`子系统配置部分的XML中定义此元数据。
 
-```
+```xml
 <extensions>
   <extension module="org.keycloak.keycloak-saml-adapter-subsystem"/>
 </extensions>
@@ -4943,11 +4924,11 @@ You do not have to crack open a WAR to secure it with Keycloak. Alternatively, y
 </profile>
 ```
 
-The `secure-deployment` `name` attribute identifies the WAR you want to secure. Its value is the `module-name` defined in `web.xml` with `.war` appended. The rest of the configuration uses the same XML syntax as `keycloak-saml.xml`configuration defined in [General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config).
+`secure-deployment``name`属性标识要保护的WAR。 它的值是`web.xml`中定义的`module-name`，附加了`.war`。 其余配置使用与[General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config)中定义的`keycloak-saml.xml`配置相同的XML语法。
 
-An example configuration:
+配置示例：
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:keycloak-saml:1.1">
   <secure-deployment name="saml-post-encryption.war">
     <SP entityID="http://localhost:8080/sales-post-enc/"
@@ -4995,19 +4976,17 @@ An example configuration:
 </subsystem>
 ```
 
-#### 3.1.4. Tomcat SAML adapters {#Tomcat_SAML_adapters}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/tomcat-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/tomcat-adapter.adoc)
+#### 3.1.4. Tomcat SAML 适配器 {#Tomcat_SAML_adapters}
 
-To be able to secure WAR apps deployed on Tomcat 6, 7 and 8 you must install the Keycloak Tomcat 6, 7 or 8 SAML adapter into your Tomcat installation. You then have to provide some extra configuration in each WAR you deploy to Tomcat. Let’s go over these steps.
+为了能够保护部署在Tomcat 6,7和8上的WAR应用程序，您必须将Keycloak Tomcat 6,7或8 SAML适配器安装到Tomcat安装中。 然后，您必须在部署到Tomcat的每个WAR中提供一些额外的配置。 我们来看看这些步骤。
 
-##### Adapter Installation {#Adapter_Installation}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/tomcat-adapter/tomcat_adapter_installation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/tomcat-adapter/tomcat_adapter_installation.adoc)
+##### 适配器安装 {#Adapter_Installation}
 
-Adapters are no longer included with the appliance or war distribution. Each adapter is a separate download on the Keycloak download site. They are also available as a maven artifact.
+适配器不再包含在设备或war分发版中。每个适配器在Keycloak下载站点上都是单独的下载。它们也可以作为maven构件使用。
 
-You must unzip the adapter distro into Tomcat’s `lib/` directory. Including adapter’s jars within your WEB-INF/lib directory will not work! The Keycloak SAML adapter is implemented as a Valve and valve code must reside in Tomcat’s main lib/ directory.
+您必须将适配器发行版解压缩到Tomcat的`lib/`目录中。 在WEB-INF/lib目录中包含适配器的jar将不起作用！ Keycloak SAML适配器实现为Valve，Valve代码必须驻留在Tomcat的主lib/目录中。
 
-```
+```bash
 $ cd $TOMCAT_HOME/lib
 $ unzip keycloak-saml-tomcat6-adapter-dist.zip
     or
@@ -5016,24 +4995,23 @@ $ unzip keycloak-saml-tomcat7-adapter-dist.zip
 $ unzip keycloak-saml-tomcat8-adapter-dist.zip
 ```
 
-##### Per WAR Configuration {#Per_WAR_Configuration}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/tomcat-adapter/tomcat_adapter_per_war_config.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/tomcat-adapter/tomcat_adapter_per_war_config.adoc)
+##### 每个 WAR 配置 {#Per_WAR_Configuration}
 
-This section describes how to secure a WAR directly by adding config and editing files within your WAR package.
+本节介绍如何通过在WAR包中添加配置和编辑文件来直接保护WAR。
 
-The first thing you must do is create a `META-INF/context.xml` file in your WAR package. This is a Tomcat specific config file and you must define a Keycloak specific Valve.
+您必须做的第一件事是在WAR包中创建一个`META-INF/context.xml`文件。 这是一个特定于Tomcat的配置文件，您必须定义一个Keycloak特定的Valve。
 
-```
+```xml
 <Context path="/your-context-path">
     <Valve className="org.keycloak.adapters.saml.tomcat.SamlAuthenticatorValve"/>
 </Context>
 ```
 
-Next you must create a `keycloak-saml.xml` adapter config file within the `WEB-INF` directory of your WAR. The format of this config file is described in the [General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) section.
+接下来，您必须在WAR的`WEB-INF`目录中创建一个`keycloak-saml.xml`适配器配置文件。 该配置文件的格式在[General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) 部分中描述。
 
-Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Here’s an example:
+最后，您必须同时指定`login-config`并使用标准servlet安全性来指定URL上的角色基础约束。 这是一个例子：
 
-```
+```xml
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
@@ -5065,40 +5043,37 @@ Finally you must specify both a `login-config` and use standard servlet security
 </web-app>
 ```
 
-#### 3.1.5. Jetty SAML Adapters {#Jetty_SAML_Adapters}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jetty-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jetty-adapter.adoc)
+#### 3.1.5. Jetty SAML 适配器 {#Jetty_SAML_Adapters}
 
-To be able to secure WAR apps deployed on Jetty you must install the Keycloak Jetty 9.x SAML adapter into your Jetty installation. You then have to provide some extra configuration in each WAR you deploy to Jetty. Let’s go over these steps.
+为了能够保护部署在Jetty上的WAR应用程序，您必须将Keycloak Jetty 9.x SAML适配器安装到Jetty安装中。 然后，您必须在部署到Jetty的每个WAR中提供一些额外的配置。 我们来看看这些步骤。
 
-##### Jetty 9 Adapter Installation {#Jetty_9_Adapter_Installation}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jetty-adapter/jetty9_installation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jetty-adapter/jetty9_installation.adoc)
+##### Jetty 9 适配器安装 {#Jetty_9_Adapter_Installation}
 
-Keycloak has a separate SAML adapter for Jetty 9.x. You then have to provide some extra configuration in each WAR you deploy to Jetty. Let’s go over these steps.
+Keycloak为Jetty 9.x提供了一个单独的SAML适配器。 然后，您必须在部署到Jetty的每个WAR中提供一些额外的配置。 我们来看看这些步骤。
 
-Adapters are no longer included with the appliance or war distribution. Each adapter is a separate download on the Keycloak download site. They are also available as a maven artifact.
+适配器不再包含在设备或war分发版中。每个适配器在Keycloak下载站点上都是单独的下载。它们也可以作为maven构件使用。
 
-You must unzip the Jetty 9.x distro into Jetty 9.x’s root directory. Including adapter’s jars within your WEB-INF/lib directory will not work!
+您必须将Jetty 9.x发行版解压缩到Jetty 9.x的根目录中。 在WEB-INF/lib目录中包含适配器的jar将不起作用！
 
-```
+```bash
 $ cd $JETTY_HOME
 $ unzip keycloak-saml-jetty92-adapter-dist.zip
 ```
 
-Next, you will have to enable the keycloak module for your jetty.base.
+接下来，您必须为jetty.base启用keycloak模块。
 
-```
+```bash
 $ cd your-base
 $ java -jar $JETTY_HOME/start.jar --add-to-startd=keycloak
 ```
 
-##### Jetty 9 Per WAR Configuration {#Jetty_9_Per_WAR_Configuration}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/jetty-adapter/jetty9_per_war_config.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/jetty-adapter/jetty9_per_war_config.adoc)
+##### Jetty 9 每个 WAR 配置 {#Jetty_9_Per_WAR_Configuration}
 
-This section describes how to secure a WAR directly by adding config and editing files within your WAR package.
+本节介绍如何通过在WAR包中添加配置和编辑文件来直接保护WAR。
 
-The first thing you must do is create a `WEB-INF/jetty-web.xml` file in your WAR package. This is a Jetty specific config file and you must define a Keycloak specific authenticator within it.
+您必须做的第一件事是在WAR包中创建一个`WEB-INF/jetty-web.xml`文件。 这是Jetty特定的配置文件，您必须在其中定义Keycloak特定的身份验证器。
 
-```
+```xml
 <?xml version="1.0"?>
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
@@ -5111,11 +5086,11 @@ The first thing you must do is create a `WEB-INF/jetty-web.xml` file in your WAR
 </Configure>
 ```
 
-Next you must create a `keycloak-saml.xml` adapter config file within the `WEB-INF` directory of your WAR. The format of this config file is described in the [General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) section.
+接下来，您必须在WAR的`WEB-INF`目录中创建一个`keycloak-saml.xml`适配器配置文件。 该配置文件的格式在[General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) 部分中描述。
 
-Finally you must specify both a `login-config` and use standard servlet security to specify role-base constraints on your URLs. Here’s an example:
+最后，您必须同时指定`login-config`并使用标准servlet安全性来指定URL上的角色基础约束。 这是一个例子：
 
-```
+```xml
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
@@ -5150,20 +5125,15 @@ Finally you must specify both a `login-config` and use standard servlet security
 </web-app>
 ```
 
-#### 3.1.6. Java Servlet Filter Adapter {#Java_Servlet_Filter_Adapter}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/servlet-filter-adapter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/servlet-filter-adapter.adoc)
+#### 3.1.6. Java Servlet 过滤器适配器 {#Java_Servlet_Filter_Adapter}
 
-If you want to use SAML with a Java servlet application that doesn’t have an adapter for that servlet platform, you can opt to use the servlet filter adapter that Keycloak has. This adapter works a little differently than the other adapters. You still have to specify a `/WEB-INF/keycloak-saml.xml` file as defined in the [General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config) section, but you do not define security constraints in *web.xml*. Instead you define a filter mapping using the Keycloak servlet filter adapter to secure the url patterns you want to secure.
+如果要将SAML与不具有该servlet平台适配器的Java servlet应用程序一起使用，则可以选择使用Keycloak具有的servlet过滤器适配器。 此适配器与其他适配器的工作方式略有不同。 您仍然必须指定[General Adapter Config](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml-general-config)中定义的`/WEB-INF/keycloak-saml.xml`文件部分，但是您没有在*web.xml*中定义安全性约束。 而是使用Keycloak servlet过滤器适配器定义过滤器映射，以保护要保护的URL模式。
 
-|      | Backchannel logout works a bit differently than the standard adapters. Instead of invalidating the http session it instead marks the session ID as logged out. There’s just no way of arbitrarily invalidating an http session based on a session ID. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> Backchannel注销与标准适配器的工作方式略有不同。 而不是使http会话无效，而是将会话ID标记为已注销。 根据会话ID，无法任意使http会话无效。
 
-|      | Backchannel logout does not currently work when you have a clustered application that uses the SAML filter. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 当您拥有使用SAML筛选器的群集应用程序时，Backchannel注销当前不起作用。
 
-```
+```xml
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
@@ -5182,19 +5152,17 @@ If you want to use SAML with a Java servlet application that doesn’t have an a
 </web-app>
 ```
 
-The Keycloak filter has the same configuration parameters available as the other adapters except you must define them as filter init params instead of context params.
+Keycloak过滤器具有与其他适配器相同的配置参数，除非您必须将它们定义为过滤器init参数而不是上下文参数。
 
-You can define multiple filter mappings if you have various different secure and unsecure url patterns.
+如果您有各种不同的安全和不安全的URL模式，则可以定义多个过滤器映射。
 
-|      | You must have a filter mapping that covers `/saml`. This mapping covers all server callbacks. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 您必须有一个覆盖`/saml`的过滤器映射。 此映射涵盖所有服务器回调。
 
-When registering SPs with an IdP, you must register `http[s]://hostname/{context-root}/saml` as your Assert Consumer Service URL and Single Logout Service URL.
+当向IdP注册SPs时，必须将`http[s]://主机名/{context-root}/saml`注册为断言消费者服务URL和单个注销服务URL。
 
-To use this filter, include this maven artifact in your WAR poms:
+要使用此过滤器，请在WAR poms中包含此maven工件：
 
-```
+```xml
 <dependency>
    <groupId>org.keycloak</groupId>
    <artifactId>keycloak-saml-servlet-filter-adapter</artifactId>
@@ -5202,9 +5170,9 @@ To use this filter, include this maven artifact in your WAR poms:
 </dependency>
 ```
 
-In order to use [Multi Tenancy](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml_multi_tenancy) the `keycloak.config.resolver` parameter should be passed as a filter parameter.
+为了使用[Multi Tenancy](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml_multi_tenancy)，应将`keycloak.config.resolver`参数作为过滤器参数传递。
 
-```
+```xml
     <filter>
         <filter-name>Keycloak Filter</filter-name>
         <filter-class>org.keycloak.adapters.saml.servlet.SamlFilter</filter-class>
@@ -5215,68 +5183,65 @@ In order to use [Multi Tenancy](https://www.keycloak.org/docs/latest/securing_ap
     </filter>
 ```
 
-#### 3.1.7. Registering with an Identity Provider {#Registering_with_an_Identity_Provider}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/idp-registration.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/idp-registration.adoc)
+#### 3.1.7. 注册身份提供商 {#Registering_with_an_Identity_Provider}
 
-For each servlet-based adapter, the endpoint you register for the assert consumer service URL and single logout service must be the base URL of your servlet application with `/saml` appended to it, that is, `https://example.com/contextPath/saml`.
+对于每个基于servlet的适配器，您注册断言使用者服务URL和单个注销服务的端点必须是附加了`/saml`的servlet应用程序的基本URL，即`https://example.com/contextPath/saml`。
 
-#### 3.1.8. Logout {#Logout}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/logout.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/logout.adoc)
+#### 3.1.8. 注销 {#Logout}
 
-There are multiple ways you can logout from a web application. For Java EE servlet containers, you can call `HttpServletRequest.logout()`. For any other browser application, you can point the browser at any url of your web application that has a security constraint and pass in a query parameter GLO, i.e. `http://myapp?GLO=true`. This will log you out if you have an SSO session with your browser.
+您可以通过多种方式从Web应用程序注销。 对于Java EE servlet容器，可以调用`HttpServletRequest.logout()`。 对于任何其他浏览器应用程序，您可以将浏览器指向具有安全约束的Web应用程序的任何URL，并传入查询参数GLO，即`http://myapp?GLO=true`。 如果您的浏览器有SSO会话，这将退出。
 
-##### Logout in Clustered Environment {#Logout_in_Clustered_Environment}
-Internally, the SAML adapter stores a mapping between the SAML session index, principal name (when known), and HTTP session ID. This mapping can be maintained in JBoss application server family (WildFly 10/11, EAP 6/7) across cluster for distributable applications. As a precondition, the HTTP sessions need to be distributed across cluster (i.e. application is marked with `<distributable/>` tag in application’s `web.xml`).
+##### 在群集环境中注销 {#Logout_in_Clustered_Environment}
+在内部，SAML适配器存储SAML会话索引，主体名称（已知）和HTTP会话ID之间的映射。 可以在群集中为可分发的应用程序在JBoss应用程序服务器系列（WildFly 10/11，EAP 6/7）中维护此映射。 作为前提条件，HTTP会话需要跨集群分布（即应用程序在应用程序的`web.xml`中标有`<distributable />`标签）。
 
-To enable the functionality, add the following section to your `/WEB_INF/web.xml` file:
+要启用该功能，请将以下部分添加到`/WEB_INF/web.xml`文件中：
 
-For EAP 7, WildFly 10/11:
+对于 EAP 7, WildFly 10/11:
 
-```
+```xml
 <context-param>
     <param-name>keycloak.sessionIdMapperUpdater.classes</param-name>
     <param-value>org.keycloak.adapters.saml.wildfly.infinispan.InfinispanSessionCacheIdMapperUpdater</param-value>
 </context-param>
 ```
 
-For EAP 6:
+对于 EAP 6:
 
-```
+```xml
 <context-param>
     <param-name>keycloak.sessionIdMapperUpdater.classes</param-name>
     <param-value>org.keycloak.adapters.saml.jbossweb.infinispan.InfinispanSessionCacheIdMapperUpdater</param-value>
 </context-param>
 ```
 
-If the session cache of the deployment is named `*deployment-cache*`, the cache used for SAML mapping will be named as `*deployment-cache*.ssoCache`. The name of the cache can be overridden by a context parameter`keycloak.sessionIdMapperUpdater.infinispan.cacheName`. The cache container containing the cache will be the same as the one containing the deployment session cache, but can be overridden by a context parameter`keycloak.sessionIdMapperUpdater.infinispan.containerName`.
+如果部署的会话缓存名为`*deployment-cache*`，则用于SAML映射的缓存将命名为`*deployment-cache*.ssoCache`。 缓存的名称可以被上下文参数`keycloak.sessionIdMapperUpdater.infinispan.cacheName`覆盖。 包含缓存的缓存容器将与包含部署会话缓存的缓存容器相同，但可以由上下文参数`keycloak.sessionIdMapperUpdater.infinispan.containerName`覆盖。
 
-By default, the configuration of the SAML mapping cache will be derived from session cache. The configuration can be manually overridden in cache configuration section of the server just the same as other caches.
+默认情况下，SAML映射缓存的配置将从会话缓存中派生。 可以在服务器的缓存配置部分中手动覆盖配置，就像其他缓存一样。
 
-Currently, to provide reliable service, it is recommended to use replicated cache for the SAML session cache. Using distributed cache may lead to results where the SAML logout request would land to a node with no access to SAML session index to HTTP session mapping which would lead to unsuccessful logout.
+目前，为了提供可靠的服务，建议为SAML会话缓存使用复制缓存。 使用分布式缓存可能会导致SAML注销请求落到某个节点而无法访问SAM会话索引到HTTP会话映射的结果，从而导致注销失败。
 
-##### Logout in Cross DC Scenario {#Logout_in_Cross_DC_Scenario}
-The cross DC scenario only applies to WildFly 10 and higher, and EAP 7 and higher.
+##### 在Cross DC场景中注销 {#Logout_in_Cross_DC_Scenario}
+交叉DC场景仅适用于WildFly 10及更高版本，以及EAP 7及更高版本。
 
-Special handling is needed for handling sessions that span multiple data centers. Imagine the following scenario:
+处理跨多个数据中心的会话需要特殊处理。 想象一下以下场景：
 
-1. Login requests are handled within cluster in data center 1.
-2. Admin issues logout request for a particular SAML session, the request lands in data center 2.
+1. 登录请求在数据中心1的集群内处理。
+2. 管理员发出特定SAML会话的注销请求，请求登陆数据中心2。
 
-The data center 2 has to log out all sessions that are present in data center 1 (and all other data centers that share HTTP sessions).
+数据中心2必须注销数据中心1中存在的所有会话（以及共享HTTP会话的所有其他数据中心）。
 
-To cover this case, the SAML session cache described [above](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml_logout_in_cluster) needs to be replicated not only within individual clusters but across all the data centers e.g. [via standalone Infinispan/JDG server](https://access.redhat.com/documentation/en-us/red_hat_data_grid/6.6/html/administration_and_configuration_guide/chap-externalize_sessions#Externalize_HTTP_Session_from_JBoss_EAP_6.x_to_JBoss_Data_Grid):
+为了涵盖这种情况，[上面](https://www.keycloak.org/docs/latest/securing_apps/index.html#_saml_logout_in_cluster) 描述的SAML会话缓存,不仅需要在单个群集中复制，还需要在所有数据中复制 中心，例如 [通过独立的Infinispan/JDG服务器](https://access.redhat.com/documentation/en-us/red_hat_data_grid/6.6/html/administration_and_configuration_guide/chap-externalize_sessions#Externalize_HTTP_Session_from_JBoss_EAP_6.x_to_JBoss_Data_Grid)：
 
-1. A cache has to be added to the standalone Infinispan/JDG server.
-2. The cache from previous item has to be added as a remote store for the respective SAML session cache.
+1. 必须将缓存添加到独立的Infinispan/JDG服务器。
+2. 必须将先前项目的缓存添加为相应SAML会话缓存的远程存储。
 
-Once remote store is found to be present on SAML session cache during deployment, it is watched for changes and the local SAML session cache is updated accordingly.
+在部署期间发现SAML会话高速缓存存在远程存储后，将监视其更改并相应地更新本地SAML会话高速缓存。
 
-#### 3.1.9. Obtaining Assertion Attributes {#Obtaining_Assertion_Attributes}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/assertion-api.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/assertion-api.adoc)
+#### 3.1.9. 获取断言属性 {#Obtaining_Assertion_Attributes}
 
-After a successful SAML login, your application code may want to obtain attribute values passed with the SAML assertion. `HttpServletRequest.getUserPrincipal()` returns a `Principal` object that you can typecast into a Keycloak specific class called `org.keycloak.adapters.saml.SamlPrincipal`. This object allows you to look at the raw assertion and also has convenience functions to look up attribute values.
+成功进行SAML登录后，您的应用程序代码可能希望获取通过SAML断言传递的属性值。 `HttpServletRequest.getUserPrincipal()`返回一个`Principal`对象，您可以将其转换为名为`org.keycloak.adapters.saml.SamlPrincipal`的Keycloak特定类。 此对象允许您查看原始断言，并具有查找属性值的便捷功能。
 
-```
+```java
 package org.keycloak.adapters.saml;
 
 public class SamlPrincipal implements Serializable, Principal {
@@ -5374,21 +5339,20 @@ public class SamlPrincipal implements Serializable, Principal {
 }
 ```
 
-#### 3.1.10. Error Handling {#Error_Handling}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/error_handling.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/error_handling.adoc)
+#### 3.1.10. 错误处理 {#Error_Handling}
 
-Keycloak has some error handling facilities for servlet based client adapters. When an error is encountered in authentication, the client adapter will call `HttpServletResponse.sendError()`. You can set up an `error-page` within your `web.xml` file to handle the error however you want. The client adapter can throw 400, 401, 403, and 500 errors.
+Keycloak为基于servlet的客户端适配器提供了一些错误处理功能。 在身份验证中遇到错误时，客户端适配器将调用`HttpServletResponse.sendError()`。 您可以在`web.xml`文件中设置`error-page`来处理您想要的错误。 客户端适配器可能会抛出400,401,403和500错误。
 
-```
+```xml
 <error-page>
     <error-code>403</error-code>
     <location>/ErrorHandler</location>
 </error-page>
 ```
 
-The client adapter also sets an `HttpServletRequest` attribute that you can retrieve. The attribute name is `org.keycloak.adapters.spi.AuthenticationError`. Typecast this object to: `org.keycloak.adapters.saml.SamlAuthenticationError`. This class can tell you exactly what happened. If this attribute is not set, then the adapter was not responsible for the error code.
+客户端适配器还设置了可以检索的`HttpServletRequest`属性。 属性名称是`org.keycloak.adapters.spi.AuthenticationError`。 Typecast这个对象：`org.keycloak.adapters.saml.SamlAuthenticationError`。 这个类可以告诉你到底发生了什么。 如果未设置此属性，则适配器不对错误代码负责。
 
-```
+```java
 public class SamlAuthenticationError implements AuthenticationError {
     public static enum Reason {
         EXTRACTION_FAILURE,
@@ -5405,25 +5369,23 @@ public class SamlAuthenticationError implements AuthenticationError {
 }
 ```
 
-#### 3.1.11. Troubleshooting {#Troubleshooting}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/debugging.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/debugging.adoc)
+#### 3.1.11. 故障排除 {#Troubleshooting}
 
-The best way to troubleshoot problems is to turn on debugging for SAML in both the client adapter and Keycloak Server. Using your logging framework, set the log level to `DEBUG` for the `org.keycloak.saml`package. Turning this on allows you to see the SAML requests and response documents being sent to and from the server.
+解决问题的最佳方法是在客户端适配器和Keycloak Server中打开SAML的调试。 使用您的日志记录框架，将日志级别设置为`org.keycloak.saml`package的`DEBUG`。 启用此选项可以查看发送到服务器和从服务器发送的SAML请求和响应文档。
 
-#### 3.1.12. Multi Tenancy {#Multi_Tenancy}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/multi-tenancy.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/multi-tenancy.adoc)
+#### 3.1.12. 多租户 {#Multi_Tenancy}
 
-SAML offers the same functionality as OIDC for [Multi Tenancy](https://www.keycloak.org/docs/latest/securing_apps/index.html#_multi_tenancy), meaning that a single target application (WAR) can be secured with multiple Keycloak realms. The realms can be located on the same Keycloak instance or on different instances.
+SAML为[多租户](https://www.keycloak.org/docs/latest/securing_apps/index.html#_multi_tenancy)提供与OIDC相同的功能，这意味着可以使用多个安全保护单个目标应用程序（WAR） Keycloak领域。 领域可以位于同一个Keycloak实例上，也可以位于不同的实例上。
 
-To do this, the application must have multiple `keycloak-saml.xml` adapter configuration files.
+为此，应用程序必须具有多个`keycloak-saml.xml`适配器配置文件。
 
-While you could have multiple instances of your WAR with different adapter configuration files deployed to different context-paths, this may be inconvenient and you may also want to select the realm based on something other than context-path.
+虽然您可以将WAR的多个实例与不同的适配器配置文件部署到不同的上下文路径，但这可能不方便，您可能还希望根据context-path之外的其他内容选择域。
 
-Keycloak makes it possible to have a custom config resolver, so you can choose which adapter config is used for each request. In SAML, the configuration is only interesting in the login processing; once the user is logged in, the session is authenticated and it does not matter if the `keycloak-saml.xml` returned is different. For that reason, returning the same configuration for the same session is the correct way to go.
+Keycloak可以使用自定义配置解析器，因此您可以选择为每个请求使用哪个适配器配置。 在SAML中，配置仅在登录处理中很有意义; 一旦用户登录，会话就会被验证，并且返回的`keycloak-saml.xml`是不同的并不重要。 因此，为同一会话返回相同的配置是正确的方法。
 
-To achieve this, create an implementation of `org.keycloak.adapters.saml.SamlConfigResolver`. The following example uses the `Host` header to locate the proper configuration and load it and the associated elements from the applications’s Java classpath:
+为此，请创建`org.keycloak.adapters.saml.SamlConfigResolver`的实现。 下面的示例使用`Host`标头来定位正确的配置并加载它以及应用程序的Java类路径中的相关元素：
 
-```
+```java
 package example;
 
 import java.io.InputStream;
@@ -5469,9 +5431,9 @@ public class SamlMultiTenantResolver implements SamlConfigResolver {
 }
 ```
 
-You must also configure which `SamlConfigResolver` implementation to use with the `keycloak.config.resolver`context-param in your `web.xml`:
+您还必须在`web.xml`中配置与`keycloak.config.resolver`context-param一起使用的`SamlConfigResolver`实现：
 
-```
+```xml
 <web-app>
     ...
     <context-param>
@@ -5481,85 +5443,83 @@ You must also configure which `SamlConfigResolver` implementation to use with th
 </web-app>
 ```
 
-#### 3.1.13. Migration from older versions {#Migration_from_older_versions}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/java/MigrationFromOlderVersions.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/java/MigrationFromOlderVersions.adoc)
+#### 3.1.13. 从旧版本迁移 {#Migration_from_older_versions}
 
-##### Migrating to 1.9.0 {#Migrating_to_1_9_0}
-###### SAML SP Client Adapter Changes {#SAML_SP_Client_Adapter_Changes}
-Keycloak SAML SP Client Adapter now requires a specific endpoint, `/saml` to be registered with your IdP. The SamlFilter must also be bound to /saml in addition to any other binding it has. This had to be done because SAML POST binding would eat the request input stream and this would be really bad for clients that relied on it.
+##### 迁移到1.9.0 {#Migrating_to_1_9_0}
+###### SAML SP 客户端 适配器更改 {#SAML_SP_Client_Adapter_Changes}
+Keycloak SAML SP客户端适配器现在需要一个特定的端点，`/saml`将在您的IdP中注册。 除了它具有的任何其他绑定之外，SamlFilter还必须绑定到/saml。 必须这样做，因为SAML POST绑定会占用请求输入流，这对依赖它的客户来说真的很糟糕。
 
 ### 3.2. mod_auth_mellon Apache HTTPD 模块 {#mod_auth_mellon_Apache_HTTPD_module}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/saml/mod-auth-mellon.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/saml/mod-auth-mellon.adoc)
 
-The [mod_auth_mellon](https://github.com/UNINETT/mod_auth_mellon) module is an Apache HTTPD plugin for SAML. If your language/environment supports using Apache HTTPD as a proxy, then you can use mod_auth_mellon to secure your web application with SAML. For more details on this module see the *mod_auth_mellon* GitHub repo.
+[mod_auth_mellon](https://github.com/UNINETT/mod_auth_mellon) 模块是SAML的Apache HTTPD插件。 如果您的语言/环境支持使用Apache HTTPD作为代理，那么您可以使用mod_auth_mellon通过SAML保护您的Web应用程序。 有关此模块的更多详细信息，请参阅*mod_auth_mellon* GitHub 仓库。
 
-To configure mod_auth_mellon you’ll need:
+要配置mod_auth_mellon，您需要：
 
-- An Identity Provider (IdP) entity descriptor XML file, which describes the connection to Keycloak or another SAML IdP
-- An SP entity descriptor XML file, which describes the SAML connections and configuration for the application you are securing.
-- A private key PEM file, which is a text file in the PEM format that defines the private key the application uses to sign documents.
-- A certificate PEM file, which is a text file that defines the certificate for your application.
-- mod_auth_mellon-specific Apache HTTPD module configuration.
+- 身份提供者（IdP）实体描述符XML文件，描述与Keycloak或其他SAML IdP的连接
+- SP实体描述符XML文件，描述您正在保护的应用程序的SAML连接和配置。
+- 私钥PEM文件，它是PEM格式的文本文件，用于定义应用程序用于签署文档的私钥。
+- 证书PEM文件，它是一个文本文件，用于定义应用程序的证书。
+- mod_auth_mellon 特定的Apache HTTPD模块配置。
 
-If you have already defined and registered the client application within a realm on the Keycloak application server, Keycloak can generate all the files you need except the Apache HTTPD module configuration.
+如果您已经在Keycloak应用程序服务器的领域内定义并注册了客户端应用程序，则Keycloak可以生成除Apache HTTPD模块配置之外所需的所有文件。
 
-To generate the Apache HTTPD module configuration, complete the following steps:
+要生成Apache HTTPD模块配置，请完成以下步骤：
 
-1. Go to the Installation page of your SAML client and select the Mod Auth Mellon files option.
+1. 转到SAML客户端的“安装”页面，然后选择“Mod Auth Mellon files”选项。
 
-   mod_auth_mellon config download
+   mod_auth_mellon 配置下载
 
    ![mod auth mellon config download](assets/mod-auth-mellon-config-download.png)
 
-2. Click **Download** to download a zip file that contains the XML descriptor and PEM files you need.
+2. 单击**Download**以下载包含所需XML描述符和PEM文件的zip文件。
 
-#### 3.2.1. Configuring mod_auth_mellon with Keycloak {#Configuring_mod}
-There are two hosts involved:
+#### 3.2.1. 使用Keycloak配置mod_auth_mellon {#Configuring_mod}
+涉及两个主机：
 
-- The host on which Keycloak is running, which will be referred to as $idp_host because Keycloak is a SAML identity provider (IdP).
-- The host on which the web application is running, which will be referred to as $sp_host. In SAML an application using an IdP is called a service provider (SP).
+- 运行Keycloak的主机，将被称为$idp_host，因为Keycloak是SAML身份提供程序（IdP）。
+- 运行Web应用程序的主机，将称为$sp_host。 在SAML中，使用IdP的应用程序称为服务提供者（SP）。
 
-All of the following steps need to performed on $sp_host with root privileges.
+需要在具有root权限的$sp_host上执行以下所有步骤。
 
-##### Installing the Packages {#Installing_the_Packages}
-To install the necessary packages, you will need:
+##### 安装包 {#Installing_the_Packages}
+要安装必要的软件包，您需要：
 
-- Apache Web Server (httpd)
-- Mellon SAML SP add-on module for Apache
-- Tools to create X509 certificates
+- Apache Web服务器 (httpd)
+- 用于Apache的Mellon SAML SP附加模块
+- 用于创建X509证书的工具
 
-To install the necessary packages, run this command:
+要安装必要的软件包，请运行以下命令：
 
-```
+```bash
 yum install httpd mod_auth_mellon mod_ssl openssl
 ```
 
-##### Creating a Configuration Directory for Apache SAML {#Creating_a_Configuration_Directory_for_Apache_SAML}
-It is advisable to keep configuration files related to Apache’s use of SAML in one location.
+##### 为Apache SAML创建配置目录 {#Creating_a_Configuration_Directory_for_Apache_SAML}
+建议在一个位置保留与Apache使用SAML相关的配置文件。
 
-Create a new directory named saml2 located under the Apache configuration root /etc/httpd:
+在Apache配置root `/etc/httpd`下创建一个名为saml2的新目录：
 
-```
+```bash
 mkdir /etc/httpd/saml2
 ```
 
-##### Configuring the Mellon Service Provider {#Configuring_the_Mellon_Service_Provider}
-Configuration files for Apache add-on modules are located in the /etc/httpd/conf.d directory and have a file name extension of .conf. You need to create the /etc/httpd/conf.d/mellon.conf file and place Mellon’s configuration directives in it.
+##### 配置Mellon服务提供商 {#Configuring_the_Mellon_Service_Provider}
+Apache附加模块的配置文件位于`/etc/httpd/conf.d`目录中，文件扩展名为.conf。 您需要创建`/etc/httpd/conf.d/mellon.conf`文件并将Mellon的配置指令放入其中。
 
-Mellon’s configuration directives can roughly be broken down into two classes of information:
+`Mellon’s`配置指令大致可以分为两类信息：
 
-- Which URLs to protect with SAML authentication
-- What SAML parameters will be used when a protected URL is referenced.
+- 使用SAML身份验证保护哪些URL
+- 引用受保护的URL时将使用哪些SAML参数。
 
-Apache configuration directives typically follow a hierarchical tree structure in the URL space, which are known as locations. You need to specify one or more URL locations for Mellon to protect. You have flexibility in how you add the configuration parameters that apply to each location. You can either add all the necessary parameters to the location block or you can add Mellon parameters to a common location high up in the URL location hierarchy that specific protected locations inherit (or some combination of the two). Since it is common for an SP to operate in the same way no matter which location triggers SAML actions, the example configuration used here places common Mellon configuration directives in the root of the hierarchy and then specific locations to be protected by Mellon can be defined with minimal directives. This strategy avoids duplicating the same parameters for each protected location.
+Apache配置指令通常遵循URL空间中的分层树结构，称为位置。 您需要为Mellon指定一个或多个URL位置以进行保护。 您可以灵活地添加适用于每个位置的配置参数。 您可以将所有必需参数添加到位置块，也可以将Mellon参数添加到特定受保护位置继承的URL位置层次结构中的公共位置（或两者的某种组合）。 由于无论哪个位置触发SAML操作，SP都以相同的方式操作，这里使用的示例配置将常用的Mellon配置指令放在层次结构的根中，然后可以使用Mellon保护的特定位置定义 最小指令。 此策略避免为每个受保护位置复制相同的参数。
 
-This example has just one protected location: https://$sp_host/protected.
+此示例只有一个受保护的位置:https://$sp_host/protected。
 
-To configure the Mellon service provider, complete the following steps:
+要配置Mellon服务提供商，请完成以下步骤：
 
-1. Create the file /etc/httpd/conf.d/mellon.conf with this content:
+1. 使用以下内容创建文件`/etc/httpd/conf.d/mellon.conf`：
 
-```
+```xml
  <Location / >
     MellonEnable info
     MellonEndpointPath /mellon/
@@ -5575,12 +5535,10 @@ To configure the Mellon service provider, complete the following steps:
  </Location>
 ```
 
-|      | Some of the files referenced in the code above are created in later steps. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 上面代码中引用的某些文件是在后面的步骤中创建的。
 
-##### Creating the Service Provider Metadata {#Creating_the_Service_Provider_Metadata}
-In SAML IdPs and SPs exchange SAML metadata, which is in XML format. The schema for the metadata is a standard, thus assuring participating SAML entities can consume each other’s metadata. You need:
+##### 创建服务提供者元数据 {#Creating_the_Service_Provider_Metadata}
+在SAML中，IdP和SP交换SAML元数据，这是XML格式的。 元数据的模式是标准，因此确保参与的SAML实体可以消耗彼此的元数据。 你需要：
 
 - Metadata for the IdP that the SP utilizes
 - Metadata describing the SP provided to the IdP
