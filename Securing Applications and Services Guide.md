@@ -3751,7 +3751,7 @@ HTTP路由规则遵循[chi](https://github.com/go-chi/chi#router-design)的指�
 #### 2.4.6. 仅限会话的cookie {#Session-only_cookies}
 默认情况下，访问和刷新cookie仅限会话，并在浏览器关闭时处理; 您可以使用`--enable-session-cookies`选项禁用此功能。
 
-#### 2.4.7. 转发签名代理 {#Forward-signing_proxy}
+#### 2.4.7. 转发签名代理 {#Forward_signing_proxy}
 转发签名提供了一种使用IdP发出的令牌在服务之间进行身份验证和授权的机制。 在此模式下运行时，代理将自动获取访问令牌（代表您处理刷新或登录）并使用Authorization标头标记出站请求。 您可以使用--forwarding-domains选项控制标记哪些域。 注意，此选项在域上使用**contains**比较。 因此，如果您想匹配*.svc.cluster.local下的所有域，您可以使用： - forwarding-domain=svc.cluster.local。
 
 目前，该服务使用oauth client_credentials授权类型执行登录，因此您的IdP服务必须支持直接（用户名/密码）登录。
@@ -3811,7 +3811,7 @@ $ bin/keycloak-gatekeeper \
 --enable-https-redirection
 ```
 
-#### 2.4.10. 我们加密配置 {#Let’s_Encrypt_configuration}
+#### 2.4.10. 我们加密配置 {#Lets_Encrypt_configuration}
 以下是Let's Encrypt支持所需配置的示例：
 
 ```yaml
@@ -3962,7 +3962,7 @@ match-claims:
 </html>
 ```
 
-#### 2.4.19. 白名单 URL’s {#White-listed_URLs}
+#### 2.4.19. 白名单 URL's {#White_listed_URLs}
 根据应用程序URL的布局方式，您可能需要保护根/ URL，但在路径列表中有例外，例如`/health`。 虽然通过调整路径可以最好地解决这个问题，但您可以向受保护资源添加例外，如下所示：
 
 ```yaml
@@ -4003,7 +4003,7 @@ match-claims:
 #### 2.4.23. 注销端点 {#Logout_endpoint}
 提供**/oauth/logout?redirect=url**作为帮助记录用户的帮助程序。 除了删除任何会话cookie之外，我们还尝试通过提供者撤销通过吊销URL(config **revocation-url** or **--revocation-url**)的访问权限。 对于Keycloak，其网址为<https://keycloak.example.com/auth/realms/REALM_NAME/protocol/openid-connect/logout>。 如果未指定url，我们将尝试从OpenID发现响应中获取url。
 
-#### 2.4.24. 跨域资源共享 (CORS) {#Cross_origin_resource_sharing__CORS_}
+#### 2.4.24. 跨域资源共享 (CORS) {#Cross_origin_resource_sharing__CORS}
 您可以使用这些配置选项通过`--cors-[method]`添加CORS头。
 
 - Access-Control-Allow-Origin
@@ -5473,7 +5473,7 @@ Keycloak SAML SP客户端适配器现在需要一个特定的端点，`/saml`将
 
 2. 单击**Download**以下载包含所需XML描述符和PEM文件的zip文件。
 
-#### 3.2.1. 使用Keycloak配置mod_auth_mellon {#Configuring_mod}
+#### 3.2.1. 使用Keycloak配置mod_auth_mellon {#Use_Keycloak_Configuring_mod_auth_mellon}
 涉及两个主机：
 
 - 运行Keycloak的主机，将被称为$idp_host，因为Keycloak是SAML身份提供程序（IdP）。
@@ -5540,143 +5540,137 @@ Apache配置指令通常遵循URL空间中的分层树结构，称为位置。 �
 ##### 创建服务提供者元数据 {#Creating_the_Service_Provider_Metadata}
 在SAML中，IdP和SP交换SAML元数据，这是XML格式的。 元数据的模式是标准，因此确保参与的SAML实体可以消耗彼此的元数据。 你需要：
 
-- Metadata for the IdP that the SP utilizes
-- Metadata describing the SP provided to the IdP
+- SP使用的IdP的元数据
+- 描述提供给IdP的SP的元数据
 
-One of the components of SAML metadata is X509 certificates. These certificates are used for two purposes:
+SAML元数据的一个组件是X509证书。 这些证书用于两个目的：
 
-- Sign SAML messages so the receiving end can prove the message originated from the expected party.
-- Encrypt the message during transport (seldom used because SAML messages typically occur on TLS-protected transports)
+- 签署SAML消息，以便接收端可以证明消息来自预期的一方。
+- 在传输过程中加密消息（很少使用，因为SAML消息通常发生在受TLS保护的传输上）
 
-You can use your own certificates if you already have a Certificate Authority (CA) or you can generate a self-signed certificate. For simplicity in this example a self-signed certificate is used.
+如果您已拥有证书颁发机构（CA），则可以使用自己的证书，也可以生成自签名证书。 为简单起见，在此示例中使用自签名证书。
 
-Because Mellon’s SP metadata must reflect the capabilities of the installed version of mod_auth_mellon, must be valid SP metadata XML, and must contain an X509 certificate (whose creation can be obtuse unless you are familiar with X509 certificate generation) the most expedient way to produce the SP metadata is to use a tool included in the mod_auth_mellon package (mellon_create_metadata.sh). The generated metadata can always be edited later because it is a text file. The tool also creates your X509 key and certificate.
+因为Mellon的SP元数据必须反映已安装的mod_auth_mellon版本的功能，所以必须是有效的SP元数据XML，并且必须包含X509证书（除非您熟悉X509证书生成，否则其创建可能是钝的）是生成 SP元数据将使用mod_auth_mellon包中包含的工具（mellon_create_metadata.sh）。 生成的元数据总是可以在以后编辑，因为它是一个文本文件。 该工具还会创建您的X509密钥和证书。
 
-SAML IdPs and SPs identify themselves using a unique name known as an EntityID. To use the Mellon metadata creation tool you need:
+SAML IdP和SP使用称为EntityID的唯一名称来标识自己。 要使用Mellon元数据创建工具，您需要：
 
-- The EntityID, which is typically the URL of the SP, and often the URL of the SP where the SP metadata can be retrieved
-- The URL where SAML messages for the SP will be consumed, which Mellon calls the MellonEndPointPath.
+- EntityID，通常是SP的URL，通常是可以检索SP元数据的SP的URL
+- 将使用SP的SAML消息的URL，Mellon将其称为MellonEndPointPath。
 
-To create the SP metadata, complete the following steps:
+要创建SP元数据，请完成以下步骤：
 
-1. Create a few helper shell variables:
+1. 创建一些辅助shell变量：
 
-   ```
+   ```properties
    fqdn=`hostname`
    mellon_endpoint_url="https://${fqdn}/mellon"
    mellon_entity_id="${mellon_endpoint_url}/metadata"
    file_prefix="$(echo "$mellon_entity_id" | sed 's/[^A-Za-z.]/_/g' | sed 's/__*/_/g')"
    ```
 
-2. Invoke the Mellon metadata creation tool by running this command:
+2. 通过运行以下命令调用Mellon元数据创建工具：
 
-   ```
+   ```bash
    /usr/libexec/mod_auth_mellon/mellon_create_metadata.sh $mellon_entity_id $mellon_endpoint_url
    ```
 
-3. Move the generated files to their destination (referenced in the /etc/httpd/conf.d/mellon.conf file created above):
+3. 将生成的文件移动到目标位置（在上面创建的/etc/httpd/conf.d/mellon.conf文件中引用）：
 
-   ```
+   ```bash
    mv ${file_prefix}.cert /etc/httpd/saml2/mellon.crt
    mv ${file_prefix}.key /etc/httpd/saml2/mellon.key
    mv ${file_prefix}.xml /etc/httpd/saml2/mellon_metadata.xml
    ```
 
-##### Adding the Mellon Service Provider to the Keycloak Identity Provider {#Adding_the_Mellon_Service_Provider_to_the_Keycloak_Identity_Provider}
-Assumption: The Keycloak IdP has already been installed on the $idp_host.
+##### 将Mellon服务提供商添加到Keycloak身份提供商 {#Adding_the_Mellon_Service_Provider_to_the_Keycloak_Identity_Provider}
+假设：Keycloak IdP已经安装在$idp_host上。
 
-Keycloak supports multiple tenancy where all users, clients, and so on are grouped in what is called a realm. Each realm is independent of other realms. You can use an existing realm in your Keycloak, but this example shows how to create a new realm called test_realm and use that realm.
+Keycloak支持多租户，其中所有用户，客户等都被分组在所谓的领域中。 每个领域都独立于其他领域。 您可以在Keycloak中使用现有领域，但此示例显示如何创建名为test_realm的新领域并使用该领域。
 
-All these operations are performed using the Keycloak administration web console. You must have the admin username and password for $idp_host.
+所有这些操作都是使用Keycloak管理Web控制台执行的。 您必须拥有$idp_host的管理员用户名和密码。
 
-To complete the following steps:
+要完成以下步骤：
 
-1. Open the Admin Console and log on by entering the admin username and password.
+1. 打开管理控制台，然后输入管理员用户名和密码登录。
 
-   After logging into the administration console there will be an existing realm. When Keycloak is first set up a root realm, master, is created by default. Any previously created realms are listed in the upper left corner of the administration console in a drop-down list.
+   登录管理控制台后，将存在现有领域。 首次设置Keycloak时，默认情况下会创建一个根域master。 任何以前创建的域都在管理控制台的左上角列在下拉列表中。
 
-2. From the realm drop-down list select **Add realm**.
+2. 从领域下拉列表中选择**Add realm**。
 
-3. In the Name field type `test_realm` and click **Create**.
+3. 在Name字段中输入`test_realm`并单击**Create**。
 
-###### Adding the Mellon Service Provider as a Client of the Realm {#Adding_the_Mellon_Service_Provider_as_a_Client_of_the_Realm}
-In Keycloak SAML SPs are known as clients. To add the SP we must be in the Clients section of the realm.
+###### 将Mellon服务提供程序添加为领域的客户端 {#Adding_the_Mellon_Service_Provider_as_a_Client_of_the_Realm}
+在Keycloak中，SAML SP称为客户端。 要添加SP，我们必须位于领域的“客户端”部分。
 
-1. Click the Clients menu item on the left and click **Create** in the upper right corner to create a new client.
+1. 单击左侧的“客户端”菜单项，然后单击右上角的“**Create**”以创建新客户端。
 
-###### Adding the Mellon SP Client {#Adding_the_Mellon_SP_Client}
-To add the Mellon SP client, complete the following steps:
+###### 添加Mellon SP客户端 {#Adding_the_Mellon_SP_Client}
+要添加Mellon SP客户端，请完成以下步骤：
 
-1. Set the client protocol to SAML. From the Client Protocol drop down list, select **saml**.
-2. Provide the Mellon SP metadata file created above (/etc/httpd/saml2/mellon_metadata.xml). Depending on where your browser is running you might have to copy the SP metadata from $sp_host to the machine on which your browser is running so the browser can find the file.
-3. Click **Save**.
+1. 将客户端协议设置为SAML。 从客户端协议下拉列表中，选择**saml**。
+2. 提供上面创建的Mellon SP元数据文件(/etc/httpd/saml2/mellon_metadata.xml)。 根据浏览器的运行位置，您可能必须将SP元数据从$sp_host复制到运行浏览器的计算机，以便浏览器可以找到该文件。
+3. 点击 **Save**.
 
-###### Editing the Mellon SP Client {#Editing_the_Mellon_SP_Client}
-There are several client configuration parameters we suggest setting:
+###### 编辑Mellon SP客户端 {#Editing_the_Mellon_SP_Client}
+我们建议设置几个客户端配置参数：
 
-- Ensure "Force POST Binding" is On.
-- Add paosResponse to the Valid Redirect URIs list:
-  1. Copy the postResponse URL in "Valid Redirect URIs" and paste it into the empty add text fields just below the "+".
-  2. Change "postResponse" to "paosResponse". (The paosResponse URL is needed for SAML ECP.)
-  3. Click **Save** at the bottom.
+- 确保"Force POST Binding"处于打开状态。
+- 将paosResponse添加到Valid Redirect URIs列表中：
+  1. 复制"Valid Redirect URIs"中的postResponse URL并将其粘贴到"+"下方的空添加文本字段中。
+  2. 将“postResponse”更改为“paosResponse”。 （SAML ECP需要paosResponse URL。）
+  3. 点击底部的**Save**。
 
-Many SAML SPs determine authorization based on a user’s membership in a group. The Keycloak IdP can manage user group information but it does not supply the user’s groups unless the IdP is configured to supply it as a SAML attribute.
+许多SAML SP根据用户在组中的成员身份确定授权。 Keycloak IdP可以管理用户组信息，但它不提供用户的组，除非IdP配置为将其作为SAML属性提供。
 
-To configure the IdP to supply the user’s groups as as a SAML attribute, complete the following steps:
+要配置IdP以将用户组作为SAML属性提供，请完成以下步骤：
 
-1. Click the Mappers tab of the client.
-2. In the upper right corner of the Mappers page, click **Create**.
-3. From the Mapper Type drop-down list select **Group list**.
-4. Set Name to "group list".
-5. Set the SAML attribute name to "groups".
-6. Click **Save**.
+1. 单击客户端的Mappers选项卡。
+2. 在Mappers页面的右上角，单击**Create**。
+3. 从Mapper Type下拉列表中选择**Group list**。
+4. 将名称设置为“group list”。
+5. 将SAML属性名称设置为“groups”。
+6. 点击 **Save**.
 
-The remaining steps are performed on $sp_host.
+其余步骤在$sp_host上执行。
 
-###### Retrieving the Identity Provider Metadata {#Retrieving_the_Identity_Provider_Metadata}
-Now that you have created the realm on the IdP you need to retrieve the IdP metadata associated with it so the Mellon SP recognizes it. In the /etc/httpd/conf.d/mellon.conf file created previously, the MellonIdPMetadataFile is specified as /etc/httpd/saml2/idp_metadata.xml but until now that file has not existed on $sp_host. To get that file we will retrieve it from the IdP.
+###### 检索身份提供程序元数据 {#Retrieving_the_Identity_Provider_Metadata}
+现在您已经在IdP上创建了领域，您需要检索与其关联的IdP元数据，以便Mellon SP识别它。 在先前创建的`/etc/httpd/conf.d/mellon.conf`文件中，MellonIdPMetadataFile指定为`/etc/httpd/saml2/idp_metadata.xml`，但直到现在该文件在$ sp_host上不存在。 要获取该文件，我们将从IdP中检索它。
 
-1. Retrieve the file from the IdP by substituting $idp_host with the correct value:
+1. 通过用$idp_host替换正确的值来从IdP中检索文件：
 
-   ```
+   ```bash
    curl -k -o /etc/httpd/saml2/idp_metadata.xml \
    https://$idp_host/auth/realms/test_realm/protocol/saml/descriptor
    ```
 
-   Mellon is now fully configured.
+   Mellon 现已完全配置。
 
-2. To run a syntax check for Apache configuration files:
+2. 要运行Apache配置文件的语法检查：
 
-   ```
+   ```bash
    apachectl configtest
    ```
 
-   |      | Configtest is equivalent to the -t argument to apachectl. If the configuration test shows any errors, correct them before proceeding. |
-   | ---- | ------------------------------------------------------------ |
-   |      |                                                              |
+   > Configtest等同于apachectl的-t参数。 如果配置测试显示任何错误，请在继续之前更正它们。
 
-3. Restart the Apache server:
+3. 重启Apache服务器：
 
-   ```
+   ```bash
    systemctl restart httpd.service
    ```
 
-You have now set up both Keycloak as a SAML IdP in the test_realm and mod_auth_mellon as SAML SP protecting the URL $sp_host/protected (and everything beneath it) by authenticating against the `$idp_host` IdP.
+您现在已将testcalm中的Keycloak设置为SAML IdP，将mod_auth_mellon设置为SAML SP，通过对`$idp_host`IdP进行身份验证来保护URL $sp_host/protected（及其下的所有内容）。
 
 ## 4. Docker注册表配置 {#Docker_Registry_Configuration}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/docker/docker-overview.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/docker/docker-overview.adoc)
+> 默认情况下禁用Docker身份验证。 要启用，请参阅[Profiles](https://www.keycloak.org/docs/6.0/server_installation/#profiles)。
 
-|      | Docker authentication is disabled by default. To enable see [Profiles](https://www.keycloak.org/docs/6.0/server_installation/#profiles). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+本节介绍如何配置Docker注册表以将Keycloak用作其身份验证服务器。
 
-This section describes how you can configure a Docker registry to use Keycloak as its authentication server.
-
-For more information on how to set up and configure a Docker registry, see the [Docker Registry Configuration Guide](https://docs.docker.com/registry/configuration/).
+有关如何设置和配置Docker注册表的更多信息，请参阅[Docker注册表配置指南](https://docs.docker.com/registry/configuration/)。
 
 ### 4.1. Docker注册表配置文件安装 {#Docker_Registry_Configuration_File_Installation}
-For users with more advanced Docker registry configurations, it is generally recommended to provide your own registry configuration file. The Keycloak Docker provider supports this mechanism via the *Registry Config File* Format Option. Choosing this option will generate output similar to the following:
+对于具有更高级Docker注册表配置的用户，通常建议您提供自己的注册表配置文件。 Keycloak Docker提供程序通过*Registry Config File* 格式化选项支持此机制。 选择此选项将生成类似于以下内容的输出：
 
 ```
 auth:
@@ -5686,14 +5680,12 @@ auth:
     issuer: http://localhost:8080/auth/realms/master
 ```
 
-This output can then be copied into any existing registry config file. See the [registry config file specification](https://docs.docker.com/registry/configuration/) for more information on how the file should be set up, or start with [a basic example](https://github.com/docker/distribution/blob/master/cmd/registry/config-example.yml).
+然后可以将此输出复制到任何现有的注册表配置文件中。 有关如何设置文件的更多信息，请参阅[注册表配置文件规范](https://docs.docker.com/registry/configuration/)，或者以[基本示例](https://github.com/docker/distribution/blob/master/cmd/registry/config-example.yml)开头。
 
-|      | Don’t forget to configure the `rootcertbundle` field with the location of the Keycloak realm’s pulic certificate. The auth configuration will not work without this argument. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 不要忘记使用Keycloak领域的pulic证书的位置配置`rootcertbundle`字段。 没有此参数，auth配置将不起作用。
 
 ### 4.2. Docker注册表环境变量覆盖安装 {#Docker_Registry_Environment_Variable_Override_Installation}
-Often times it is appropriate to use a simple environment variable override for develop or POC Docker registries. While this approach is usually not recommended for production use, it can be helpful when one requires quick-and-dirty way to stand up a registry. Simply use the *Variable Override* Format Option from the client installation tab, and an output should appear like the one below:
+通常，对开发或POC Docker注册表使用简单的环境变量覆盖是合适的。 虽然这种方法通常不建议用于生产用途，但是当需要快速而肮脏的方式来建立注册表时，它可能会有所帮助。 只需使用客户端安装选项卡中的*Variable Override* 格式选项，输出应如下所示：
 
 ```
 REGISTRY_AUTH_TOKEN_REALM: http://localhost:8080/auth/realms/master/protocol/docker-v2/auth
@@ -5701,29 +5693,23 @@ REGISTRY_AUTH_TOKEN_SERVICE: docker-test
 REGISTRY_AUTH_TOKEN_ISSUER: http://localhost:8080/auth/realms/master
 ```
 
-|      | Don’t forget to configure the `REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE` override with the location of the Keycloak realm’s pulic certificate. The auth configuration will not work without this argument. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 不要忘记使用Keycloak领域的pulic证书的位置配置`REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE`覆盖。 没有此参数，auth配置将不起作用。
 
 ### 4.3. Docker撰写YAML文件 {#Docker_Compose_YAML_File}
-|      | This installation method is meant to be an easy way to get a docker registry authenticating against a Keycloak server. It is intended for development purposes only and should never be used in a production or production-like environment. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 此安装方法旨在让docker注册表针对Keycloak服务器进行身份验证。 它仅用于开发目的，不应在生产或类似生产的环境中使用。
 
-The zip file installation mechanism provides a quickstart for developers who want to understand how the Keycloak server can interact with the Docker registry. In order to configure:
+zip文件安装机制为想要了解Keycloak服务器如何与Docker注册表进行交互的开发人员提供了快速入门。 为了配置：
 
-1. From the desired realm, create a client configuration. At this point you won’t have a Docker registry - the quickstart will take care of that part.
-2. Choose the "Docker Compose YAML" option from the installation tab and download the .zip file
-3. Unzip the archive to the desired location, and open the directory.
-4. Start the Docker registry with `docker-compose up`
+1. 从所需的领域，创建客户端配置。 此时您将没有Docker注册表 - 快速入门将负责该部分。
+2. 从安装选项卡中选择“Docker Compose YAML”选项并下载.zip文件
+3. 将存档解压缩到所需位置，然后打开目录。
+4. 使用`docker-compose up`启动Docker注册表
 
-|      | it is recommended that you configure the Docker registry client in a realm other than 'master', since the HTTP Basic auth flow will not present forms. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 建议您在`master`以外的域中配置Docker注册表客户端，因为HTTP Basic身份验证流程不会显示表单。
 
-Once the above configuration has taken place, and the keycloak server and Docker registry are running, docker authentication should be successful:
+完成上述配置，并且keycloak服务器和Docker注册表正在运行时，docker身份验证应该成功：
 
-```
+```bash
 [user ~]#??docker login localhost:5000 -u $username
 Password: *******
 Login Succeeded
@@ -5731,97 +5717,95 @@ Login Succeeded
 
 ## 5. 客户端注册 {#Client_Registration}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/client-registration.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/client-registration.adoc)
+为了使应用程序或服务能够使用Keycloak，它必须在Keycloak中注册客户端。 管理员可以通过管理控制台（或管理员REST端点）执行此操作，但客户端也可以通过Keycloak客户端注册服务注册自己。
 
-In order for an application or service to utilize Keycloak it has to register a client in Keycloak. An admin can do this through the admin console (or admin REST endpoints), but clients can also register themselves through the Keycloak client registration service.
+客户注册服务为Keycloak客户端表示，OpenID Connect客户端元数据和SAML实体描述符提供内置支持。 客户端注册服务端点是`/auth/realms/<realm>/clients-registrations/<provider>`。
 
-The Client Registration Service provides built-in support for Keycloak Client Representations, OpenID Connect Client Meta Data and SAML Entity Descriptors. The Client Registration Service endpoint is `/auth/realms/<realm>/clients-registrations/<provider>`.
+内置支持的`providers`是：
 
-The built-in supported `providers` are:
+- default - Keycloak客户端表示 (JSON)
+- install - Keycloak适配器配置 (JSON)
+- openid-connect - OpenID Connect客户端元数据描述 (JSON)
+- saml2-entity-descriptor - SAML实体描述符 (XML)
 
-- default - Keycloak Client Representation (JSON)
-- install - Keycloak Adapter Configuration (JSON)
-- openid-connect - OpenID Connect Client Metadata Description (JSON)
-- saml2-entity-descriptor - SAML Entity Descriptor (XML)
-
-The following sections will describe how to use the different providers.
+以下部分将介绍如何使用不同的提供程序。
 
 ### 5.1. 认证 {#Authentication}
-To invoke the Client Registration Services you usually need a token. The token can be a bearer token, an initial access token or a registration access token. There is an alternative to register new client without any token as well, but then you need to configure Client Registration Policies (see below).
+要调用客户端注册服务，通常需要令牌。 令牌可以是承载令牌，初始访问令牌或注册访问令牌。 有一种替代方案可以在没有任何令牌的情况下注册新客户端，但是您需要配置客户端注册策略（见下文）。
 
-#### 5.1.1. Bearer Token {#Bearer_Token}
-The bearer token can be issued on behalf of a user or a Service Account. The following permissions are required to invoke the endpoints (see [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) for more details):
+#### 5.1.1. 承载令牌 {#Bearer_Token}
+可以代表用户或服务帐户发出承载令牌。 调用端点需要以下权限（有关详细信息，请参阅[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/) for more details)）：
 
-- create-client or manage-client - To create clients
-- view-client or manage-client - To view clients
-- manage-client - To update or delete client
+- create-client或manage-client  - 创建客户端
+- view-client或manage-client  - 查看客户端
+- manage-client  - 更新或删除客户端
 
-If you are using a bearer token to create clients it’s recommend to use a token from a Service Account with only the `create-client` role (see [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) for more details).
+如果您使用不记名令牌来创建客户端，建议使用仅具有“create-client”角色的服务帐户中的令牌（请参阅[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/)了解更多详情）。
 
-#### 5.1.2. Initial Access Token {#Initial_Access_Token}
-The recommended approach to registering new clients is by using initial access tokens. An initial access token can only be used to create clients and has a configurable expiration as well as a configurable limit on how many clients can be created.
+#### 5.1.2. 初始访问令牌 {#Initial_Access_Token}
+注册新客户端的推荐方法是使用初始访问令牌。 初始访问令牌只能用于创建客户端，并且具有可配置的到期时间以及可以创建的客户端数量的可配置限制。
 
-An initial access token can be created through the admin console. To create a new initial access token first select the realm in the admin console, then click on `Realm Settings` in the menu on the left, followed by `Client Registration` in the tabs displayed in the page. Then finally click on `Initial Access Tokens` sub-tab.
+可以通过管理控制台创建初始访问令牌。 要创建新的初始访问令牌，首先在管理控制台中选择域，然后单击左侧菜单中的`Realm Settings`，然后单击页面中显示的选项卡中的`Client Registration`。 然后最后点击`Initial Access Tokens`子标签。
 
-You will now be able to see any existing initial access tokens. If you have access you can delete tokens that are no longer required. You can only retrieve the value of the token when you are creating it. To create a new token click on `Create`. You can now optionally add how long the token should be valid, also how many clients can be created using the token. After you click on `Save` the token value is displayed.
+您现在可以看到任何现有的初始访问令牌。 如果您有权访问权限，则可以删除不再需要的令牌。 您只能在创建令牌时检索令牌的值。 要创建新标记，请单击`Create`。 您现在可以选择添加令牌有效的时间，也可以使用令牌创建多少客户端。 单击`Save`后，将显示标记值。
 
-It is important that you copy/paste this token now as you won’t be able to retrieve it later. If you forget to copy/paste it, then delete the token and create another one.
+现在复制/粘贴此令牌非常重要，因为以后您将无法检索它。 如果您忘记复制/粘贴它，则删除令牌并创建另一个令牌。
 
-The token value is used as a standard bearer token when invoking the Client Registration Services, by adding it to the Authorization header in the request. For example:
+通过将客户端注册服务添加到请求中的Authorization标头，令牌值在调用客户端注册服务时用作标准承载令牌。 例如：
 
 ```
 Authorization: bearer eyJhbGciOiJSUz...
 ```
 
-#### 5.1.3. Registration Access Token {#Registration_Access_Token}
-When you create a client through the Client Registration Service the response will include a registration access token. The registration access token provides access to retrieve the client configuration later, but also to update or delete the client. The registration access token is included with the request in the same way as a bearer token or initial access token. Registration access tokens are only valid once, when it’s used the response will include a new token.
+#### 5.1.3. 注册访问令牌 {#Registration_Access_Token}
+通过客户端注册服务创建客户端时，响应将包括注册访问令牌。 注册访问令牌提供访问权限以便稍后检索客户端配置，还可以更新或删除客户端。 注册访问令牌以与承载令牌或初始访问令牌相同的方式包含在请求中。 注册访问令牌仅有效一次，当使用时，响应将包含新令牌。
 
-If a client was created outside of the Client Registration Service it won’t have a registration access token associated with it. You can create one through the admin console. This can also be useful if you loose the token for a particular client. To create a new token find the client in the admin console and click on `Credentials`. Then click on `Generate registration access token`.
+如果客户端是在客户端注册服务之外创建的，则它将没有与之关联的注册访问令牌。 您可以通过管理控制台创建一个。 如果您丢失特定客户端的令牌，这也很有用。 要创建新令牌，请在管理控制台中找到客户端，然后单击`Credentials`。 然后单击`Generate registration access token`。
 
 ### 5.2. Keycloak表示 {#Keycloak_Representations}
-The `default` client registration provider can be used to create, retrieve, update and delete a client. It uses Keycloak Client Representation format which provides support for configuring clients exactly as they can be configured through the admin console, including for example configuring protocol mappers.
+`default`客户端注册提供程序可用于创建，检索，更新和删除客户端。 它使用Keycloak客户端表示格式，该格式为通过管理控制台配置客户端提供了完全配置支持，包括配置协议映射器。
 
-To create a client create a Client Representation (JSON) then perform an HTTP POST request to `/auth/realms/<realm>/clients-registrations/default`.
+要创建客户端，请创建客户端表示（JSON），然后对`/auth/realms/<realm>/clients-registrations/default`执行HTTP POST请求。
 
-It will return a Client Representation that also includes the registration access token. You should save the registration access token somewhere if you want to retrieve the config, update or delete the client later.
+它将返回一个客户端表示，其中还包括注册访问令牌。 如果要稍后检索配置，更新或删除客户端，则应将注册访问令牌保存在某处。
 
-To retrieve the Client Representation perform an HTTP GET request to `/auth/realms/<realm>/clients-registrations/default/<client id>`.
+要检索客户端表示，请对`/auth/realms/<realm>/clients-registrations/default/<client id>`执行HTTP GET请求。
 
-It will also return a new registration access token.
+它还将返回一个新的注册访问令牌。
 
-To update the Client Representation perform an HTTP PUT request with the updated Client Representation to:`/auth/realms/<realm>/clients-registrations/default/<client id>`.
+要更新客户端表示，请使用更新的客户端表示执行HTTP PUT请求：`/auth/realms/<realm>/clients-registrations/default/<client id>`。
 
-It will also return a new registration access token.
+它还将返回一个新的注册访问令牌。
 
-To delete the Client Representation perform an HTTP DELETE request to: `/auth/realms/<realm>/clients-registrations/default/<client id>`
+要删除客户端表示，请执行HTTP DELETE请求：`/auth/realms/<realm>/clients-registrations/default/<client id>`
 
 ### 5.3. Keycloak适配器配置 {#Keycloak_Adapter_Configuration}
-The `installation` client registration provider can be used to retrieve the adapter configuration for a client. In addition to token authentication you can also authenticate with client credentials using HTTP basic authentication. To do this include the following header in the request:
+`installation`客户端注册提供程序可用于检索客户端的适配器配置。 除了令牌身份验证，您还可以使用HTTP基本身份验证对客户端凭据进行身份验证。 为此，请在请求中包含以下标头：
 
 ```
 Authorization: basic BASE64(client-id + ':' + client-secret)
 ```
 
-To retrieve the Adapter Configuration then perform an HTTP GET request to `/auth/realms/<realm>/clients-registrations/install/<client id>`.
+要检索适配器配置，然后对`/auth/realms/<realm>/clients-registrations/install/<client id>`执行HTTP GET请求。
 
-No authentication is required for public clients. This means that for the JavaScript adapter you can load the client configuration directly from Keycloak using the above URL.
+公共客户端无需身份验证。 这意味着对于JavaScript适配器，您可以使用上述URL直接从Keycloak加载客户端配置。
 
 ### 5.4. OpenID连接动态客户端注册 {#OpenID_Connect_Dynamic_Client_Registration}
-Keycloak implements [OpenID Connect Dynamic Client Registration](https://openid.net/specs/openid-connect-registration-1_0.html), which extends [OAuth 2.0 Dynamic Client Registration Protocol](https://tools.ietf.org/html/rfc7591) and [OAuth 2.0 Dynamic Client Registration Management Protocol](https://tools.ietf.org/html/rfc7592).
+Keycloak实现了[OpenID Connect动态客户端注册](https://openid.net/specs/openid-connect-registration-1_0.html)，它扩展了[OAuth 2.0动态客户端注册协议](https://tools.ietf.org/html/rfc7591)和[OAuth 2.0动态客户端注册管理协议](https://tools.ietf.org/html/rfc7592)。
 
-The endpoint to use these specifications to register clients in Keycloak is `/auth/realms/<realm>/clients-registrations/openid-connect[/<client id>]`.
+使用这些规范在Keycloak中注册客户端的端点是`/auth/realms/<realm>/clients-registrations/openid-connect[/<client id>]`。
 
-This endpoint can also be found in the OpenID Connect Discovery endpoint for the realm, `/auth/realms/<realm>/.well-known/openid-configuration`.
+此端点也可以在域的OpenID Connect Discovery端点中找到，`/auth/realms/<realm>/.well-known/openid-configuration`。
 
 ### 5.5. SAML实体描述符 {#SAML_Entity_Descriptors}
-The SAML Entity Descriptor endpoint only supports using SAML v2 Entity Descriptors to create clients. It doesn’t support retrieving, updating or deleting clients. For those operations the Keycloak representation endpoints should be used. When creating a client a Keycloak Client Representation is returned with details about the created client, including a registration access token.
+SAML实体描述符端点仅支持使用SAML v2实体描述符来创建客户端。 它不支持检索，更新或删除客户端。 对于这些操作，应使用Keycloak表示端点。 创建客户端时，将返回Keycloak Client Representation，其中包含有关已创建客户端的详细信息，包括注册访问令牌。
 
-To create a client perform an HTTP POST request with the SAML Entity Descriptor to `/auth/realms/<realm>/clients-registrations/saml2-entity-descriptor`.
+要创建客户端，请使用SAML实体描述符对`/auth/realms/<realm>/clients-registrations/saml2-entity-descriptor`执行HTTP POST请求。
 
 ### 5.6. 使用CURL的示例 {#Example_using_CURL}
-The following example creates a client with the clientId `myclient` using CURL. You need to replace `eyJhbGciOiJSUz…` with a proper initial access token or bearer token.
+以下示例使用CURL使用clientId`myclient`创建客户端。 您需要使用正确的初始访问令牌或承载令牌替换`eyJhbGciOiJSUz ...`。
 
-```
+```bash
 curl -X POST \
     -d '{ "clientId": "myclient" }' \
     -H "Content-Type:application/json" \
@@ -5830,11 +5814,11 @@ curl -X POST \
 ```
 
 ### 5.7. 使用Java客户端注册API的示例 {#Example_using_Java_Client_Registration_API}
-The Client Registration Java API makes it easy to use the Client Registration Service using Java. To use include the dependency `org.keycloak:keycloak-client-registration-api:>VERSION<` from Maven.
+客户端注册Java API可以使用Java轻松使用客户端注册服务。 要使用包含来自Maven的依赖项`org.keycloak:keycloak-client-registration-api:>VERSION<`。
 
-For full instructions on using the Client Registration refer to the JavaDocs. Below is an example of creating a client. You need to replace `eyJhbGciOiJSUz…` with a proper initial access token or bearer token.
+有关使用客户端注册的完整说明，请参阅JavaDocs。 以下是创建客户端的示例。 您需要使用正确的初始访问令牌或承载令牌替换`eyJhbGciOiJSUz ...`。
 
-```
+```java
 String token = "eyJhbGciOiJSUz...";
 
 ClientRepresentation client = new ClientRepresentation();
@@ -5852,28 +5836,26 @@ String registrationAccessToken = client.getRegistrationAccessToken();
 ```
 
 ### 5.8. 客户端注册政策 {#Client_Registration_Policies}
-Keycloak currently supports 2 ways how can be new clients registered through Client Registration Service.
+Keycloak目前支持2种方式如何通过客户注册服务注册新客户。
 
-- Authenticated requests - Request to register new client must contain either `Initial Access Token` or `Bearer Token`as mentioned above.
-- Anonymous requests - Request to register new client doesn’t need to contain any token at all
+- 经过身份验证的请求 - 注册新客户端的请求必须包含上面提到的`Initial Access Token(初始访问令牌)` 或 `Bearer Token(承载令牌)`。
+- 匿名请求 - 注册新客户端的请求根本不需要包含任何令牌
 
-Anonymous client registration requests are very interesting and powerful feature, however you usually don’t want that anyone is able to register new client without any limitations. Hence we have `Client Registration Policy SPI`, which provide a way to limit who can register new clients and under which conditions.
+匿名客户端注册请求是非常有趣和强大的功能，但是您通常不希望任何人能够无任何限制地注册新客户端。 因此，我们有“客户注册策略SPI”，它提供了一种限制谁可以注册新客户以及在何种条件下的方法。
 
-In Keycloak admin console, you can click to `Client Registration` tab and then `Client Registration Policies` sub-tab. Here you will see what policies are configured by default for anonymous requests and what policies are configured for authenticated requests.
+在Keycloak管理控制台中，您可以单击`Client Registration(客户端注册)`选项卡，然后单击“客户端注册策略”子选项卡。 在这里，您将看到默认情况下为匿名请求配置了哪些策略，以及为经过身份验证的请求配置了哪些策略。
 
-|      | The anonymous requests (requests without any token) are allowed just for creating (registration) of new clients. So when you register new client through anonymous request, the response will contain Registration Access Token, which must be used for Read, Update or Delete request of particular client. However using this Registration Access Token from anonymous registration will be then subject to Anonymous Policy too! This means that for example request for update client also needs to come from Trusted Host if you have `Trusted Hosts` policy. Also for example it won’t be allowed to disable `Consent Required` when updating client and when `Consent Required` policy is present etc. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 匿名请求（没有任何令牌的请求）仅允许创建（注册）新客户端。 因此，当您通过匿名请求注册新客户端时，响应将包含注册访问令牌，该令牌必须用于特定客户端的读取，更新或删除请求。 但是，使用匿名注册的注册访问令牌也将受到匿名策略的约束！ 这意味着，例如，如果您具有`Trusted Hosts(可信主机)`策略，则更新客户端的请求也需要来自可信主机。 另外，例如，在更新客户端以及存在`Consent Required(同意所需)`策略时，将不允许禁用`Consent Required(同意所需)`等。
 
-Currently we have these policy implementations:
+目前我们有这些策略实施：
 
-- Trusted Hosts Policy - You can configure list of trusted hosts and trusted domains. Request to Client Registration Service can be sent just from those hosts or domains. Request sent from some untrusted IP will be rejected. URLs of newly registered client must also use just those trusted hosts or domains. For example it won’t be allowed to set `Redirect URI`of client pointing to some untrusted host. By default, there is not any whitelisted host, so anonymous client registration is de-facto disabled.
-- Consent Required Policy - Newly registered clients will have `Consent Allowed` switch enabled. So after successful authentication, user will always see consent screen when he needs to approve permissions (client scopes). It means that client won’t have access to any personal info or permission of user unless user approves it.
-- Protocol Mappers Policy - Allows to configure list of whitelisted protocol mapper implementations. New client can’t be registered or updated if it contains some non-whitelisted protocol mapper. Note that this policy is used for authenticated requests as well, so even for authenticated request there are some limitations which protocol mappers can be used.
-- Client Scope Policy - Allow to whitelist `Client Scopes`, which can be used with newly registered or updated clients. There are no whitelisted scopes by default; only the client scopes, which are defined as `Realm Default Client Scopes` are whitelisted by default.
-- Full Scope Policy - Newly registered clients will have `Full Scope Allowed` switch disabled. This means they won’t have any scoped realm roles or client roles of other clients.
-- Max Clients Policy - Rejects registration if current number of clients in the realm is same or bigger than specified limit. It’s 200 by default for anonymous registrations.
-- Client Disabled Policy - Newly registered client will be disabled. This means that admin needs to manually approve and enable all newly registered clients. This policy is not used by default even for anonymous registration.
+- Trusted Hosts Policy(可信主机策略) - 您可以配置可信主机和可信域的列表。 可以从这些主机或域发送对客户注册服务的请求。 某些不受信任的IP发送的请求将被拒绝。 新注册客户端的URL也必须仅使用那些可信主机或域。 例如，不允许将客户端的“重定向URI”设置为指向某个不受信任的主机。 默认情况下，没有任何列入白名单的主机，因此事实上禁用匿名客户端注册。
+- Consent Required Policy(需要同意策略) - 新注册的客户端将启用`Consent Allowed(允许同意)`切换。 因此，在成功进行身份验证后，用户在需要批准权限（客户端范围）时将始终看到同意屏幕。 这意味着除非用户批准，否则客户端将无法访问任何个人信息或用户的许可。
+- Protocol Mappers Policy(协议映射器策略) - 允许配置列入白名单的协议映射器实现。 如果新客户端包含一些非白名单的协议映射器，则无法注册或更新新客户端。 请注意，此策略也用于经过身份验证的请求，因此即使对于经过身份验证的请求，也存在可以使用协议映射器的一些限制。
+- Client Scope Policy(客户端范围策略) - 允许将`Client Scopes(客户端范围)`列入白名单，可以与新注册或更新的客户端一起使用。 默认情况下，没有列入白名单的范围; 只有客户端作用域（定义为`Realm Default Client Scopes`）默认列入白名单。
+- Full Scope Policy(全范围策略) - 新注册的客户端将禁用`Full Scope Allowed(允许全范围)`开关。 这意味着他们将不具有任何作用域领域角色或其他客户端的客户角色。
+- Max Clients Policy(最大客户端策略) - 如果域中的当前客户端数量大于指定限制，则拒绝注册。 匿名注册默认为200。
+- Client Disabled Policy(客户端已禁用策略) - 将禁用新注册的客户端。 这意味着管理员需要手动批准并启用所有新注册的客户端。 即使是匿名注册，也不会默认使用此策略。
 
 ## 6. 客户端注册 CLI {#Client_Registration_CLI}
 
