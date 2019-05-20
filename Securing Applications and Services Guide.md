@@ -5859,85 +5859,81 @@ Keycloak目前支持2种方式如何通过客户注册服务注册新客户。
 
 ## 6. 客户端注册 CLI {#Client_Registration_CLI}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/client-registration/client-registration-cli.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/client-registration/client-registration-cli.adoc)
+客户端注册CLI是一个命令行界面（CLI）工具，供应用程序开发人员在与Keycloak集成时以自助服务方式配置新客户端。 它专门设计用于与Keycloak客户端注册REST端点交互。
 
-The Client Registration CLI is a command-line interface (CLI) tool for application developers to configure new clients in a self-service manner when integrating with Keycloak. It is specifically designed to interact with Keycloak Client Registration REST endpoints.
+必须为任何能够使用Keycloak的应用程序创建或获取客户端配置。 您通常为托管在唯一主机名上的每个新应用程序配置新客户端。 当应用程序与Keycloak交互时，应用程序使用客户端ID识别自身，因此Keycloak可以提供登录页面，单点登录（SSO）会话管理和其他服务。
 
-It is necessary to create or obtain a client configuration for any application to be able to use Keycloak. You usually configure a new client for each new application hosted on a unique host name. When an application interacts with Keycloak, the application identifies itself with a client ID so Keycloak can provide a login page, single sign-on (SSO) session management, and other services.
+您可以使用客户端注册CLI从命令行配置应用程序客户端，并且可以在shell脚本中使用它。
 
-You can configure application clients from a command line with the Client Registration CLI, and you can use it in shell scripts.
-
-To allow a particular user to use `Client Registration CLI` the Keycloak administrator typically uses the Admin Console to configure a new user with proper roles or to configure a new client and client secret to grant access to the Client Registration REST API.
+为了允许特定用户使用`客户端注册CLI`，Keycloak管理员通常使用管理控制台配置具有适当角色的新用户，或者配置新客户端和客户端密钥以授予对客户端注册REST API的访问权限。
 
 ### 6.1. 配置新常规用户以使用客户端注册CLI {#Configuring_a_new_regular_user_for_use_with_Client_Registration_CLI}
-1. Log in to the Admin Console (for example, <http://localhost:8080/auth/admin>) as `admin`.
+1. 以`admin`身份登录管理控制台（例如<http://localhost:8080/auth/admin>）。
 
-2. Select a realm to administer.
+2. 选择要管理的领域。
 
-3. If you want to use an existing user, select that user to edit; otherwise, create a new user.
+3. 如果要使用现有用户，请选择要编辑的用户; 否则，创建一个新用户。
 
-4. Select **Role Mappings > Client Roles > realm-management**. If you are in the master realm, select **NAME-realm**, where `NAME` is the name of the target realm. You can grant access to any other realm to users in the master realm.
+4. 选择**Role Mappings > Client Roles > realm-management**。 如果您在主域中，请选择**NAME-realm**，其中`NAME`是目标域的名称。 您可以向主域中的用户授予对任何其他域的访问权限。
 
-5. Select **Available Roles > manage-client** to grant a full set of client management permissions. Another option is to choose **view-clients** for read-only or **create-client** to create new clients.
+5. 选择**Available Roles>manage-client**以授予一整套客户端管理权限。 另一个选择是选择**view-clients**为只读或**create-client**来创建新客户。
 
-   |      | These permissions grant the user the capability to perform operations without the use of [Initial Access Token](https://www.keycloak.org/docs/latest/securing_apps/index.html#_initial_access_token) or [Registration Access Token](https://www.keycloak.org/docs/latest/securing_apps/index.html#_registration_access_token). |
-   | ---- | ------------------------------------------------------------ |
-   |      |                                                              |
+   > 这些权限授予用户执行操作的能力，而无需使用[初始访问令牌](https://www.keycloak.org/docs/latest/securing_apps/index.html#_initial_access_token)或[注册访问令牌](https://www.keycloak.org/docs/latest/securing_apps/index.html#_registration_access_token)。
 
-It is possible to not assign any `realm-management` roles to a user. In that case, a user can still log in with the Client Registration CLI but cannot use it without an Initial Access Token. Trying to perform any operations without a token results in a **403 Forbidden** error.
+可以不向用户分配任何`realm-management`角色。 在这种情况下，用户仍然可以使用客户端注册CLI登录，但如果没有初始访问令牌，则无法使用它。 尝试在没有令牌的情况下执行任何操作会导致**403 Forbidden**错误。
 
-The Administrator can issue Initial Access Tokens from the Admin Console through the **Realm Settings > Client Registration > Initial Access Token** menu.
+管理员可以通过**Realm Settings > Client Registration > Initial Access Token**菜单从管理控制台发出初始访问令牌。
 
 ### 6.2. 配置客户端以与客户端注册CLI一起使用 {#Configuring_a_client_for_use_with_the_Client_Registration_CLI}
-By default, the server recognizes the Client Registration CLI as the `admin-cli` client, which is configured automatically for every new realm. No additional client configuration is necessary when logging in with a user name.
+默认情况下，服务器将客户端注册CLI识别为`admin-cli`客户端，该客户端为每个新域自动配置。 使用用户名登录时无需其他客户端配置。
 
-1. Create a new client (for example, `reg-cli`) if you want to use a separate client configuration for the Client Registration CLI.
-2. Toggle the **Standard Flow Enabled** setting it to **Off**.
-3. Strengthen the security by configuring the client `Access Type` as `Confidential` and selecting **Credentials > ClientId and Secret**.
+1. 如果要为客户端注册CLI使用单独的客户端配置，请创建新客户端（例如，`reg-cli`）。
+2. 切换**Standard Flow Enabled**将其设置为**Off**。
+3. 通过将客户端`Access Type`配置为`Confidential`并选择**Credentials > ClientId and Secret**来加强安全性。
 
-You can configure either `Client Id and Secret` or `Signed JWT` under the **Credentials** tab .
+您可以在**Credentials**选项卡下配置`Client Id and Secret`或`Signed JWT`。
 
-1. Enable service accounts if you want to use a service account associated with the client by selecting a client to edit in the **Clients** section of the `Admin Console`.
-   1. Under **Settings**, change the **Access Type** to **Confidential**, toggle the **Service Accounts Enabled** setting to **On**, and click **Save**.
-   2. Click **Service Account Roles** and select desired roles to configure the access for the service account. For the details on what roles to select, see [Configuring a new regular user for use with Client Registration CLI](https://www.keycloak.org/docs/latest/securing_apps/index.html#_configuring_a_user_for_client_registration_cli).
-2. Toggle the **Direct Access Grants Enabled** setting it to **On** if you want to use a regular user account instead of a service account.
-3. If the client is configured as `Confidential`, provide the configured secret when running `kcreg config credentials`by using the `--secret` option.
-4. Specify which `clientId` to use (for example, `--client reg-cli`) when running `kcreg config credentials`.
-5. With the service account enabled, you can omit specifying the user when running `kcreg config credentials` and only provide the client secret or keystore information.
+1. 如果要使用与客户端关联的服务帐户，请通过在`Admin Console`的**Clients**部分中选择要编辑的客户端来启用服务帐户。
+   1. 在**Settings**下，将**Access Type**更改为**Confidential**，将**Service Accounts Enabled**设置切换为**On**，然后单击**Save**。
+   2. 单击**Service Account Roles**并选择所需角色以配置服务帐户的访问权限。 有关要选择的角色的详细信息，请参阅[配置用于客户端注册CLI的新常规用户](https://www.keycloak.org/docs/latest/securing_apps/index.html#_configuring_a_user_for_client_registration_cli)。
+2. 切换**Direct Access Grants Enabled**将其设置为**On**，如果您要使用常规用户帐户而不是服务帐户。
+3. 如果客户端配置为`Confidential`，则在使用`--secret`选项运行`kcreg config credentials`时提供已配置的机密。
+4. 在运行`kcreg config credentials`时指定要使用的`clientId`（例如，`--client reg-cli`）。
+5. 启用服务帐户后，您可以在运行`kcreg config credentials`时省略指定用户，并仅提供客户端密钥或密钥库信息。
 
 ### 6.3. 安装客户端注册CLI {#Installing_the_Client_Registration_CLI}
-The Client Registration CLI is packaged inside the Keycloak Server distribution. You can find execution scripts inside the `bin`directory. The Linux script is called `kcreg.sh`, and the Windows script is called `kcreg.bat`.
+客户端注册CLI打包在Keycloak Server发行版中。 您可以在`bin`目录中找到执行脚本。 Linux脚本称为`kcreg.sh`，Windows脚本称为`kcreg.bat`。
 
-Add the Keycloak server directory to your `PATH` when setting up the client for use from any location on the file system.
+在设置客户端以便从文件系统上的任何位置使用时，将Keycloak服务器目录添加到`PATH`。
 
-For example, on:
+例如，在：
 
 - Linux:
 
-```
+```bash
 $ export PATH=$PATH:$KEYCLOAK_HOME/bin
 $ kcreg.sh
 ```
 
 - Windows:
 
-```
+```bash
 c:\> set PATH=%PATH%;%KEYCLOAK_HOME%\bin
 c:\> kcreg
 ```
 
-`KEYCLOAK_HOME` refers to a directory where the Keycloak Server distribution was unpacked.
+`KEYCLOAK_HOME`指的是解压缩Keycloak Server分发的目录。
 
 ### 6.4. 使用客户端注册CLI {#Using_the_Client_Registration_CLI}
-1. Start an authenticated session by logging in with your credentials.
+1. 通过使用您的凭据登录来启动经过身份验证的会话。
 
-2. Run commands on the `Client Registration REST` endpoint.
+2. 在`Client Registration REST`端点上运行命令。
 
-   For example, on:
+   例如，在：
 
    - Linux:
 
-     ```
+     ```bash
      $ kcreg.sh config credentials --server http://localhost:8080/auth --realm demo --user user --client reg-cli
      $ kcreg.sh create -s clientId=my_client -s 'redirectUris=["http://localhost:8980/myapp/*"]'
      $ kcreg.sh get my_client
@@ -5945,176 +5941,172 @@ c:\> kcreg
 
    - Windows:
 
-     ```
+     ```bash
      c:\> kcreg config credentials --server http://localhost:8080/auth --realm demo --user user --client reg-cli
      c:\> kcreg create -s clientId=my_client -s "redirectUris=[\"http://localhost:8980/myapp/*\"]"
      c:\> kcreg get my_client
      ```
 
-     |      | In a production environment, Keycloak has to be accessed with `https:` to avoid exposing tokens to network sniffers. |
-     | ---- | ------------------------------------------------------------ |
-     |      |                                                              |
+     > 在生产环境中，必须使用`https:`访问Keycloak，以避免将令牌暴露给网络嗅探器。
 
-3. If a server’s certificate is not issued by one of the trusted certificate authorities (CAs) that are included in Java’s default certificate truststore, prepare a `truststore.jks` file and instruct the Client Registration CLI to use it.
+3. 如果服务器的证书不是由Java的默认证书信任库中包含的受信任证书颁发机构（CA）之一颁发的，请准备`truststore.jks`文件并指示客户端注册CLI使用它。
 
-   For example, on:
+   例如，在：
 
    - Linux:
 
-     ```
+     ```bash
      $ kcreg.sh config truststore --trustpass $PASSWORD ~/.keycloak/truststore.jks
      ```
 
    - Windows:
 
-     ```
+     ```bash
      c:\> kcreg config truststore --trustpass %PASSWORD% %HOMEPATH%\.keycloak\truststore.jks
      ```
 
-#### 6.4.1. Logging in {#Logging_in}
-1. Specify a server endpoint URL and a realm when you log in with the Client Registration CLI.
-2. Specify a user name or a client id, which results in a special service account being used. When using a user name, you must use a password for the specified user. When using a client ID, you use a client secret or a `Signed JWT` instead of a password.
+#### 6.4.1. 登录 {#Logging_in}
+1. 使用客户端注册CLI登录时，请指定服务器端点URL和域。
+2. 指定用户名或客户端ID，这将导致使用特殊服务帐户。 使用用户名时，必须使用指定用户的密码。 使用客户端ID时，使用客户端密钥或`Signed JWT`而不是密码。
 
-Regardless of the login method, the account that logs in needs proper permissions to be able to perform client registration operations. Keep in mind that any account in a non-master realm can only have permissions to manage clients within the same realm. If you need to manage different realms, you can either configure multiple users in different realms, or you can create a single user in the `master` realm and add roles for managing clients in different realms.
+无论登录方法如何，登录的帐户都需要适当的权限才能执行客户端注册操作。 请记住，非主域中的任何帐户只能拥有管理同一域内的客户端的权限。 如果需要管理不同的域，可以在不同的域中配置多个用户，也可以在`master`域中创建单个用户，并添加角色以管理不同领域的客户端。
 
-You cannot configure users with the Client Registration CLI. Use the Admin Console web interface or the Admin Client CLI to configure users. See [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) for more details.
+您无法使用客户端注册CLI配置用户。 使用管理控制台Web界面或Admin Client CLI配置用户。 有关详细信息，请参阅[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/)。
 
-When `kcreg` successfully logs in, it receives authorization tokens and saves them in a private configuration file so the tokens can be used for subsequent invocations. See [Working with alternative configurations](https://www.keycloak.org/docs/latest/securing_apps/index.html#_working_with_alternative_configurations) for more information on configuration files.
+当`kcreg`成功登录时，它会接收授权令牌并将其保存在私有配置文件中，因此令牌可用于后续调用。 有关配置文件的详细信息，请参阅[使用备用配置](https://www.keycloak.org/docs/latest/securing_apps/index.html#_working_with_alternative_configurations) 。
 
-See the built-in help for more information on using the Client Registration CLI.
+有关使用客户端注册CLI的详细信息，请参阅内置帮助。
 
-For example, on:
+例如，在：
 
 - Linux:
 
-```
+```bash
 $ kcreg.sh help
 ```
 
 - Windows:
 
-```
+```bash
 c:\> kcreg help
 ```
 
-See `kcreg config credentials --help` for more information about starting an authenticated session.
+有关启动经过身份验证的会话的详细信息，请参阅`kcreg config credentials --help`。
 
-#### 6.4.2. Working with alternative configurations {#Working_with_alternative_configurations}
-By default, the Client Registration CLI automatically maintains a configuration file at a default location, `./.keycloak/kcreg.config`, under the user’s home directory. You can use the `--config` option to point to a different file or location to mantain multiple authenticated sessions in parallel. It is the safest way to perform operations tied to a single configuration file from a single thread.
+#### 6.4.2. 使用其他配置 {#Working_with_alternative_configurations}
+默认情况下，客户端注册CLI会自动将配置文件维护在用户主目录下的默认位置`./.keycloak/kcreg.config`中。 您可以使用`--config`选项指向不同的文件或位置，以并行保存多个经过身份验证的会话。 这是从单个线程执行绑定到单个配置文件的操作的最安全的方法。
 
-|      | Do not make the configuration file visible to other users on the system. The configuration file contains access tokens and secrets that should be kept private. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 不要使配置文件对系统上的其他用户可见。 配置文件包含应保密的访问令牌和秘密。
 
-You might want to avoid storing secrets inside a configuration file by using the `--no-config` option with all of your commands, even though it is less convenient and requires more token requests to do so. Specify all authentication information with each `kcreg` invocation.
+您可能希望通过在所有命令中使用`--no-config`选项来避免在配置文件中存储机密，即使它不太方便并且需要更多令牌请求。 使用每个`kcreg`调用指定所有身份验证信息。
 
-#### 6.4.3. Initial Access and Registration Access Tokens {#Initial_Access_and_Registration_Access_Tokens}
-Developers who do not have an account configured at the Keycloak server they want to use can use the Client Registration CLI. This is possible only when the realm administrator issues a developer an Initial Access Token. It is up to the realm administrator to decide how and when to issue and distribute these tokens. The realm administrator can limit the maximum age of the Initial Access Token and the total number of clients that can be created with it.
+#### 6.4.3. 初始访问和注册访问令牌 {#Initial_Access_and_Registration_Access_Tokens}
+没有在他们想要使用的Keycloak服务器上配置帐户的开发人员可以使用客户端注册CLI。 仅当领域管理员向开发人员发出初始访问令牌时，才可能这样做。 由领域管理员决定如何以及何时发布和分发这些令牌。 领域管理员可以限制初始访问令牌的最长期限以及可以使用它创建的客户端总数。
 
-Once a developer has an Initial Access Token, the developer can use it to create new clients without authenticating with `kcreg config credentials`. The Initial Access Token can be stored in the configuration file or specified as part of the `kcreg create` command.
+一旦开发人员拥有初始访问令牌，开发人员就可以使用它来创建新客户端，而无需使用`kcreg config credentials`进行身份验证。 初始访问令牌可以存储在配置文件中，也可以作为`kcreg create`命令的一部分指定。
 
-For example, on:
+例如，在：
 
 - Linux:
 
-```
+```bash
 $ kcreg.sh config initial-token $TOKEN
 $ kcreg.sh create -s clientId=myclient
 ```
 
-or
+或者
 
-```
+```bash
 $ kcreg.sh create -s clientId=myclient -t $TOKEN
 ```
 
 - Windows:
 
-```
+```bash
 c:\> kcreg config initial-token %TOKEN%
 c:\> kcreg create -s clientId=myclient
 ```
 
-or
+或者
 
-```
+```bash
 c:\> kcreg create -s clientId=myclient -t %TOKEN%
 ```
 
-When using an Initial Access Token, the server response includes a newly issued Registration Access Token. Any subsequent operation for that client needs to be performed by authenticating with that token, which is only valid for that client.
+使用初始访问令牌时，服务器响应包括新发布的注册访问令牌。 该客户端的任何后续操作都需要通过使用该令牌进行身份验证来执行，该令牌仅对该客户端有效。
 
-The Client Registration CLI automatically uses its private configuration file to save and use this token with its associated client. As long as the same configuration file is used for all client operations, the developer does not need to authenticate to read, update, or delete a client that was created this way.
+客户端注册CLI自动使用其专用配置文件来保存此标记并将其与其关联的客户端一起使用。 只要将相同的配置文件用于所有客户端操作，开发人员就无需进行身份验证即可读取，更新或删除以这种方式创建的客户端。
 
-See [Client Registration](https://www.keycloak.org/docs/latest/securing_apps/index.html#_client_registration) for more information about Initial Access and Registration Access Tokens.
+有关初始访问和注册访问令牌的详细信息，请参阅[客户端注册](https://www.keycloak.org/docs/latest/securing_apps/index.html#_client_registration)。
 
-Run the `kcreg config initial-token --help` and `kcreg config registration-token --help` commands for more information on how to configure tokens with the Client Registration CLI.
+运行`kcreg config initial-token --help`和`kcreg config registration-token --help`命令，以获取有关如何使用客户端注册CLI配置令牌的更多信息。
 
-#### 6.4.4. Creating a client configuration {#Creating_a_client_configuration}
-The first task after authenticating with credentials or configuring an Initial Access Token is usually to create a new client. Often you might want to use a prepared JSON file as a template and set or override some of the attributes.
+#### 6.4.4. 创建客户端配置 {#Creating_a_client_configuration}
+使用凭据进行身份验证或配置初始访问令牌后的第一个任务通常是创建新客户端。 通常，您可能希望使用准备好的JSON文件作为模板，并设置或覆盖某些属性。
 
-The following example shows how to read a JSON file, override any client id it may contain, set any other attributes, and print the configuration to a standard output after successful creation.
+以下示例显示如何读取JSON文件，覆盖它可能包含的任何客户端ID，设置任何其他属性，以及在成功创建后将配置打印到标准输出。
 
 - Linux:
 
-```
+```bash
 $ kcreg.sh create -f client-template.json -s clientId=myclient -s baseUrl=/myclient -s 'redirectUris=["/myclient/*"]' -o
 ```
 
 - Windows:
 
-```
+```bash
 C:\> kcreg create -f client-template.json -s clientId=myclient -s baseUrl=/myclient -s "redirectUris=[\"/myclient/*\"]" -o
 ```
 
-Run the `kcreg create --help` for more information about the `kcreg create` command.
+有关`kcreg create`命令的更多信息，请运行`kcreg create --help`。
 
-You can use `kcreg attrs` to list available attributes. Keep in mind that many configuration attributes are not checked for validity or consistency. It is up to you to specify proper values. Remember that you should not have any id fields in your template and should not specify them as arguments to the `kcreg create` command.
+您可以使用`kcreg attrs`列出可用属性。 请记住，未检查许多配置属性的有效性或一致性。 您可以指定正确的值。 请记住，模板中不应包含任何id字段，也不应将它们指定为`kcreg create`命令的参数。
 
-#### 6.4.5. Retrieving a client configuration {#Retrieving_a_client_configuration}
-You can retrieve an existing client by using the `kcreg get` command.
+#### 6.4.5. 检索客户端配置 {#Retrieving_a_client_configuration}
+您可以使用`kcreg get`命令检索现有客户端。
 
-For example, on:
+例如，在：
 
 - Linux:
 
-```
+```bash
 $ kcreg.sh get myclient
 ```
 
 - Windows:
 
-```
+```bash
 C:\> kcreg get myclient
 ```
 
-You can also retrieve the client configuration as an adapter configuration file, which you can package with your web application.
+您还可以将客户端配置检索为适配器配置文件，您可以将其与Web应用程序打包在一起。
 
-For example, on:
+例如，在：
 
 - Linux:
 
-```
+```bash
 $ kcreg.sh get myclient -e install > keycloak.json
 ```
 
 - Windows:
 
-```
+```bash
 C:\> kcreg get myclient -e install > keycloak.json
 ```
 
-Run the `kcreg get --help` command for more information about the `kcreg get` command.
+有关`kcreg get`命令的更多信息，请运行`kcreg get --help`命令。
 
-#### 6.4.6. Modifying a client configuration {#Modifying_a_client_configuration}
-There are two methods for updating a client configuration.
+#### 6.4.6. 修改客户端配置 {#Modifying_a_client_configuration}
+有两种更新客户端配置的方法。
 
-One method is to submit a complete new state to the server after getting the current configuration, saving it to a file, editing it, and posting it back to the server.
+一种方法是在获取当前配置，将其保存到文件，编辑它并将其发回服务器后，向服务器提交一个完整的新状态。
 
-For example, on:
+例如，在：
 
 - Linux:
 
-```
+```bash
 $ kcreg.sh get myclient > myclient.json
 $ vi myclient.json
 $ kcreg.sh update myclient -f myclient.json
@@ -6122,149 +6114,143 @@ $ kcreg.sh update myclient -f myclient.json
 
 - Windows:
 
-```
+```bash
 C:\> kcreg get myclient > myclient.json
 C:\> notepad myclient.json
 C:\> kcreg update myclient -f myclient.json
 ```
 
-The second method fetches the current client, sets or deletes fields on it, and posts it back in one step.
+第二种方法获取当前客户端，设置或删除其上的字段，并在一个步骤中将其发回。
 
-For example, on:
+例如，在：
 
 - Linux:
 
-```
+```bash
 $ kcreg.sh update myclient -s enabled=false -d redirectUris
 ```
 
 - Windows:
 
-```
+```bash
 C:\> kcreg update myclient -s enabled=false -d redirectUris
 ```
 
-You can also use a file that contains only changes to be applied so you do not have to specify too many values as arguments. In this case, specify `--merge` to tell the Client Registration CLI that rather than treating the JSON file as a full, new configuration, it should treat it as a set of attributes to be applied over the existing configuration.
+您还可以使用仅包含要应用的更改的文件，这样您就不必将太多值指定为参数。 在这种情况下，指定`--merge`告诉客户端注册CLI，而不是将JSON文件视为完整的新配置，它应将其视为要在现有配置上应用的一组属性。
 
-For example, on:
+例如，在：
 
 - Linux:
 
-```
+```bash
 $ kcreg.sh update myclient --merge -d redirectUris -f mychanges.json
 ```
 
 - Windows:
 
-```
+```bash
 C:\> kcreg update myclient --merge -d redirectUris -f mychanges.json
 ```
 
-Run the `kcreg update --help` command for more information about the `kcreg update` command.
+有关`kcreg update`命令的更多信息，请运行`kcreg update --help`命令。
 
-#### 6.4.7. Deleting a client configuration {#Deleting_a_client_configuration}
-Use the following example to delete a client.
+#### 6.4.7. 删除客户端配置 {#Deleting_a_client_configuration}
+使用以下示例删除客户端。
 
 - Linux:
 
-```
+```bash
 $ kcreg.sh delete myclient
 ```
 
 - Windows:
 
-```
+```bash
 C:\> kcreg delete myclient
 ```
 
-Run the `kcreg delete --help` command for more information about the `kcreg delete` command.
+有关`kcreg delete`命令的更多信息，请运行`kcreg delete --help`命令。
 
-#### 6.4.8. Refreshing invalid Registration Access Tokens {#Refreshing_invalid_Registration_Access_Tokens}
-When performing a create, read, update, and delete (CRUD) operation using the `--no-config` mode, the Client Registration CLI cannot handle Registration Access Tokens for you. In that case, it is possible to lose track of the most recently issued Registration Access Token for a client, which makes it impossible to perform any further CRUD operations on that client without authenticating with an account that has **manage-clients** permissions.
+#### 6.4.8. 刷新无效的注册访问令牌 {#Refreshing_invalid_Registration_Access_Tokens}
+使用`--no-config`模式执行创建，读取，更新和删除（CRUD）操作时，客户端注册CLI无法为您处理注册访问令牌。 在这种情况下，可能会丢失对客户端最近发布的注册访问令牌的跟踪，这使得无法在没有使用具有**manage-clients**权限的帐户进行身份验证的情况下在该客户端上执行任何进一步的CRUD操作。
 
-If you have permissions, you can issue a new Registration Access Token for the client and have it printed to a standard output or saved to a configuration file of your choice. Otherwise, you have to ask the realm administrator to issue a new Registration Access Token for your client and send it to you. You can then pass it to any CRUD command via the `--token` option. You can also use the `kcreg config registration-token` command to save the new token in a configuration file and have the Client Registration CLI automatically handle it for you from that point on.
+如果您具有权限，则可以为客户端发出新的注册访问令牌，并将其打印到标准输出或保存到您选择的配置文件中。 否则，您必须要求领域管理员为您的客户发出新的注册访问令牌并将其发送给您。 然后，您可以通过`--token`选项将其传递给任何CRUD命令。 您还可以使用`kcreg config registration-token`命令将新令牌保存在配置文件中，并让客户端注册CLI从那时起自动为您处理。
 
-Run the `kcreg update-token --help` command for more information about the `kcreg update-token` command.
+有关`kcreg update-token`命令的更多信息，请运行`kcreg update-token --help`命令。
 
 ### 6.5. 故障排除 {#Troubleshooting}
-- Q: When logging in, I get an error: *Parameter client_assertion_type is missing [invalid_client].
+- Q: 登录时，出现错误： *Parameter client_assertion_type is missing [invalid_client].
 
-  A: This error means your client is configured with `Signed JWT` token credentials, which means you have to use the `--keystore` parameter when logging in.
+  A: 此错误意味着您的客户端配置了`Signed JWT(签名JWT)`令牌凭据，这意味着您必须在登录时使用`--keystore`参数。
 
 ## 7. 令牌交换 {#Token_Exchange}
 
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/token-exchange/token-exchange.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: securing_apps/topics/token-exchange/token-exchange.adoc)
+> 令牌交换是**技术预览**，并不完全支持。 默认情况下禁用此功能。要启用`-Dkeycloak.profile=preview` 或 `-Dkeycloak.profile.feature.token_exchange=enabled`启动服务器。 有关详细信息，请参阅[Profiles](https://www.keycloak.org/docs/6.0/server_installation/#profiles)。
 
-|      | Token Exchange is **Technology Preview** and is not fully supported. This feature is disabled by default.To enable start the server with `-Dkeycloak.profile=preview` or `-Dkeycloak.profile.feature.token_exchange=enabled` . For more details see [Profiles](https://www.keycloak.org/docs/6.0/server_installation/#profiles). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+在Keycloak中，令牌交换是使用一组凭据或令牌来获取完全不同的令牌的过程。 客户端可能希望在不太受信任的应用程序上调用，因此它可能希望降级它具有的当前令牌。 客户端可能想要为存储用于链接的社交提供者帐户的令牌交换Keycloak令牌。 您可能希望信任由其他Keycloak领域或外国国内流离失所者铸造的外部令牌。 客户可能需要冒充用户。 以下是Keycloak围绕令牌交换的当前功能的简短摘要。
 
-In Keycloak, token exchange is the process of using a set of credentials or token to obtain an entirely different token. A client may want to invoke on a less trusted application so it may want to downgrade the current token it has. A client may want to exchange a Keycloak token for a token stored for a linked social provider account. You may want to trust external tokens minted by other Keycloak realms or foreign IDPs. A client may have a need to impersonate a user. Here’s a short summary of the current capabilities of Keycloak around token exchange.
+- 客户端可以交换为特定客户端创建的现有Keycloak令牌，以获取针对不同客户端的新令牌
+- 客户端可以将现有的Keycloak令牌交换为外部令牌，即链接的Facebook帐户
+- 客户端可以为Keycloak令牌交换外部令牌。
+- 客户端可以冒充用户
 
-- A client can exchange an existing Keycloak token created for a specific client for a new token targeted to a different client
-- A client can exchange an existing Keycloak token for an external token, i.e. a linked Facebook account
-- A client can exchange an external token for a Keycloak token.
-- A client can impersonate a user
+Keycloak中的令牌交换是IETF中[OAuth令牌交换](https://tools.ietf.org/html/draft-ietf-oauth-token-exchange-16)规范的非常松散的实现。 我们已经扩展了一点，忽略了一些，并松散地解释了规范的其他部分。 它是领域的OpenID Connect令牌端点上的简单授权类型调用。
 
-Token exchange in Keycloak is a very loose implementation of the [OAuth Token Exchange](https://tools.ietf.org/html/draft-ietf-oauth-token-exchange-16) specification at the IETF. We have extended it a little, ignored some of it, and loosely interpreted other parts of the specification. It is a simple grant type invocation on a realm’s OpenID Connect token endpoint.
-
-```
+```bash
 /auth/realms/{realm}/protocol/openid-connect/token
 ```
 
-It accepts form parameters (`application/x-www-form-urlencoded`) as input and the output depends on the type of token you requested an exchange for. Token exchange is a client endpoint so requests must provide authentication information for the calling client. Public clients specify their client identifier as a form parameter. Confidential clients can also use form parameters to pass their client id and secret, Basic Auth, or however your admin has configured the client authentication flow in your realm. Here’s a list of form parameters
+它接受表单参数（`application / x-www-form-urlencoded`）作为输入，输出取决于您请求交换的令牌类型。 令牌交换是客户端端点，因此请求必须为调用客户端提供身份验证信息。 公共客户端将其客户端标识符指定为表单参数。 机密客户端还可以使用表单参数来传递其客户端ID和密码，Basic Auth，或者您的管理员已在您的领域中配置了客户端身份验证流。 这是表单参数列表
 
 - client_id
 
-  *REQUIRED MAYBE.* This parameter is required for clients using form parameters for authentication. If you are using Basic Auth, a client JWT token, or client cert authentication, then do not specify this parameter.
+  *REQUIRED MAYBE.* 使用表单参数进行身份验证的客户端需要此参数。 如果您使用的是Basic Auth，客户端JWT令牌或客户端证书身份验证，则不要指定此参数。
 
 - client_secret
 
-  *REQUIRED MAYBE*. This parameter is required for clients using form parameters for authentication and using a client secret as a credential. Do not specify this parameter if client invocations in your realm are authenticated by a different means.
+  *REQUIRED MAYBE*. 对于使用表单参数进行身份验证并使用客户端机密作为凭据的客户端，此参数是必需的。 如果您的领域中的客户端调用通过其他方式进行身份验证，请不要指定此参数。
 
 - grant_type
 
-  *REQUIRED.* The value of the parameter must be `urn:ietf:params:oauth:grant-type:token-exchange`.
+  *REQUIRED.* 参数的值必须是`urn:ietf:params:oauth:grant-type:token-exchange`。
 
 - subject_token
 
-  *OPTIONAL.* A security token that represents the identity of the party on behalf of whom the request is being made. It is required if you are exchanging an existing token for a new one.
+  *OPTIONAL.* 代表正在进行请求的一方的身份的安全令牌。 如果您要为新的令牌交换现有令牌，则需要它。
 
 - subject_issuer
 
-  *OPTIONAL.* Identifies the issuer of the `subject_token`. It can be left blank if the token comes from the current realm or if the issuer can be determined from the `subject_token_type`. Otherwise it is required to be specified. Valid values are the alias of an `Identity Provider` configured for your realm. Or an issuer claim identifier configured by a specific `Identity Provider`.
+  *OPTIONAL.* 标识`subject_token`的发行者。 如果令牌来自当前领域，或者如果可以从`subject_token_type`确定发行者，则可以将其留空。 否则需要指定。 有效值是为您的领域配置的“身份提供者”的别名。 或者由特定`Identity Provider`配置的发行者声明标识符。
 
 - subject_token_type
 
-  *OPTIONAL.* This parameter is the type of the token passed with the `subject_token` parameter. This defaults to `urn:ietf:params:oauth:token-type:access_token` if the `subject_token` comes from the realm and is an access token. If it is an external token, this parameter may or may not have to be specified depending on the requirements of the`subject_issuer`.
+  *OPTIONAL.* 此参数是使用`subject_token`参数传递的标记的类型。 如果`subject_token`来自领域并且是访问令牌，则默认为`urn:ietf:params:oauth:token-type:access_token`。 如果它是外部令牌，则可以根据`subject_issuer`的要求指定或不指定此参数。
 
 - requested_token_type
 
-  *OPTIONAL.* This parameter represents the type of token the client wants to exchange for. Currently only oauth and OpenID Connect token types are supported. The default value for this depends on whether the is `urn:ietf:params:oauth:token-type:refresh_token` in which case you will be returned both an access token and refresh token within the response. Other appropriate values are `urn:ietf:params:oauth:token-type:access_token`and `urn:ietf:params:oauth:token-type:id_token`
+  *OPTIONAL.* 此参数表示客户端要交换的令牌类型。 目前仅支持oauth和OpenID Connect令牌类型。 这个的默认值取决于是`urn:ietf:params:oauth:token-type:refresh_token`在这种情况下，您将在响应中返回访问令牌和刷新令牌。 其他合适的值是`urn:ietf:params:oauth:token-type:access_token` 和 `urn:ietf:params:oauth:token-type:id_token`
 
 - audience
 
-  *OPTIONAL.* This parameter specifies the target client you want the new token minted for.
+  *OPTIONAL.* 此参数指定要为其生成新令牌的目标客户端。
 
 - requested_issuer
 
-  *OPTIONAL.* This parameter specifies that the client wants a token minted by an external provider. It must be the alias of an `Identity Provider` configured within the realm.
+  *OPTIONAL.* 此参数指定客户端需要由外部提供者生成的令牌。它必须是在域中配置的`Identity Provider`的别名。
 
 - requested_subject
 
-  *OPTIONAL.* This specifies a username or user id if your client wants to impersonate a different user.
+  *OPTIONAL.* 如果您的客户想要模仿其他用户，则指定用户名或用户ID。
 
 - scope
 
-  *NOT IMPLEMENTED.* This parameter represents the target set of OAuth and OpenID Connect scopes the client is requesting. It is not implemented at this time but will be once Keycloak has better support for scopes in general.
+  *NOT IMPLEMENTED.* 此参数表示客户机请求的OAuth和OpenID连接范围的目标集。目前还没有实现，但是一旦Keycloak对范围有了更好的支持，它就会实现。
 
-|      | We currently only support OpenID Connect and OAuth exchanges. Support for SAML based clients and identity providers may be added in the future depending on user demand. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 我们目前仅支持OpenID Connect和OAuth交换。 根据用户需求，将来可能会添加对基于SAML的客户端和身份提供商的支持。
 
-A successful response from an exchange invocation will return the HTTP 200 response code with a content type that depends on the `requested-token-type` and `requested_issuer` the client asks for. OAuth requested token types will return a JSON document as described in the [OAuth Token Exchange](https://tools.ietf.org/html/draft-ietf-oauth-token-exchange-16) specification.
+来自交换调用的成功响应将返回HTTP 200响应代码，其内容类型取决于客户端要求的`requested-token-type`和`requested_issuer`。 OAuth请求的令牌类型将返回[OAuth令牌交换]（(https://tools.ietf.org/html/draft-ietf-oauth-token-exchange-16) 规范中所述的JSON文档。
 
-```
+```json
 {
    "access_token" : ".....",
    "refresh_token" : ".....",
@@ -6272,65 +6258,63 @@ A successful response from an exchange invocation will return the HTTP 200 respo
  }
 ```
 
-Clients requesting a refresh token will get back both an access and refresh token in the response. Clients requesting only access token type will only get an access token in the response. Expiration information may or may not be included for clients requesting an external issuer through the `requested_issuer` paramater.
+请求刷新令牌的客户端将在响应中返回访问和刷新令牌。 仅请求访问令牌类型的客户端将仅在响应中获取访问令牌。 对于通过`requested_issuer`参数请求外部发行者的客户，可以包括或不包括到期信息。
 
-Error responses generally fall under the 400 HTTP response code category, but other error status codes may be returned depending on the severity of the error. Error responses may include content depending on the `requested_issuer`. OAuth based exchanges may return a JSON document as follows:
+错误响应通常属于400 HTTP响应代码类别，但可能会返回其他错误状态代码，具体取决于错误的严重性。 错误响应可能包括取决于`requested_issuer`的内容。 基于OAuth的交换可能会返回JSON文档，如下所示：
 
-```
+```json
 {
    "error" : "...."
    "error_description" : "...."
 }
 ```
 
-Additional error claims may be returned depending on the exchange type. For example, OAuth Identity Providers may include an additional `account-link-url` claim if the user does not have a link to an identity provider. This link can be used for a client initiated link request.
+可能会返回其他错误声明，具体取决于交换类型。 例如，如果用户没有指向身份提供者的链接，OAuth身份提供者可能会包含额外的`account-link-url`声明。 此链接可用于客户端发起的链接请求。
 
-|      | Token exchange setup requires knowledge of fine grain admin permissions (See the [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) for more information). You will need to grant clients permission to exchange. This is discussed more later in this chapter. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 令牌交换设置需要了解细粒度管理员权限（有关详细信息，请参阅[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/)）。 您需要授予客户交换的权限。 这将在本章后面讨论。
 
-The rest of this chapter discusses the setup requirements and provides examples for different exchange scenarios. For simplicity’s sake, let’s call a token minted by the current realm as an *internal* token and a token minted by an external realm or identity provider as an *external* token.
+本章的其余部分讨论了设置要求，并提供了不同交换方案的示例。 为简单起见，让我们将当前领域铸造的令牌称为*internal*令牌，并将外部域或身份提供者铸造的令牌称为*external*令牌。
 
 ### 7.1. 内部令牌到内部令牌交换 {#Internal_Token_to_Internal_Token_Exchange}
-With an internal token to token exchange you have an existing token minted to a specific client and you want to exchange this token for a new one minted for a different target client. Why would you want to do this? This generally happens when a client has a token minted for itself, and needs to make additional requests to other applications that require different claims and permissions within the access token. Other reasons this type of exchange might be required is if you need to perform a "permission downgrade" where your app needs to invoke on a less trusted app and you don’t want to propagate your current access token.
+通过令牌交换的内部令牌，您可以将现有令牌添加到特定客户端，并且您希望将此令牌交换为为不同目标客户端创建的新令牌。 你为什么想做这个？ 这通常发生在客户端为自己创建一个令牌时，并且需要向访问令牌中需要不同声明和权限的其他应用程序发出其他请求。 可能需要此类交换的其他原因是，如果您需要执行“permission downgrade(权限降级)”，您的应用需要在不太受信任的应用上调用，并且您不希望传播当前的访问令牌。
 
-#### 7.1.1. Granting Permission for the Exchange {#Granting_Permission_for_the_Exchange}
-Clients that want to exchange tokens for a different client need to be authorized in the admin console to do so. You’ll need to define a `token-exchange` fine grain permission in the target client you want permission to exchange to.
+#### 7.1.1. 授予Exchange权限 {#Granting_Permission_for_the_Exchange1}
+想要为不同客户端交换令牌的客户端需要在管理控制台中进行授权才能这样做。 您需要在要获得权限交换的目标客户端中定义`token-exchange`细粒度权限。
 
-Target Client Permission
+目标客户端权限
 
-![exchange target client permission unset](https://www.keycloak.org/docs/latest/securing_apps/keycloak-images/exchange-target-client-permission-unset.png)
+![exchange target client permission unset](assets/exchange-target-client-permission-unset.png)
 
-Toggle the `Permissions Enabled` switch to ON.
+将`Permissions Enabled`开关切换为ON。
 
-Target Client Permission
+目标客户端权限
 
-![exchange target client permission set](https://www.keycloak.org/docs/latest/securing_apps/keycloak-images/exchange-target-client-permission-set.png)
+![exchange target client permission set](assets/exchange-target-client-permission-set.png)
 
-You should see a `token-exchange` link on the page. Click that to start defining the permission. It will bring you to this page.
+您应该在页面上看到`token-exchange`链接。 单击该开始定义权限。 它会带你到这个页面。
 
-Target Client Exchange Permission Setup
+目标客户端Exchange权限设置
 
-![exchange target client permission setup](https://www.keycloak.org/docs/latest/securing_apps/keycloak-images/exchange-target-client-permission-setup.png)
+![exchange target client permission setup](assets/exchange-target-client-permission-setup.png)
 
-You’ll have to define a policy for this permission. Click the `Authorization` link, go to the `Policies` tab and create a `Client` Policy.
+您必须为此权限定义策略。 单击`Authorization`链接，转到`Policies`选项卡并创建`Client`策略。
 
-Client Policy Creation
+客户端策略创建
 
-![exchange target client policy](https://www.keycloak.org/docs/latest/securing_apps/keycloak-images/exchange-target-client-policy.png)
+![exchange target client policy](assets/exchange-target-client-policy.png)
 
-Here you enter in the starting client, that is the authenticated client that is requesting a token exchange. After you create this policy, go back to the target client’s `token-exchange` permission and add the client policy you just defined.
+在此处输入起始客户端，即请求令牌交换的经过身份验证的客户端。 创建此策略后，返回目标客户端的`token-exchange`权限并添加刚刚定义的客户端策略。
 
-Apply Client Policy
+应用客户端策略
 
-![exchange target client exchange apply policy](https://www.keycloak.org/docs/latest/securing_apps/keycloak-images/exchange-target-client-exchange-apply-policy.png)
+![exchange target client exchange apply policy](assets/exchange-target-client-exchange-apply-policy.png)
 
-Your client now has permission to invoke. If you do not do this correctly, you will get a 403 Forbidden response if you try to make an exchange.
+您的客户现在有权调用。 如果您没有正确执行此操作，如果您尝试进行交换，则会收到403 Forbidden响应。
 
-#### 7.1.2. Making the Request {#Making_the_Request}
-When your client is exchanging an existing token for a token targeting another client, you must use the `audience`parameter. This parameter must be the client identifier for the target client that you configured in the admin console.
+#### 7.1.2. 提出请求 {#Making_the_Request1}
+当您的客户端为指向另一个客户端的令牌交换现有令牌时，您必须使用`audience`参数。 此参数必须是您在管理控制台中配置的目标客户端的客户端标识符。
 
-```
+```bash
 curl -X POST \
     -d "client_id=starting-client" \
     -d "client_secret=geheim" \
@@ -6341,9 +6325,9 @@ curl -X POST \
     http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/token
 ```
 
-The `subject_token` parameter must be an access token for the target realm. If your `requested_token_type` parameter is a refresh token type, then the response will contain both an access token, refresh token, and expiration. Here’s an example JSON response you get back from this call.
+`subject_token`参数必须是目标领域的访问令牌。 如果您的`requested_token_type`参数是刷新令牌类型，则响应将包含访问令牌，刷新令牌和到期。 这是您从此调用中获得的示例JSON响应。
 
-```
+```bash
 {
    "access_token" : "....",
    "refresh_token" : "....",
@@ -6352,53 +6336,53 @@ The `subject_token` parameter must be an access token for the target realm. If y
 ```
 
 ### 7.2. 外部令牌交换的内部令牌 {#Internal_Token_to_External_Token_Exchange}
-You can exchange a realm token for an externl token minted by an external identity provider. This external identity provider must be configured within the `Identity Provider` section of the admin console. Currently only OAuth/OpenID Connect based external identity providers are supported, this includes all social providers. Keycloak does not perform a backchannel exchange to the external provider. So if the account is not linked, you will not be able to get the external token. To be able to obtain an external token one of these conditions must be met:
+您可以为外部身份提供者创建的外部令牌交换领域令牌。 必须在管理控制台的“身份提供程序”部分中配置此外部身份提供程序。 目前仅支持基于OAuth/OpenID Connect的外部身份提供商，这包括所有社交提供商。 Keycloak不会向外部提供商执行反向信道交换。 因此，如果帐户未链接，您将无法获得外部令牌。 为了能够获得外部令牌，必须满足以下条件之一：
 
-- The user must have logged in with the external identity provider at least once
-- The user must have linked with the external identity provider through the User Account Service
-- The user account was linked through the external identity provider using [Client Initiated Account Linking](https://www.keycloak.org/docs/6.0/server_development/) API.
+- 用户必须至少使用外部身份提供商登录一次
+- 用户必须通过用户帐户服务与外部身份提供商链接
+- 用户帐户使用[客户端启动的帐户链接](https://www.keycloak.org/docs/6.0/server_development/)API通过外部身份提供商进行链接。
 
-Finally, the external identity provider must have been configured to store tokens, or, one of the above actions must have been performed with the same user session as the internal token you are exchanging.
+最后，外部身份提供程序必须已配置为存储令牌，或者，必须使用与要交换的内部令牌相同的用户会话执行上述操作之一。
 
-If the account is not linked, the exchange response will contain a link you can use to establish it. This is discussed more in the [Making the Request](https://www.keycloak.org/docs/latest/securing_apps/index.html#_internal_external_making_request) section.
+如果帐户未链接，则交换响应将包含可用于建立帐户的链接。 这将在[发出请求](https://www.keycloak.org/docs/latest/securing_apps/index.html#_internal_external_making_request)部分中进行更多讨论。
 
-#### 7.2.1. Granting Permission for the Exchange {#Granting_Permission_for_the_Exchange}
-Internal to external token exchange requests will be denied with a 403, Forbidden response until you grant permission for the calling client to exchange tokens with the external identity provider. To grant permission to the client you must go to the identity provider’s configuration page to the `Permissions` tab.
+#### 7.2.1. 授予Exchange权限 {#Granting_Permission_for_the_Exchange2}
+在您授予呼叫客户端与外部身份提供商交换令牌的权限之前，将拒绝内部到外部令牌交换请求的403禁止响应。 要向客户端授予权限，您必须转到身份提供程序的配置页面中的`Permissions`选项卡。
 
-Identity Provider Permission
+身份提供商许可
 
 ![exchange idp permission unset](assets/exchange-idp-permission-unset.png)
 
-Toggle the `Permissions Enabled` switch to true.
+将`Permissions Enabled`切换为true。
 
-Identity Provider Permission
+身份提供商许可
 
 ![exchange idp permission set](assets/exchange-idp-permission-set.png)
 
-You should see a `token-exchange` link on the page. Click that to start defining the permission. It will bring you to this page.
+您应该在页面上看到`token-exchange`链接。 单击该开始定义权限。 它会带你到这个页面。
 
-Identity Provider Exchange Permission Setup
+身份提供商Exchange权限设置
 
 ![exchange idp permission setup](assets/exchange-idp-permission-setup.png)
 
-You’ll have to define a policy for this permission. Click the `Authorization` link, go to the `Policies` tab and create a `Client` Policy.
+您必须为此权限定义策略。 单击`Authorization`链接，转到`Policies`选项卡并创建`Client`策略。
 
-Client Policy Creation
+客户端策略创建
 
 ![exchange idp client policy](assets/exchange-idp-client-policy.png)
 
-Here you enter in the starting client, that is the authenticated client that is requesting a token exchange. After you create this policy, go back to the identity providers’s `token-exchange` permission and add the client policy you just defined.
+在此处输入起始客户端，即请求令牌交换的经过身份验证的客户端。 创建此策略后，返回到身份提供者的`token-exchange`权限并添加您刚定义的客户端策略。
 
-Apply Client Policy
+应用客户端策略
 
 ![exchange idp apply policy](assets/exchange-idp-apply-policy.png)
 
-Your client now has permission to invoke. If you do not do this correctly, you will get a 403 Forbidden response if you try to make an exchange.
+您的客户现在有权调用。 如果您没有正确执行此操作，如果您尝试进行交换，则会收到403 Forbidden响应。
 
-#### 7.2.2. Making the Request {#Making_the_Request}
-When your client is exchanging an existing internal token to an external one, you must provide the `requested_issuer`parameter. The parameter must be the alias of a configured identity provider.
+#### 7.2.2. 提出请求 {#Making_the_Request2}
+当您的客户端将现有内部令牌交换到外部令牌时，您必须提供`requested_issuer`参数。 该参数必须是已配置的标识提供程序的别名。
 
-```
+```bash
 curl -X POST \
     -d "client_id=starting-client" \
     -d "client_secret=geheim" \
@@ -6409,9 +6393,9 @@ curl -X POST \
     http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/token
 ```
 
-The `subject_token` parameter must be an access token for the target realm. The `requested_token_type` parameter must be `urn:ietf:params:oauth:token-type:access_token` or left blank. No other requested token type is supported at this time. Here’s an example successful JSON response you get back from this call.
+`subject_token`参数必须是目标领域的访问令牌。 `requested_token_type`参数必须是`urn:ietf:params:oauth:token-type:access_token`或留空。 目前不支持其他请求的令牌类型。 以下是您从此调用中获得的成功JSON响应示例。
 
-```
+```json
 {
    "access_token" : "....",
    "expires_in" : 3600
@@ -6419,9 +6403,9 @@ The `subject_token` parameter must be an access token for the target realm. The 
 }
 ```
 
-If the external identity provider is not linked for whatever reason, you will get an HTTP 400 response code with this JSON document:
+如果外部身份提供程序由于某种原因未链接，您将获得带有此JSON文档的HTTP 400响应代码：
 
-```
+```json
 {
    "error" : "....",
    "error_description" : "..."
@@ -6429,36 +6413,32 @@ If the external identity provider is not linked for whatever reason, you will ge
 }
 ```
 
-The `error` claim will be either `token_expired` or `not_linked`. The `account-link-url` claim is provided so that the client can perform [Client Initiated Account Linking](https://www.keycloak.org/docs/6.0/server_development/). Most (all?) providers are requiring linking through browser OAuth protocol. With the `account-link-url` just add a `redirect_uri` query parameter to it and you can forward browsers to perform the link.
+`error`声明将是`token_expired`或`not_linked`。 提供了`account-link-url`声明，以便客户端可以执行[客户端发起的帐户链接](https://www.keycloak.org/docs/6.0/server_development/)。 大多数（所有？）提供商都需要通过浏览器OAuth协议进行链接。 使用`account-link-url`只需向其添加`redirect_uri`查询参数，您就可以转发浏览器来执行链接。
 
 ### 7.3. 外部令牌到内部令牌交换 {#External_Token_to_Internal_Token_Exchange}
-You can trust and exchange external tokens minted by external identity providers for internal tokens. This can be used to bridge between realms or just to trust tokens from your social provider. It works similarly to an identity provider browser login in that a new user is imported into your realm if it doesn’t exist.
+您可以信任并交换外部身份提供商为内部令牌创建的外部令牌。 这可用于在领域之间架起桥梁，或仅用于信任来自社交提供商的令牌。 它与身份提供程序浏览器登录的工作方式类似，如果新用户不存在，则会将新用户导入您的领域。
 
-|      | The current limitation on external token exchanges is that if the external token maps to an existing user an exchange will not be allowed unless the existing user already has an account link to the external identity provider. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 外部令牌交换的当前限制是，如果外部令牌映射到现有用户，则不允许交换，除非现有用户已经具有到外部身份提供者的帐户链接。
 
-When the exchange is complete, a user session will be created within the realm, and you will receive an access and or refresh token depending on the `requested_token_type` parameter value. You should note that this new user session will remain active until it times out or until you call the logout endpoint of the realm passing this new access token.
+交换完成后，将在领域内创建用户会话，您将根据`requested_token_type`参数值接收访问和/或刷新令牌。 您应该注意，此新用户会话将保持活动状态，直到它超时或直到您调用域的注销端点传递此新访问令牌为止。
 
-These types of changes required a configured identity provider in the admin console.
+这些类型的更改需要在管理控制台中配置身份提供程序。
 
-|      | SAML identity providers are not supported at this time. Twitter tokens cannot be exchanged either. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 目前不支持SAML身份提供商。 Twitter令牌也无法交换。
 
-#### 7.3.1. Granting Permission for the Exchange {#Granting_Permission_for_the_Exchange}
-Before external token exchanges can be done, you must grant permission for the calling client to make the exchange. This permission is granted in the same manner as [internal to external permission is granted](https://www.keycloak.org/docs/latest/securing_apps/index.html#_grant_permission_external_exchange).
+#### 7.3.1. 授予Exchange权限 {#Granting_Permission_for_the_Exchange3}
+在进行外部令牌交换之前，您必须为调用客户端授予进行交换的权限。 此权限的授予方式与[授予外部权限的内部](https://www.keycloak.org/docs/latest/securing_apps/index.html#_grant_permission_external_exchange)相同。
 
-If you also provide an `audience` parameter whose value points to a different client other than the calling one, you must also grant the calling client permission to exchange to the target client specific in the `audience` parameter. How to do this is [discussed earlier](https://www.keycloak.org/docs/latest/securing_apps/index.html#_client_to_client_permission) in this section.
+如果还提供了一个`audience`参数，其值指向不同于客户端的客户端，则还必须授予调用客户端与`audience`参数中特定目标客户端交换的权限。 如何做到这一点[在前面已经讨论过](https://www.keycloak.org/docs/latest/securing_apps/index.html#_client_to_client_permission)。
 
-#### 7.3.2. Making the Request {#Making_the_Request}
-The `subject_token_type` must either be `urn:ietf:params:oauth:token-type:access_token` or `urn:ietf:params:oauth:token-type:jwt`. If the type is `urn:ietf:params:oauth:token-type:access_token` you must specify the `subject_issuer` parameter and it must be the alias of the configured identity provider. If the type is `urn:ietf:params:oauth:token-type:jwt`, the provider will be matched via the `issuer` claim within the JWT which must be the alias of the provider, or a registered issuer within the providers configuration.
+#### 7.3.2. 提出请求 {#Making_the_Request3}
+`subject_token_type`必须是`urn:ietf:params:oauth:token-type:access_token` 或 `urn:ietf:params:oauth:token-type:jwt`。 如果类型是`urn:ietf:params:oauth:token-type:access_token`，则必须指定`subject_issuer`参数，它必须是已配置的身份提供者的别名。 如果类型是 `urn:ietf:params:oauth:token-type:jwt`，则提供者将通过JWT中的`issuer`声明进行匹配，该声明必须是提供者的别名，或者提供者配置中的注册发布方。
 
-For validation, if the token is an access token, the provider’s user info service will be invoked to validate the token. A successful call will mean that the access token is valid. If the subject token is a JWT and if the provider has signature validation enabled, that will be attempted, otherwise, it will default to also invoking on the user info service to validate the token.
+对于验证，如果令牌是访问令牌，则将调用提供者的用户信息服务以验证令牌。 成功通话意味着访问令牌有效。 如果主题令牌是JWT并且如果提供者启用了签名验证，则将尝试进行，否则，它将默认也调用用户信息服务来验证令牌。
 
-By default, the internal token minted will use the calling client to determine what’s in the token using the protocol mappers defined for the calling client. Alternatively, you can specify a different target client using the `audience` parameter.
+默认情况下，内部令牌铸造将使用调用客户端使用为调用客户端定义的协议映射器来确定令牌中的内容。 或者，您可以使用`audience`参数指定其他目标客户端。
 
-```
+```bash
 curl -X POST \
     -d "client_id=starting-client" \
     -d "client_secret=geheim" \
@@ -6470,9 +6450,9 @@ curl -X POST \
     http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/token
 ```
 
-If your `requested_token_type` parameter is a refresh token type, then the response will contain both an access token, refresh token, and expiration. Here’s an example JSON response you get back from this call.
+如果您的`requested_token_type`参数是刷新令牌类型，则响应将包含访问令牌，刷新令牌和到期。 这是您从此调用中获得的示例JSON响应。
 
-```
+```json
 {
    "access_token" : "....",
    "refresh_token" : "....",
@@ -6481,15 +6461,15 @@ If your `requested_token_type` parameter is a refresh token type, then the respo
 ```
 
 ### 7.4. 模拟 {#Impersonation}
-For internal and external token exchanges, the client can request on behalf of a user to impersonate a different user. For example, you may have an admin application that needs to impersonate a user so that a support engineer can debug a problem.
+对于内部和外部令牌交换，客户端可以代表用户请求冒充不同的用户。 例如，您可能有一个需要模拟用户的管理应用程序，以便支持工程师可以调试问题。
 
-#### 7.4.1. Granting Permission for the Exchange {#Granting_Permission_for_the_Exchange}
-The user that the subject token represents must have permission to impersonate other users. See the [Server Administration Guide](https://www.keycloak.org/docs/6.0/server_admin/) on how to enable this permission. It can be done through a role or through fine grain admin permissions.
+#### 7.4.1. 授予Exchange权限 {#Granting_Permission_for_the_Exchange4}
+主题令牌所代表的用户必须具有模仿其他用户的权限。 有关如何启用此权限，请参阅[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/)。 它可以通过角色或细粒度管理员权限来完成。
 
-#### 7.4.2. Making the Request {#Making_the_Request}
-Make the request as described in other chapters except additionally specify the `request_subject` parameter. The value of this parameter must be a username or user id.
+#### 7.4.2. 提出请求 {#Making_the_Request4}
+除了另外指定`request_subject`参数之外，按照其他章节中的描述发出请求。 此参数的值必须是用户名或用户ID。
 
-```
+```bash
 curl -X POST \
     -d "client_id=starting-client" \
     -d "client_secret=geheim" \
@@ -6502,55 +6482,51 @@ curl -X POST \
 ```
 
 ### 7.5. 直接赤裸裸的模拟 {#Direct_Naked_Impersonation}
-You can make an internal token exchange request without providing a `subject_token`. This is called a direct naked impersonation because it places a lot of trust in a client as that client can impersonate any user in the realm. You might need this to bridge for applications where it is impossible to obtain a subject token to exchange. For example, you may be integrating a legacy application that performs login directly with LDAP. In that case, the legacy app is able to authenticate users itself, but not able to obtain a token.
+您可以在不提供`subject_token`的情况下发出内部令牌交换请求。这称为直接裸模拟，因为它非常信任客户机，因为客户机可以模拟域中的任何用户。在无法获得要交换的主题令牌的应用程序中，您可能需要使用此桥接。例如，您可能正在集成一个直接使用LDAP执行登录的遗留应用程序。在这种情况下，遗留应用程序能够对用户进行身份验证，但无法获得令牌。
 
-|      | It is very risky to enable direct naked impersonation for a client. If the client’s credentials are ever stolen, that client can impersonate any user in the system. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 为客户端启用直接裸模拟是非常危险的。如果客户机的凭据被盗，则该客户机可以模拟系统中的任何用户。
 
-#### 7.5.1. Granting Permission for the Exchange {#Granting_Permission_for_the_Exchange}
-If the `audience` parameter is provided, then the calling client must have permission to exchange to the client. How to set this up is discussed earlier in this chapter.
+#### 7.5.1. 授予Exchange权限 {#Granting_Permission_for_the_Exchange5}
+如果提供了`audience`参数，则调用客户端必须具有与客户端交换的权限。 本章前面将讨论如何进行此设置。
 
-Additionally, the calling client must be granted permission to impersonate users. In the admin console, go to the `Users`screen and click on the `Permissions` tab.
+此外，必须授予调用客户端模拟用户的权限。 在管理控制台中，转到`Users`屏幕，然后单击`Permissions`选项卡。
 
-Users Permission
+用户权限
 
 ![exchange users permission unset](assets/exchange-users-permission-unset.png)
 
-Toggle the `Permissions Enabled` switch to true.
+将`Permissions Enabled`切换为true。
 
-Identity Provider Permission
+身份提供商许可
 
 ![exchange users permission set](assets/exchange-users-permission-set.png)
 
-You should see a `impersonation` link on the page. Click that to start defining the permission. It will bring you to this page.
+您应该在页面上看到`impersonation`链接。 单击该开始定义权限。 它会带你到这个页面。
 
-Users Impersonation Permission Setup
+用户模拟权限设置
 
 ![exchange users permission setup](assets/exchange-users-permission-setup.png)
 
-You’ll have to define a policy for this permission. Click the `Authorization` link, go to the `Policies` tab and create a `Client` Policy.
+您必须为此权限定义策略。 单击`Authorization`链接，转到`Policies`选项卡并创建`Client`策略。
 
-Client Policy Creation
+客户端策略创建
 
 ![exchange users client policy](assets/exchange-users-client-policy.png)
 
-Here you enter in the starting client, that is the authenticated client that is requesting a token exchange. After you create this policy, go back to the users' `impersonation` permission and add the client policy you just defined.
+在此处输入起始客户端，即请求令牌交换的经过身份验证的客户端。 创建此策略后，请返回用户的`impersonation`权限并添加刚刚定义的客户端策略。
 
-Apply Client Policy
+应用客户端策略
 
 ![exchange users apply policy](assets/exchange-users-apply-policy.png)
 
-Your client now has permission to impersonate users. If you do not do this correctly, you will get a 403 Forbidden response if you try to make this type of exchange.
+您的客户机现在具有模仿用户的权限。如果您没有正确地执行此操作，如果您尝试进行这种类型的交换，您将得到403禁止响应。
 
-|      | Public clients are not allowed to do direct naked impersonations. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 公共客户端不允许直接进行裸模拟。
 
-#### 7.5.2. Making the Request {#Making_the_Request}
-To make the request, simply specify the `requested_subject` parameter. This must be the username or user id of a valid user. You can also specify an `audience` parameter if you wish.
+#### 7.5.2. 提出请求 {#Making_the_Request5}
+要发出请求，只需指定`requested_subject`参数即可。 这必须是有效用户的用户名或用户ID。 如果您愿意，也可以指定`audience`参数。
 
-```
+```bash
 curl -X POST \
     -d "client_id=starting-client" \
     -d "client_secret=geheim" \
@@ -6560,14 +6536,14 @@ curl -X POST \
 ```
 
 ### 7.6. 使用服务帐户展开权限模型 {#Expand_Permission_Model_With_Service_Accounts}
-When granting clients permission to exchange, you don’t necessarily have to manually enable those permissions for each and every client. If the client has a service account associated with it, you can use a role to group permissions together and assign exchange permissions by assigning a role to the client’s service account. For example, you might define a `naked-exchange` role and any service account that has that role can do a naked exchange.
+授予客户端交换权限时，您不必为每个客户端手动启用这些权限。 如果客户端具有与之关联的服务帐户，则可以使用角色将权限组合在一起，并通过将角色分配给客户端的服务帐户来分配交换权限。 例如，您可以定义一个`naked-exchange`角色，任何具有该角色的服务帐户都可以进行裸交换。
 
 ### 7.7. 交换漏洞 {#Exchange_Vulnerabilities}
-When you start allowing token exchanges, there’s various things you have to both be aware of and careful of.
+当你开始允许令牌交换时，你需要注意和注意各种各样的事情。
 
-The first is public clients. Public clients do not have or require a client credential in order to perform an exchange. Anybody that has a valid token will be able to *impersonate* the public client and perform the exchanges that public client is allowed to perform. If there are any untrustworthy clients that are managed by your realm, public clients may open up vulnerabilities in your permission models. This is why direct naked exchanges do not allow public clients and will abort with an error if the calling client is public.
+首先是公共客户。 公共客户端没有或需要客户端凭证才能执行交换。 任何拥有有效令牌的人都可以*impersonate*公共客户端并执行允许公共客户端执行的交换。 如果有任何由您的域管理的不值得信任的客户端，公共客户端可能会在您的权限模型中打开漏洞。 这就是为什么直接裸交换不允许公共客户端，并且如果主叫客户端是公共的，将中止错误。
 
-It is possible to exchange social tokens provided by Facebook, Google, etc. for a realm token. Be careful and vigilante on what the exchange token is allowed to do as its not hard to create fake accounts on these social websites. Use default roles, groups, and identity provider mappers to control what attributes and roles are assigned to the external social user.
+可以交换由Facebook，Google等提供的社交令牌作为领域令牌。 请小心并警惕交换令牌可以做什么，因为在这些社交网站上创建虚假账户并不困难。 使用默认角色，组和身份提供程序映射器来控制为外部社交用户分配的属性和角色。
 
-Direct naked exchanges are quite dangerous. You are putting a lot of trust in the calling client that it will never leak out its client credentials. If those credentials are leaked, then the thief can impersonate anybody in your system. This is in direct contrast to confidential clients that have existing tokens. You have two factors of authentication, the access token and the client credentials, and you’re only dealing with one user. So use direct naked exchanges sparingly.
+直接的裸交换非常危险。 您对调用客户端非常信任它永远不会泄露其客户端凭据。 如果这些凭据被泄露，那么小偷可以冒充你系统中的任何人。 这与具有现有令牌的机密客户形成鲜明对比。 您有两个身份验证因素，访问令牌和客户端凭据，而您只处理一个用户。 因此，请谨慎使用直接裸交换。
 
