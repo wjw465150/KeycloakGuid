@@ -347,412 +347,396 @@ Themes 选项卡
 
 本节介绍管理用户的管理功能。
 
-### 4.1. Searching For Users {#Searching_For_Users}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/users/viewing.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/users/viewing.adoc)
+### 4.1. 搜索用户 {#Searching_For_Users}
 
-If you need to manage a specific user, click on `Users` in the left menu bar.
-
-Users
-
-![users](assets/users.png)
-
-This menu option brings you to the user list page. In the search box you can type in a full name, last name, or email address you want to search for in the user database. The query will bring up all users that match your criteria. The `View all users`button will list every user in the system. This will search just local Keycloak database and not the federated database (ie. LDAP) because some backends like LDAP don’t have a way to page through users. So if you want the users from federated backend to be synced into Keycloak database you need to either:
-
-- Adjust search criteria. That will sync just the backend users matching the criteria into Keycloak database.
-- Go to `User Federation` tab and click `Sync all users` or `Sync changed users` in the page with your federation provider.
-
-See [User Federation](https://www.keycloak.org/docs/latest/server_admin/index.html#_user-storage-federation) for more details.
-
-### 4.2. Creating New Users {#Creating_New_Users}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/users/create-user.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/users/create-user.adoc)
-
-To create a user click on `Users` in the left menu bar.
+如果您需要管理特定用户，请单击左侧菜单栏中的`Users`。
 
 Users
 
 ![users](assets/users.png)
 
-This menu option brings you to the user list page. On the right side of the empty user list, you should see an `Add User`button. Click that to start creating your new user.
+此菜单选项将您带到用户列表页面。 在搜索框中，您可以在用户数据库中键入要搜索的全名，姓氏或电子邮件地址。 该查询将显示符合您条件的所有用户。 `View all users`按钮将列出系统中的每个用户。 这将仅搜索本地Keycloak数据库而不搜索联合数据库（即LDAP），因为某些后端（如LDAP）无法通过用户进行分页。 因此，如果您希望联合后端的用户同步到Keycloak数据库，您需要：
+
+- 调整搜索条件。 这将只将符合条件的后端用户同步到Keycloak数据库中。
+- 转到`User Federation`选项卡，然后单击页面中的`Sync all users`或`Sync changed users`与联合提供程序。
+
+有关详细信息，请参阅[用户联合](https://www.keycloak.org/docs/latest/server_admin/index.html#_user-storage-federation)。
+
+### 4.2. 创建新用户 {#Creating_New_Users}
+
+要创建用户，请单击左侧菜单栏中的`Users`。
+
+Users
+
+![users](assets/users.png)
+
+此菜单选项将您带到用户列表页面。 在空用户列表的右侧，您应该看到`Add User`按钮。 单击该按钮开始创建新用户。
 
 Add User
 
 ![add user](assets/add-user.png)
 
-The only required field is `Username`. Click save. This will bring you to the management page for your new user.
+唯一必填字段是`Username`。 点击保存。 这将带您进入新用户的管理页面。
 
-### 4.3. Deleting Users {#Deleting_Users}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/users/delete-user.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/users/delete-user.adoc)
+### 4.3. 删除用户 {#Deleting_Users}
 
-To delete a user click on `Users` in the left menu bar.
+要删除用户，请单击左侧菜单栏中的`Users`。
 
 Users
 
 ![users](assets/users.png)
 
-This menu option brings you to the user list page. Click `View all users` or search to find the user you intend to delete.
+此菜单选项将您带到用户列表页面。 单击`View all users`或搜索以查找要删除的用户。
 
 Add User
 
 ![delete user](assets/delete-user.png)
 
-In the list of users, click `Delete` next to the user you want to remove. You will be asked to confirm that you are sure you want to delete this user. Click `Delete` in the confirmation box to confirm.
+在用户列表中，单击要删除的用户旁边的`Delete`。 系统将要求您确认是否要删除此用户。 单击确认框中的`Delete`进行确认。
 
-### 4.4. User Attributes {#User_Attributes}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/users/attributes.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/users/attributes.adoc)
+### 4.4. 用户属性 {#User_Attributes}
 
-Beyond basic user metadata like name and email, you can store arbitrary user attributes. Choose a user to manage then click on the `Attributes` tab.
+除了名称和电子邮件等基本用户元数据之外，您还可以存储任意用户属性。 选择要管理的用户，然后单击`Attributes`选项卡。
 
 Users
 
 ![user attributes](assets/user-attributes.png)
 
-Enter in the attribute name and value in the empty fields and click the `Add` button next to it to add a new field. Note that any edits you make on this page will not be stored until you hit the `Save` button.
+在空字段中输入属性名称和值，然后单击旁边的`Add`按钮以添加新字段。 请注意，在您点击`Save`按钮之前，您在此页面上所做的任何编辑都不会被存储。
 
-### 4.5. User Credentials {#User_Credentials}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/users/credentials.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/users/credentials.adoc)
+### 4.5. 用户凭据 {#User_Credentials}
 
-When viewing a user if you go to the `Credentials` tab you can manage a user’s credentials.
+当您查看用户时，如果您转到`Credentials`选项卡，则可以管理用户的凭据。
 
 Credential Management
 
 ![user credentials](assets/user-credentials.png)
 
-#### 4.5.1. Changing Passwords {#Changing_Passwords}
-To change a user’s password, type in a new one. A `Reset Password` button will show up that you click after you’ve typed everything in. If the `Temporary` switch is on, this new password can only be used once and the user will be asked to change their password after they have logged in.
+#### 4.5.1. 更改密码 {#Changing_Passwords}
+要更改用户密码，请键入新密码。 在您输入所有内容后，将显示`Reset Password`按钮。如果`Temporary`开关打开，则此新密码只能使用一次，并且用户将被要求更改密码 登录。
 
-Alternatively, if you have [email](https://www.keycloak.org/docs/latest/server_admin/index.html#_email) set up, you can send an email to the user that asks them to reset their password. Choose `Update Password` from the `Reset Actions` list box and click `Send Email`. You can optionally set the validity of the e-mail link which defaults to the one preset in `Tokens` tab in the realm settings. The sent email contains a link that will bring the user to the update password screen.
+或者，如果您设置了[email](https://www.keycloak.org/docs/latest/server_admin/index.html#_email)，则可以向用户发送电子邮件，要求他们重置密码。 从`Reset Actions`列表框中选择`Update Password`，然后单击`Send Email`。 您可以选择设置电子邮件链接的有效性，该链接默认为领域设置中`Tokens`选项卡中预设的一个。 发送的电子邮件包含一个链接，用于将用户带到更新密码屏幕。
 
-#### 4.5.2. Changing OTPs {#Changing_OTPs}
-You cannot configure One-Time Passwords for a specific user within the Admin Console. This is the responsibility of the user. If the user has lost their OTP generator all you can do is disable OTP for them on the `Credentials` tab. If OTP is optional in your realm, the user will have to go to the User Account Management service to re-configure a new OTP generator. If OTP is required, then the user will be asked to re-configure a new OTP generator when they log in.
+#### 4.5.2. 修改 OTPs {#Changing_OTPs}
+您无法在管理控制台中为特定用户配置一次性密码。 这是用户的责任。 如果用户丢失了他们的OTP生成器，你可以在`Credentials`选项卡上为它们禁用OTP。 如果您的领域中的OTP是可选的，则用户必须转到用户帐户管理服务以重新配置新的OTP生成器。 如果需要OTP，则会要求用户在登录时重新配置新的OTP生成器。
 
-Like passwords, you can alternatively send an email to the user that will ask them to reset their OTP generator. Choose`Configure OTP` in the `Reset Actions` list box and click the `Send Email` button. The sent email contains a link that will bring the user to the OTP setup screen.
+与密码一样，您也可以向用户发送电子邮件，要求他们重置OTP生成器。 在`Reset Actions`列表框中选择`Configure OTP`，然后单击`Send Email`按钮。 发送的电子邮件包含一个链接，用于将用户带到OTP设置屏幕。
 
-### 4.6. Required Actions {#Required_Actions}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/users/required-actions.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/users/required-actions.adoc)
+### 4.6. 必需操作 {#Required_Actions}
 
-Required Actions are tasks that a user must finish before they are allowed to log in. A user must provide their credentials before required actions are executed. Once a required action is completed, the user will not have to perform the action again. Here are explanations of some of the built-in required action types:
+必需操作是用户在允许登录之前必须完成的任务。用户必须在执行所需操作之前提供其凭据。 完成所需操作后，用户将不必再次执行操作。 以下是一些内置必需操作类型的说明：
 
 - Update Password
 
-  When set, a user must change their password.
+  设置后，用户必须更改其密码。
 
 - Configure OTP
 
-  When set, a user must configure a one-time password generator on their mobile device using either the Free OTP or Google Authenticator application.
+  设置后，用户必须使用Free OTP或Google Authenticator应用程序在其移动设备上配置一次性密码生成器。
 
 - Verify Email
 
-  When set, a user must verify that they have a valid email account. An email will be sent to the user with a link they have to click. Once this workflow is successfully completed, they will be allowed to log in.
+  设置后，用户必须验证他们是否拥有有效的电子邮件帐户。 将向用户发送一封电子邮件，其中包含他们必须单击的链接。 成功完成此工作流后，将允许他们登录。
 
 - Update Profile
 
-  This required action asks the user to update their profile information, i.e. their name, address, email, and/or phone number.
+  该要求的动作要求用户更新他们的简档信息，即他们的姓名，地址，电子邮件和/或电话号码。
 
-Admins can add required actions for each individual user within the user’s `Details` tab in the Admin Console.
+管理员可以在管理控制台的用户`Details`选项卡中为每个用户添加所需的操作。
 
 Setting Required Action
 
 ![user required action](assets/user-required-action.png)
 
-In the `Required User Actions` list box, select all the actions you want to add to the account. If you want to remove one, click the `X` next to the action name. Also remember to click the `Save` button after you’ve decided what actions to add.
+在`Required User Actions`列表框中，选择要添加到帐户的所有操作。 如果要删除一个，请单击操作名称旁边的`X`。 还要记得在确定要添加的操作后单击`Save`按钮。
 
-#### 4.6.1. Default Required Actions {#Default_Required_Actions}
-You can also specify required actions that will be added to an account whenever a new user is created, i.e. through the `Add User` button the user list screen, or via the [user registration](https://www.keycloak.org/docs/latest/server_admin/index.html#_user-registration) link on the login page. To specify the default required actions go to the `Authentication` left menu item and click on the `Required Actions` tab.
+#### 4.6.1. 默认必需操作 {#Default_Required_Actions}
+您还可以指定在创建新用户时将添加到帐户的必需操作，即通过用户列表屏幕的`Add User`按钮，或通过[用户注册](https://www.keycloak.org/docs/latest/server_admin/index.html#_user-registration) 登录页面上的链接。 要指定默认的必需操作，请转到`Authentication`左侧菜单项，然后单击`Required Actions`选项卡。
 
 Default Required Actions
 
 ![default required actions](assets/default-required-actions.png)
 
-Simply click the checkbox in the `Default Action` column of the required actions that you want to be executed when a brand new user logs in.
+只需单击全新用户登录时要执行的所需操作的`Default Action``列中的复选框即可。
 
-#### 4.6.2. Terms and Conditions {#Terms_and_Conditions}
-Many organizations have a requirement that when a new user logs in for the first time, they need to agree to the terms and conditions of the website. Keycloak has this functionality implemented as a required action, but it requires some configuration. For one, you have to go to the `Required Actions` tab described earlier and enable the `Terms and Conditions` action. You must also edit the *terms.ftl* file in the *base* login theme. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information on extending and creating themes.
+#### 4.6.2. 条款和条件 {#Terms_and_Conditions}
+许多组织都要求当新用户第一次登录时，他们需要同意网站的条款和条件。 Keycloak将此功能实现为必需的操作，但它需要一些配置。 首先，您必须转到前面描述的`Required Actions`选项卡并启用`Terms and Conditions`操作。 您还必须编辑*base* login主题中的*terms.ftl*文件。 有关扩展和创建主题的更多信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/) 。
 
-### 4.7. Impersonation {#Impersonation}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/users/impersonation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/users/impersonation.adoc)
+### 4.7. 模拟 {#Impersonation}
 
-It is often useful for an admin to impersonate a user. For example, a user may be experiencing a bug in one of your applications and an admin may want to impersonate the user to see if they can duplicate the problem. Admins with the appropriate permission can impersonate a user. There are two locations an admin can initiate impersonation. The first is on the `Users` list tab.
+管理员冒充用户通常很有用。 例如，用户可能在您的某个应用程序中遇到错误，并且管理员可能想要冒充用户以查看他们是否可以复制问题。 具有适当权限的管理员可以模拟用户。 管理员可以通过两个位置发起模拟。 第一个是在`Users`列表选项卡上。
 
 Users
 
 ![user search](assets/user-search.png)
 
-You can see here that the admin has searched for `john`. Next to John’s account you can see an impersonate button. Click that to impersonate the user.
+您可以在此处看到管理员已搜索`john`。 在John的帐户旁边，您可以看到一个模拟按钮。 单击该按钮以模拟用户。
 
-Also, you can impersonate the user from the user `Details` tab.
+此外，您可以从用户`Details`选项卡模拟用户。
 
 User Details
 
 ![user details](assets/user-details.png)
 
-Near the bottom of the page you can see the `Impersonate` button. Click that to impersonate the user.
+在页面底部附近，您可以看到`Impersonate`按钮。 单击该按钮以模拟用户。
 
-When impersonating, if the admin and the user are in the same realm, then the admin will be logged out and automatically logged in as the user being impersonated. If the admin and user are not in the same realm, the admin will remain logged in, but additionally be logged in as the user in that user’s realm. In both cases, the browser will be redirected to the impersonated user’s User Account Management page.
+模拟时，如果管理员和用户处于同一领域，则管理员将被注销并在用户被模拟时自动登录。 如果管理员和用户不在同一领域，管理员将保持登录状态，但另外以该用户领域中的用户身份登录。 在这两种情况下，浏览器都将重定向到模拟用户的“用户帐户管理”页面。
 
-Any user with the realm’s `impersonation` role can impersonate a user. Please see the [Admin Console Access Control](https://www.keycloak.org/docs/latest/server_admin/index.html#_admin_permissions)chapter for more details on assigning administration permissions.
+具有领域`impersonation`角色的任何用户都可以模拟用户。 有关分配管理权限的更多详细信息，请参阅[管理控制台访问控制](https://www.keycloak.org/docs/latest/server_admin/index.html#_admin_permissions)一章。
 
-### 4.8. User Registration {#User_Registration}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/users/user-registration.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/users/user-registration.adoc)
+### 4.8. 用户注册 {#User_Registration}
 
-You can enable Keycloak to allow user self registration. When enabled, the login page has a registration link the user can click on to create their new account.
+您可以启用Keycloak以允许用户自行注册。 启用后，登录页面会有一个注册链接，用户可以单击该链接以创建新帐户。
 
-When user self registration is enabled it is possible to use the registration form to detect valid usernames and emails. It is also possible to enable [reCAPTCHA Support](https://www.keycloak.org/docs/latest/server_admin/index.html#_recaptcha).
+启用用户自注册后，可以使用注册表单来检测有效的用户名和电子邮件。 也可以启用[reCAPTCHA支持](https://www.keycloak.org/docs/latest/server_admin/index.html#_recaptcha)。
 
-Enabling registration is pretty simple. Go to the `Realm Settings` left menu and click it. Then go to the `Login` tab. There is a `User Registration` switch on this tab. Turn it on, then click the `Save` button.
+启用注册非常简单。 转到`Realm Settings`左侧菜单并单击它。 然后转到`Login`选项卡。 此选项卡上有一个`User Registration`开关。 打开它，然后单击`Save`按钮。
 
 Login Tab
 
 ![login tab](assets/login-tab.png)
 
-After you enable this setting, a `Register` link should show up on the login page.
+启用此设置后，`Register`链接应显示在登录页面上。
 
 Registration Link
 
 ![registration link](assets/registration-link.png)
 
-Clicking on this link will bring the user to the registration page where they have to enter in some user profile information and a new password.
+单击此链接将使用户进入注册页面，他们必须在其中输入一些用户配置文件信息和新密码。
 
 Registration Form
 
 ![registration form](assets/registration-form.png)
 
-You can change the look and feel of the registration form as well as removing or adding additional fields that must be entered. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information.
+您可以更改注册表单的外观，以及删除或添加必须输入的其他字段。 有关详细信息，请参阅[Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/)。
 
-#### 4.8.1. reCAPTCHA Support {#reCAPTCHA_Support}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/users/recaptcha.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/users/recaptcha.adoc)
+#### 4.8.1. reCAPTCHA 支持 {#reCAPTCHA_Support}
 
-To safeguard registration against bots, Keycloak has integration with Google reCAPTCHA. To enable this you need to first go to [Google Recaptcha Website](https://developers.google.com/recaptcha/) and create an API key so that you can get your reCAPTCHA site key and secret. (FYI, localhost works by default so you don’t have to specify a domain).
+为了防止机器人注册，Keycloak与Google reCAPTCHA集成。 要启用此功能，您需要先访问[Google Recaptcha网站](https://developers.google.com/recaptcha/)并创建API密钥，以便获取reCAPTCHA网站密钥和密钥。 （仅供参考，localhost默认工作，因此您不必指定域）。
 
-Next, there are a few steps you need to perform in the Keycloak Admin Console. Click the `Authentication` left menu item and go to the `Flows` tab. Select the `Registration` flow from the drop down list on this page.
+接下来，您需要在Keycloak管理控制台中执行几个步骤。 单击`Authentication`左侧菜单项，然后转到`Flows`选项卡。 从此页面的下拉列表中选择`Registration`流程。
 
 Registration Flow
 
 ![registration flow](assets/registration-flow.png)
 
-Set the 'reCAPTCHA' requirement to `Required` by clicking the appropriate radio button. This will enable reCAPTCHA on the screen. Next, you have to enter in the reCAPTCHA site key and secret that you generated at the Google reCAPTCHA Website. Click on the 'Actions' button that is to the right of the reCAPTCHA flow entry, then "Config" link, and enter in the reCAPTCHA site key and secret on this config page.
+单击相应的单选按钮，将`reCAPTCHA`要求设置为`Required`。 这将在屏幕上启用reCAPTCHA。 接下来，您必须输入您在Google reCAPTCHA网站上生成的reCAPTCHA网站密钥和密码。 单击reCAPTCHA流条目右侧的`Actions`按钮，然后单击“Config”链接，并在此配置页面上输入reCAPTCHA站点密钥和秘密。
 
 Recaptcha Config Page
 
 ![recaptcha config](assets/recaptcha-config.png)
 
-The final step you have to do is to change some default HTTP response headers that Keycloak sets. Keycloak will prevent a website from including any login page within an iframe. This is to prevent clickjacking attacks. You need to authorize Google to use the registration page within an iframe. Go to the `Realm Settings` left menu item and then go to the `Security Defenses` tab. You will need to add `https://www.google.com` to the values of both the `X-Frame-Options` and `Content-Security-Policy` headers.
+您需要做的最后一步是更改Keycloak设置的一些默认HTTP响应标头。 Keycloak将阻止网站在iframe中包含任何登录页面。 这是为了防止点击劫持攻击。 您需要授权Google在iframe中使用注册页面。 转到`Realm Settings`左侧菜单项，然后转到`Security Defenses`选项卡。 您需要将`https://www.google.com`添加到`X-Frame-Options`和`Content-Security-Policy`标头的值中。
 
 Authorizing Iframes
 
 ![security headers](assets/security-headers.png)
 
-Once you do this, reCAPTCHA should show up on your registration page. You may want to edit *register.ftl* in your login theme to muck around with the placement and styling of the reCAPTCHA button. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information on extending and creating themes.
+完成此操作后，reCAPTCHA应显示在您的注册页面上。 您可能希望在登录主题中编辑*register.ftl*，以便使用reCAPTCHA按钮的放置和样式进行清理。 有关扩展和创建主题的更多信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-## 5. Login Page Settings {#Login_Page_Settings}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/login-settings.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/login-settings.adoc)
+## 5. 登录页面设置 {#Login_Page_Settings}
 
-There are several nice built-in login page features you can enable if you need the functionality.
+如果您需要这些功能，可以启用几个很好的内置登录页面功能。
 
-### 5.1. Forgot Password {#Forgot_Password}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/login-settings/forgot-password.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/login-settings/forgot-password.adoc)
+### 5.1. 忘记密码 {#Forgot_Password}
 
-If you enable it, users are able to reset their credentials if they forget their password or lose their OTP generator. Go to the `Realm Settings` left menu item, and click on the `Login` tab. Switch on the `Forgot Password` switch.
+如果您启用它，用户可以在忘记密码或丢失OTP生成器时重置其凭据。 转到`Realm Settings`左侧菜单项，然后单击`Login`选项卡。 打开`Forgot Password`开关。
 
 Login Tab
 
 ![login tab](assets/login-tab.png)
 
-A `forgot password` link will now show up on your login pages.
+`forgot password`链接现在将显示在您的登录页面上。
 
 Forgot Password Link
 
 ![forgot password link](assets/forgot-password-link.png)
 
-Clicking on this link will bring the user to a page where they can enter in their username or email and receive an email with a link to reset their credentials.
+点击此链接会将用户带到一个页面，用户可以在其中输入用户名或电子邮件，并收到一封电子邮件，其中包含重置其凭据的链接。
 
 Forgot Password Page
 
 ![forgot password page](assets/forgot-password-page.png)
 
-The text sent in the email is completely configurable. You just need to extend or edit the theme associated with it. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information.
+电子邮件中发送的文本是完全可配置的。 您只需要扩展或编辑与之关联的主题。 有关详细信息，请参阅[Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/)。
 
-When the user clicks on the email link, they will be asked to update their password, and, if they have an OTP generator set up, they will also be asked to reconfigure this as well. Depending on the security requirements of your organization you may not want users to be able to reset their OTP generator through email. You can change this behavior by going to the `Authentication` left menu item, clicking on the `Flows` tab, and selecting the `Reset Credentials` flow:
+当用户点击电子邮件链接时，系统会要求他们更新密码，如果他们设置了OTP生成器，他们也会被要求重新配置。 根据组织的安全要求，您可能不希望用户能够通过电子邮件重置其OTP生成器。 您可以通过转到`Authentication`左侧菜单项，单击`Flows`选项卡，然后选择`Reset Credentials`流来改变这种行为：
 
 Reset Credentials Flow
 
 ![reset credentials flow](assets/reset-credentials-flow.png)
 
-If you do not want OTP reset, then just chose the `disabled` radio button to the right of `Reset OTP`.
+如果你不想重置OTP，那么只需选择`Reset OTP`右侧的`disabled`单选按钮。
 
-### 5.2. Remember Me {#Remember_Me}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/login-settings/remember-me.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/login-settings/remember-me.adoc)
+### 5.2. 记住账号 {#Remember_Me}
 
-If a logged in user closes their browser, their session is destroyed and they will have to log in again. You can set things up so that if a user checks a *remember me* checkbox, they will remain logged in even if the browser is closed. This basically turns the login cookie from a session-only cookie to a persistence cookie.
+如果登录用户关闭了他们的浏览器，他们的会话将被销毁，他们将不得不再次登录。 您可以进行设置，以便在用户选中*remember me*复选框时，即使浏览器已关闭，它们仍将保持登录状态。 这基本上将登录cookie从仅会话cookie转换为持久性cookie。
 
-To enable this feature go to `Realm Settings` left menu item and click on the `Login` tab and turn on the `Remember Me`switch:
+要启用此功能，请转到`Realm Settings`左侧菜单项，然后单击`Login`选项卡并打开`Remember Me`switch`:
 
 Login Tab
 
 ![login tab](assets/login-tab.png)
 
-Once you save this setting, a `remember me` checkbox will be displayed on the realm’s login page.
+保存此设置后，将在领域的登录页面上显示`remember me`复选框。
 
 Remember Me
 
 ![remember me](assets/remember-me.png)
 
-## 6. Authentication {#Authentication}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/authentication.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/authentication.adoc)
+## 6. 认证 {#Authentication}
 
-There are a few features you should be aware of when configuring authentication for your realm. Many organizations have strict password and OTP policies that you can enforce via settings in the Admin Console. You may or may not want to require different credential types for authentication. You may want to give users the option to login via Kerberos or disable or enable various built-in credential types. This chapter covers all of these topics.
+在为领域配置身份验证时，您应该注意一些功能。 许多组织都有严格的密码和OTP策略，您可以通过管理控制台中的设置强制执行这些策略。 您可能希望也可能不希望要求不同的凭据类型进行身份验证。 您可能希望为用户提供通过Kerberos登录或禁用或启用各种内置凭据类型的选项。 本章涵盖所有这些主题。
 
-### 6.1. Password Policies {#Password_Policies}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/authentication/password-policies.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/authentication/password-policies.adoc)
+### 6.1. 密码策略 {#Password_Policies}
 
-Each new realm created has no password policies associated with it. Users can have as short, as long, as complex, as insecure a password, as they want. Simple settings are fine for development or learning Keycloak, but unacceptable in production environments. Keycloak has a rich set of password policies you can enable through the Admin Console.
+创建的每个新领域都没有与之关联的密码策略。 用户可以根据需要拥有尽可能短，复杂，不安全的密码。 简单的设置适用于开发或学习Keycloak，但在生产环境中是不可接受的。 Keycloak拥有一组丰富的密码策略，您可以通过管理控制台启用这些策略。
 
-Click on the `Authentication` left menu item and go to the `Password Policy` tab. Choose the policy you want to add in the right side drop down list box. This will add the policy in the table on the screen. Choose the parameters for the policy. Hit the `Save` button to store your changes.
+单击`Authentication`左侧菜单项，然后转到`Password Policy`选项卡。 在右侧下拉列表框中选择要添加的策略。 这将在屏幕上的表中添加策略。 选择策略的参数。 点击`Save`按钮存储您的更改。
 
 Password Policy
 
 ![password policy](assets/password-policy.png)
 
-After saving your policy, user registration and the Update Password required action will enforce your new policy. An example of a user failing the policy check:
+保存策略后，用户注册和“需要更新密码”操作将强制执行新策略。 用户未通过策略检查的示例：
 
 Failed Password Policy
 
 ![failed password policy](assets/failed-password-policy.png)
 
-If the password policy is updated, an Update Password action must be set for every user. An automatic trigger is scheduled as a future enhancement.
+如果更新了密码策略，则必须为每个用户设置“更新密码”操作。 自动触发器被安排为未来的增强功能。
 
-#### 6.1.1. Password Policy Types {#Password_Policy_Types}
-Here’s an explanation of each policy type:
+#### 6.1.1. 密码策略类型 {#Password_Policy_Types}
+以下是每种策略类型的说明：
 
 - HashAlgorithm
 
-  Passwords are not stored as clear text. Instead they are hashed using standard hashing algorithms before they are stored or validated. The only built-in and default algorithm available is PBKDF2. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) on how to plug in your own algorithm. Note that if you do change the algorithm, password hashes will not change in storage until the next time the user logs in.
+  密码不会以明文形式存储。 相反，它们在存储或验证之前使用标准哈希算法进行哈希处理。 唯一可用的内置和默认算法是PBKDF2。 有关如何插入自己的算法，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。 请注意，如果您确实更改了算法，则密码哈希值在用户登录时才会在存储中更改。
 
 - Hashing Iterations
 
-  This value specifies the number of times a password will be hashed before it is stored or verified. The default value is 20,000. This hashing is done in the rare case that a hacker gets access to your password database. Once they have access to the database, they can reverse engineer user passwords. The industry recommended value for this parameter changes every year as CPU power improves. A higher hashing iteration value takes more CPU power for hashing, and can impact performance. You’ll have to weigh what is more important to you: performance or protecting your passwords stores. There may be more cost effective ways of protecting your password stores.
+  此值指定在存储或验证密码之前对密码进行哈希处理的次数。 默认值为20,000。 这种散列是在黑客获取密码数据库的极少数情况下完成的。 一旦他们可以访问数据库，他们就可以对用户密码进行反向工程。 随着CPU功率的提高，该参数的行业推荐值每年都在变化。 较高的散列迭代值需要更多的CPU功率进行散列，并且可能会影响性能。 您必须权衡对您更重要的事情：性能或保护您的密码存储。 可能有更具成本效益的方法来保护您的密码存储。
 
 - Digits
 
-  The number of digits required to be in the password string.
+  密码字符串中需要的位数。
 
 - Lowercase Characters
 
-  The number of lower case letters required to be in the password string.
+  密码字符串中需要的小写字母数。
 
 - Uppercase Characters
 
-  The number of upper case letters required to be in the password string.
+  密码字符串中需要大写字母的数量。
 
 - Special Characters
 
-  The number of special characters like '?!#%$' required to be in the password string.
+  需要在密码字符串中包含'?!#%$'等特殊字符的数量。
 
 - Not Username
 
-  When set, the password is not allowed to be the same as the username.
+  设置后，密码不允许与用户名相同。
 
 - Regular Expression
 
-  Define one or more Perl regular expression patterns that passwords must match.
+  定义一个或多个密码必须匹配的Perl正则表达式模式。
 
 - Expire Password
 
-  The number of days for which the password is valid. After the number of days has expired, the user is required to change their password.
+  密码有效的天数。 在天数过期后，用户需要更改其密码。
 
 - Not Recently Used
 
-  This policy saves a history of previous passwords. The number of old passwords stored is configurable. When a user changes their password they cannot use any stored passwords.
+  此策略保存以前密码的历史记录。 存储的旧密码数量是可配置的。 当用户更改其密码时，他们无法使用任何存储的旧密码。
 
 - Password Blacklist
 
-  This policy checks if a given password is contained in a blacklist file, which is potentially a very large file. Password blacklists are UTF-8 plain-text files with Unix line endings where every line represents a blacklisted password. The file name of the blacklist file must be provided as the password policy value, e.g. `10_million_password_list_top_1000000.txt`. Blacklist files are resolved against `${jboss.server.data.dir}/password-blacklists/` by default. This path can be customized via the `keycloak.password.blacklists.path` system property, or the `blacklistsPath` property of the `passwordBlacklist` policy SPI configuration.
+  此策略检查给定密码是否包含在黑名单文件中，该文件可能是一个非常大的文件。 密码黑名单是带有Unix行结尾的UTF-8纯文本文件，其中每行代表一个列入黑名单的密码。 必须提供黑名单文件的文件名作为密码策略值，例如`10_million_password_list_top_1000000.txt`。 黑名单文件默认解析为`${jboss.server.data.dir}/password-blacklists/`。 可以通过`keycloak.password.blacklists.path`系统属性或`passwordBlacklist`策略SPI配置的`blacklistsPath`属性来定制此路径。
 
-### 6.2. OTP Policies {#OTP_Policies}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/authentication/otp-policies.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/authentication/otp-policies.adoc)
+### 6.2. OTP 策略 {#OTP_Policies}
 
-Keycloak has a number of policies you can set up for your FreeOTP or Google Authenticator One-Time Password generator. Click on the `Authentication` left menu item and go to the `OTP Policy` tab.
+Keycloak有许多政策可以为FreeOTP或Google身份验证器一次性密码生成器设置。 单击`Authentication`左侧菜单项，然后转到`OTP Policy`选项卡。
 
 OTP Policy
 
 ![otp policy](assets/otp-policy.png)
 
-Any policies you set here will be used to validate one-time passwords. When configuring OTP, FreeOTP and Google Authenticator can scan a QR code that is generated on the OTP set up page that Keycloak has. The bar code is also generated from information configured on the `OTP Policy` tab.
+您在此处设置的任何策略都将用于验证一次性密码。 配置OTP时，FreeOTP和Google Authenticator可以扫描在Keycloak所具有的OTP设置页面上生成的QR码。 条形码也是从`OTP Policy`选项卡上配置的信息生成的。
 
 #### 6.2.1. TOTP vs. HOTP {#TOTP_vs__HOTP}
-There are two different algorithms to choose from for your OTP generators. Time Based (TOTP) and Counter Based (HOTP). For TOTP, your token generator will hash the current time and a shared secret. The server validates the OTP by comparing all the hashes within a certain window of time to the submitted value. So, TOTPs are valid only for a short window of time (usually 30 seconds). For HOTP a shared counter is used instead of the current time. The server increments the counter with each successful OTP login. So, valid OTPs only change after a successful login.
+您的OTP生成器有两种不同的算法可供选择。 基于时间（TOTP）和基于计数器（HOTP）。 对于TOTP，您的令牌生成器将散列当前时间和共享密钥。 服务器通过将特定时间窗口内的所有哈希值与提交的值进行比较来验证OTP。 因此，TOTP仅在短时间内（通常为30秒）有效。 对于HOTP，使用共享计数器而不是当前时间。 服务器会在每次成功的OTP登录时递增计数器。 因此，有效的OTP仅在成功登录后才会更改。
 
-TOTP is considered a little more secure because the matchable OTP is only valid for a short window of time while the OTP for HOTP can be valid for an indeterminate amount of time. HOTP is much more user friendly as the user won’t have to hurry to enter in their OTP before the time interval is up. With the way Keycloak has implemented TOTP this distinction becomes a little more blurry. HOTP requires a database update every time the server wants to increment the counter. This can be a performance drain on the authentication server when there is heavy load. So, to provide a more efficient alternative, TOTP does not remember passwords used. This bypasses the need to do any DB updates, but the downside is that TOTPs can be re-used in the valid time interval. For future versions of Keycloak it is planned that you will be able to configure whether TOTP checks older OTPs in the time interval.
+TOTP被认为更安全，因为匹配的OTP仅在短时间内有效，而HOTP的OTP可以在不确定的时间内有效。 HOTP更加用户友好，因为用户在时间间隔结束之前不必急于进入他们的OTP。 随着Keycloak实施TOTP的方式，这种区别变得更加模糊。 每次服务器想要递增计数器时，HOTP都需要更新数据库。 当负载很重时，这可能会导致身份验证服务器的性能下降。 因此，为了提供更有效的替代方案，TOTP不记得使用的密码。 这绕过了进行任何数据库更新的需要，但缺点是TOTP可以在有效时间间隔内重复使用。 对于Keycloak的未来版本，计划您能够配置TOTP是否在时间间隔内检查较旧的OTP。
 
-#### 6.2.2. TOTP Configuration Options {#TOTP_Configuration_Options}
+#### 6.2.2. TOTP配置选项 {#TOTP_Configuration_Options}
 - OTP Hash Algorithm
 
-  Default is SHA1, more secure options are SHA256 and SHA512.
+  默认值为SHA1，更安全的选项是SHA256和SHA512。
 
 - Number of Digits
 
-  How many characters is the OTP? Short means more user friendly as it is less the user has to type. More means more security.
+  OTP有多少个字符？ Short表示用户更友好，因为用户输入的内容较少。 更多意味着更多安全。
 
 - Look Ahead Window
 
-  How many intervals ahead should the server try and match the hash? This exists so just in case the clock of the TOTP generator or authentication server get out of sync. The default value of 1 is usually good enough. For example, if the time interval for a new token is every 30 seconds, the default value of 1 means that it will only accept valid tokens in that 30 second window. Each increment of this config value will increase the valid window by 30 seconds.
+  服务器尝试匹配哈希的前方间隔数是多少？ 这样做只是为了防止TOTP生成器或认证服务器的时钟不同步。 默认值1通常足够好。 例如，如果新令牌的时间间隔是每30秒，则默认值1表示它只接受该30秒窗口中的有效令牌。 此配置值的每次递增都会使有效窗口增加30秒。
 
-- OTP Token Period
+- OTP令牌时间段
 
-  Time interval in seconds during which the server will match a hash. Each time the interval passes, a new TOTP will be generated by the token generator.
+  服务器匹配哈希的时间间隔（以秒为单位）。 每次间隔通过时，令牌生成器将生成新的TOTP。
 
-#### 6.2.3. HOTP Configuration Options {#HOTP_Configuration_Options}
+#### 6.2.3. HOTP配置选项 {#HOTP_Configuration_Options}
 - OTP Hash Algorithm
 
-  Default is SHA1, more secure options are SHA256 and SHA512.
+  默认值为SHA1，更安全的选项是SHA256和SHA512。
 
 - Number of Digits
 
-  How many characters is the OTP? Short means more user friendly as it is less the user has to type. More means more security.
+  OTP有多少个字符？ Short表示用户更友好，因为用户输入的内容较少。 更多意味着更多安全。
 
 - Look Ahead Window
 
-  How many counters ahead should the server try and match the hash? The default value is 1. This exists to cover the case where the user’s counter gets ahead of the server’s. This can often happen as users often increment the counter manually too many times by accident. This value really should be increased to a value of 10 or so.
+  如果服务器尝试匹配哈希，前面有多少个计数器？ 默认值为1.这是为了涵盖用户计数器超前于服务器的情况。 这通常会发生，因为用户经常意外地手动递增计数器太多次。 这个值确实应该增加到10左右。
 
 - Initial Counter
 
-  What is the value of the initial counter?
+  初始计数器的价值是多少？
 
-### 6.3. Authentication Flows {#Authentication_Flows}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/authentication/flows.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/authentication/flows.adoc)
+### 6.3. 身份验证流程 {#Authentication_Flows}
 
-An *authentication flow* is a container for all authentications, screens, and actions that must happen during login, registration, and other Keycloak workflows. If you go to the admin console `Authentication` left menu item and go to the `Flows` tab, you can view all the defined flows in the system and what actions and checks each flow requires. This section does a walk-through of the browser login flow. In the left drop-down list select `browser` to come to the screen shown below:
+*身份验证流程*是用于登录，注册和其他Keycloak工作流程期间必须执行的所有身份验证，屏幕和操作的容器。 如果您转到管理控制台`Authentication`左侧菜单项并转到`Flows`选项卡，您可以查看系统中所有已定义的流以及每个流所需的操作和检查。 本节将介绍浏览器登录流程。 在左侧下拉列表中选择`browser`进入如下界面：
 
 Browser Flow
 
 ![browser flow](assets/browser-flow.png)
 
-If you hover over the tooltip (the tiny question mark) to the right of the flow selection list, this will describe what the flow is and does.
+如果将鼠标悬停在流选择列表右侧的工具提示（小问号）上，则会描述流程的作用和作用。
 
-The `Auth Type` column is the name of authentication or action that will be executed. If an authentication is indented this means it is in a sub-flow and may or may not be executed depending on the behavior of its parent. The `Requirement`column is a set of radio buttons which define whether or not the action will execute. Let’s describe what each radio button means:
+`Auth Type`列是要执行的身份验证或操作的名称。 如果验证是缩进的，则意味着它在子流中，并且可能会也可能不会执行，具体取决于其父级的行为。 `Requirement`列是一组单选按钮，用于定义操作是否执行。 让我们描述每个单选按钮的含义：
 
 - Required
 
-  This authentication execution must execute successfully. If the user doesn’t have that type of authentication mechanism configured and there is a required action associated with that authentication type, then a required action will be attached to that account. For example, if you switch `OTP Form` to `Required`, users that don’t have an OTP generator configured will be asked to do so.
+  此身份验证执行必须成功执行。 如果用户未配置该类型的身份验证机制，并且存在与该身份验证类型关联的必需操作，则会将所需操作附加到该帐户。 例如，如果将`OTP Form`切换为`Required`，则会要求未配置OTP生成器的用户执行此操作。
 
 - Optional
 
-  If the user has the authentication type configured, it will be executed. Otherwise, it will be ignored.
+  如果用户配置了身份验证类型，则会执行该身份验证。 否则，它将被忽略。
 
 - Disabled
 
-  If disabled, the authentication type is not executed.
+  如果禁用，则不执行身份验证类型。
 
 - Alternative
 
-  This means that at least one alternative authentication type must execute successfully at that level of the flow.
+  这意味着至少有一种备用身份验证类型必须在该流级别成功执行。
 
-This is better described in an example. Let’s walk through the `browser` authentication flow.
+这在一个例子中有更好的描述。 让我们来看看`browser`认证流程。
 
-1. The first authentication type is `Cookie`. When a user successfully logs in for the first time, a session cookie is set. If this cookie has already been set, then this authentication type is successful. Since the cookie provider returned success and each execution at this level of the flow is *alternative*, no other execution is executed and this results in a successful login.
-2. Next the flow looks at the Kerberos execution. This authenticator is disabled by default and will be skipped.
-3. The next execution is a subflow called Forms. Since this subflow is marked as *alternative* it will not be executed if the `Cookie` authentication type passed. This subflow contains additional authentication type that needs to be executed. The executions for this subflow are loaded and the same processing logic occurs
-4. The first execution in the Forms subflow is the Username Password Form. This authentication type renders the username and password page. It is marked as *required* so the user must enter in a valid username and password.
-5. The next execution is the OTP Form. This is marked as *optional*. If the user has OTP set up, then this authentication type must run and be successful. If the user doesn’t have OTP set up, this authentication type is ignored.
+1. 第一种身份验证类型是`Cookie`。 当用户第一次成功登录时，会设置会话cookie。 如果已设置此cookie，则此身份验证类型成功。 由于cookie提供程序返回成功，并且此流级别的每次执行都是*alternative*，因此不会执行其他执行，这会导致成功登录。
+2. 接下来，该流程将查看Kerberos执行情况。 默认情况下禁用此身份验证器，将跳过此身份验证器。
+3. 下一个执行是一个名为Forms的子流。 由于此子流标记为*alternative*，如果传递了`Cookie`身份验证类型，则不会执行该子流。 此子流包含需要执行的其他身份验证类型。 加载此子流的执行并发生相同的处理逻辑
+4. Forms子流中的第一个执行是用户名密码表单。 此身份验证类型呈现用户名和密码页面。 它标记为*required*，因此用户必须输入有效的用户名和密码。
+5. 下一次执行是OTP表格。 这标记为*optional*。 如果用户已设置OTP，则此身份验证类型必须运行并成功。 如果用户未设置OTP，则忽略此身份验证类型。
 
 ### 6.4. Executions {#Executions}
 Executions can be used
