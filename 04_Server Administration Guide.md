@@ -631,7 +631,7 @@ Failed Password Policy
 
 - Special Characters
 
-  需要在密码字符串中包含'?!#%$'等特殊字符的数量。
+  需要在密码字符串中包含`?!#%$`等特殊字符的数量。
 
 - Not Username
 
@@ -1015,7 +1015,7 @@ The following sections describe how to configure WildFly/Undertow and the Keyclo
 
 - Enable mutual SSL in WildFly
 
-  See [Enable SSL](https://docs.jboss.org/author/display/WFLY10/Admin+Guide#AdminGuide-EnableSSL) and [SSL](https://docs.jboss.org/author/display/WFLY10/Admin+Guide#AdminGuide-{{}}) for the instructions how to enable SSL in WildFly.Open KEYCLOAK_HOME/standalone/configuration/standalone.xml and add a new realm:
+  See [Enable SSL](https://docs.jboss.org/author/display/WFLY10/Admin+Guide#AdminGuide-EnableSSL) and [SSL](https://docs.jboss.org/author/display/WFLY10/Admin+Guide#AdminGuide) for the instructions how to enable SSL in WildFly.Open KEYCLOAK_HOME/standalone/configuration/standalone.xml and add a new realm:
 
 ```
 <security-realms>
@@ -4212,7 +4212,7 @@ It is possible to expose `/auth/admin` to a different port that is not exposed o
 
 The following example exposes `/auth/admin` on port `8444` while not permitting access with the default port `8443`.
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
     ...
     <server name="default-server">
@@ -4242,7 +4242,7 @@ The following example exposes `/auth/admin` on port `8444` while not permitting 
 
 Equivalent configuration using CLI commands:
 
-```
+```bash
 /socket-binding-group=standard-sockets/socket-binding=https-admin/:add(port=8444)
 
 /subsystem=undertow/server=default-server/https-listener=https-admin:add(socket-binding=https-admin, security-realm=ApplicationRealm, enable-http2=true)
@@ -4430,7 +4430,7 @@ $ kcadm.sh
 
 - Windows:
 
-```
+```bash
 c:\> set PATH=%PATH%;%KEYCLOAK_HOME%\bin
 c:\> kcadm
 ```
@@ -4463,7 +4463,7 @@ The Admin CLI works by making HTTP requests to Admin REST endpoints. Access to t
 
    - Windows:
 
-     ```
+     ```bash
      c:\> kcadm config credentials --server http://localhost:8080/auth --realm demo --user admin --client admin
      c:\> kcadm create realms -s realm=demorealm -s enabled=true -o
      c:\> kcadm create clients -r demorealm -s clientId=my_client -s "redirectUris=[\"http://localhost:8980/myapp/*\"]" -i > clientid.txt
@@ -4483,7 +4483,7 @@ The Admin CLI works by making HTTP requests to Admin REST endpoints. Access to t
 
    - Windows:
 
-     ```
+     ```bash
      c:\> kcadm config truststore --trustpass %PASSWORD% %HOMEPATH%\.keycloak\truststore.jks
      ```
 
@@ -5984,7 +5984,7 @@ Run the `get` command on the `authentication/flows/FLOW_ALIAS/executions` endpoi
 
 For example:
 
-```
+```bash
 $ kcadm.sh get authentication/flows/Copy%20of%20browser/executions -r demorealm
 ```
 
