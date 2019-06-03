@@ -738,26 +738,27 @@ Browser Flow
 4. Forms子流中的第一个执行是用户名密码表单。 此身份验证类型呈现用户名和密码页面。 它标记为*required*，因此用户必须输入有效的用户名和密码。
 5. 下一次执行是OTP表格。 这标记为*optional*。 如果用户已设置OTP，则此身份验证类型必须运行并成功。 如果用户未设置OTP，则忽略此身份验证类型。
 
-### 6.4. Executions {#Executions}
-Executions can be used
+### 6.4. 执行 {#Executions}
+可以使用执行
 
-Script Authenticator
+脚本身份验证器
 
-A *script* authenticator allows to define custom authentication logic via JavaScript. Custom authenticators. In order to make use of this feature, it must be explicitly enabled:
+*script(脚本)*认证器允许通过JavaScript定义自定义的认证逻辑。自定义的身份验证器。为了使用这个功能，它必须显式启用:
 
-```
+
+```bash
 bin/standalone.sh|bat -Dkeycloak.profile.feature.scripts=enabled
 ```
 
-For more information, see the [Profiles](https://www.keycloak.org/docs/6.0/server_installation/#profiles) section.
+有关详细信息，请参阅[配置文件](https://www.keycloak.org/docs/6.0/server_installation/#profiles)部分。
 
-Authentication scripts must at least provide one of the following functions: `authenticate(..)` which is called from `Authenticator#authenticate(AuthenticationFlowContext)` `action(..)` which is called from `Authenticator#action(AuthenticationFlowContext)`
+身份验证脚本必须至少提供以下功能之一:`authenticate(..)`调用自`Authenticator#authenticate(AuthenticationFlowContext)` `action(..)` ，这是从`Authenticator#action(AuthenticationFlowContext)`调用的。
 
-Custom `Authenticator` should at least provide the `authenticate(..)` function. The following script `javax.script.Bindings` are available for convenient use within script code.
+自定义`Authenticator`至少应该提供`authenticate(..)`函数。 以下脚本`javax.script.Bindings`可以在脚本代码中方便地使用。
 
 - `script`
 
-  the `ScriptModel` to access script metadata
+  用于访问脚本元数据的`ScriptModel`
 
 - `realm`
 
@@ -765,27 +766,27 @@ Custom `Authenticator` should at least provide the `authenticate(..)` function. 
 
 - `user`
 
-  the current `UserModel`
+  当前的`UserModel`
 
 - `session`
 
-  the active `KeycloakSession`
+  活跃的`KeycloakSession`
 
 - `authenticationSession`
 
-  the current `AuthenticationSessionModel`
+  当前的`AuthenticationSessionModel`
 
 - `httpRequest`
 
-  the current `org.jboss.resteasy.spi.HttpRequest`
+  当前的 `org.jboss.resteasy.spi.HttpRequest`
 
 - `LOG`
 
-  a `org.jboss.logging.Logger` scoped to `ScriptBasedAuthenticator`
+  一个`org.jboss.logging.Logger`作用于`ScriptBasedAuthenticator`
 
-Note that additional context information can be extracted from the `context` argument passed to the `authenticate(context)` `action(context)` function.
+请注意，可以从传递给`authenticate(context)` `action(context)`函数的`context`参数中提取其他上下文信息。
 
-```
+```java
 AuthenticationFlowError = Java.type("org.keycloak.authentication.AuthenticationFlowError");
 
 function authenticate(context) {
@@ -805,109 +806,108 @@ function authenticate(context) {
 ```
 
 ### 6.5. Kerberos {#Kerberos}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/authentication/kerberos.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/authentication/kerberos.adoc)
 
-Keycloak supports login with a Kerberos ticket through the SPNEGO protocol. SPNEGO (Simple and Protected GSSAPI Negotiation Mechanism) is used to authenticate transparently through the web browser after the user has been authenticated when logging-in his session. For non-web cases or when ticket is not available during login, Keycloak also supports login with Kerberos username/password.
+Keycloak支持通过SPNEGO协议使用Kerberos票证登录。 SPNEGO（简单和受保护的GSSAPI协商机制）用于在登录其会话后对用户进行身份验证后通过Web浏览器进行透明身份验证。 对于非Web案例或在登录期间无法使用票证时，Keycloak还支持使用Kerberos用户名/密码登录。
 
-A typical use case for web authentication is the following:
+Web身份验证的典型用例如下：
 
-1. User logs into his desktop (Such as a Windows machine in Active Directory domain or Linux machine with Kerberos integration enabled).
-2. User then uses his browser (IE/Firefox/Chrome) to access a web application secured by Keycloak.
-3. Application redirects to Keycloak login.
-4. Keycloak renders HTML login screen together with status 401 and HTTP header `WWW-Authenticate: Negotiate`
-5. In case that the browser has Kerberos ticket from desktop login, it transfers the desktop sign on information to the Keycloak in header `Authorization: Negotiate 'spnego-token'` . Otherwise it just displays the login screen.
-6. Keycloak validates token from the browser and authenticates the user. It provisions user data from LDAP (in case of LDAPFederationProvider with Kerberos authentication support) or let user to update his profile and prefill data (in case of KerberosFederationProvider).
-7. Keycloak returns back to the application. Communication between Keycloak and application happens through OpenID Connect or SAML messages. The fact that Keycloak was authenticated through Kerberos is hidden from the application. So Keycloak acts as broker to Kerberos/SPNEGO login.
+1. 用户登录到他的桌面（例如Active Directory域中的Windows计算机或启用了Kerberos集成的Linux计算机）。
+2. 然后，用户使用他的浏览器(IE / Firefox / Chrome)访问由Keycloak保护的Web应用程序。
+3. 应用程序重定向到Keycloak登录。
+4. Keycloak将HTML登录屏幕与状态401和HTTP标题`WWW-Authenticate: Negotiate`一起呈现
+5. 如果浏览器具有来自桌面登录的Kerberos票证，它会将桌面登录信息传输到标题`Authorization: Negotiate 'spnego-token'`中的Keycloak。 否则它只显示登录屏幕。
+6. Keycloak验证来自浏览器的令牌并验证用户身份。 它从LDAP中提供用户数据（如果LDAPFederationProvider具有Kerberos身份验证支持），或者让用户更新其配置文件和预填充数据（如果是KerberosFederationProvider）。
+7. Keycloak返回应用程序。 Keycloak和应用程序之间的通信通过OpenID Connect或SAML消息进行。 Keycloak通过Kerberos进行身份验证的事实对应用程序是隐藏的。 所以Keycloak充当Kerberos / SPNEGO登录的经纪人。
 
-For setup there are 3 main parts:
+设置有3个主要部分：
 
-1. Setup and configuration of Kerberos server (KDC)
-2. Setup and configuration of Keycloak server
-3. Setup and configuration of client machines
+1. Kerberos服务器（KDC）的设置和配置
+2. Keycloak服务器的设置和配置
+3. 客户端计算机的设置和配置
 
-#### 6.5.1. Setup of Kerberos server {#Setup_of_Kerberos_server}
-This is platform dependent. Exact steps depend on your OS and the Kerberos vendor you’re going to use. Consult Windows Active Directory, MIT Kerberos and your OS documentation for how exactly to setup and configure Kerberos server.
+#### 6.5.1. Kerberos服务器的设置 {#Setup_of_Kerberos_server}
+这取决于平台。 确切的步骤取决于您将要使用的操作系统和Kerberos供应商。 有关如何设置和配置Kerberos服务器的详细信息，请参阅Windows Active Directory，MIT Kerberos和操作系统文档。
 
-At least you will need to:
+至少你需要：
 
-- Add some user principals to your Kerberos database. You can also integrate your Kerberos with LDAP, which means that user accounts will be provisioned from LDAP server.
+- 将一些用户主体添加到Kerberos数据库。 您还可以将Kerberos与LDAP集成，这意味着将从LDAP服务器配置用户帐户。
 
-- Add service principal for "HTTP" service. For example if your Keycloak server will be running on `www.mydomain.org` you may need to add principal `HTTP/www.mydomain.org@MYDOMAIN.ORG` assuming that MYDOMAIN.ORG will be your Kerberos realm.
+- 添加“HTTP”服务的服务主体。 例如，如果您的Keycloak服务器将在`www.mydomain.org`上运行，您可能需要添加主体`HTTP/www.mydomain.org@MYDOMAIN.ORG`，假设MYDOMAIN.ORG将成为您的Kerberos领域。
 
-  For example on MIT Kerberos you can run a "kadmin" session. If you are on the same machine where is MIT Kerberos, you can simply use the command:
+  例如，在MIT Kerberos上，您可以运行“kadmin”会话。 如果您在MIT Kerberos所在的同一台机器上，您只需使用以下命令：
 
-```
+```bash
 sudo kadmin.local
 ```
 
-Then add HTTP principal and export his key to a keytab file with the commands like:
+然后添加HTTP主体并将其密钥导出到keytab文件，其命令如下：
 
-```
+```bash
 addprinc -randkey HTTP/www.mydomain.org@MYDOMAIN.ORG
 ktadd -k /tmp/http.keytab HTTP/www.mydomain.org@MYDOMAIN.ORG
 ```
 
-The Keytab file `/tmp/http.keytab` will need to be accessible on the host where Keycloak server will be running.
+需要在运行Keycloak服务器的主机上访问Keytab文件`/tmp/http.keytab`。
 
-#### 6.5.2. Setup and configuration of Keycloak server {#Setup_and_configuration_of_Keycloak_server}
-You need to install a kerberos client on your machine. This is also platform dependent. If you are on Fedora, Ubuntu or RHEL, you can install the package `freeipa-client`, which contains a Kerberos client and several other utilities. Configure the kerberos client (on Linux it’s in file `/etc/krb5.conf` ). You need to put your Kerberos realm and at least configure the HTTP domains your server will be running on. For the example realm MYDOMAIN.ORG you may configure the `domain_realm`section like this:
+#### 6.5.2. Keycloak服务器的设置和配置 {#Setup_and_configuration_of_Keycloak_server}
+您需要在计算机上安装kerberos客户端。 这也取决于平台。 如果您使用的是Fedora，Ubuntu或RHEL，则可以安装包含Kerberos客户端和其他几个实用程序的`freeipa-client`软件包。 配置kerberos客户端（在Linux上，它在文件`/etc/krb5.conf`中）。 您需要放置Kerberos领域，并至少配置您的服务器将运行的HTTP域。 对于示例领域MYDOMAIN.ORG，您可以像这样配置`domain_realm`部分：
 
-```
+```properties
 [domain_realm]
   .mydomain.org = MYDOMAIN.ORG
   mydomain.org = MYDOMAIN.ORG
 ```
 
-Next you need to export the keytab file with the HTTP principal and make sure the file is accessible to the process under which Keycloak server is running. For production, it’s ideal if it’s readable just by this process and not by someone else. For the MIT Kerberos example above, we already exported keytab to `/tmp/http.keytab` . If your KDC and Keycloak are running on same host, you have that file already available.
+接下来，您需要使用HTTP主体导出keytab文件，并确保该文件可供运行Keycloak服务器的进程访问。 对于生产来说，如果它只是通过这个过程而不是其他人可读，那么它是理想的。 对于上面的MIT Kerberos示例，我们已经将keytab导出到`/tmp/http.keytab`。 如果您的KDC和Keycloak在同一主机上运行，则您已经可以使用该文件。
 
-##### Enable SPNEGO Processing {#Enable_SPNEGO_Processing}
-Keycloak does not have the SPNEGO protocol support turned on by default. So, you have to go to the [browser flow](https://www.keycloak.org/docs/latest/server_admin/index.html#_authentication-flows) and enable `Kerberos`.
+##### 启用SPNEGO处理 {#Enable_SPNEGO_Processing}
+Keycloak默认情况下没有打开SPNEGO协议支持。 因此，您必须转到[浏览器流程](https://www.keycloak.org/docs/latest/server_admin/index.html#_authentication-flows) 并启用`Kerberos`。
 
 Browser Flow
 
 ![browser flow](assets/browser-flow.png)
 
-Switch the `Kerberos` requirement from *disabled* to either *alternative* or *required*. *Alternative* basically means that Kerberos is optional. If the user’s browser hasn’t been configured to work with SPNEGO/Kerberos, then Keycloak will fall back to the regular login screens. If you set the requirement to *required* then all users must have Kerberos enabled for their browser.
+将`Kerberos`要求从*disabled*切换到*alternative*或*required*。 *Alternative *基本上意味着Kerberos是可选的。 如果用户的浏览器尚未配置为使用SPNEGO/Kerberos，则Keycloak将回退到常规登录屏幕。 如果将需求设置为*required*，则所有用户必须为其浏览器启用Kerberos。
 
-##### Configure Kerberos User Storage Federation Provider {#Configure_Kerberos_User_Storage_Federation_Provider}
-Now that the SPNEGO protocol is turned on at the authentication server, you’ll need to configure how Keycloak interprets the Kerberos ticket. This is done through [User Storage Federation](https://www.keycloak.org/docs/latest/server_admin/index.html#_user-storage-federation). We have 2 different federation providers with Kerberos authentication support.
+##### 配置Kerberos用户存储联合提供程序 {#Configure_Kerberos_User_Storage_Federation_Provider}
+现在，在身份验证服务器上打开了SPNEGO协议，您需要配置Keycloak如何解释Kerberos票证。 这是通过[用户存储联合](https://www.keycloak.org/docs/latest/server_admin/index.html#_user-storage-federation)完成的。 我们有2个不同的联合提供程序，支持Kerberos身份验证。
 
-If you want to authenticate with Kerberos backed by an LDAP server, you have to first configure the [LDAP Federation Provider](https://www.keycloak.org/docs/latest/server_admin/index.html#_ldap). If you look at the configuration page for your LDAP provider you’ll see a `Kerberos Integration` section.
+如果要使用LDAP服务器支持的Kerberos进行身份验证，则必须先配置[LDAP Federation Provider](https://www.keycloak.org/docs/latest/server_admin/index.html#_ldap)。 如果查看LDAP提供程序的配置页面，您将看到`Kerberos Integration`部分。
 
 LDAP Kerberos Integration
 
 ![ldap kerberos](assets/ldap-kerberos.png)
 
-Turning on the switch `Allow Kerberos authentication` will make Keycloak use the Kerberos principal to lookup information about the user so that it can be imported into the Keycloak environment.
+打开`Allow Kerberos authentication`开关将使Keycloak使用Kerberos主体查找有关用户的信息，以便将其导入Keycloak环境。
 
-If your Kerberos solution is not backed by an LDAP server, you have to use the `Kerberos` User Storage Federation Provider. Go to the `User Federation` left menu item and select `Kerberos` from the `Add provider` select box.
+如果LDAP服务器不支持您的Kerberos解决方案，则必须使用`Kerberos`用户存储联合提供程序。 转到`User Federation`左侧菜单项，然后从`Add provider`选择框中选择`Kerberos`。
 
 Kerberos User Storage Provider
 
 ![kerberos provider](assets/kerberos-provider.png)
 
-This provider parses the Kerberos ticket for simple principal information and does a small import into the local Keycloak database. User profile information like first name, last name, and email are not provisioned.
+此提供程序解析Kerberos票证以获取简单的主体信息，并对本地Keycloak数据库进行少量导入。 不提供姓名、姓氏和电子邮件等用户概要信息。
 
-#### 6.5.3. Setup and configuration of client machines {#Setup_and_configuration_of_client_machines}
-Clients need to install kerberos client and setup krb5.conf as described above. Additionally they need to enable SPNEGO login support in their browser. See [configuring Firefox for Kerberos](http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html) if you are using that browser. URI `.mydomain.org` must be allowed in the `network.negotiate-auth.trusted-uris` config option.
+#### 6.5.3. 客户端计算机的设置和配置 {#Setup_and_configuration_of_client_machines}
+客户端需要安装kerberos客户端并如上所述设置krb5.conf。 此外，他们还需要在浏览器中启用SPNEGO登录支持。 如果您使用的是该浏览器，请参阅[为Kerberos配置Firefox](http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html)。 必须在`network.negotiate-auth.trusted-uris`配置选项中允许URI` .mydomain.org`。
 
-In a Windows domain, clients usually don’t need to configure anything special as IE is already able to participate in SPNEGO authentication for the Windows domain.
+在Windows域中，客户端通常不需要配置任何特殊内容，因为IE已经能够参与Windows域的SPNEGO身份验证。
 
-#### 6.5.4. Example setups {#Example_setups}
-For easier testing with Kerberos, we provided some example setups to test.
+#### 6.5.4. 示例设置 {#Example_setups}
+为了便于使用Kerberos进行测试，我们提供了一些示例设置进行测试。
 
-##### Keycloak and FreeIPA docker image {#Keycloak_and_FreeIPA_docker_image}
-Once you install [docker](https://www.docker.com/), you can run docker image with FreeIPA server installed. FreeIPA provides integrated security solution with MIT Kerberos and 389 LDAP server among other things . The image provides also Keycloak server configured with LDAP Federation provider and enabled SPNEGO/Kerberos authentication against the FreeIPA server. See details [here](https://github.com/mposolda/keycloak-freeipa-docker/blob/master/README.md) .
+##### Keycloak and FreeIPA docker 镜像 {#Keycloak_and_FreeIPA_docker_image}
+安装[docker](https://www.docker.com/)后，可以运行装有FreeIPA服务器的docker镜像。 FreeIPA提供集成的安全解决方案，包括MIT Kerberos和389 LDAP服务器等。 该镜像还提供了使用LDAP联合提供程序配置的Keycloak服务器，并针对FreeIPA服务器启用了SPNEGO/Kerberos身份验证。 详见[此处](https://github.com/mposolda/keycloak-freeipa-docker/blob/master/README.md)。
 
-##### ApacheDS testing Kerberos server {#ApacheDS_testing_Kerberos_server}
-For quick testing and unit tests, we use a very simple [ApacheDS](http://directory.apache.org/apacheds/) Kerberos server. You need to build Keycloak from sources and then run the Kerberos server with maven-exec-plugin from our testsuite. See details [here](https://github.com/keycloak/keycloak/blob/master/docs/tests.md#kerberos-server) .
+##### ApacheDS测试Kerberos服务器 {#ApacheDS_testing_Kerberos_server}
+对于快速测试和单元测试，我们使用非常简单的[ApacheDS](http://directory.apache.org/apacheds/) Kerberos服务器。 您需要从源代码构建Keycloak，然后使用我们的测试套件中的maven-exec-plugin运行Kerberos服务器。 详见[此处](https://github.com/keycloak/keycloak/blob/master/docs/tests.md#kerberos-server) 。
 
-#### 6.5.5. Credential Delegation {#Credential_Delegation}
-Kerberos 5 supports the concept of credential delegation. In this scenario, your applications may want access to the Kerberos ticket so that they can re-use it to interact with other services secured by Kerberos. Since the SPNEGO protocol is processed in the Keycloak server, you have to propagate the GSS credential to your application within the OpenID Connect token claim or a SAML assertion attribute that is transmitted to your application from the Keycloak server. To have this claim inserted into the token or assertion, each application will need to enable the built-in protocol mapper called `gss delegation credential`. This is enabled in the `Mappers` tab of the application’s client page. See [Protocol Mappers](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers) chapter for more details.
+#### 6.5.5. 凭证授权 {#Credential_Delegation}
+Kerberos 5支持凭证委派的概念。 在这种情况下，您的应用程序可能希望访问Kerberos票证，以便它们可以重新使用它与Kerberos保护的其他服务进行交互。 由于SPNEGO协议是在Keycloak服务器中处理的，因此您必须在OpenID Connect令牌声明或从Keycloak服务器传输到您的应用程序的SAML断言属性中将GSS凭据传播到您的应用程序。 要将此声明插入到令牌或断言中，每个应用程序都需要启用名为`gss delegation credential`的内置协议映射器。 这在应用程序客户端页面的`Mappers`选项卡中启用。 有关详细信息，请参阅[协议映射器](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers)一章。
 
-Applications will need to deserialize the claim it receives from Keycloak before it can use it to make GSS calls against other services. Once you deserialize the credential from the access token to the GSSCredential object, the GSSContext will need to be created with this credential passed to the method `GSSManager.createContext` for example like this:
+应用程序需要对从Keycloak收到的声明进行反序列化，然后才能使用它对其他服务进行GSS调用。 将凭证从访问令牌反序列化到GSSCredential对象后，需要创建GSSContext，并将此凭据传递给方法`GSSManager.createContext`，例如：
 
-```
+```java
 // Obtain accessToken in your application.
 KeycloakPrincipal keycloakPrincipal = (KeycloakPrincipal) servletReq.getUserPrincipal();
 AccessToken accessToken = keycloakPrincipal.getKeycloakSecurityContext().getToken();
@@ -924,100 +924,91 @@ GSSContext context = gssManager.createContext(serviceName, krb5Oid,
     deserializedGssCredential, GSSContext.DEFAULT_LIFETIME);
 ```
 
-We have an example, that shows this in detail. It’s in `examples/kerberos` in the Keycloak example distribution or demo distribution download. You can also check the example sources directly [here](https://github.com/keycloak/keycloak/tree/master/examples/kerberos) .
+我们有一个例子，详细说明了这一点。 它位于Keycloak示例分发或演示分发下载中的`examples/kerberos`中。 您也可以直接[这里](https://github.com/keycloak/keycloak/tree/master/examples/kerberos)查看示例源。
 
-Note that you also need to configure `forwardable` kerberos tickets in `krb5.conf` file and add support for delegated credentials to your browser.
+请注意，您还需要在`krb5.conf`文件中配置`forwardable`kerberos票证，并在您的浏览器中添加对委派凭据的支持。
 
-|      | Credential delegation has some security implications so only use it if you really need it. It’s highly recommended to use it together with HTTPS. See for example [this article](http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html) for more details. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 凭据授权具有一些安全隐患，因此只有在您真正需要时才使用它。 强烈建议将它与HTTPS一起使用。 有关详细信息，请参阅[本文](http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html)。
 
-#### 6.5.6. Cross-realm trust {#Cross_realm_trust}
-In the Kerberos V5 protocol, the `realm` is a set of Kerberos principals defined in the Kerberos database (typically LDAP server). The Kerberos protocol has a concept of cross-realm trust. For example, if there are 2 kerberos realms A and B, the cross-realm trust will allow the users from realm A to access resources (services) of realm B. This means that realm B trusts the realm A.
+#### 6.5.6. 跨领域的信任 {#Cross_realm_trust}
+在Kerberos V5协议中，`realm`是Kerberos数据库（通常是LDAP服务器）中定义的一组Kerberos主体。 Kerberos协议具有跨领域信任的概念。 例如，如果有2个kerberos域A和B，则跨域信任将允许来自域A的用户访问域B的资源（服务）。这意味着域B信任域A.
 
 Kerberos cross-realm trust
 
-![kerberos trust basic](https://www.keycloak.org/docs/latest/server_admin/images/kerberos-trust-basic.png)
+![kerberos trust basic](assets/kerberos-trust-basic.png)
 
-The Keycloak server has support for cross-realm trust. There are few things which need to be done to achieve this:
+Keycloak服务器支持跨领域信任。 要实现这一目标，有几件事情需要做：
 
-- Configure the Kerberos servers for the cross-realm trust. This step is dependent on the concrete Kerberos server implementations used. In general, it is needed to add the Kerberos principal `krbtgt/B@A` to both Kerberos databases of realm A and B. It is needed that this principal has same keys on both Kerberos realms. This is usually achieved when the principals have same password, key version number and there are same ciphers used in both realms. It is recommended to consult the Kerberos server documentation for more details.
+- 为跨领域信任配置Kerberos服务器。 此步骤取决于所使用的具体Kerberos服务器实现。 通常，需要将Kerberos主体`krbtgt/B@A`添加到域A和B的Kerberos数据库中。需要此主体在两个Kerberos域上具有相同的键。 这通常在主体具有相同密码，密钥版本号并且在两个领域中使用相同密码时实现。 建议查阅Kerberos服务器文档以获取更多详细信息。
 
-|      | The cross-realm trust is unidirectional by default. If you want bidirectional trust to have realm A also trust realm B, you must also add the principal `krbtgt/A@B` to both Kerberos databases. However, trust is transitive by default. If realm B trusts realm A and realm C trusts realm B, then realm C automatically trusts realm A without a need to have principal `krbtgt/C@A` available. Some additional configuration (for example `capaths`) may be needed to configure on Kerberos client side, so that the clients are able to find the trust path. Consult the Kerberos documentation for more details. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 默认情况下，跨领域信任是单向的。 如果您希望双向信任使域A也信任域B，则还必须将主体`krbtgt/A@B`添加到两个Kerberos数据库。 但是，默认情况下，信任是可传递的。 如果领域B信任领域A并且领域C信任领域B，那么领域C自动信任领域A而不需要具有可用的主要`krbtgt/C@A`。 在Kerberos客户端上可能需要一些其他配置（例如`capaths`），以便客户端能够找到信任路径。 有关更多详细信息，请参阅Kerberos文档。
 
-- Configure Keycloak server
-  - If you use an LDAP storage provider with Kerberos support, you need to configure the server principal for realm B as in this example: `HTTP/mydomain.com@B`. The LDAP server must be able to find the users from realm A if you want users from realm A to successfully authenticate to Keycloak, as Keycloak server must be able to do SPNEGO flow and then find the users. For example, kerberos principal user `john@A` must be available as a user in the LDAP under an LDAP DN such as `uid=john,ou=People,dc=example,dc=com`. If you want both users from realm A and B to authenticate, you need to ensure that LDAP is able to find users from both realms A and B. We want to improve this limitation in future versions, so you can potentially create more separate LDAP providers for separate realms and ensure that SPNEGO works for both of them.
-  - If you use a Kerberos user storage provider (typically the Kerberos without LDAP integration), you need to configure the server principal as `HTTP/mydomain.com@B` and users from both Kerberos realms A and B should be able to authenticate.
+- 配置Keycloak服务器
+  - 如果您使用具有Kerberos支持的LDAP存储提供程序，则需要为域B配置服务器主体，如下例所示：`HTTP/mydomain.com@B`。 如果您希望领域A中的用户成功通过Keycloak进行身份验证，则LDAP服务器必须能够从领域A中查找用户，因为Keycloak服务器必须能够执行SPNEGO流，然后才能找到用户。 例如，kerberos主要用户`john @ A`必须作为LDAP中的用户在LDAP DN下可用，例如`uid=john,ou=People,dc=example,dc=com`。 如果您希望领域A和B中的用户都进行身份验证，则需要确保LDAP能够从域A和B中查找用户。我们希望在将来的版本中改进此限制，以便您可以创建更多单独的LDAP提供程序 对于单独的领域并确保SPNEGO适用于它们。
+  - 如果使用Kerberos用户存储提供程序（通常是没有LDAP集成的Kerberos），则需要将服务器主体配置为`HTTP/mydomain.com@B`，并且来自Kerberos域A和B的用户都应该能够进行身份验证。
 
-|      | For the Kerberos user storage provider, it is recommended that there are no conflicting users among kerberos realms. If conflicting users exist, they will be mapped to the same Keycloak user. This is also something, which we want to improve in future versions and provide some more flexible mappings from Kerberos principals to Keycloak usernames. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 对于Kerberos用户存储提供程序，建议在kerberos领域中没有冲突用户。 如果存在冲突用户，则它们将映射到相同的Keycloak用户。 这也是我们希望在未来版本中改进的东西，并提供从Kerberos主体到Keycloak用户名的一些更灵活的映射。
 
-#### 6.5.7. Troubleshooting {#Troubleshooting}
-If you have issues, we recommend that you enable additional logging to debug the problem:
+#### 6.5.7. 故障排除 {#Troubleshooting}
+如果您遇到问题，我们建议您启用其他日志记录来调试问题：
 
-- Enable `Debug` flag in admin console for Kerberos or LDAP federation providers
-- Enable TRACE logging for category `org.keycloak` in logging section of `standalone/configuration/standalone.xml`to receive more info `standalone/log/server.log`
-- Add system properties `-Dsun.security.krb5.debug=true` and `-Dsun.security.spnego.debug=true`
+- 在管理控制台中为Kerberos或LDAP联合提供程序启用`Debug`标志
+- 在`standalone/configuration/standalone.xml`的日志记录部分中为类别`org.keycloak`启用TRACE日志记录，以获得更多信息`standalone/log/server.log`
+- 添加系统属性`-Dsun.security.krb5.debug=true` 和 `-Dsun.security.spnego.debug=true`
 
-### 6.6. X.509 Client Certificate User Authentication {#X_509_Client_Certificate_User_Authentication}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/authentication/x509.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/authentication/x509.adoc)
+### 6.6. X.509客户端证书用户身份验证 {#X_509_Client_Certificate_User_Authentication}
 
-Keycloak supports login with a X.509 client certificate if the server is configured for mutual SSL authentication.
+如果服务器配置为进行相互SSL身份验证，Keycloak支持使用X.509客户端证书登录。
 
-A typical workflow is as follows:
+典型的工作流程如下：
 
-- A client sends an authentication request over SSL/TLS channel
-- During SSL/TLS handshake, the server and the client exchange their x.509/v3 certificates
-- The container (WildFly) validates the certificate PKIX path and the certificate expiration
-- The x.509 client certificate authenticator validates the client certificate as follows:
-  - Optionally checks the certificate revocation status using CRL and/or CRL Distribution Points
-  - Optionally checks the Certificate revocation status using OCSP (Online Certificate Status Protocol)
-  - Optionally validates whether the key usage in the certificate matches the expected key usage
-  - Optionally validates whether the extended key usage in the certificate matches the expected extended key usage
-- If any of the above checks fails, the x.509 authentication fails
-- Otherwise, the authenticator extracts the certificate identity and maps it to an existing user
-- Once the certificate is mapped to an existing user, the behavior diverges depending on the authentication flow:
-  - In the Browser Flow, the server prompts the user to confirm identity or to ignore it and instead sign in with username/password
-  - In the case of the Direct Grant Flow, the server signs in the user
+- 客户端通过SSL/TLS通道发送身份验证请求
+- 在SSL/TLS握手期间，服务器和客户端交换其x.509/v3 证书
+- 容器(WildFly)验证证书PKIX路径和证书过期
+- x.509客户端证书身份验证器验证客户端证书，如下所示：
+  - （可选）使用CRL和/或CRL分发点检查证书吊销状态
+  - （可选）使用OCSP（在线证书状态协议）检查证书吊销状态
+  - （可选）验证证书中的密钥用法是否与预期的密钥用法匹配
+  - （可选）验证证书中的扩展密钥用法是否与预期的扩展密钥用法匹配
+- 如果上述任何检查失败，则x.509身份验证将失败
+- 否则，验证者提取证书身份并将其映射到现有用户
+- 证书映射到现有用户后，行为会根据身份验证流程而有所不同：
+  - 在浏览器流程中，服务器会提示用户确认身份或忽略身份，而是使用用户名/密码登录
+  - 在直接授权流程的情况下，服务器登录用户
 
-#### 6.6.1. Features {#Features}
-- Supported Certificate Identity Sources
+#### 6.6.1. 特征 {#Features}
+- 支持的证书标识源
 
-  Match SubjectDN using regular expressionX500 Subject’s e-mail attributeX500 Subject’s e-mail from Subject Alternative Name Extension (RFC822Name General Name)X500 Subject’s other name from Subject Alternative Name Extension. This is typically UPN (User Principal Name)X500 Subject’s Common Name attributeMatch IssuerDN using regular expressionX500 Issuer’s e-mail attributeX500 Issuer’s Common Name attributeCertificate Serial Number
+  使用正则表达式匹配SubjectDNX500主题的电子邮件属性X500来自主题备用名称扩展名的主题电子邮件（RFC822Name通用名称）X500主题备用名称扩展名的主题另一个名称。 这通常是UPN（用户主体名称）X500主题的公共名称attributeMatch IssuerDN使用正则表达式X500颁发者的电子邮件属性X500颁发者的公共名称attributeCertificate序列号
 
 - Regular Expressions
 
-  The certificate identity can be extracted from either Subject DN or Issuer DN using a regular expression as a filter. For example, the regular expression below will match the e-mail attribute:
+  可以使用正则表达式作为过滤器从主题DN或颁发者DN中提取证书身份。 例如，下面的正则表达式将匹配电子邮件属性：
 
-```
+```javascript
 emailAddress=(.*?)(?:,|$)
 ```
 
-The regular expression filtering is applicable only if the `Identity Source` is set to either `Match SubjectDN using regular expression` or `Match IssuerDN using regular expression`.
+正则表达式过滤仅在`Identity Source`设置为`Match SubjectDN using regular expression`或`Match IssuerDN using regular expression`时适用。
 
-- Mapping certificate identity to an existing user
+- 将证书身份映射到现有用户
 
-  The certificate identity mapping can be configured to map the extracted user identity to an existing user’s username or e-mail or to a custom attribute which value matches the certificate identity. For example, setting the `Identity source` to *Subject’s e-mail* and `User mapping method` to *Username or email* will have the X.509 client certificate authenticator use the e-mail attribute in the certificate’s Subject DN as a search criteria to look up an existing user by username or by e-mail.
+  证书身份映射可以配置为将提取的用户身份映射到现有用户的用户名或电子邮件，或映射到与证书身份匹配的自定义属性。 例如，将`Identity source`设置为 *Subject’s e-mail* 和 `User mapping method`设置为 *Username or email* 将使X.509客户端证书验证者使用证书的主题DN中的电子邮件属性作为 搜索条件，通过用户名或电子邮件查找现有用户。
 
-|      | Please notice that if we disable `Login with email` at realm settings, the same rules will be applied to certificate authentication. In other words, users won’t be able to log in using e-mail attribute. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 请注意，如果我们在领域设置中禁用`Login with email`，则相同的规则将应用于证书身份验证。 换句话说，用户将无法使用电子邮件属性登录。
 
-- Other Features: Extended Certificate Validation
+- 其他功能：扩展证书验证
 
-  Revocation status checking using CRLRevocation status checking using CRL/Distribution PointRevocation status checking using OCSP/Responder URICertificate KeyUsage validationCertificate ExtendedKeyUsage validation
+  使用 CRL/Distribution 进行CRLRevocation状态检查的撤销状态检查使用 OCSP/Responder 进行分发PointRevocation状态检查URICertificate KeyUsage validationCertificate ExtendedKeyUsage验证
 
-#### 6.6.2. Enable X.509 Client Certificate User Authentication {#Enable_X_509_Client_Certificate_User_Authentication}
-The following sections describe how to configure WildFly/Undertow and the Keycloak Server to enable X.509 client certificate authentication.
+#### 6.6.2. 启用X.509客户端证书用户身份验证 {#Enable_X_509_Client_Certificate_User_Authentication}
+以下部分介绍如何配置WildFly/Undertow和Keycloak Server以启用X.509客户端证书身份验证。
 
-- Enable mutual SSL in WildFly
+- 在WildFly中启用相互SSL
 
-  See [Enable SSL](https://docs.jboss.org/author/display/WFLY10/Admin+Guide#AdminGuide-EnableSSL) and [SSL](https://docs.jboss.org/author/display/WFLY10/Admin+Guide#AdminGuide) for the instructions how to enable SSL in WildFly.Open KEYCLOAK_HOME/standalone/configuration/standalone.xml and add a new realm:
+  请参阅 [启用SSL](https://docs.jboss.org/author/display/WFLY10/Admin+Guide#AdminGuide-EnableSSL) 和 [SSL](https://docs.jboss.org/author/display/WFLY10/Admin+Guide#AdminGuide) 有关如何在WildFly中启用SSL的说明。打开`KEYCLOAK_HOME/standalone/configuration/standalone.xml`并添加新域：
 
-```
+```xml
 <security-realms>
     <security-realm name="ssl-realm">
         <server-identities>
@@ -1038,49 +1029,49 @@ The following sections describe how to configure WildFly/Undertow and the Keyclo
 
 - `ssl/keystore`
 
-  The `ssl` element contains the `keystore` element that defines how to load the server public key pair from a JKS keystore
+  `ssl`元素包含`keystore`元素，该元素定义如何从JKS密钥库加载服务器公钥对
 
 - `ssl/keystore/path`
 
-  A path to a JKS keystore
+  JKS密钥库的路径
 
 - `ssl/keystore/relative-to`
 
-  Defines a path the keystore path is relative to
+  定义密钥库路径相对于的路径
 
 - `ssl/keystore/keystore-password`
 
-  The password to open the keystore
+  用于打开密钥库的密码
 
-- `ssl/keystore/alias` (optional)
+- `ssl/keystore/alias` (可选)
 
-  The alias of the entry in the keystore. Set it if the keystore contains multiple entries
+  密钥库中条目的别名。 如果密钥库包含多个条目，请设置它
 
-- `ssl/keystore/key-password` (optional)
+- `ssl/keystore/key-password` (可选)
 
-  The private key password, if different from the keystore password.
+  私钥密码，如果与密钥库密码不同。
 
 - `authentication/truststore`
 
-  Defines how to load a trust store to verify the certificate presented by the remote side of the inbound/outgoing connection. Typically, the truststore contains a collection of trusted CA certificates.
+  定义如何加载信任存储以验证入站/出站连接的远程端提供的证书。 通常，信任库包含一组可信CA证书。
 
 - `authentication/truststore/path`
 
-  A path to a JKS keystore that contains the certificates of the trusted CAs (certificate authorities)
+  包含受信任CA证书（证书颁发机构）的JKS密钥库的路径
 
 - `authentication/truststore/relative-to`
 
-  Defines a path the truststore path is relative to
+  定义信任库路径相对于的路径
 
 - `authentication/truststore/keystore-password`
 
-  The password to open the truststore
+  用于打开信任库的密码
 
 - Enable https listener
 
-  See [HTTPS Listener](https://docs.jboss.org/author/display/WFLY10/Admin+Guide#AdminGuide-HTTPSlistener) for the instructions how to enable HTTPS in WildFly.Add the <https-listener> element as shown below:
+  有关如何在WildFly中启用HTTPS的说明，请参阅[HTTPS侦听器](https://docs.jboss.org/author/display/WFLY10/Admin+Guide#AdminGuide-HTTPSlistener)。添加`<https-listener>`元素，如图所示 下面：
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
         ....
     <server name="default-server">
@@ -1094,108 +1085,108 @@ The following sections describe how to configure WildFly/Undertow and the Keyclo
 
 - `https-listener/security-realm`
 
-  The value must match the name of the realm from the previous section
+  该值必须与上一节中的域名相匹配
 
 - `https-listener/verify-client`
 
-  If set to `REQUESTED`, the server will optionally ask for a client certificate. Setting the attribute to `REQUIRED` will have the server to refuse inbound connections if no client certificate has been provided.
+  如果设置为`REQUESTED`，服务器将可选择请求客户端证书。 如果没有提供客户端证书，则将该属性设置为`REQUIRED`将使服务器拒绝入站连接。
 
-#### 6.6.3. Adding X.509 Client Certificate Authentication to a Browser Flow {#Adding_X_509_Client_Certificate_Authentication_to_a_Browser_Flow}
-- Select a realm, click on Authentication link, select the "Browser" flow
-- Make a copy of the built-in "Browser" flow. You may want to give the new flow a distinctive name, i.e. "X.509 Browser"
-- Using the drop down, select the copied flow, and click on "Add execution"
-- Select "X509/Validate User Form" using the drop down and click on "Save"
+#### 6.6.3. 将X.509客户端证书身份验证添加到浏览器流 {#Adding_X_509_Client_Certificate_Authentication_to_a_Browser_Flow}
+- 选择一个领域，单击Authentication链接，选择“Browser”流程
+- 制作内置“Browser”流程的副本。 您可能希望为新流程指定一个独特的名称，即“X.509 Browser”
+- 使用下拉列表，选择复制的流程，然后单击“Add execution”
+- 使用下拉菜单选择“X509/Validate User Form”，然后单击“Save”
 
-![x509 execution](https://www.keycloak.org/docs/latest/server_admin/images/x509-execution.png)
+![x509 execution](assets/x509-execution.png)
 
-- Using the up/down arrows, change the order of the "X509/Validate Username Form" by moving it above the "Browser Forms" execution, and set the requirement to "ALTERNATIVE"
+- 使用向上/向下箭头，通过在“Browser Forms”执行上方移动“X509/Validate Username Form”的顺序来更改它，并将需求设置为“ALTERNATIVE”
 
-![x509 browser flow](https://www.keycloak.org/docs/latest/server_admin/images/x509-browser-flow.png)
+![x509 browser flow](assets/x509-browser-flow.png)
 
-- Select the "Bindings" tab, find the drop down for "Browser Flow". Select the newly created X509 browser flow from the drop down and click on "Save".
+- 选择“Bindings”选项卡，找到“Browser Flow”的下拉列表。 从下拉列表中选择新创建的X509浏览器流，然后单击“Save”。
 
-![x509 browser flow bindings](https://www.keycloak.org/docs/latest/server_admin/images/x509-browser-flow-bindings.png)
+![x509 browser flow bindings](assets/x509-browser-flow-bindings.png)
 
-- Configuring X.509 Client Certificate Authentication
+- 配置X.509客户端证书身份验证
 
-  ![x509 configuration](https://www.keycloak.org/docs/latest/server_admin/images/x509-configuration.png)
+  ![x509 configuration](assets/x509-configuration.png)
 
 - `User Identity Source`
 
-  Defines how to extract the user identity from a client certificate.
+  定义如何从客户端证书中提取用户身份。
 
-- `A regular expression` (optional)
+- `A regular expression` (可选)
 
-  Defines a regular expression to use as a filter to extract the certificate identity. The regular expression must contain a single group.
+  定义正则表达式以用作过滤器以提取证书标识。 正则表达式必须包含单个组。
 
 - `User Mapping Method`
 
-  Defines how to match the certificate identity to an existing user. *Username or e-mail* will search for an existing user by username or e-mail. *Custom Attribute Mapper* will search for an existing user with a custom attribute which value matches the certificate identity. The name of the custom attribute is configurable.
+  定义如何将证书标识与现有用户匹配。 *Username or e-mail*将通过用户名或电子邮件搜索现有用户。 *Custom Attribute Mapper*将搜索具有与证书标识匹配的自定义属性的现有用户。 自定义属性的名称是可配置的。
 
-- `A name of user attribute` (optional)
+- `A name of user attribute` (可选)
 
-  A custom attribute which value will be matched against the certificate identity.
+  一个自定义属性，该值将与证书标识匹配。
 
-- `CRL Checking Enabled` (optional)
+- `CRL Checking Enabled` (可选)
 
-  Defines whether to check the revocation status of the certificate using Certificate Revocation List.
+  定义是否使用证书吊销列表检查证书的吊销状态。
 
-- `Enable CRL Distribution Point to check certificate revocation status` (optional)
+- `Enable CRL Distribution Point to check certificate revocation status` (可选)
 
-  Defines whether to use CDP to check the certificate revocation status. Most PKI authorities include CDP in their certificates.
+  定义是否使用CDP检查证书吊销状态。 大多数PKI机构都在其证书中包含CDP。
 
-- `CRL file path` (optional)
+- `CRL file path` (可选)
 
-  Defines a path to a file that contains a CRL list. The value must be a path to a valid file if `CRL Checking Enabled` option is turned on.
+  定义包含CRL列表的文件的路径。 如果启用了`CRL Checking Enabled`选项，则该值必须是有效文件的路径。
 
-- `OCSP Checking Enabled`(optional)
+- `OCSP Checking Enabled`(可选)
 
-  Defines whether to check the certificate revocation status using Online Certificate Status Protocol.
+  定义是否使用在线证书状态协议检查证书吊销状态。
 
-- `OCSP Responder URI` (optional)
+- `OCSP Responder URI` (可选)
 
-  Allows to override a value of the OCSP responder URI in the certificate.
+  允许覆盖证书中OCSP响应者URI的值。
 
-- `Validate Key Usage` (optional)
+- `Validate Key Usage` (可选)
 
-  Verifies whether the certificate’s KeyUsage extension bits are set. For example, "digitalSignature,KeyEncipherment" will verify if bits 0 and 2 in the KeyUsage extension are asserted. Leave the parameter empty to disable the Key Usage validation. See [RFC5280, Section-4.2.1.3](https://tools.ietf.org/html/rfc5280#section-4.2.1.3). The server will raise an error only when flagged as critical by the issuing CA and there is a key usage extension mismatch.
+  验证是否设置了证书的KeyUsage扩展位。 例如，“digitalSignature,KeyEncipherment”将验证KeyUsage扩展中的位0和2是否被断言。 将参数保留为空以禁用密钥用法验证。 参见[RFC5280, Section-4.2.1.3](https://tools.ietf.org/html/rfc5280#section-4.2.1.3)。 仅当颁发CA标记为关键时，服务器才会引发错误，并且密钥使用扩展名不匹配。
 
-- `Validate Extended Key Usage` (optional)
+- `Validate Extended Key Usage` (可选)
 
-  Verifies one or more purposes as defined in the Extended Key Usage extension. See [RFC5280, Section-4.2.1.12](https://tools.ietf.org/html/rfc5280#section-4.2.1.12). Leave the parameter empty to disable the Extended Key Usage validation. The server will raise an error only when flagged as critical by the issuing CA and there is a key usage extension mismatch.
+  验证扩展密钥用法扩展中定义的一个或多个目的。 参见 [RFC5280, Section-4.2.1.12](https://tools.ietf.org/html/rfc5280#section-4.2.1.12)。 将参数保留为空以禁用扩展密钥用法验证。 仅当颁发CA标记为关键时，服务器才会引发错误，并且密钥使用扩展名不匹配。
 
 - `Bypass identity confirmation`
 
-  If set, X.509 client certificate authentication will not prompt the user to confirm the certificate identity and will automatically sign in the user upon successful authentication.
+  如果设置，X.509客户端证书身份验证将不会提示用户确认证书身份，并将在成功身份验证后自动登录用户。
 
-#### 6.6.4. Adding X.509 Client Certificate Authentication to a Direct Grant Flow {#Adding_X_509_Client_Certificate_Authentication_to_a_Direct_Grant_Flow}
-- Using Keycloak admin console, click on "Authentication" and select the "Direct Grant" flow,
-- Make a copy of the build-in "Direct Grant" flow. You may want to give the new flow a distinctive name, i.e. "X509 Direct Grant",
-- Delete "Username Validation" and "Password" authenticators,
-- Click on "Add execution" and add "X509/Validate Username" and click on "Save" to add the execution step to the parent flow.
+#### 6.6.4. 将X.509客户端证书身份验证添加到直接授权流程 {#Adding_X_509_Client_Certificate_Authentication_to_a_Direct_Grant_Flow}
+- 使用Keycloak管理控制台，单击“Authentication”并选择“Direct Grant”流程，
+- 制作内置“Direct Grant”流程的副本。 您可能想给新流程一个独特的名称，即“X509 Direct Grant”，
+- 删除“Username Validation”和“Password”验证者，
+- 单击“Add execution”并添加“X509/Validate Username”并单击“Save”以将执行步骤添加到父流程。
 
-![x509 directgrant execution](https://www.keycloak.org/docs/latest/server_admin/images/x509-directgrant-execution.png)
+![x509 directgrant execution](assets/x509-directgrant-execution.png)
 
-- Change the `Requirement` to *REQUIRED*.
+- 将`Requirement`更改为*REQUIRED*。
 
-![x509 directgrant flow](https://www.keycloak.org/docs/latest/server_admin/images/x509-directgrant-flow.png)
+![x509 directgrant flow](assets/x509-directgrant-flow.png)
 
-- Set up the x509 authentication configuration by following the steps described earlier in the x.509 Browser Flow section.
-- Select the "Bindings" tab, find the drop down for "Direct Grant Flow". Select the newly created X509 direct grant flow from the drop down and click on "Save".
+- 按照前面x.509浏览器流程部分中描述的步骤设置x509身份验证配置。
+- 选择“Bindings”选项卡，找到“Direct Grant Flow”的下拉列表。 从下拉列表中选择新创建的X509直接授权流程，然后单击“Save”。
 
-![x509 directgrant flow bindings](https://www.keycloak.org/docs/latest/server_admin/images/x509-directgrant-flow-bindings.png)
+![x509 directgrant flow bindings](assets/x509-directgrant-flow-bindings.png)
 
-#### 6.6.5. Client certificate lookup {#Client_certificate_lookup}
-When an HTTP request is sent directly to Keycloak server, the WildFly undertow subsystem will establish an SSL handshake and extract the client certificate. The client certificate will be then saved to the attribute `javax.servlet.request.X509Certificate` of the HTTP request, as specified in the servlet specification. The Keycloak X509 authenticator will be then able to lookup the certificate from this attribute.
+#### 6.6.5. 客户端证书查找 {#Client_certificate_lookup}
+当HTTP请求直接发送到Keycloak服务器时，WildFly undertow 子系统将建立SSL握手并提取客户端证书。 然后，客户端证书将保存到HTTP请求的属性`javax.servlet.request.X509Certificate`中，如servlet规范中所指定。 然后，Keycloak X509身份验证器将能够从此属性中查找证书。
 
-However, when the Keycloak server listens to HTTP requests behind a load balancer or reverse proxy, it may be the proxy server which extracts the client certificate and establishes the mutual SSL connection. A reverse proxy usually puts the authenticated client certificate in the HTTP header of the underlying request and forwards it to the back end Keycloak server. In this case, Keycloak must be able to look up the X.509 certificate chain from the HTTP headers instead of from the attribute of HTTP request, as is done for Undertow.
+但是，当Keycloak服务器侦听负载均衡器或反向代理后面的HTTP请求时，它可能是代理服务器，它提取客户端证书并建立相互SSL连接。 反向代理通常将经过身份验证的客户端证书放入基础请求的HTTP标头中，并将其转发到后端Keycloak服务器。 在这种情况下，Keycloak必须能够从HTTP标头而不是HTTP请求的属性中查找X.509证书链，就像Undertow所做的那样。
 
-If Keycloak is behind a reverse proxy, you usually need to configure alternative provider of the `x509cert-lookup` SPI in KEYCLOAK_HOME/standalone/configuration/standalone.xml. Along with the `default` provider, which looks up the certificate from the HTTP header, we also have two additional built-in providers: `haproxy` and `apache`, which are described next.
+如果Keycloak位于反向代理之后，通常需要在`KEYCLOAK_HOME/standalone/configuration/standalone.xml`中配置`x509cert-lookup` SPI的备用提供程序。 除了从HTTP头查找证书的`default`提供程序外，我们还有两个额外的内置提供程序：`haproxy`和`apache`，下面将对其进行描述。
 
-##### HAProxy certificate lookup provider {#HAProxy_certificate_lookup_provider}
-You can use this provider when your Keycloak server is behind an HAProxy reverse proxy. Configure the server like this:
+##### HAProxy证书查找提供程序 {#HAProxy_certificate_lookup_provider}
+当Keycloak服务器位于HAProxy反向代理后面时，您可以使用此提供程序。 像这样配置服务器：
 
-```
+```xml
 <spi name="x509cert-lookup">
     <default-provider>haproxy</default-provider>
     <provider name="haproxy" enabled="true">
@@ -1208,14 +1199,14 @@ You can use this provider when your Keycloak server is behind an HAProxy reverse
 </spi>
 ```
 
-In this example configuration, the client certificate will be looked up from the HTTP header, `SSL_CLIENT_CERT`, and the other certificates from its chain will be looked up from HTTP headers like `CERT_CHAIN_0` , `CERT_CHAIN_1`, …, `CERT_CHAIN_9` . The attribute `certificateChainLength` is the maximum length of the chain, so the last one tried attribute would be `CERT_CHAIN_9` .
+在此示例配置中，将从HTTP标头`SSL_CLIENT_CERT`中查找客户端证书，并从HTTP标头中查找其链中的其他证书，如`CERT_CHAIN_0`，`CERT_CHAIN_1`，...，`CERT_CHAIN_9`。 属性`certificateChainLength`是链的最大长度，因此最后一个尝试的属性将是`CERT_CHAIN_9`。
 
-Consult the [HAProxy documentation](http://www.haproxy.org/#docs) for the details of how the HTTP Headers for the client certificate and client certificate chain can be configured and their proper names.
+有关如何配置客户端证书和客户端证书链的HTTP标头及其专有名称的详细信息，请参阅[HAProxy文档](http://www.haproxy.org/#docs)。
 
-##### Apache certificate lookup provider {#Apache_certificate_lookup_provider}
-You can use this provider when your Keycloak server is behind an Apache reverse proxy. Configure the server like this:
+##### Apache证书查找提供程序 {#Apache_certificate_lookup_provider}
+当Keycloak服务器位于Apache反向代理后面时，您可以使用此提供程序。 像这样配置服务器：
 
-```
+```xml
 <spi name="x509cert-lookup">
     <default-provider>apache</default-provider>
     <provider name="apache" enabled="true">
@@ -1228,12 +1219,12 @@ You can use this provider when your Keycloak server is behind an Apache reverse 
 </spi>
 ```
 
-The configuration is same as for the `haproxy` provider. Consult the Apache documentation on [mod_ssl](https://httpd.apache.org/docs/current/mod/mod_ssl.html) and [mod_headers](https://httpd.apache.org/docs/current/mod/mod_headers.html)for the details of how the HTTP Headers for the client certificate and client certificate chain can be configured and their proper names.
+配置与`haproxy`提供程序相同。 请参阅[mod_ssl](https://httpd.apache.org/docs/current/mod/mod_ssl.html)和[mod_headers](https://httpd.apache.org/docs/current/mod/mod_headers.html)上的有关如何配置客户端证书和客户端证书链的HTTP标头及其专有名称的详细信息。
 
-##### Nginx certificate lookup provider {#Nginx_certificate_lookup_provider}
-You can use this provider when your Keycloak server is behind an Nginx reverse proxy. Configure the server like this:
+##### Nginx证书查找提供程序 {#Nginx_certificate_lookup_provider}
+当Keycloak服务器位于Nginx反向代理后面时，您可以使用此提供程序。 像这样配置服务器：
 
-```
+```xml
 <spi name="x509cert-lookup">
     <default-provider>nginx</default-provider>
     <provider name="nginx" enabled="true">
@@ -1246,13 +1237,11 @@ You can use this provider when your Keycloak server is behind an Nginx reverse p
 </spi>
 ```
 
-|      | NGINX [SSL/TLS module](http://nginx.org/en/docs/http/ngx_http_ssl_module.html#variables) does not expose the client certificate chain, so Keycloak NGINX certificate lookup provider is rebuilding it using the [Keycloak truststore](https://www.keycloak.org/docs/6.0/server_installation/#_truststore). Please populate Keycloak truststore using keytool CLI with all root and intermediate CA’s needed for rebuilding client certificate chain. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NGINX [SSL/TLS module](http://nginx.org/en/docs/http/ngx_http_ssl_module.html#variables)不公开客户端证书链，因此Keycloak NGINX证书查找提供程序正在使用[Keycloak truststore](https://www.keycloak.org/docs/6.0/server_installation/#_truststore)重建它。 请使用keytool CLI填充Keycloak信任库，其中包含重建客户端证书链所需的所有根CA和中间CA.
 
-Consult the NGINX documentation for the details of how the HTTP Headers for the client certificate can be configured. Example of NGINX configuration file :
+有关如何配置客户端证书的HTTP标头的详细信息，请参阅NGINX文档。 NGINX配置文件示例：
 
-```
+```json
  ...
  server {
     ...
@@ -1269,21 +1258,19 @@ Consult the NGINX documentation for the details of how the HTTP Headers for the 
 }
 ```
 
-|      | all certificates in trusted-ca-list-for-client-auth.pem must be added to [Keycloak truststore](https://www.keycloak.org/docs/6.0/server_installation/#_truststore). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 必须将trusted-ca-list-for-client-auth.pem中的所有证书添加到 [Keycloak truststore](https://www.keycloak.org/docs/6.0/server_installation/#_truststore)。
 
-##### Other reverse proxy implementations {#Other_reverse_proxy_implementations}
-We do not have built-in support for other reverse proxy implementations. However, it is possible that other reverse proxies can be made to behave in a similar way to `apache` or `haproxy` and that some of those providers can be used. If none of those works, you may need to create your own implementation of the `org.keycloak.services.x509.X509ClientCertificateLookupFactory` and `org.keycloak.services.x509.X509ClientCertificateLookup` provider. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for the details on how to add your own provider.
+##### 其他反向代理实现 {#Other_reverse_proxy_implementations}
+我们没有内置支持其他反向代理实现。 但是，可以使其他反向代理以与`apache`或`haproxy`类似的方式运行，并且可以使用其中一些提供程序。 如果这些都不起作用，您可能需要创建自己的`org.keycloak.services.x509.X509ClientCertificateLookupFactory`和`org.keycloak.services.x509.X509ClientCertificateLookup`提供程序的实现。 有关如何添加自己的提供程序的详细信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
 #### 6.6.6. Troubleshooting {#Troubleshooting}
-- Dumping HTTP headers
+- 转储HTTP标头
 
-  If you want to view what the reverse proxy is sending to Keycloak, simply activate [RequestDumpingHandler](https://mirocupak.com/logging-requests-with-undertow/) and consult `server.log` file.
+  如果要查看反向代理发送给Keycloak的内容，只需激活[RequestDumpingHandler](https://mirocupak.com/logging-requests-with-undertow/)并查阅`server.log`文件。
 
-- Enable TRACE logging under the logging subsystem
+- 在日志记录子系统下启用TRACE日志记录
 
-```
+```xml
 ...
     <profile>
         <subsystem xmlns="urn:jboss:domain:logging:3.0">
@@ -1297,11 +1284,11 @@ We do not have built-in support for other reverse proxy implementations. However
 WARNING: Don't use RequestDumpingHandler or TRACE logging in production.
 ```
 
-- Direct Grant authentication with X.509
+- 使用X.509直接授予身份验证
 
-  The following template can be used to request a token using the Resource Owner Password Credentials Grant:
+  以下模板可用于使用资源所有者密码凭据授权请求令牌：
 
-```
+```bash
 $ curl https://[host][:port]/auth/realms/master/protocol/openid-connect/token \
        --insecure \
        --data "grant_type=password&scope=openid profile&username=&password=&client_id=CLIENT_ID&client_secret=CLIENT_SECRET" \
@@ -1311,43 +1298,41 @@ $ curl https://[host][:port]/auth/realms/master/protocol/openid-connect/token \
 
 - `[host][:port]`
 
-  The host and the port number of a remote Keycloak server that has been configured to allow users authenticate with x.509 client certificates using the Direct Grant Flow.
+  已配置为允许用户使用Direct Grant Flow对x.509客户端证书进行身份验证的远程Keycloak服务器的主机和端口号。
 
 - `CLIENT_ID`
 
-  A client id.
+  客户端ID。
 
 - `CLIENT_SECRET`
 
-  For confidential clients, a client secret; otherwise, leave it empty.
+  对于机密客户，客户机密; 否则，留空。
 
 - `client_cert.crt`
 
-  A public key certificate that will be used to verify the identity of the client in mutual SSL authentication. The certificate should be in PEM format.
+  公钥证书，用于在相互SSL身份验证中验证客户端的身份。 证书应采用PEM格式。
 
 - `client_cert.key`
 
-  A private key in the public key pair. Also expected in PEM format.
+  公钥对中的私钥。 也期望以PEM格式。
 
-## 7. SSO Protocols {#SSO_Protocols}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/sso-protocols.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/sso-protocols.adoc)
+## 7. SSO协议 {#SSO_Protocols}
 
-The chapter gives a brief overview of the authentication protocols and how the Keycloak authentication server and the applications it secures interact with these protocols.
+本章简要概述了身份验证协议以及Keycloak身份验证服务器及其保护的应用程序如何与这些协议进行交互。
 
-### 7.1. OpenID Connect {#OpenID_Connect}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/sso-protocols/oidc.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/sso-protocols/oidc.adoc)
+### 7.1. OpenID 连接 {#OpenID_Connect}
 
-[OpenID Connect](https://openid.net/connect/) (OIDC) is an authentication protocol that is an extension of [OAuth 2.0](https://tools.ietf.org/html/rfc6749). While OAuth 2.0 is only a framework for building authorization protocols and is mainly incomplete, OIDC is a full-fledged authentication and authorization protocol. OIDC also makes heavy use of the [Json Web Token](https://jwt.io/) (JWT) set of standards. These standards define an identity token JSON format and ways to digitally sign and encrypt that data in a compact and web-friendly way.
+[OpenID Connect](https://openid.net/connect/) (OIDC)是一种身份验证协议，是 [OAuth 2.0](https://tools.ietf.org/html/rfc6749)的扩展。 虽然OAuth 2.0只是构建授权协议的框架，但主要是不完整的，OIDC是一种成熟的身份验证和授权协议。 OIDC还大量使用 [Json Web Token](https://jwt.io/) (JWT) 标准集。 这些标准定义了身份令牌JSON格式以及以紧凑和Web友好的方式对数据进行数字签名和加密的方法。
 
-There are really two types of use cases when using OIDC. The first is an application that asks the Keycloak server to authenticate a user for them. After a successful login, the application will receive an *identity token* and an *access token*. The *identity token* contains information about the user such as username, email, and other profile information. The *access token* is digitally signed by the realm and contains access information (like user role mappings) that the application can use to determine what resources the user is allowed to access on the application.
+使用OIDC时，实际上有两种用例。 第一个是要求Keycloak服务器为用户验证用户的应用程序。 成功登录后，应用程序将收到 *identity token* 和 *access token*。 *identity token*包含有关用户的信息，例如用户名，电子邮件和其他个人资料信息。 *access token*由领域进行数字签名，并包含访问信息（如用户角色映射），应用程序可以使用该信息来确定允许用户在应用程序上访问哪些资源。
 
-The second type of use cases is that of a client that wants to gain access to remote services. In this case, the client asks Keycloak to obtain an *access token* it can use to invoke on other remote services on behalf of the user. Keycloak authenticates the user then asks the user for consent to grant access to the client requesting it. The client then receives the *access token*. This *access token* is digitally signed by the realm. The client can make REST invocations on remote services using this *access token*. The REST service extracts the *access token*, verifies the signature of the token, then decides based on access information within the token whether or not to process the request.
+第二种用例是希望获得远程服务访问权限的客户端。 在这种情况下，客户端要求Keycloak获取*access token*，它可以代表用户在其他远程服务上调用。 Keycloak对用户进行身份验证，然后要求用户同意授予访问请求它的客户端的权限。 然后客户端接收*access token*。 此*access token*由领域进行数字签名。 客户端可以使用此*access token*在远程服务上进行REST调用。 REST服务提取*access token*，验证令牌的签名，然后根据令牌内的访问信息决定是否处理请求。
 
 #### 7.1.1. OIDC Auth Flows {#OIDC_Auth_Flows}
-OIDC has different ways for a client or application to authenticate a user and receive an *identity* and *access* token. Which path you use depends greatly on the type of application or client requesting access. All of these flows are described in the OIDC and OAuth 2.0 specifications so only a brief overview will be provided here.
+OIDC有不同的方式让客户端或应用程序对用户进行身份验证并接收*identity*和*access*令牌。 您使用的路径在很大程度上取决于请求访问的应用程序或客户端的类型。 所有这些流程都在OIDC和OAuth 2.0规范中进行了描述，因此这里仅提供简要概述。
 
-##### Authorization Code Flow {#Authorization_Code_Flow}
-This is a browser-based protocol and it is what we recommend you use to authenticate and authorize browser-based applications. It makes heavy use of browser redirects to obtain an *identity* and *access* token. Here’s a brief summary:
+##### 授权代码流程 {#Authorization_Code_Flow}
+这是一个基于浏览器的协议，我们建议您使用它来验证和授权基于浏览器的应用程序。 它大量使用浏览器重定向来获取*identity*和*access*令牌。 这是一个简短的总结：
 
 1. Browser visits application. The application notices the user is not logged in, so it redirects the browser to Keycloak to be authenticated. The application passes along a callback URL (a redirect URL) as a query parameter in this browser redirect that Keycloak will use when it finishes authentication.
 2. Keycloak authenticates the user and creates a one-time, very short lived, temporary code. Keycloak redirects back to the application using the callback URL provided earlier and additionally adds the temporary code as a query parameter in the callback URL.
@@ -2695,7 +2680,7 @@ The following diagram demonstrates the steps involved when using Keycloak to bro
 
 Identity Broker Flow
 
-![identity broker flow](https://www.keycloak.org/docs/latest/server_admin/images/identity_broker_flow.png)
+![identity broker flow](assets/identity_broker_flow.png)
 
 1. User is not authenticated and requests a protected resource in a client application.
 2. The client applications redirects the user to Keycloak to authenticate.
@@ -2801,13 +2786,13 @@ To enable login with Bitbucket you must first register an application project in
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-![bitbucket developer applications](https://www.keycloak.org/docs/latest/server_admin/images/bitbucket-developer-applications.png)
+![bitbucket developer applications](assets/bitbucket-developer-applications.png)
 
 Click the `Add consumer` button.
 
 Register App
 
-![bitbucket register app](https://www.keycloak.org/docs/latest/server_admin/images/bitbucket-register-app.png)
+![bitbucket register app](assets/bitbucket-register-app.png)
 
 Copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and enter it into the Callback URL field on the Bitbucket Add OAuth Consumer page.
 
@@ -2815,7 +2800,7 @@ On the same page, mark the `Email` and `Read` boxes under `Account` to allow you
 
 Bitbucket App Page
 
-![bitbucket app page](https://www.keycloak.org/docs/latest/server_admin/images/bitbucket-app-page.png)
+![bitbucket app page](assets/bitbucket-app-page.png)
 
 When you are done registering, click `Save`. This will open the application management page in Bitbucket. Find the client ID and secret from this page so you can enter them into the Keycloak `Add identity provider` page. Click `Save`.
 
@@ -2840,25 +2825,25 @@ Once you’ve logged into the console there is a pull down menu in the top right
 
 Add a New App
 
-![facebook add new app](https://www.keycloak.org/docs/latest/server_admin/images/facebook-add-new-app.png)
+![facebook add new app](assets/facebook-add-new-app.png)
 
 Select the `Website` icon. Click the `Skip and Create App ID` button.
 
 Create a New App ID
 
-![facebook create app id](https://www.keycloak.org/docs/latest/server_admin/images/facebook-create-app-id.png)
+![facebook create app id](assets/facebook-create-app-id.png)
 
 The email address and app category are required fields. Once you’re done with that, you will be brought to the dashboard for the application. Click the `Settings` left menu item.
 
 Create a New App ID
 
-![facebook app settings](https://www.keycloak.org/docs/latest/server_admin/images/facebook-app-settings.png)
+![facebook app settings](assets/facebook-app-settings.png)
 
 Click on the `+ Add Platform` button at the end of this page and select the `Website` icon. Copy and paste the `Redirect URI` from the Keycloak `Add identity provider` page into the `Site URL` of the Facebook `Website` settings block.
 
 Specify Website
 
-![facebook app settings website](https://www.keycloak.org/docs/latest/server_admin/images/facebook-app-settings-website.png)
+![facebook app settings website](assets/facebook-app-settings-website.png)
 
 After this it is necessary to make the Facebook app public. Click `App Review` left menu item and switch button to "Yes".
 
@@ -2885,19 +2870,19 @@ To enable login with GitHub you first have to register an application project in
 
 Add a New App
 
-![github developer applications](https://www.keycloak.org/docs/latest/server_admin/images/github-developer-applications.png)
+![github developer applications](assets/github-developer-applications.png)
 
 Click the `Register a new application` button.
 
 Register App
 
-![github register app](https://www.keycloak.org/docs/latest/server_admin/images/github-register-app.png)
+![github register app](assets/github-register-app.png)
 
 You’ll have to copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and enter it into the`Authorization callback URL` field on the GitHub `Register a new OAuth application` page. Once you’ve completed this page you will be brought to the application’s management page.
 
 GitHub App Page
 
-![github app page](https://www.keycloak.org/docs/latest/server_admin/images/github-app-page.png)
+![github app page](assets/github-app-page.png)
 
 You will need to obtain the client ID and secret from this page so you can enter them into the Keycloak `Add identity provider` page. Go back to Keycloak and specify those items.
 
@@ -2926,13 +2911,13 @@ To enable login with GitLab you first have to register an application in [GitLab
 
 Add a New App
 
-![gitlab developer applications](https://www.keycloak.org/docs/latest/server_admin/images/gitlab-developer-applications.png)
+![gitlab developer applications](assets/gitlab-developer-applications.png)
 
 Copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and enter it into the Redirect URI field on the GitLab Add new application page.
 
 GitLab App Page
 
-![gitlab app page](https://www.keycloak.org/docs/latest/server_admin/images/gitlab-app-page.png)
+![gitlab app page](assets/gitlab-app-page.png)
 
 When you are done registering, click `Save application`. This will open the application management page in GitLab. Find the client ID and secret from this page so you can enter them into the Keycloak `Add identity provider` page.
 
@@ -2961,13 +2946,13 @@ Log in to the [Google Developer Console](https://console.cloud.google.com/projec
 
 Google Developer Console
 
-![google developer console](https://www.keycloak.org/docs/latest/server_admin/images/google-developer-console.png)
+![google developer console](assets/google-developer-console.png)
 
 Click the `Create Project` button. Use any value for `Project name` and `Project ID` you want, then click the `Create`button. Wait for the project to be created (this may take a while). Once created you will be brought to the project’s dashboard.
 
 Dashboard
 
-![google dashboard](https://www.keycloak.org/docs/latest/server_admin/images/google-dashboard.png)
+![google dashboard](assets/google-dashboard.png)
 
 Then navigate to the `APIs & Services` section in the Google Developer Console. On that screen, navigate to `Credentials`administration.
 
@@ -2977,25 +2962,25 @@ For the very basic setup, filling in the Application name is sufficient. You can
 
 Fill in OAuth consent screen details
 
-![google oauth consent screen](https://www.keycloak.org/docs/latest/server_admin/images/google-oauth-consent-screen.png)
+![google oauth consent screen](assets/google-oauth-consent-screen.png)
 
 The next step is to create OAuth client ID and client secret. Back in `Credentials` administration, navigate to `Credentials`tab and select `OAuth client ID` under the `Create credentials` button.
 
 Create credentials
 
-![google create credentials](https://www.keycloak.org/docs/latest/server_admin/images/google-create-credentials.png)
+![google create credentials](assets/google-create-credentials.png)
 
 You will then be brought to the `Create OAuth client ID` page. Select `Web application` as the application type. Specify the name you want for your client. You’ll also need to copy and paste the `Redirect URI` from the Keycloak `Add Identity Provider` page into the `Authorized redirect URIs` field. After you do this, click the `Create` button.
 
 Create OAuth client ID
 
-![google create oauth id](https://www.keycloak.org/docs/latest/server_admin/images/google-create-oauth-id.png)
+![google create oauth id](assets/google-create-oauth-id.png)
 
 After you click `Create` you will be brought to the `Credentials` page. Click on your new OAuth 2.0 Client ID to view the settings of your new Google Client.
 
 Google Client Credentials
 
-![google client credentials](https://www.keycloak.org/docs/latest/server_admin/images/google-client-credentials.png)
+![google client credentials](assets/google-client-credentials.png)
 
 You will need to obtain the client ID and secret from this page so you can enter them into the Keycloak `Add identity provider` page. Go back to Keycloak and specify those items.
 
@@ -3022,19 +3007,19 @@ To enable login with LinkedIn you first have to create an application in [Linked
 
 Developer Network
 
-![linked in developer network](https://www.keycloak.org/docs/latest/server_admin/images/linked-in-developer-network.png)
+![linked in developer network](assets/linked-in-developer-network.png)
 
 Click on the `Create Application` button. This will bring you to the `Create a New Application` Page.
 
 Create App
 
-![linked in create app](https://www.keycloak.org/docs/latest/server_admin/images/linked-in-create-app.png)
+![linked in create app](assets/linked-in-create-app.png)
 
 Fill in the form with the appropriate values, then click the `Submit` button. This will bring you to the new application’s settings page.
 
 App Settings
 
-![linked in app settings](https://www.keycloak.org/docs/latest/server_admin/images/linked-in-app-settings.png)
+![linked in app settings](assets/linked-in-app-settings.png)
 
 Select `r_basicprofile` and `r_emailaddress` in the `Default Application Permissions` section. You’ll have to copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and enter it into the `OAuth 2.0` `Authorized Redirect URLs` field on the LinkedIn app settings page. Don’t forget to click the `Update` button after you do this!
 
@@ -3059,13 +3044,13 @@ To enable login with Microsoft account you first have to register an OAuth appli
 
 Register Application
 
-![microsoft app register](https://www.keycloak.org/docs/latest/server_admin/images/microsoft-app-register.png)
+![microsoft app register](assets/microsoft-app-register.png)
 
 Enter in the application name and click `Create application`. This will bring you to the application settings page of your new application.
 
 Settings
 
-![microsoft app settings](https://www.keycloak.org/docs/latest/server_admin/images/microsoft-app-settings.png)
+![microsoft app settings](assets/microsoft-app-settings.png)
 
 You’ll have to copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and add it to the `Redirect URIs`field on the Microsoft application page. Be sure to click the `Add Url` button and `Save` your changes.
 
@@ -3086,7 +3071,7 @@ There are a just a few steps you have to complete to be able to enable login wit
 
 Add Identity Provider
 
-![openshift add identity provider](https://www.keycloak.org/docs/latest/server_admin/images/openshift-add-identity-provider.png)
+![openshift add identity provider](assets/openshift-add-identity-provider.png)
 
 Registering OAuth client
 
@@ -3130,13 +3115,13 @@ To enable login with PayPal you first have to register an application project in
 
 Add a New App
 
-![paypal developer applications](https://www.keycloak.org/docs/latest/server_admin/images/paypal-developer-applications.png)
+![paypal developer applications](assets/paypal-developer-applications.png)
 
 Click the `Create App` button.
 
 Register App
 
-![paypal register app](https://www.keycloak.org/docs/latest/server_admin/images/paypal-register-app.png)
+![paypal register app](assets/paypal-register-app.png)
 
 You will now be brought to the app settings page.
 
@@ -3168,13 +3153,13 @@ To enable login with Stack Overflow you first have to register an OAuth applicat
 
 Register Application
 
-![stack overflow app register](https://www.keycloak.org/docs/latest/server_admin/images/stack-overflow-app-register.png)
+![stack overflow app register](assets/stack-overflow-app-register.png)
 
 Enter in the application name and the OAuth Domain Name of your application and click `Register your Application`. Type in anything you want for the other items.
 
 Settings
 
-![stack overflow app settings](https://www.keycloak.org/docs/latest/server_admin/images/stack-overflow-app-settings.png)
+![stack overflow app settings](assets/stack-overflow-app-settings.png)
 
 Finally, you will need to obtain the client ID, secret, and key from this page so you can enter them back on the Keycloak `Add identity provider` page. Go back to Keycloak and specify those items.
 
@@ -3193,13 +3178,13 @@ To enable login with Twtter you first have to create an application in the [Twit
 
 Register Application
 
-![twitter app register](https://www.keycloak.org/docs/latest/server_admin/images/twitter-app-register.png)
+![twitter app register](assets/twitter-app-register.png)
 
 Click on the `Create New App` button. This will bring you to the `Create an Application` page.
 
 Register Application
 
-![twitter app create](https://www.keycloak.org/docs/latest/server_admin/images/twitter-app-create.png)
+![twitter app create](assets/twitter-app-create.png)
 
 Enter in a Name and Description. The Website can be anything, but cannot have a `localhost` address. For the `Callback URL` you must copy the `Redirect URI` from the Keycloak `Add Identity Provider` page.
 
@@ -3211,13 +3196,13 @@ After clicking save you will be brought to the `Details` page.
 
 App Details
 
-![twitter details](https://www.keycloak.org/docs/latest/server_admin/images/twitter-details.png)
+![twitter details](assets/twitter-details.png)
 
 Next go to the `Keys and Access Tokens` tab.
 
 Keys and Access Tokens
 
-![twitter keys](https://www.keycloak.org/docs/latest/server_admin/images/twitter-keys.png)
+![twitter keys](assets/twitter-keys.png)
 
 Finally, you will need to obtain the API Key and secret from this page and copy them back into the `Client ID` and `Client Secret` fields on the Keycloak `Add identity provider` page.
 
