@@ -1334,268 +1334,258 @@ OIDC有不同的方式让客户端或应用程序对用户进行身份验证并�
 ##### 授权代码流程 {#Authorization_Code_Flow}
 这是一个基于浏览器的协议，我们建议您使用它来验证和授权基于浏览器的应用程序。 它大量使用浏览器重定向来获取*identity*和*access*令牌。 这是一个简短的总结：
 
-1. Browser visits application. The application notices the user is not logged in, so it redirects the browser to Keycloak to be authenticated. The application passes along a callback URL (a redirect URL) as a query parameter in this browser redirect that Keycloak will use when it finishes authentication.
-2. Keycloak authenticates the user and creates a one-time, very short lived, temporary code. Keycloak redirects back to the application using the callback URL provided earlier and additionally adds the temporary code as a query parameter in the callback URL.
-3. The application extracts the temporary code and makes a background out of band REST invocation to Keycloak to exchange the code for an *identity*, *access* and *refresh* token. Once this temporary code has been used once to obtain the tokens, it can never be used again. This prevents potential replay attacks.
+1. 浏览器访问应用, 应用程序注意到用户未登录，因此它将浏览器重定向到Keycloak进行身份验证。 应用程序传递回调URL（重定向URL）作为此浏览器重定向中的查询参数，Keycloak将在完成身份验证时使用该重定向。
+2. Keycloak对用户进行身份验证，并创建一次性的，非常短暂的临时代码。 Keycloak使用前面提供的回调URL重定向回应用程序，另外还将临时代码作为查询参数添加到回调URL中。
+3. 应用程序提取临时代码并将带外REST调用的后台调用到Keycloak，以交换*identity*，*access*和*refresh* token的代码。 一旦使用此临时代码一次获取令牌，就永远不能再使用它。 这可以防止潜在的重播攻击。
 
-It is important to note that *access* tokens are usually short lived and often expired after only minutes. The additional *refresh*token that was transmitted by the login protocol allows the application to obtain a new access token after it expires. This refresh protocol is important in the situation of a compromised system. If access tokens are short lived, the whole system is only vulnerable to a stolen token for the lifetime of the access token. Future refresh token requests will fail if an admin has revoked access. This makes things more secure and more scalable.
+重要的是要注意*access*令牌通常是短暂的，并且经常在几分钟后过期。 登录协议传输的附加*refresh*令牌允许应用程序在到期后获取新的访问令牌。 此刷新协议在受损系统的情况下非常重要。 如果访问令牌是短暂的，则整个系统仅在访问令牌的生命周期中容易受到被盗令牌的攻击。 如果管理员已撤销访问权限，则未来的刷新令牌请求将失败。 这使事情更安全，更具可扩展性。
 
-Another important aspect of this flow is the concept of a *public* vs. a *confidential* client. *Confidential* clients are required to provide a client secret when they exchange the temporary codes for tokens. *Public* clients are not required to provide this client secret. *Public* clients are perfectly fine so long as HTTPS is strictly enforced and you are very strict about what redirect URIs are registered for the client. HTML5/JavaScript clients always have to be *public* clients because there is no way to transmit the client secret to them in a secure manner. Again, this is ok so long as you use HTTPS and strictly enforce redirect URI registration. This guide goes more detail into this in the [Managing Clients](https://www.keycloak.org/docs/latest/server_admin/index.html#_clients) chapter.
+此流程的另一个重要方面是*public* 与 *confidential*客户端的概念。 *Confidential*客户在交换令牌的临时代码时需要提供客户机密。 *Public*客户不需要提供此客户机密钥。只要严格执行HTTPS并且您对为客户端注册的重定向URI非常严格，*Public*客户端就完全没问题。 HTML5/JavaScript客户端必须始终是*public*客户端，因为无法以安全的方式将客户端密钥传输给它们。 再次，只要您使用HTTPS并严格执行重定向URI注册，这就没问题。 本指南在[管理客户端](https://www.keycloak.org/docs/latest/server_admin/index.html#_clients)章节中详细介绍了这一点。
 
-Keycloak also supports the optional [Proof Key for Code Exchange](https://tools.ietf.org/html/rfc7636) specification.
+Keycloak还支持可选的[代码交换证明密钥](https://tools.ietf.org/html/rfc7636)规范。
 
-##### Implicit Flow {#Implicit_Flow}
-This is a browser-based protocol that is similar to Authorization Code Flow except there are fewer requests and no refresh tokens involved. We do not recommend this flow as there remains the possibility of *access* tokens being leaked in the browser history as tokens are transmitted via redirect URIs (see below). Also, since this flow doesn’t provide the client with a refresh token, access tokens would either have to be long-lived or users would have to re-authenticate when they expired. This flow is supported because it is in the OIDC and OAuth 2.0 specification. Here’s a brief summary of the protocol:
+##### 隐式流 {#Implicit_Flow}
+这是一种基于浏览器的协议，类似于授权代码流，除了涉及的请求较少且没有刷新令牌。 我们不建议使用此流程，因为由于重定向URI（见下文）传递令牌，因此在浏览器历史记录中可能会泄漏*access*令牌。 此外，由于此流程不向客户端提供刷新令牌，因此访问令牌必须是长期存在的，或者用户在过期时必须重新进行身份验证。 支持此流程，因为它符合OIDC和OAuth 2.0规范。 以下是协议的简短摘要：
 
-1. Browser visits application. The application notices the user is not logged in, so it redirects the browser to Keycloak to be authenticated. The application passes along a callback URL (a redirect URL) as a query parameter in this browser redirect that Keycloak will use when it finishes authentication.
-2. Keycloak authenticates the user and creates an *identity* and *access* token. Keycloak redirects back to the application using the callback URL provided earlier and additionally adding the *identity* and *access* tokens as query parameters in the callback URL.
-3. The application extracts the *identity* and *access* tokens from the callback URL.
+1. 浏览器访问应用 应用程序注意到用户未登录，因此它将浏览器重定向到Keycloak进行身份验证。 应用程序传递回调URL（重定向URL）作为此浏览器重定向中的查询参数，Keycloak将在完成身份验证时使用该重定向。
+2. Keycloak对用户进行身份验证并创建*identity*和*access*令牌。 Keycloak使用前面提供的回调URL重定向回应用程序，并在回调URL中另外添加*identity*和*access* tokens作为查询参数。
+3. 应用程序从回调URL中提取*identity*和*access*标记。
 
-##### Resource Owner Password Credentials Grant (Direct Access Grants) {#Resource_Owner_Password_Credentials_Grant__Direct_Access_Grants_}
-This is referred to in the Admin Console as *Direct Access Grants*. This is used by REST clients that want to obtain a token on behalf of a user. It is one HTTP POST request that contains the credentials of the user as well as the id of the client and the client’s secret (if it is a confidential client). The user’s credentials are sent within form parameters. The HTTP response contains *identity*, *access*, and *refresh* tokens.
+##### 资源所有者密码凭据授予 (直接访问授予) {#Resource_Owner_Password_Credentials_Grant__Direct_Access_Grants_}
+这在管理控制台中称为*Direct Access Grants*。 这是由希望代表用户获取令牌的REST客户端使用的。 它是一个HTTP POST请求，包含用户的凭据以及客户端的ID和客户端的秘密（如果它是机密客户端）。 用户的凭据在表单参数内发送。 HTTP响应包含*identity*，*access*和*refresh* tokens。
 
-##### Client Credentials Grant {#Client_Credentials_Grant}
-This is also used by REST clients, but instead of obtaining a token that works on behalf of an external user, a token is created based on the metadata and permissions of a service account that is associated with the client. More info together with example is in [Service Accounts](https://www.keycloak.org/docs/latest/server_admin/index.html#_service_accounts) chapter.
+##### 客户凭证授权 {#Client_Credentials_Grant}
+REST客户端也使用它，但不是获取代表外部用户工作的令牌，而是根据与客户端关联的服务帐户的元数据和权限创建令牌。 更多信息和示例在[服务帐户](https://www.keycloak.org/docs/latest/server_admin/index.html#_service_accounts)章节中。
 
-#### 7.1.2. Keycloak Server OIDC URI Endpoints {#Keycloak_Server_OIDC_URI_Endpoints}
-Here’s a list of OIDC endpoints that the Keycloak publishes. These URLs are useful if you are using a non-Keycloak client adapter to talk OIDC with the auth server. These are all relative URLs and the root of the URL being the HTTP(S) protocol, hostname, and usually path prefixed with */auth*: i.e. https://localhost:8080/auth
+#### 7.1.2. Keycloak Server OIDC URI端点 {#Keycloak_Server_OIDC_URI_Endpoints}
+这是Keycloak发布的OIDC端点列表。 如果您使用非Keycloak客户端适配器与OIDC与auth服务器通信，这些URL非常有用。 这些都是相对URL，URL的根是HTTP(S)协议，主机名，通常以*/auth*为前缀的路径：即`https://localhost:8080/auth`
 
-- /realms/{realm-name}/protocol/openid-connect/token
+- `/realms/{realm-name}/protocol/openid-connect/token`
 
-  This is the URL endpoint for obtaining a temporary code in the Authorization Code Flow or for obtaining tokens via the Implicit Flow, Direct Grants, or Client Grants.
+  这是用于在授权代码流中获取临时代码或通过隐式流，直接授权或客户端授权获取令牌的URL端点。
 
-- /realms/{realm-name}/protocol/openid-connect/auth
+- `/realms/{realm-name}/protocol/openid-connect/auth`
 
-  This is the URL endpoint for the Authorization Code Flow to turn a temporary code into a token.
+  这是授权代码流将临时代码转换为令牌的URL端点。
 
-- /realms/{realm-name}/protocol/openid-connect/logout
+- `/realms/{realm-name}/protocol/openid-connect/logout`
 
-  This is the URL endpoint for performing logouts.
+  这是执行注销的URL端点。
 
-- /realms/{realm-name}/protocol/openid-connect/userinfo
+- `/realms/{realm-name}/protocol/openid-connect/userinfo`
 
-  This is the URL endpoint for the User Info service described in the OIDC specification.
+  这是OIDC规范中描述的用户信息服务的URL端点。
 
-In all of these replace *{realm-name}* with the name of the realm.
+在所有这些中，将*{realm-name}*替换为领域的名称。
 
 ### 7.2. SAML {#SAML}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/sso-protocols/saml.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/sso-protocols/saml.adoc)
 
-[SAML 2.0](http://saml.xml.org/saml-specifications) is a similar specification to OIDC but a lot older and more mature. It has its roots in SOAP and the plethora of WS-* specifications so it tends to be a bit more verbose than OIDC. SAML 2.0 is primarily an authentication protocol that works by exchanging XML documents between the authentication server and the application. XML signatures and encryption is used to verify requests and responses.
+[SAML 2.0](http://saml.xml.org/saml-specifications) 是与OIDC类似的规范，但是更老，更成熟。 它的根源在于SOAP和过多的WS-*规范，所以它往往比OIDC更冗长。 SAML 2.0主要是一种身份验证协议，通过在身份验证服务器和应用程序之间交换XML文档来工作。 XML签名和加密用于验证请求和响应。
 
-There are really two types of use cases when using SAML. The first is an application that asks the Keycloak server to authenticate a user for them. After a successful login, the application will receive an XML document that contains something called a SAML assertion that specify various attributes about the user. This XML document is digitally signed by the realm and contains access information (like user role mappings) that the application can use to determine what resources the user is allowed to access on the application.
+使用SAML时，实际上有两种用例。 第一个是要求Keycloak服务器为用户验证用户的应用程序。 成功登录后，应用程序将收到一个XML文档，其中包含称为SAML断言的内容，该断言指定了有关用户的各种属性。 此XML文档由领域进行数字签名，并包含访问信息（如用户角色映射），应用程序可以使用该信息来确定允许用户在应用程序上访问哪些资源。
 
-The second type of use cases is that of a client that wants to gain access to remote services. In this case, the client asks Keycloak to obtain an SAML assertion it can use to invoke on other remote services on behalf of the user.
+第二种用例是希望获得远程服务访问权限的客户端。 在这种情况下，客户端要求Keycloak获取一个SAML断言，它可以代表用户在其他远程服务上调用它。
 
-#### 7.2.1. SAML Bindings {#SAML_Bindings}
-SAML defines a few different ways to exchange XML documents when executing the authentication protocol. The *Redirect*and *Post* bindings cover browser based applications. The *ECP* binding covers REST invocations. There are other binding types but Keycloak only supports those three.
+#### 7.2.1.SAML绑定 {#SAML_Bindings}
+SAML定义了在执行身份验证协议时交换XML文档的几种不同方法。 *Redirect*和*Post*绑定涵盖基于浏览器的应用程序。 *ECP*绑定涵盖REST调用。 还有其他绑定类型，但Keycloak只支持这三种。
 
-##### Redirect Binding {#Redirect_Binding}
-The *Redirect* Binding uses a series of browser redirect URIs to exchange information. This is a rough overview of how it works.
+##### 重定向绑定 {#Redirect_Binding}
+*Redirect* 绑定 使用一系列浏览器重定向URI来交换信息。 这是它如何工作的粗略概述。
 
-1. The user visits the application and the application finds the user is not authenticated. It generates an XML authentication request document and encodes it as a query param in a URI that is used to redirect to the Keycloak server. Depending on your settings, the application may also digitally sign this XML document and also stuff this signature as a query param in the redirect URI to Keycloak. This signature is used to validate the client that sent this request.
-2. The browser is redirected to Keycloak. The server extracts the XML auth request document and verifies the digital signature if required. The user then has to enter in their credentials to be authenticated.
-3. After authentication, the server generates an XML authentication response document. This document contains a SAML assertion that holds metadata about the user like name, address, email, and any role mappings the user might have. This document is almost always digitally signed using XML signatures, and may also be encrypted.
-4. The XML auth response document is then encoded as a query param in a redirect URI that brings the browser back to the application. The digital signature is also included as a query param.
-5. The application receives the redirect URI and extracts the XML document and verifies the realm’s signature to make sure it is receiving a valid auth response. The information inside the SAML assertion is then used to make access decisions or display user data.
+1. 用户访问应用程序，应用程序发现用户未经过身份验证。 它生成XML身份验证请求文档，并将其编码为URI中的查询参数，该URI用于重定向到Keycloak服务器。 根据您的设置，应用程序还可以对此XML文档进行数字签名，并将此签名作为查询参数填充到Keycloak的重定向URI中。 此签名用于验证发送此请求的客户端。
+2. 浏览器被重定向到Keycloak。 服务器提取XML身份验证请求文档，并在需要时验证数字签名。 然后，用户必须输入他们的凭证才能进行身份验证。
+3. 身份验证后，服务器生成XML身份验证响应文档。 本文档包含一个SAML断言，其中包含有关用户的元数据，如名称，地址，电子邮件以及用户可能拥有的任何角色映射。 该文档几乎总是使用XML签名进行数字签名，也可以加密。
+4. 然后将XML身份验证响应文档编码为重定向URI中的查询参数，该重定向URI将浏览器带回应用程序。 数字签名也包括在查询参数中。
+5. 应用程序接收重定向URI并提取XML文档并验证领域的签名以确保它正在接收有效的身份验证响应。 然后，SAML断言内的信息用于制定访问决策或显示用户数据。
 
-##### POST Binding {#POST_Binding}
-The SAML *POST* binding works almost the exact same way as the *Redirect* binding, but instead of GET requests, XML documents are exchanged by POST requests. The *POST* Binding uses JavaScript to trick the browser into making a POST request to the Keycloak server or application when exchanging documents. Basically HTTP responses contain an HTML document that contains an HTML form with embedded JavaScript. When the page is loaded, the JavaScript automatically invokes the form. You really don’t need to know about this stuff, but it is a pretty clever trick.
+##### POST 绑定 {#POST_Binding}
+SAML *POST*绑定的工作方式几乎与*Redirect*绑定完全相同，但不是GET请求，而是通过POST请求交换XML文档。 *POST* Binding使用JavaScript来欺骗浏览器在交换文档时向Keycloak服务器或应用程序发出POST请求。 基本上，HTTP响应包含一个HTML文档，其中包含带有嵌入式JavaScript的HTML表单。 加载页面时，JavaScript会自动调用表单。 你真的不需要知道这些东西，但这是一个非常聪明的技巧。
 
-*POST* binding is usually recommended because of security and size restrictions. When using *REDIRECT* the SAML response is part of the URL (it is a query parameter as it was explained before), so it can be captured in logs and it is considered less secure. Regarding size, if the assertion contains a lot or large attributes sending the document inside the HTTP payload is always better than in the more limited URL.
+由于安全性和大小限制，通常建议使用*POST*绑定。 使用*REDIRECT*时，SAML响应是URL的一部分（它是之前解释过的查询参数），因此可以在日志中捕获它，并且它被认为不太安全。 关于大小，如果断言包含很多或大的属性，则在HTTP有效负载内发送文档总是比在更有限的URL中更好。
 
 ##### ECP {#ECP}
-ECP stands for "Enhanced Client or Proxy", a SAML v.2.0 profile which allows for the exchange of SAML attributes outside the context of a web browser. This is used most often for REST or SOAP-based clients.
+ECP代表“Enhanced Client or Proxy(增强客户端或代理)”，SAML v.2.0配置文件，允许在Web浏览器的上下文之外交换SAML属性。 这通常用于REST或基于SOAP的客户端。
 
-#### 7.2.2. Keycloak Server SAML URI Endpoints {#Keycloak_Server_SAML_URI_Endpoints}
-Keycloak really only has one endpoint for all SAML requests.
+#### 7.2.2. Keycloak Server SAML URI端点 {#Keycloak_Server_SAML_URI_Endpoints}
+Keycloak实际上只有一个端点用于所有SAML请求。
 
-```
+```javascript
 http(s)://authserver.host/auth/realms/{realm-name}/protocol/saml
 ```
 
-All bindings use this endpoint.
+所有绑定都使用此端点。
 
-### 7.3. OpenID Connect vs. SAML {#OpenID_Connect_vs__SAML}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/sso-protocols/saml-vs-oidc.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/sso-protocols/saml-vs-oidc.adoc)
+### 7.3. OpenID Connect 与 SAML {#OpenID_Connect_vs__SAML}
 
-Choosing between OpenID Connect and SAML is not just a matter of using a newer protocol (OIDC) instead of the older more mature protocol (SAML).
+在OpenID Connect和SAML之间进行选择不仅仅是使用更新的协议（OIDC）而不是旧的更成熟的协议（SAML）。
 
-In most cases Keycloak recommends using OIDC.
+在大多数情况下，Keycloak建议使用OIDC。
 
-SAML tends to be a bit more verbose than OIDC.
+SAML往往比OIDC更冗长。
 
-Beyond verbosity of exchanged data, if you compare the specifications you’ll find that OIDC was designed to work with the web while SAML was retrofitted to work on top of the web. For example, OIDC is also more suited for HTML5/JavaScript applications because it is easier to implement on the client side than SAML. As tokens are in the JSON format, they are easier to consume by JavaScript. You will also find several nice features that make implementing security in your web applications easier. For example, check out the [iframe trick](https://openid.net/specs/openid-connect-session-1_0.html#ChangeNotification) that the specification uses to easily determine if a user is still logged in or not.
+除了交换数据的详细程度之外，如果您比较规范，您会发现OIDC旨在与Web一起工作，同时SAML被改装为在Web上运行。 例如，OIDC也更适合HTML5/JavaScript应用程序，因为它比SAML更容易在客户端实现。 由于令牌采用JSON格式，因此JavaScript更易于使用。 您还将找到一些很好的功能，可以更轻松地在Web应用程序中实现安全性。 例如，查看规范用于轻松确定用户是否仍在登录的[iframe技巧](https://openid.net/specs/openid-connect-session-1_0.html#ChangeNotification)。
 
-SAML has its uses though. As you see the OIDC specifications evolve you see they implement more and more features that SAML has had for years. What we often see is that people pick SAML over OIDC because of the perception that it is more mature and also because they already have existing applications that are secured with it.
+SAML虽然有它的用途。 正如您所看到的，OIDC规范的发展，您会发现它们实现了SAML多年来所拥有的越来越多的功能。 我们经常看到人们选择SAML而不是OIDC，因为人们认为它更成熟，也因为他们已经有了现有的应用程序。
 
-### 7.4. Docker Registry v2 Authentication {#Docker_Registry_v2_Authentication}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/sso-protocols/docker.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/sso-protocols/docker.adoc)
+### 7.4. Docker Registry v2身份验证 {#Docker_Registry_v2_Authentication}
 
-|      | Docker authentication is disabled by default. To enable see [Profiles](https://www.keycloak.org/docs/6.0/server_installation/#profiles). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 默认情况下禁用Docker身份验证。 要启用，请参阅  [Profiles](https://www.keycloak.org/docs/6.0/server_installation/#profiles)。
 
-[Docker Registry V2 Authentication](https://docs.docker.com/registry/spec/auth/) is an OIDC-Like protocol used to authenticate users against a Docker registry. Keycloak’s implementation of this protocol allows for a Keycloak authentication server to be used by a Docker client to authenticate against a registry. While this protocol uses fairly standard token and signature mechanisms, it has a few wrinkles that prevent it from being treated as a true OIDC implementation. The largest deviations include a very specific JSON format for requests and responses as well as the ability to understand how to map repository names and permissions to the OAuth scope mechanism.
+[Docker Registry V2身份验证](https://docs.docker.com/registry/spec/auth/)是一种OIDC-Like协议，用于根据Docker注册表对用户进行身份验证。 Keycloak对此协议的实现允许Docker客户端使用Keycloak身份验证服务器对注册表进行身份验证。 虽然该协议使用相当标准的令牌和签名机制，但它有一些缺点，使其不能被视为真正的OIDC实现。 最大的偏差包括用于请求和响应的非常特定的JSON格式，以及了解如何将存储库名称和权限映射到OAuth范围机制的能力。
 
-#### 7.4.1. Docker Auth Flow {#Docker_Auth_Flow}
-The [Docker API documentation](https://docs.docker.com/registry/spec/auth/token/) best describes and illustrates this process, however a brief summary will be given below from the perspective of the Keycloak authentication server.
+#### 7.4.1. Docker 验证 流程 {#Docker_Auth_Flow}
+[Docker API文档](https://docs.docker.com/registry/spec/auth/token/) 最好地描述和说明了这个过程，但是下面将从Keycloak认证服务器的角度给出一个简短的总结。
 
-|      | This flow assumes that a `docker login` command has already been performed |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 此流假定已执行`docker login`命令
 
-- The flow begins when the Docker client requests a resource from the Docker registry. If the resource is protected and no auth token is present in the request, the Docker registry server will respond to the client with a 401 + some information on required permissions and where to find the authorization server.
-- The Docker client will construct an authentication request based on the 401 response from the Docker registry. The client will then use the locally cached credentials (from a previously run `docker login` command) as part of a [HTTP Basic Authentication](https://tools.ietf.org/html/rfc2617) request to the Keycloak authentication server.
-- The Keycloak authentication server will attempt to authenticate the user and return a JSON body containing an OAuth-style Bearer token.
-- The Docker client will get the bearer token from the JSON response and use it in the Authorization header to request the protected resource.
-- When the Docker registry receives the new request for the protected resource with the token from the Keycloak server, the registry validates the token and grants access to the requested resource (if appropriate).
+- 当Docker客户端从Docker注册表请求资源时，流程开始。 如果资源受到保护且请求中不存在身份验证令牌，则Docker注册服务器将使用401 +响应客户端，获取有关所需权限的信息以及在何处查找授权服务器。
+- Docker客户端将根据Docker注册表中的401响应构造一个身份验证请求。 然后，客户端将使用本地缓存的凭据（来自以前运行的`docker login`命令）作为[HTTP基本身份验证](https://tools.ietf.org/html/rfc2617)对Keycloak身份验证服务器的请求的一部分。
+- Keycloak身份验证服务器将尝试对用户进行身份验证，并返回包含OAuth样式的Bearer令牌的JSON正文。
+- Docker客户端将从JSON响应中获取承载令牌，并在Authorization标头中使用它来请求受保护资源。
+- 当Docker注册表使用来自Keycloak服务器的令牌接收受保护资源的新请求时，注册表将验证令牌并授予对所请求资源的访问权限（如果适用）。
 
-#### 7.4.2. Keycloak Docker Registry v2 Authentication Server URI Endpoints {#Keycloak_Docker_Registry_v2_Authentication_Server_URI_Endpoints}
-Keycloak really only has one endpoint for all Docker auth v2 requests.
+#### 7.4.2. Keycloak Docker Registry v2身份验证服务器URI端点 {#Keycloak_Docker_Registry_v2_Authentication_Server_URI_Endpoints}
+Keycloak实际上只有一个端点用于所有Docker auth v2请求。
 
-```
+```javascript
 http(s)://authserver.host/auth/realms/{realm-name}/protocol/docker-v2
 ```
 
-## 8. Managing Clients {#Managing_Clients}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients.adoc)
+## 8. 管理客户端 {#Managing_Clients}
 
-Clients are entities that can request authentication of a user. Clients come in two forms. The first type of client is an application that wants to participate in single-sign-on. These clients just want Keycloak to provide security for them. The other type of client is one that is requesting an access token so that it can invoke other services on behalf of the authenticated user. This section discusses various aspects around configuring clients and various ways to do it.
+客户端是可以请求用户身份验证的实体。 客户有两种形式。 第一种类型的客户端是想要参与单点登录的应用程序。 这些客户只希望Keycloak为他们提供安全保障。 另一种类型的客户端是请求访问令牌的客户端，以便它可以代表经过身份验证的用户调用其他服务。 本节讨论有关配置客户端的各个方面以及执行此操作的各种方法。
 
-### 8.1. OIDC Clients {#OIDC_Clients}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/client-oidc.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/client-oidc.adoc)
+### 8.1. OIDC 客户端 {#OIDC_Clients}
 
-[OpenID Connect](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc) is the preferred protocol to secure applications. It was designed from the ground up to be web friendly and work best with HTML5/JavaScript applications.
+[OpenID Connect](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc)是保护应用程序的首选协议。 它的设计从一开始就是Web友好的，并且最适合HTML5/JavaScript应用程序。
 
-To create an OIDC client go to the `Clients` left menu item. On this page you’ll see a `Create` button on the right.
+要创建OIDC客户端，请转到`Clients`左侧菜单项。 在此页面上，您将看到右侧的`Create`按钮。
 
 Clients
 
 ![clients](assets/clients.png)
 
-This will bring you to the `Add Client` page.
+这将带您进入`Add Client`页面。
 
 Add Client
 
 ![add client oidc](assets/add-client-oidc.png)
 
-Enter in the `Client ID` of the client. This should be a simple alpha-numeric string that will be used in requests and in the Keycloak database to identify the client. Next select `openid-connect` in the `Client Protocol` drop down box. Finally enter in the base URL of your application in the `Root URL` field and click `Save`. This will create the client and bring you to the client `Settings` tab.
+输入客户端的`Client ID`。 这应该是一个简单的字母数字字符串，将在请求和Keycloak数据库中用于标识客户端。 接下来在`Client Protocol`下拉框中选择`openid-connect`。 最后在`Root URL`字段中输入应用程序的基本URL，然后单击`Save`。 这将创建客户端并将您带到客户端`Settings`选项卡。
 
 Client Settings
 
 ![client settings oidc](assets/client-settings-oidc.png)
 
-Let’s walk through each configuration item on this page.
+让我们来看看这个页面上的每个配置项。
 
 **Client ID**
 
-This specifies an alpha-numeric string that will be used as the client identifier for OIDC requests.
+这指定了一个字母数字字符串，该字符串将用作OIDC请求的客户端标识符。
 
 **Name**
 
-This is the display name for the client whenever it is displayed in a Keycloak UI screen. You can localize the value of this field by setting up a replacement string value i.e. ${myapp}. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information.
+这是客户端在Keycloak UI屏幕中显示时的显示名称。 您可以通过设置替换字符串值(即${myapp})来本地化此字段的值。 有关详细信息，请参阅[Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/)。
 
 **Description**
 
-This specifies the description of the client. This can also be localized.
+这指定了客户端的描述。 这也可以是本地化的。
 
 **Enabled**
 
-If this is turned off, the client will not be allowed to request authentication.
+如果关闭此选项，则不允许客户端请求身份验证。
 
 **Consent Required**
 
-If this is on, then users will get a consent page which asks the user if they grant access to that application. It will also display the metadata that the client is interested in so that the user knows exactly what information the client is getting access to. If you’ve ever done a social login to Google, you’ll often see a similar page. Keycloak provides the same functionality.
+如果启用此选项，则用户将获得一个同意页面，询问用户是否授予对该应用程序的访问权限。 它还将显示客户端感兴趣的元数据，以便用户确切地知道客户端可以访问哪些信息。 如果您曾经对Google进行过社交登录，那么您通常会看到类似的页面。 Keycloak提供相同的功能。
 
 **Access Type**
 
-This defines the type of the OIDC client.
+这定义了OIDC客户端的类型。
 
 - *confidential*
 
-  Confidential access type is for server-side clients that need to perform a browser login and require a client secret when they turn an access code into an access token, (see [Access Token Request](https://tools.ietf.org/html/rfc6749#section-4.1.3) in the OAuth 2.0 spec for more details). This type should be used for server-side applications.
+  机密访问类型适用于需要执行浏览器登录并在将访问代码转换为访问令牌时需要客户端密钥的服务器端客户端（请参阅[访问令牌请求](https://tools.ietf.org/html/rfc6749#section-4.1.3) 有关详细信息，请参阅OAuth 2.0规范）。 此类型应用于服务器端应用程序。
 
 - *public*
 
-  Public access type is for client-side clients that need to perform a browser login. With a client-side application there is no way to keep a secret safe. Instead it is very important to restrict access by configuring correct redirect URIs for the client.
+  公共访问类型适用于需要执行浏览器登录的客户端客户端。 使用客户端应用程序无法保密。 相反，通过为客户端配置正确的重定向URI来限制访问非常重要。
 
 - *bearer-only*
 
-  Bearer-only access type means that the application only allows bearer token requests. If this is turned on, this application cannot participate in browser logins.
+  仅承载访问类型意味着应用程序仅允许承载令牌请求。 如果启用此选项，则此应用程序无法参与浏览器登录。
 
 **Root URL**
 
-If Keycloak uses any configured relative URLs, this value is prepended to them.
+如果Keycloak使用任何已配置的相对URL，则会为其添加此值。
 
 **Valid Redirect URIs**
 
-This is a required field. Enter in a URL pattern and click the + sign to add. Click the - sign next to URLs you want to remove. Remember that you still have to click the `Save` button! Wildcards (\*) are only allowed at the end of a URI, i.e. http://host.com/*
+这是一个必填字段。 输入网址格式，然后点击要添加的`+`号。 点击要删除的网址旁边的`-`符号。 请记住，您仍然需要单击`Save`按钮！ 通配符(\*)仅允许在URI的末尾，例如: `http://host.com/*`
 
-You should take extra precautions when registering valid redirect URI patterns. If you make them too general you are vulnerable to attacks. See [Threat Model Mitigation](https://www.keycloak.org/docs/latest/server_admin/index.html#_unspecific-redirect-uris) chapter for more information.
+注册有效的重定向URI模式时，应采取额外的预防措施。 如果你使它们过于笼统，你很容易受到攻击。 有关详细信息，请参阅[威胁模型缓解](https://www.keycloak.org/docs/latest/server_admin/index.html#_unspecific-redirect-uris) 一章。
 
 **Base URL**
 
-If Keycloak needs to link to the client, this URL is used.
+如果Keycloak需要链接到客户端，则使用此URL。
 
 **Standard Flow Enabled**
 
-If this is on, clients are allowed to use the OIDC [Authorization Code Flow](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows).
+如果启用此选项，则允许客户端使用OIDC [授权代码流程](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows)。
 
 **Implicit Flow Enabled**
 
-If this is on, clients are allowed to use the OIDC [Implicit Flow](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows).
+如果启用此选项，则允许客户端使用OIDC [隐式流程](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows)。
 
 **Direct Grants Enabled**
 
-If this is on, clients are allowed to use the OIDC [Direct Grants](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows).
+如果启用此选项，则允许客户使用OIDC [Direct Grants](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows)。
 
 **Admin URL**
 
-For Keycloak specific client adapters, this is the callback endpoint for the client. The Keycloak server will use this URI to make callbacks like pushing revocation policies, performing backchannel logout, and other administrative operations. For Keycloak servlet adapters, this can be the root URL of the servlet application. For more information see [Securing Applications and Services Guide](https://www.keycloak.org/docs/6.0/securing_apps/).
+对于Keycloak特定的客户端适配器，这是客户端的回调端点。 Keycloak服务器将使用此URI进行回调，例如推送撤销策略，执行反向通道注销以及其他管理操作。 对于Keycloak servlet适配器，这可以是servlet应用程序的根URL。 有关详细信息，请参阅[保护应用程序和服务指南](https://www.keycloak.org/docs/6.0/securing_apps/)。
 
 **Web Origins**
 
-This option centers around [CORS](http://www.w3.org/TR/cors/) which stands for Cross-Origin Resource Sharing. If browser JavaScript tries to make an AJAX HTTP request to a server whose domain is different from the one the JavaScript code came from, then the request must use CORS. The server must handle CORS requests in a special way, otherwise the browser will not display or allow the request to be processed. This protocol exists to protect against XSS, CSRF and other JavaScript-based attacks.
+该选项以[CORS](http://www.w3.org/TR/cors/)为中心，代表跨源资源共享。 如果浏览器JavaScript尝试向其域与JavaScript代码所来的域不同的服务器发出AJAX HTTP请求，则该请求必须使用CORS。 服务器必须以特殊方式处理CORS请求，否则浏览器将不会显示或允许处理请求。 此协议用于防止XSS，CSRF和其他基于JavaScript的攻击。
 
-Keycloak has support for validated CORS requests. The way it works is that the domains listed in the `Web Origins` setting for the client are embedded within the access token sent to the client application. The client application can then use this information to decide whether or not to allow a CORS request to be invoked on it. This is an extension to the OIDC protocol so only Keycloak client adapters support this feature. See [Securing Applications and Services Guide](https://www.keycloak.org/docs/6.0/securing_apps/) for more information.
+Keycloak支持经过验证的CORS请求。 它的工作方式是客户端的`Web Origins`设置中列出的域嵌入发送到客户端应用程序的访问令牌中。 然后，客户端应用程序可以使用此信息来决定是否允许在其上调用CORS请求。 这是OIDC协议的扩展，因此只有Keycloak客户端适配器支持此功能。 有关详细信息，请参阅[保护应用程序和服务指南](https://www.keycloak.org/docs/6.0/securing_apps/)。
 
-To fill in the `Web Origins` data, enter in a base URL and click the + sign to add. Click the - sign next to URLs you want to remove. Remember that you still have to click the `Save` button!
+要填写`Web Origins`数据，请输入基本URL并单击要添加的`+`号。 点击要删除的网址旁边的`-` 符号。 请记住，您仍然需要单击`Save`按钮！
 
-#### 8.1.1. Advanced Settings {#Advanced_Settings}
-**OAuth 2.0 Mutual TLS Client Certificate Bound Access Token**
+#### 8.1.1. 高级设置 {#Advanced_Settings}
+**OAuth 2.0 Mutual TLS客户端证书绑定访问令牌**
 
-Mutual TLS binds an access token and a refresh token with a client certificate exchanged during TLS handshake. This prevents an attacker who finds a way to steal these tokens from exercising the tokens. This type of token is called a holder-of-key token. Unlike bearer tokens, the recipient of a holder-of-key token can verify whether the sender of the token is legitimate.
+Mutual TLS使用在TLS握手期间交换的客户端证书绑定访问令牌和刷新令牌。 这可以防止找到窃取这些令牌的方法的攻击者行使令牌。 这种类型的令牌称为持有者令牌。 与承载令牌不同，持有者令牌的接收者可以验证令牌的发送者是否合法。
 
-If the following conditions are satisfied on a token request, Keycloak will bind an access token and a refresh token with a client certificate and issue them as holder-of-key tokens. If all conditions are not met, Keycloak rejects the token request.
+如果令牌请求满足以下条件，Keycloak将使用客户端证书绑定访问令牌和刷新令牌，并将其作为持有者令牌发布。 如果不满足所有条件，Keycloak将拒绝令牌请求。
 
-- The feature is turned on
-- A token request is sent to the token endpoint in an authorization code flow or a hybrid flow
-- On TLS handshake, Keycloak requests a client certificate and a client send its client certificate
-- On TLS handshake, Keycloak successfully verifies the client certificate
+- 该功能已打开
+- 令牌请求在授权代码流或混合流中发送到令牌端点
+- 在TLS握手时，Keycloak请求客户端证书，客户端发送其客户端证书
+- 在TLS握手时，Keycloak成功验证了客户端证书
 
-To enable mutual TLS in Keycloak, see [Enable mutual SSL in WildFly](https://www.keycloak.org/docs/latest/server_admin/index.html#_enable-mtls-wildfly).
+要在Keycloak中启用相互TLS，请参阅[在WildFly中启用相互SSL](https://www.keycloak.org/docs/latest/server_admin/index.html#_enable-mtls-wildfly)。
 
-In the following cases, Keycloak will verify the client sending the access token or the refresh token; if verification fails, Keycloak rejects the token.
+在以下情况下，Keycloak将验证客户端发送访问令牌或刷新令牌; 如果验证失败，Keycloak拒绝令牌。
 
-- A token refresh request is sent to the token endpoint with a holder-of-key refresh token
-- A UserInfo request is sent to UserInfo endpoint with a holder-of-key access token
-- A logout request is sent to Logout endpoint with a holder-of-key refresh token
+- 使用持有者刷新令牌将令牌刷新请求发送到令牌端点
+- UserInfo请求通过持有者密钥访问令牌发送到UserInfo端点
+- 使用持有者刷新令牌将注销请求发送到Logout端点
 
-Please see [Mutual TLS Client Certificate Bound Access Tokens](https://tools.ietf.org/html/draft-ietf-oauth-mtls-08#section-3) in the OAuth 2.0 Mutual TLS Client Authentication and Certificate Bound Access Tokens for more details.
+请参阅OAuth 2.0 Mutual TLS客户端身份验证和证书绑定访问中的[Mutual TLS客户端证书绑定访问令牌](https://tools.ietf.org/html/draft-ietf-oauth-mtls-08#section-3) 令牌更多细节。
 
-WARNING: None of the keycloak client adapters currently support holder-of-key token verification. Instead, keycloak adapters currently treat access and refresh tokens as bearer tokens.
+> 警告：目前没有任何keycloak客户端适配器支持持有者令牌验证。 相反，keycloak适配器当前将访问和刷新令牌视为承载令牌。
 
-#### 8.1.2. Confidential Client Credentials {#Confidential_Client_Credentials}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/oidc/confidential.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/oidc/confidential.adoc)
+#### 8.1.2. 机密客户端凭据 {#Confidential_Client_Credentials}
 
-If you’ve set the client’s [access type](https://www.keycloak.org/docs/latest/server_admin/index.html#_access-type) to `confidential` in the client’s `Settings` tab, a new `Credentials` tab will show up. As part of dealing with this type of client you have to configure the client’s credentials.
+如果您已在客户端的`Settings`选项卡中将客户端的[访问类型](https://www.keycloak.org/docs/latest/server_admin/index.html#_access-type)设置为`confidential`，则为新的 `Credentials`选项卡将显示出来。 作为处理此类客户端的一部分，您必须配置客户端的凭据。
 
 Credentials Tab
 
 ![client credentials](assets/client-credentials.png)
 
-The `Client Authenticator` list box specifies the type of credential you are going to use for your confidential client. It defaults to client ID and secret. The secret is automatically generated for you and the `Regenerate Secret` button allows you to recreate this secret if you want or need to.
+`Client Authenticator`列表框指定您将用于机密客户端的凭据类型。 它默认为客户端ID和秘密。 秘密会自动为您生成，`Regenerate Secret`按钮允许您根据需要或需要重新创建此秘密。
 
 Alternatively, you can opt to use a signed Json Web Token (JWT) or x509 certificate validation (also called Mutual TLS) instead of a secret.
 
@@ -1603,67 +1593,62 @@ Signed JWT
 
 ![client credentials jwt](assets/client-credentials-jwt.png)
 
-When choosing this credential type you will have to also generate a private key and certificate for the client. The private key will be used to sign the JWT, while the certificate is used by the server to verify the signature. Click on the `Generate new keys and certificate` button to start this process.
+选择此凭据类型时，您还必须为客户端生成私钥和证书。 私钥将用于签署JWT，而服务器使用证书来验证签名。 单击`Generate new keys and certificate`按钮以启动此过程。
 
 Generate Keys
 
 ![generate client keys](assets/generate-client-keys.png)
 
-When you generate these keys, Keycloak will store the certificate, and you’ll need to download the private key and certificate for your client to use. Pick the archive format you want and specify the password for the private key and store.
+当您生成这些密钥时，Keycloak将存储证书，您需要下载私钥和证书供您的客户使用。 选择所需的存档格式，并指定私钥和存储的密码。
 
-You can also opt to generate these via an external tool and just import the client’s certificate.
+您也可以选择通过外部工具生成这些内容，然后只导入客户端证书。
 
 Import Certificate
 
 ![import client cert](assets/import-client-cert.png)
 
-There are multiple formats you can import from, just choose the archive format you have the certificate stored in, select the file, and click the `Import` button.
+您可以导入多种格式，只需选择存储证书的存档格式，选择文件，然后单击`Import`按钮。
 
-Finally note that you don’t even need to import certificate if you choose to `Use JWKS URL` . In that case, you can provide the URL where client publishes it’s public key in [JWK](https://self-issued.info/docs/draft-ietf-jose-json-web-key.html) format. This is flexible because when client changes it’s keys, Keycloak will automatically download them without need to re-import anything on Keycloak side.
+最后请注意，如果选择`Use JWKS URL`，则甚至不需要导入证书。 在这种情况下，您可以在[JWK](https://self-issued.info/docs/draft-ietf-jose-json-web-key.html)格式中提供客户端发布公钥的URL。 这很灵活，因为当客户更改密钥时，Keycloak会自动下载它们，而无需在Keycloak端重新导入任何内容。
 
-If you use client secured by Keycloak adapter, you can configure the JWKS URL like <https://myhost.com/myapp/k_jwks>assuming that <https://myhost.com/myapp> is the root URL of your client application. See [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for additional details.
+如果您使用由Keycloak适配器保护的客户端，您可以配置JWKS URL，如`<https://myhost.com/myapp/k_jwks>`，假设`<https://myhost.com/myapp>`是客户端应用程序的根URL。 有关其他详细信息，请参阅[Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/)。
 
-|      | For the performance purposes, Keycloak caches the public keys of the OIDC clients. If you think that private key of your client was compromised, it is obviously good to update your keys, but it’s also good to clear the keys cache. See [Clearing the cache](https://www.keycloak.org/docs/latest/server_admin/index.html#_clear-cache) section for more details. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 出于性能目的，Keycloak缓存OIDC客户端的公钥。 如果您认为客户端的私钥被泄露，那么更新密钥显然很好，但清除密钥缓存也很好。 有关详细信息，请参阅[清除缓存](https://www.keycloak.org/docs/latest/server_admin/index.html#_clear-cache)部分。
 
 Signed JWT with Client Secret
 
-If you select this option in the `Client Authenticator` list box, you can use a JWT signed by client secret instead of the private key.
+如果在`Client Authenticator`列表框中选择此选项，则可以使用由客户端密钥签名的JWT而不是私钥。
 
-This client secret will be used to sign the JWT by the client.
+此客户端密钥将用于由客户端签署JWT。
 
 X509 Certificate
 
-By enabling this option Keycloak will validate if the client uses proper X509 certificate during the TLS Handshake.
+通过启用此选项，Keycloak将验证客户端是否在TLS握手期间使用正确的X509证书。
 
-|      | This option requires mutual TLS in Keycloak, see [Enable mutual SSL in WildFly](https://www.keycloak.org/docs/latest/server_admin/index.html#_enable-mtls-wildfly). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 此选项需要Keycloak中的相互TLS，请参阅[在WildFly中启用相互SSL](https://www.keycloak.org/docs/latest/server_admin/index.html#_enable-mtls-wildfly)。
 
 Import Certificate
 
 ![x509 client auth](assets/x509-client-auth.png)
 
-The validator checks also the certificate’s Subject DN field with configured regexp validation expression. For some use cases, it is sufficient to accept all certificates. In that case, you can use `(.*?)(?:$)` expression.
+验证器还使用配置的regexp验证表达式检查证书的Subject DN字段。 对于某些用例，接受所有证书就足够了。 在这种情况下，您可以使用 `(.*?)(?:$)` 表达式。
 
-There are two ways for Keycloak to obtain the Client ID from the request. The first option is the `client_id` parameter in the query (described in Section 2.2 of the [OAuth 2.0 Specification](https://tools.ietf.org/html/rfc6749)). The second option is to supply `client_id` as a query parameter.
+Keycloak有两种方法从请求中获取客户端ID。 第一个选项是查询中的`client_id`参数（在[OAuth 2.0规范]的第2.2节(https://tools.ietf.org/html/rfc6749)中描述）。 第二个选项是提供`client_id`作为查询参数。
 
-#### 8.1.3. Service Accounts {#Service_Accounts}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/oidc/service-accounts.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/oidc/service-accounts.adoc)
+#### 8.1.3. 服务帐户 {#Service_Accounts}
 
-Each OIDC client has a built-in *service account* which allows it to obtain an access token. This is covered in the OAuth 2.0 specifiation under [Client Credentials Grant](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_credentials_grant). To use this feature you must set the [Access Type](https://www.keycloak.org/docs/latest/server_admin/index.html#_access-type) of your client to `confidential`. When you do this, the `Service Accounts Enabled` switch will appear. You need to turn on this switch. Also make sure that you have configured your [client credentials](https://www.keycloak.org/docs/latest/server_admin/index.html#_client-credentials).
+每个OIDC客户端都有一个内置的*service account*，允许它获取访问令牌。 这在[客户端凭据授权]（(https://www.keycloak.org/docs/latest/server_admin/index.html#_client_credentials_grant)下的OAuth 2.0规范中介绍。 要使用此功能，您必须将客户端的[访问类型](https://www.keycloak.org/docs/latest/server_admin/index.html#_access-type)设置为`confidential`。 执行此操作时，将显示`Service Accounts Enabled`开关。 您需要打开此开关。 还要确保已配置[客户端凭据](https://www.keycloak.org/docs/latest/server_admin/index.html#_client-credentials)。
 
-To use it you must have registered a valid `confidential` Client and you need to check the switch `Service Accounts Enabled` in Keycloak admin console for this client. In tab `Service Account Roles` you can configure the roles available to the service account retrieved on behalf of this client. Remember that you must have the roles available in Role Scope Mappings (tab `Scope`) of this client as well, unless you have `Full Scope Allowed` on. As in a normal login, roles from access token are the intersection of:
+要使用它，您必须注册一个有效的`confidential`客户端，并且您需要在Keycloak管理控制台中检查此客户端的`Service Accounts Enabled`。 在`Service Account Roles`选项卡中，您可以配置代表此客户端检索的服务帐户可用的角色。 请记住，除非您具有`Full Scope Allowed`，否则您必须具有此客户端的角色范围映射（选项卡`Scope`）中可用的角色。 与正常登录一样，访问令牌中的角色是以下内容的交集：
 
-- Role scope mappings of particular client combined with the role scope mappings inherited from linked client scopes
-- Service account roles
+- 特定客户端的角色范围映射与从链接的客户端范围继承的角色范围映射相结合
+- 服务帐户角色
 
-The REST URL to invoke on is `/auth/realms/{realm-name}/protocol/openid-connect/token`. Invoking on this URL is a POST request and requires you to post the client credentials. By default, client credentials are represented by clientId and clientSecret of the client in `Authorization: Basic` header, but you can also authenticate the client with a signed JWT assertion or any other custom mechanism for client authentication. You also need to use the parameter `grant_type=client_credentials` as per the OAuth2 specification.
+要调用的REST URL是`/auth/realms/{realm-name}/protocol/openid-connect/token`。 调用此URL是POST请求，并要求您发布客户端凭据。 默认情况下，客户端凭据由`Authorization: Basic`标头中的客户端的clientId和clientSecret表示，但您也可以使用签名的JWT断言或任何其他自定义机制对客户端进行身份验证来验证客户端。 您还需要根据OAuth2规范使用参数`grant_type=client_credentials`。
 
-For example the POST invocation to retrieve a service account can look like this:
+例如，用于检索服务帐户的POST调用可能如下所示：
 
-```
+```bash
     POST /auth/realms/demo/protocol/openid-connect/token
     Authorization: Basic cHJvZHVjdC1zYS1jbGllbnQ6cGFzc3dvcmQ=
     Content-Type: application/x-www-form-urlencoded
@@ -1671,9 +1656,9 @@ For example the POST invocation to retrieve a service account can look like this
     grant_type=client_credentials
 ```
 
-The response would be this [standard JSON document](https://tools.ietf.org/html/rfc6749#section-4.4.3) from the OAuth 2.0 specification.
+响应将来自OAuth 2.0规范中的[标准JSON文档]（(https://tools.ietf.org/html/rfc6749#section-4.4.3)。
 
-```
+```javascript
 HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
 Cache-Control: no-store
@@ -1691,68 +1676,61 @@ Pragma: no-cache
 }
 ```
 
-The retrieved access token can be refreshed or logged out by an out-of-bound request.
+可以通过越界请求刷新或注销检索到的访问令牌。
 
-#### 8.1.4. Audience Support {#Audience_Support}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/oidc/audience.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/oidc/audience.adoc)
+#### 8.1.4. 观众支持 {#Audience_Support}
 
-The typical environment where the Keycloak is deployed generally consists of a set of *confidential* or *public*client applications (frontend client applications) which use Keycloak for authentication.
+部署Keycloak的典型环境通常包括一组*confidential*或*public*客户端应用程序（前端客户端应用程序），它们使用Keycloak进行身份验证。
 
-There are also *services* (called *Resource Servers* in the OAuth 2 specification), which serve requests from frontend client applications and provide resources. These services typically require an *Access token* (Bearer token) to be sent to them to authenticate for a particular request. This token was previously obtained by the frontend application when it tries to log in against Keycloak.
+还有*services*（在OAuth 2规范中称为*Resource Servers*），它服务于来自前端客户端应用程序的请求并提供资源。 这些服务通常需要向其发送*Access token*（Bearer token(承载令牌)）以针对特定请求进行身份验证。 此令牌以前是由前端应用程序尝试登录Keycloak时获得的。
 
-In the environment where the trust among services is low, you may encounter this scenario:
+在服务之间的信任度较低的环境中，您可能会遇到以下情况：
 
-1. A frontend client called `my-app` is required to be authenticated against Keycloak.
-2. A user is authenticated in Keycloak. Keycloak then issued tokens to the `my-app` application.
-3. The application `my-app` used the token to invoke the service `evil-service`. The application needs to invoke `evil-service` as the service is able to serve some very useful data.
-4. The `evil-service` application returned the response to `my-app`. However, at the same time, it kept the token previously sent to it.
-5. The `evil-service` application then invoked another service called `good-service` with the previously kept token. The invocation was successful and `good-service` returned the data. This results in broken security as the `evil-service`misused the token to access other services on behalf of the client `my-app`.
+1. 名为`my-app`的前端客户端需要针对Keycloak进行身份验证。
+2. 用户在Keycloak中进行了身份验证。 Keycloak随后向`my-app`应用程序发出了令牌。
+3. 应用程序`my-app`使用令牌来调用服务`evil-service`。 应用程序需要调用`evil-service`，因为服务能够提供一些非常有用的数据。
+4. `evil-service`应用程序将响应返回给`my-app`。 但是，与此同时，它保留了先前发送给它的令牌。
+5. 然后，`evil-service`应用程序使用先前保存的令牌调用另一个名为`good-service`的服务。 调用成功，`good-service`返回数据。 这导致安全性被破坏，因为`evil-service`使用令牌来代表客户端`my-app`访问其他服务。
 
-This flow may not be an issue in many environments with the high level of trust among services. However in other environments, where the trust among services is lower, this can be problematic.
+在服务之间具有高度信任的许多环境中，该流程可能不是问题。 然而，在服务之间的信任度较低的其他环境中，这可能是有问题的。
 
-|      | In some environments, this example work flow may be even requested behavior as the `evil-service` may need to retrieve additional data from `good-service` to be able to properly return the requested data to the original caller (my-app client). You may notice similarities with the Kerberos Credential Delegation. As with the Kerberos Credential Delegation, an unlimited audience is a mixed blessing as it is only useful when a high level of trust exists among services. Otherwise, it is recommended to limit audience as described next. You can limit audience and at the same time allow the `evil-service` to retrieve required data from the `good-service`. In this case, you need to ensure that both the `evil-service` and `good-service` are added as audiences to the token. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 在某些环境中，此示例工作流可能甚至是请求的行为，因为`evil-service`可能需要从`good-service`检索其他数据，以便能够将请求的数据正确地返回给原始调用者（my-app客户端））。 您可能会注意到Kerberos凭据委派的相似之处。 与Kerberos凭证委派一样，无限受众是一种喜忧参半的祝福，因为它仅在服务之间存在高度信任时才有用。 否则，建议限制观众，如下所述。 你可以限制观众，同时允许`evil-service`从`good-service`中检索所需的数据。 在这种情况下，您需要确保将`evil-service`和`good-service`添加为令牌的受众。
 
-To prevent any misuse of the access token as in the example above, it is recommended to limit *Audience* on the token and configure your services to verify the audience on the token. If this is done, the flow above will change, like this:
+为防止滥用访问令牌，如上例所示，建议限制令牌上的*Audience*并配置您的服务以验证令牌上的受众。 如果这样做，上面的流程将会改变，如下所示：
 
-1. A frontend client called `my-app` is required to be authenticated against Keycloak.
-2. A user is authenticated in Keycloak. Keycloak then issued tokens to the `my-app` application. The client application already knows that it will need to invoke service `evil-service`, so it used `scope=evil-service` in the authentication request sent to the Keycloak server. See [Client Scopes section](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes) for more details about the *scope* parameter. The token issued to the `my-app` client contains the audience, as in `"audience": [ "evil-service" ]`, which declares that the client wants to use this access token to invoke just the service `evil-service`.
-3. The `evil-service` application served the request to the `my-app`. At the same time, it kept the token previously sent to it.
-4. The `evil-service` application then invoked the `good-service` with the previously kept token. Invocation was not successful because `good-service` checks the audience on the token and it sees that audience is only `evil-service`. This is expected behavior and security is not broken.
+1. 名为`my-app`的前端客户端需要针对Keycloak进行身份验证。
+2. 用户在Keycloak中进行了身份验证。 Keycloak随后向`my-app`应用程序发出了令牌。 客户端应用程序已经知道它将需要调用服务`evil-service`，因此它在发送给Keycloak服务器的身份验证请求中使用了`scope=evil-service`。 有关*scope*参数的更多详细信息，请参见[Client Scopes部分](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes)。 发给`my-app`客户端的令牌包含受众，如`"audience"：["evil-service"]`，它声明客户端想要使用此访问令牌来仅调用服务`evil-service`。
+3. `evil-service`应用程序向`my-app`提供了请求。 同时，它保留了先前发送给它的令牌。
+4. 然后，`evil-service`应用程序使用先前保存的令牌调用`good-service`。 调用没有成功，因为`good-service`检查了令牌上的受众，并且它看到受众只是`evil-service`。 这是预期的行为，安全性没有被打破。
 
-If the client wants to invoke the `good-service` later, it will need to obtain another token by issuing the SSO login with the`scope=good-service`. The returned token will then contain `good-service` as an audience:
+如果客户端想要稍后调用`good-service`，则需要通过使用`scope=good-service`发出SSO登录来获取另一个令牌。 然后，返回的令牌将包含`good-service`作为受众：
 
-```
+```javascript
 "audience": [ "good-service" ]
 ```
 
-and can be used to invoke `good-service`.
+并可用于调用`good-service`。
 
-##### Setup {#Setup}
-To properly set up audience checking:
+##### 设置 {#Setup}
+要正确设置受众群体检查：
 
-- Ensure that services are configured to check audience on the access token sent to them by adding the flag *verify-token-audience* in the adapter configuration. See [Adapter configuration](https://www.keycloak.org/docs/6.0/securing_apps/#_java_adapter_config) for details.
-- Ensure that when an access token is issued by Keycloak, it contains all requested audiences and does not contain any audiences that are not needed. The audience can be either automatically added due the client roles as described in the [next section](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_resolve) or it can be hardcoded as described [below](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_hardcoded).
+- 确保通过在适配器配置中添加标志*verify-token-audience*，将服务配置为检查发送给它们的访问令牌的受众。 有关详细信息，请参阅[适配器配置](https://www.keycloak.org/docs/6.0/securing_apps/#_java_adapter_config)。
+- 确保当Keycloak发出访问令牌时，它包含所有请求的受众，并且不包含任何不需要的受众。 可以根据[下一节](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_resolve)中描述的客户端角色自动添加受众，也可以按照描述进行硬编码[下文](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_hardcoded)。
 
-##### Automatically add audience {#Automatically_add_audience}
-In the default client scope *roles*, there is an *Audience Resolve* protocol mapper defined. This protocol mapper will check all the clients for which current token has at least one client role available. Then the client ID of each of those clients will be added as an audience automatically. This is especially useful if your service (usually bearer-only) clients rely on client roles.
+##### 自动添加受众群体 {#Automatically_add_audience}
+在默认客户端范围*roles*中，定义了*Audience Resolve*协议映射器。 此协议映射器将检查当前令牌至少具有一个可用客户端角色的所有客户端。 然后，每个客户端的客户端ID将自动添加为受众。 如果您的服务（通常仅限于承载）客户端依赖客户端角色，则此功能尤其有用。
 
-As an example, let us assume that you have a bearer-only client `good-service` and the confidential client `my-app`, which you want to authenticate and then use the access token issued for the `my-app` to invoke the `good-service` REST service. If the following are true:
+举个例子，让我们假设您有一个仅限持有客户端`good-service`和机密客户端`my-app`，您要对其进行身份验证，然后使用为`my-app`发出的访问令牌来 调用`good-service` REST服务。 如果以下情况属实：
 
-- The `good-service` client has any client roles defined on itself
-- Target user has at least one of those client roles assigned
-- Client `my-app` has the role scope mappings for the assigned role
+- `good-service`客户端有自己定义的任何客户角色
+- 目标用户至少分配了一个客户端角色
+- 客户端`my-app`具有指定角色的角色范围映射
 
-then the `good-service` will be automatically added as an audience to the access token issued for the `my-app`.
+那么`good-service`将自动作为观众添加到为`my-app`发布的访问令牌中。
 
-|      | If you want to ensure that audience is not added automatically, do not configure role scope mappings directly on the `my-app` client, but instead create a dedicated client scope, for example called `good-service`, which will contain the role scope mappings for the client roles of the `good-service` client. Assuming that this client scope will be added as an optional client scope to the `my-app` client, the client roles and audience will be added to the token just if explicitly requested by the `scope=good-service` parameter. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 如果要确保不自动添加受众，请不要直接在`my-app`客户端上配置角色作用域映射，而是创建一个专用的客户端作用域，例如名为`good-service`，它将包含角色`good-service`客户端的客户端角色的范围映射。 假设此客户端作用域将作为可选的客户端作用域添加到`my-app`客户端，则只有在`scope=good-service`参数明确请求时，才会将客户端角色和受众添加到令牌中。
 
-|      | The frontend client itself is not automatically added to the access token audience. This allows for easy differentiation between the access token and the ID token, because the access token will not contain the client for which the token was issued as an audience. So in he example above, the `my-app` won’t be added as an audience. If you need the client itself as an audience, see the [hardcoded audience](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_hardcoded) option. However, using the same client as both frontend and REST service is not recommended. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 前端客户端本身不会自动添加到访问令牌受众。 这允许容易区分访问令牌和ID令牌，因为访问令牌将不包含作为受众发布令牌的客户端。 因此，在上面的示例中，`my-app`不会作为受众添加。 如果您需要客户本身作为受众，请参阅[硬编码的受众](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_hardcoded) 选项。 但是，不建议使用相同的客户端作为前端和REST服务。
 
 ##### Hardcoded audience {#Hardcoded_audience}
 For the case when your service relies on realm roles or does not rely on the roles in the token at all, it can be useful to use hardcoded audience. This is a protocol mapper, which will add client ID of the specified service client as an audience to the token. You can even use any custom value, for example some URL, if you want different audience than client ID.
