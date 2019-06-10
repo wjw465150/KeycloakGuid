@@ -1678,7 +1678,7 @@ Pragma: no-cache
 
 可以通过越界请求刷新或注销检索到的访问令牌。
 
-#### 8.1.4. 观众支持 {#Audience_Support}
+#### 8.1.4. 受众支持 {#Audience_Support}
 
 部署Keycloak的典型环境通常包括一组*confidential*或*public*客户端应用程序（前端客户端应用程序），它们使用Keycloak进行身份验证。
 
@@ -1732,46 +1732,41 @@ Pragma: no-cache
 
 > 前端客户端本身不会自动添加到访问令牌受众。 这允许容易区分访问令牌和ID令牌，因为访问令牌将不包含作为受众发布令牌的客户端。 因此，在上面的示例中，`my-app`不会作为受众添加。 如果您需要客户本身作为受众，请参阅[硬编码的受众](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_hardcoded) 选项。 但是，不建议使用相同的客户端作为前端和REST服务。
 
-##### Hardcoded audience {#Hardcoded_audience}
-For the case when your service relies on realm roles or does not rely on the roles in the token at all, it can be useful to use hardcoded audience. This is a protocol mapper, which will add client ID of the specified service client as an audience to the token. You can even use any custom value, for example some URL, if you want different audience than client ID.
+##### 硬编码的受众 {#Hardcoded_audience}
+对于您的服务依赖于领域角色或根本不依赖于令牌中的角色的情况，使用硬编码的受众可能很有用。 这是一个协议映射器，它将指定服务客户端的客户端ID作为标记的受众添加。 如果您需要不同于客户端ID的受众，您甚至可以使用任何自定义值，例如某些URL。
 
-You can add protocol mapper directly to the frontend client, however than the audience will be always added. If you want more fine-grain control, you can create protocol mapper on the dedicated client scope, which will be called for example `good-service`.
+您可以将协议映射器直接添加到前端客户端，但始终会添加受众。 如果您想要更精细的控制，可以在专用的客户端范围上创建协议映射器，例如`good-service`。
 
-Audience Protocol Mapper
+受众协议映射器
 
 ![audience mapper](assets/audience_mapper.png)
 
-- From the [Installation tab](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_installation) of the `good-service` client, you can generate the adapter configuration and you can confirm that *verify-token-audience* option will be set to true. This indicates that the adapter will require verifying the audience if you use this generated configuration.
-- Finally, you need to ensure that the `my-app` frontend client is able to request `good-service` as an audience in its tokens. On the `my-app` client, click the *Client Scopes* tab. Then assign `good-service` as an optional (or default) client scope. See [Client Scopes Linking section](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_linking) for more details.
-- You can optionally [Evaluate Client Scopes](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_evaluate) and generate an example access token. If you do, notice that `good-service`will be added to the audience of the generated access token only if `good-service` is included in the *scope* parameter in the case you assigned it as an optional client scope.
-- In your `my-app` application, you must ensure that *scope* parameter is used with the value `good-service` always included when you want to issue the token for accessing the `good-service`. See the [parameters forwarding section](https://www.keycloak.org/docs/6.0/securing_apps/#_params_forwarding), if your application uses the servlet adapter, or the [javascript adapter section](https://www.keycloak.org/docs/6.0/securing_apps/#_javascript_adapter), if your application uses the javascript adapter.
+- 从`good-service`客户端的[安装选项卡](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_installation) ，您可以生成适配器配置，您可以确认*verify-token-audience*选项将设置为true。 这表示如果使用此生成的配置，适配器将需要验证受众。
+- 最后，您需要确保`my-app`前端客户端能够在其令牌中请求`good-service`作为受众。 在`my-app`客户端上，单击*Client Scopes*选项卡。 然后将`good-service`指定为可选（或默认）客户端范围。 有关详细信息，请参阅[客户端范围链接部分](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_linking)。
+- 您可以选择[评估客户端范围](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_evaluate)并生成示例访问令牌。 如果这样做，请注意，只有在您将其指定为可选客户端范围的情况下，*scope*参数中包含`good-service`时，才会将`good-service`添加到生成的访问令牌的受众中。
+- 在你的`my-app`应用程序中，当你想发出用于访问`good-service`的令牌时，你必须确保*scope*参数与值'good-service`一起使用。 如果您的应用程序使用servlet适配器，请参阅[参数转发部分](https://www.keycloak.org/docs/6.0/securing_apps/#_params_forwarding)，或[javascript adapter section](https://www.keycloak.org/docs/6.0/securing_apps/#_javascript_adapter)，如果您的应用程序使用javascript适配器。
 
-|      | If you are unsure what the correct audience and roles in the token will be, it is always a good idea to [Evaluate Client Scopes](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_evaluate) in the admin console and do some testing around it. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 如果您不确定令牌中的正确受众和角色是什么，那么[评估客户端范围](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_evaluate)总是一个好主意,在管理控制台中并围绕它进行一些测试。
 
-|      | Both the *Audience* and *Audience Resolve* protocol mappers add the audiences just to the access token by default. The ID Token typically contains only single audience, which is the client ID of the client for which the token was issued. This is a requirement of the OpenID Connect specification. On the other hand, the access token does not necessarily have the client ID of the client, which was the token issued for, unless any of the audience mappers added it. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> *Audience* 和 *Audience Resolve*协议映射器默认情况下仅将访客添加到访问令牌。 ID令牌通常仅包含单个受众，即为其颁发令牌的客户端的客户端ID。 这是OpenID Connect规范的要求。 另一方面，访问令牌不一定具有客户端的客户端ID，该客户端ID是为其颁发的令牌，除非任何观众映射器添加了它。
 
-### 8.2. SAML Clients {#SAML_Clients}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/client-saml.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/client-saml.adoc)
+### 8.2. SAML 客户端 {#SAML_Clients}
 
-Keycloak supports [SAML 2.0](https://www.keycloak.org/docs/latest/server_admin/index.html#_saml) for registered applications. Both POST and Redirect bindings are supported. You can choose to require client signature validation and can have the server sign and/or encrypt responses as well.
+Keycloak支持[SAML 2.0](https://www.keycloak.org/docs/latest/server_admin/index.html#_saml)用于已注册的应用程序。 POST和Redirect绑定都受支持。 您可以选择要求客户端签名验证，也可以让服务器签名和/或加密响应。
 
-To create a SAML client go to the `Clients` left menu item. On this page you’ll see a `Create` button on the right.
+要创建SAML客户端，请转到`Clients`左侧菜单项。 在此页面上，您将看到右侧的`Create`按钮。
 
 Clients
 
 ![clients](assets/clients.png)
 
-This will bring you to the `Add Client` page.
+这将带您进入`Add Client`页面。
 
 Add Client
 
 ![add client saml](assets/add-client-saml.png)
 
-Enter in the `Client ID` of the client. This is often a URL and will be the expected `issuer` value in SAML requests sent by the application. Next select `saml` in the `Client Protocol` drop down box. Finally enter in the `Client SAML Endpoint` URL. Enter the URL you want the Keycloak server to send SAML requests and responses to. Usually applications have only one URL for processing SAML requests. If your application has different URLs for its bindings, don’t worry, you can fix this in the `Settings` tab of the client. Click `Save`. This will create the client and bring you to the client `Settings` tab.
+输入客户端的`Client ID`。 这通常是一个URL，并且是应用程序发送的SAML请求中预期的`issuer`值。 接下来在`Client Protocol`下拉框中选择`saml`。 最后输入`Client SAML Endpoint` URL。 输入您希望Keycloak服务器向其发送SAML请求和响应的URL。 通常，应用程序只有一个用于处理SAML请求的URL。 如果您的应用程序的绑定具有不同的URL，请不要担心，您可以在客户端的`Settings`选项卡中修复此问题。 点击`Save`。 这将创建客户端并将您带到客户端`Settings`选项卡。
 
 Client Settings
 
@@ -1779,164 +1774,160 @@ Client Settings
 
 - Client ID
 
-  This value must match the issuer value sent with AuthNRequests. Keycloak will pull the issuer from the Authn SAML request and match it to a client by this value.
+  此值必须与AuthNRequests发送的颁发者值相匹配。 Keycloak将从Authn SAML请求中提取发行者，并通过此值将其与客户端匹配。
 
 - Name
 
-  This is the display name for the client whenever it is displayed in a Keycloak UI screen. You can localize the value of this field by setting up a replacement string value i.e. ${myapp}. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information.
+  这是客户端在Keycloak UI屏幕中显示时的显示名称。 您可以通过设置替换字符串值（即${myapp}）来本地化此字段的值。 有关详细信息，请参阅[Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/)。
 
 - Description
 
-  This specifies the description of the client. This can also be localized.
+  这指定了客户端的描述。 这也可以是本地化的。
 
 - Enabled
 
-  If this is turned off, the client will not be allowed to request authentication.
+  如果关闭此选项，则不允许客户端请求身份验证。
 
 - Consent Required
 
-  If this is on, then users will get a consent page which asks the user if they grant access to that application. It will also display the metadata that the client is interested in so that the user knows exactly what information the client is getting access to. If you’ve ever done a social login to Google, you’ll often see a similar page. Keycloak provides the same functionality.
+  如果启用此选项，则用户将获得一个同意页面，询问用户是否授予对该应用程序的访问权限。 它还将显示客户端感兴趣的元数据，以便用户确切地知道客户端可以访问哪些信息。 如果您曾经对Google进行过社交登录，那么您通常会看到类似的页面。 Keycloak提供相同的功能。
 
 - Include AuthnStatement
 
-  SAML login responses may specify the authentication method used (password, etc.) as well as a timestamp of the login. Setting this to on will include that statement in the response document.
+  SAML登录响应可以指定使用的身份验证方法（密码等）以及登录的时间戳。 将此设置为on将在响应文档中包含该语句。
 
 - Sign Documents
 
-  When turned on, Keycloak will sign the document using the realm’s private key.
+  打开时，Keycloak将使用领域的私钥对文档进行签名。
 
 - Optimize REDIRECT signing key lookup
 
-  When turned on, the SAML protocol messages will include Keycloak native extension that contains a hint with signing key ID. When the SP understands this extension, it can use it for signature validation instead of attempting to validate signature with all known keys. This option only applies to REDIRECT bindings where the signature is transferred in query parameters where there is no place with this information in the signature information (contrary to POST binding messages where key ID is always included in document signature). Currently this is relevant to situations where both IDP and SP are provided by Keycloak server and adapter. This option is only relevant when `Sign Documents` is switched on.
+  打开时，SAML协议消息将包含Keycloak本机扩展，其中包含带有签名密钥ID的提示。 当SP理解此扩展时，它可以将其用于签名验证，而不是尝试使用所有已知密钥验证签名。 此选项仅适用于REDIRECT绑定，其中签名在查询参数中传输，其中签名信息中没有此信息的位置（与文档签名中始终包含密钥ID的POST绑定消息相反）。 目前，这与Keycloak服务器和适配器提供IDP和SP的情况相关。 此选项仅在`Sign Documents`打开时有效。
 
 - Sign Assertions
 
-  The `Sign Documents` switch signs the whole document. With this setting the assertion is also signed and embedded within the SAML XML Auth response.
+  `Sign Documents`开关标志整个文件。 通过此设置，断言也会被签名并嵌入到SAML XML Auth响应中。
 
 - Signature Algorithm
 
-  Choose between a variety of algorithms for signing SAML documents.
+  选择用于签署SAML文档的各种算法。
 
 - SAML Signature Key Name
 
-  Signed SAML documents sent via POST binding contain identification of signing key in `KeyName` element. This by default contains Keycloak key ID. However various vendors might expect a different key name or no key name at all. This switch controls whether `KeyName` contains key ID (option `KEY_ID`), subject from certificate corresponding to the realm key (option `CERT_SUBJECT` - expected for instance by Microsoft Active Directory Federation Services), or that the key name hint is completely omitted from the SAML message (option `NONE`).
+  通过POST绑定发送的签名SAML文档包含`KeyName`元素中的签名密钥的标识。 默认情况下，此项包含Keycloak密钥ID。 然而，各种供应商可能期望具有不同的密钥名称或根本没有密钥名称。 此开关控制`KeyName`是否包含密钥ID（选项`KEY_ID`），来自对应于领域密钥的证书（选项`CERT_SUBJECT` - 例如Microsoft Active Directory联合服务预期），或者密钥名称提示是完全的 从SAML消息中省略（选项`NONE`）。
 
 - Canonicalization Method
 
-  Canonicalization method for XML signatures.
+  XML签名的规范化方法。
 
 - Encrypt Assertions
 
-  Encrypt assertions in SAML documents with the realm’s private key. The AES algorithm is used with a key size of 128 bits.
+  使用领域的私钥加密SAML文档中的断言。 AES算法的密钥大小为128位。
 
 - Client Signature Required
 
-  Expect that documents coming from a client are signed. Keycloak will validate this signature using the client public key or cert set up in the `SAML Keys` tab.
+  期望来自客户的文档已签名。 Keycloak将使用在`SAML Keys`选项卡中设置的客户端公钥或证书来验证此签名。
 
 - Force POST Binding
 
-  By default, Keycloak will respond using the initial SAML binding of the original request. By turning on this switch, you will force Keycloak to always respond using the SAML POST Binding even if the original request was the Redirect binding.
+  默认情况下，Keycloak将使用原始请求的初始SAML绑定进行响应。 通过打开此开关，即使原始请求是重定向绑定，您也将强制Keycloak始终使用SAML POST绑定进行响应。
 
 - Front Channel Logout
 
-  If true, this application requires a browser redirect to be able to perform a logout. For example, the application may require a cookie to be reset which could only be done via a redirect. If this switch is false, then Keycloak will invoke a background SAML request to logout the application.
+  如果为true，则此应用程序需要浏览器重定向才能执行注销。 例如，应用程序可能需要重置cookie，这只能通过重定向完成。 如果此开关为false，则Keycloak将调用后台SAML请求以注销该应用程序。
 
 - Force Name ID Format
 
-  If the request has a name ID policy, ignore it and used the value configured in the admin console under Name ID Format
+  如果请求具有名称ID策略，请忽略它并使用名称ID格式下管理控制台中配置的值
 
 - Name ID Format
 
-  Name ID Format for the subject. If no name ID policy is specified in the request or if the Force Name ID Format attribute is true, this value is used. Properties used for each of the respective formats are defined below.
+  名称ID主题的格式。 如果请求中未指定名称ID策略，或者“强制名称ID格式”属性为true，则使用此值。 用于每种格式的属性定义如下。
 
 - Root URL
 
-  If Keycloak uses any configured relative URLs, this value is prepended to them.
+  如果Keycloak使用任何已配置的相对URL，则会为其添加此值。
 
 - Valid Redirect URIs
 
-  This is an optional field. Enter in a URL pattern and click the + sign to add. Click the - sign next to URLs you want to remove. Remember that you still have to click the `Save` button! Wildcards (\*) are only allowed at the end of of a URI, i.e. http://host.com/*. This field is used when the exact SAML endpoints are not registered and Keycloak is pulling the Assertion Consumer URL from the request.
+  这是个可选的选项。 输入网址格式，然后点击要添加的 `+` 号。 点击要删除的网址旁边的 `-` 符号。 请记住，您仍然需要单击`Save`按钮！ 通配符(\*) 仅允许在URI的末尾，即`http://host.com/*`。 如果未注册确切的SAML端点且Keycloak正在从请求中提取断言使用者URL，则使用此字段。
 
 - Base URL
 
-  If Keycloak needs to link to the client, this URL would be used.
+  如果Keycloak需要链接到客户端，则将使用此URL。
 
 - Master SAML Processing URL
 
-  This URL will be used for all SAML requests and the response will be directed to the SP. It will be used as the Assertion Consumer Service URL and the Single Logout Service URL. If a login request contains the Assertion Consumer Service URL, that will take precedence, but this URL must be valided by a registered Valid Redirect URI pattern
+  此URL将用于所有SAML请求，并且响应将定向到SP。 它将用作断言使用者服务URL和单一注销服务URL。 如果登录请求包含断言使用者服务URL，则该URL优先，但此URL必须由注册的有效重定向URI模式进行保护
 
 - Assertion Consumer Service POST Binding URL
 
-  POST Binding URL for the Assertion Consumer Service.
+  断言使用者服务的POST绑定URL。
 
 - Assertion Consumer Service Redirect Binding URL
 
-  Redirect Binding URL for the Assertion Consumer Service.
+  重定向断言使用者服务的绑定URL。
 
 - Logout Service POST Binding URL
 
-  POST Binding URL for the Logout Service.
+  注销服务的POST绑定URL。
 
 - Logout Service Redirect Binding URL
 
-  Redirect Binding URL for the Logout Service.
+  重定向注销服务的绑定URL。
 
-#### 8.2.1. IDP Initiated Login {#IDP_Initiated_Login}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/saml/idp-initiated-login.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/saml/idp-initiated-login.adoc)
+#### 8.2.1. IDP发起登录 {#IDP_Initiated_Login}
 
-IDP Initiated Login is a feature that allows you to set up an endpoint on the Keycloak server that will log you into a specific application/client. In the `Settings` tab for your client, you need to specify the `IDP Initiated SSO URL Name`. This is a simple string with no whitespace in it. After this you can reference your client at the following URL: `root/auth/realms/{realm}/protocol/saml/clients/{url-name}`
+IDP Initiated Login是一项功能，允许您在Keycloak服务器上设置端点，该端点将登录到特定的应用程序/客户端。 在客户端的`Settings`选项卡中，您需要指定`IDP Initiated SSO URL Name`。 这是一个简单的字符串，里面没有空格。 在此之后，您可以通过以下URL引用您的客户端：`root/auth/realms/{realm}/protocol/saml/clients/{url-name}`
 
-The IDP initiated login implementation prefers *POST* over *REDIRECT* binding (check [saml bindings](https://www.keycloak.org/docs/latest/server_admin/index.html#saml-bindings) for more information). Therefore the final binding and SP URL are selected in the following way:
+IDP发起的登录实现更喜欢*POST* 通过 *REDIRECT* 绑定（检查[saml bindings](https://www.keycloak.org/docs/latest/server_admin/index.html#saml-bindings)以获取更多信息）。 因此，以下列方式选择最终绑定和SP URL：
 
-1. If the specific `Assertion Consumer Service POST Binding URL` is defined (inside `Fine Grain SAML Endpoint Configuration` section of the client settings) *POST* binding is used through that URL.
-2. If the general `Master SAML Processing URL` is specified then *POST* binding is used again throught this general URL.
-3. As the last resort, if the `Assertion Consumer Service Redirect Binding URL` is configured (inside `Fine Grain SAML Endpoint Configuration`) *REDIRECT* binding is used with this URL.
+1. 如果定义了特定的`Assertion Consumer Service POST Binding URL(断言消费者服务POST绑定URL)`（在客户端设置的`Fine Grain SAML Endpoint Configuration`部分内），则通过该URL使用 *POST*绑定。
+2. 如果指定了通用的`Master SAML Processing URL(主SAML处理URL)`，则通过此常规URL再次使用*POST*绑定。
+3. 作为最后的手段，如果配置了`Assertion Consumer Service Redirect Binding URL(断言消费者服务重定向绑定URL)`（在`Fine Grain SAML Endpoint Configuration(精细粒度SAML端点配置)`中）*REDIRECT*绑定与此URL一起使用。
 
-If your client requires a special relay state, you can also configure this on the `Settings` tab in the `IDP Initiated SSO Relay State` field. Alternatively, browsers can specify the relay state in a `RelayState` query parameter, i.e.`root/auth/realms/{realm}/protocol/saml/clients/{url-name}?RelayState=thestate`.
+如果您的客户端需要特殊的中继状态，您也可以在`IDP Initiated SSO Relay State(IDP启动的SSO中继状态)`字段的`Settings`选项卡上进行配置。 或者，浏览器可以在`RelayState`查询参数中指定中继状态，即`root/auth/realms/{realm}/protocol/saml/clients/{url-name}?RelayState=thestate`。
 
-When using [identity brokering](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker), it is possible to set up an IDP Initiated Login for a client from an external IDP. The actual client is set up for IDP Initiated Login at broker IDP as described above. The external IDP has to set up the client for application IDP Initiated Login that will point to a special URL pointing to the broker and representing IDP Initiated Login endpoint for a selected client at the brokering IDP. This means that in client settings at the external IDP:
+使用[identity brokering](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker)时，可以从外部IDP为客户端设置IDP启动登录。 如上所述，在代理IDP处为IDP启动登录设置实际客户端。 外部IDP必须为应用程序IDP启动登录设置客户端，该客户端将指向指向代理的特殊URL，并代表代理IDP上所选客户端的IDP启动登录端点。 这意味着在外部IDP的客户端设置中：
 
-- `IDP Initiated SSO URL Name` is set to a name that will be published as IDP Initiated Login initial point,
-- `Assertion Consumer Service POST Binding URL` in the `Fine Grain SAML Endpoint Configuration` section has to be set to the following URL: `broker-root/auth/realms/{broker-realm}/broker/{idp-name}/endpoint/clients/{client-id}`, where:
-  - *broker-root* is base broker URL
-  - *broker-realm* is name of the realm at broker where external IDP is declared
-  - *idp-name* is name of the external IDP at broker
-  - *client-id* is the value of `IDP Initiated SSO URL Name` attribute of the SAML client defined at broker. It is this client, which will be made available for IDP Initiated Login from the external IDP.
+- `IDP Initiated SSO URL Name`设置为将作为IDP Initiated Login初始点发布的名称，
+- `Fine Grain SAML Endpoint Configuration`部分中的`Assertion Consumer Service POST Binding URL(断言消费者服务POST绑定URL)`必须设置为以下URL：`broker-root/auth/realms/{broker-realm}/broker/{idp-name}/endpoint/clients/{client-id}`，其中：
+  - *broker-root*是基础代理URL
+  - *broker-realm*是声明外部IDP的代理域的域名
+  - *idp-name*是经纪人的外部IDP的名称
+  - *client-id*是代理处定义的SAML客户端的`IDP Initiated SSO URL Name`属性的值。 正是这个客户端，将从外部IDP用于IDP启动登录。
 
-Please note that you can import basic client settings from the brokering IDP into client settings of the external IDP - just use [SP Descriptor](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker_saml_sp_descriptor) available from the settings of the identity provider in the brokering IDP, and add `clients/*client-id*` to the endpoint URL.
+请注意，您可以将基本客户端设置从代理IDP导入外部IDP的客户端设置 - 只需使用[SP描述符](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker_saml_sp_descriptor) 可以从代理IDP中的身份提供者的设置中获得，并将`clients/*client-id*`添加到端点URL。
 
-#### 8.2.2. SAML Entity Descriptors {#SAML_Entity_Descriptors}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/saml/entity-descriptors.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/saml/entity-descriptors.adoc)
+#### 8.2.2. SAML实体描述符 {#SAML_Entity_Descriptors}
 
-Instead of manually registering a SAML 2.0 client, you can import it via a standard SAML Entity Descriptor XML file. There is an `Import` option on the Add Client page.
+您可以通过标准SAML实体描述符XML文件导入SAML 2.0客户端，而不是手动注册SAML 2.0客户端。 “添加客户端”页面上有一个`Import`选项。
 
-Add Client
+添加客户端
 
 ![add client saml](assets/add-client-saml.png)
 
-Click the `Select File` button and load your entity descriptor file. You should review all the information there to make sure everything is set up correctly.
+单击`Select File`按钮并加载实体描述符文件。 您应该查看那里的所有信息，以确保所有设置都正确。
 
-Some SAML client adapters like *mod-auth-mellon* need the XML Entity Descriptor for the IDP. You can obtain this by going to this public URL: `root/auth/realms/{realm}/protocol/saml/descriptor`
+某些SAML客户端适配器（如*mod-auth-mellon*）需要IDP的XML实体描述符。 您可以通过转到此公共URL来获取此信息：`root/auth/realms/{realm}/protocol/saml/descriptor`
 
-### 8.3. Client Links {#Client_Links}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/client-link.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/client-link.adoc)
+### 8.3. 客户端链接 {#Client_Links}
 
-For scenarios where one wants to link from one client to another, Keycloak provides a special redirect endpoint: `/realms/realm_name/clients/{client-id}/redirect`.
+对于想要从一个客户端链接到另一个客户端的场景，Keycloak提供了一个特殊的重定向端点：`/realms/realm_name/clients/{client-id}/redirect`。
 
-If a client accesses this endpoint via an `HTTP GET` request, Keycloak returns the configured base URL for the provided Client and Realm in the form of an `HTTP 307` (Temporary Redirect) via the response’s `Location` header.
+如果客户端通过`HTTP GET`请求访问此端点，Keycloak将通过响应的`Location`头以`HTTP 307`（临时重定向）的形式返回所提供的Client和Realm的配置基本URL。
 
-Thus, a client only needs to know the Realm name and the Client ID in order to link to them. This indirection helps avoid hard-coding client base URLs.
+因此，客户端只需知道领域名称和客户端ID即可链接到它们。 此间接有助于避免硬编码客户端基本URL。
 
-As an example, given the realm `master` and the client-id `account`:
+例如，给定领域`master`和`client-id`帐户`：
 
-```
+```javascript
 http://host:port/auth/realms/master/clients/account/redirect
 ```
 
-Would temporarily redirect to: <http://host:port/auth/realms/master/account>
+将临时重定向到：`<http://host:port/auth/realms/master/account>`
 
-### 8.4. OIDC Token and SAML Assertion Mappings {#OIDC_Token_and_SAML_Assertion_Mappings}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/protocol-mappers.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/protocol-mappers.adoc)
+### 8.4. OIDC令牌和SAML断言映射 {#OIDC_Token_and_SAML_Assertion_Mappings}
 
 Applications that receive ID Tokens, Access Tokens, or SAML assertions may need or want different user metadata and roles. Keycloak allows you to define what exactly is transferred. You can hardcode roles, claims and custom attributes. You can pull user metadata into a token or assertion. You can rename roles. Basically you have a lot of control of what exactly goes back to the client.
 
