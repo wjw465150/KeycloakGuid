@@ -308,7 +308,7 @@ Keycloak向用户发送电子邮件以验证他们的电子邮件地址，忘记
 
   `Envelope From`表示[Bounce Address](https://en.wikipedia.org/wiki/Bounce_address) ，用于发送邮件的`Return-Path`SMTP-Header（可选）。
 
-由于电子邮件用于恢复用户名和密码，因此建议使用SSL或TLS，尤其是在SMTP服务器位于外部网络上时。 要启用SSL，请单击``Enable SSL`或启用TLS，单击`Enable TLS`。 您很可能还需要更改`Port`（SSL/TLS的默认端口是465）。
+由于电子邮件用于恢复用户名和密码，因此建议使用SSL或TLS，尤其是在SMTP服务器位于外部网络上时。 要启用SSL，请单击`Enable SSL`或启用TLS，单击`Enable TLS`。 您很可能还需要更改`Port`（SSL/TLS的默认端口是465）。
 
 如果您的SMTP服务器需要身份验证，请单击 `Enable Authentication`并插入`Username`和`Password`。
 
@@ -457,7 +457,7 @@ Default Required Actions
 
 ![default required actions](assets/default-required-actions.png)
 
-只需单击全新用户登录时要执行的所需操作的`Default Action``列中的复选框即可。
+只需单击全新用户登录时要执行的所需操作的`Default Action`列中的复选框即可。
 
 #### 4.6.2. 条款和条件 {#Terms_and_Conditions}
 许多组织都要求当新用户第一次登录时，他们需要同意网站的条款和条件。 Keycloak将此功能实现为必需的操作，但它需要一些配置。 首先，您必须转到前面描述的`Required Actions`选项卡并启用`Terms and Conditions`操作。 您还必须编辑*base* login主题中的*terms.ftl*文件。 有关扩展和创建主题的更多信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/) 。
@@ -1929,369 +1929,325 @@ http://host:port/auth/realms/master/clients/account/redirect
 
 ### 8.4. OIDC令牌和SAML断言映射 {#OIDC_Token_and_SAML_Assertion_Mappings}
 
-Applications that receive ID Tokens, Access Tokens, or SAML assertions may need or want different user metadata and roles. Keycloak allows you to define what exactly is transferred. You can hardcode roles, claims and custom attributes. You can pull user metadata into a token or assertion. You can rename roles. Basically you have a lot of control of what exactly goes back to the client.
+接收ID令牌，访问令牌或SAML断言的应用程序可能需要或想要不同的用户元数据和角色。 Keycloak允许您定义确切传输的内容。 您可以对角色，声明和自定义属性进行硬编码。 您可以将用户元数据拉入令牌或断言。 您可以重命名角色。 基本上你可以很好地控制究竟是什么回到客户端。
 
-Within the Admin Console, if you go to an application you’ve registered, you’ll see a `Mappers` tab. Here’s one for an OIDC based client.
+在管理控制台中，如果您转到已注册的应用程序，您将看到`Mappers`选项卡。 这是一个基于OIDC的客户端。
 
 Mappers Tab
 
 ![mappers oidc](assets/mappers-oidc.png)
 
-The new client does not have any built-in mappers, however it usually inherits some mappers from the client scopes as described in the [client scopes section](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes). Protocol mappers map things like, for example, email address to a specific claim in the identity and access token. Their function should each be self explanatory from their name. There are additional pre-configured mappers that are not attached to the client that you can add by clicking the `Add Builtin` button.
+新客户端没有任何内置映射器，但它通常从客户端作用域继承一些映射器，如[客户端作用域部分](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes)中所述。协议映射器将诸如电子邮件地址之类的内容映射到身份和访问令牌中的特定声明。 他们的功能应该从他们的名字中自我解释。 还有一些未附加到客户端的预配置映射器，您可以通过单击`Add Builtin`按钮添加这些映射器。
 
-Each mapper has common settings as well as additional ones depending on which type of mapper you are adding. Click the `Edit` button next to one of the mappers in the list to get to the config screen.
+每个映射器都有常用设置以及其他设置，具体取决于您要添加的映射器类型。 单击列表中其中一个映射器旁边的`Edit`按钮进入配置屏幕。
 
 Mapper Config
 
 ![mapper config](assets/mapper-config.png)
 
-The best way to learn about a config option is to hover over its tooltip.
+了解配置选项的最佳方法是将鼠标悬停在其工具提示上。
 
-Most OIDC mappers also allow you to control where the claim gets put. You can opt to include or exclude the claim from both the *id* and *access* tokens by fiddling with the `Add to ID token` and `Add to access token` switches.
+大多数OIDC映射器还允许您控制声明的放置位置。 您可以通过摆弄`Add to ID token` 和 `Add to access token` 开关来选择在*id* 和 *access*令牌中包含或排除声明。
 
-Finally, you can also add other mapper types. If you go back to the `Mappers` tab, click the `Create` button.
+最后，您还可以添加其他映射器类型。 如果您返回`Mappers`选项卡，请单击`Create`按钮。
 
 Add Mapper
 
 ![add mapper](assets/add-mapper.png)
 
-Pick a `Mapper Type` from the list box. If you hover over the tooltip, you’ll see a description of what that mapper type does. Different config parameters will appear for different mapper types.
+从列表框中选择`Mapper Type`。 如果将鼠标悬停在工具提示上，您将看到该映射器类型的描述。 将针对不同的映射器类型显示不同的配置参数。
 
-#### 8.4.1. Priority order {#Priority_order}
-Mapper implementations have *priority order*. This priority order is not the configuration property of the mapper; rather, it is the property of the concrete implementation of the mapper.
+#### 8.4.1. 优先顺序 {#Priority_order}
+映射器实现具有*priority order(优先级顺序)*。 此优先级顺序不是映射器的配置属性; 相反，它是mapper具体实现的属性。
 
-Mappers are sorted in the admin console by the order in the list of mappers and the changes in the token or assertion will be applied using that order with the lowest being applied first. This means that implementations which are dependent on other implementations are processed in the needed order.
+映射器在管理控制台中按照映射器列表中的顺序进行排序，并且将使用该顺序应用令牌或断言中的更改，并且首先应用最低值。 这意味着依赖于其他实现的实现按所需顺序处理。
 
-For example, when we first want to compute the roles which will be included with a token, we first resolve audiences based on those roles. Then, we process a JavaScript script that uses the roles and audiences already available in the token.
+例如，当我们首先想要计算将包含在令牌中的角色时，我们首先根据这些角色来解析受众。 然后，我们处理一个JavaScript脚本，该脚本使用令牌中已有的角色和受众。
 
-#### 8.4.2. OIDC User Session Note Mappers {#OIDC_User_Session_Note_Mappers}
-User session details are via mappers and depend on various criteria. User session details are automatically included when you use or enable a feature on a client. You can also click the `Add builtin` button to include session details.
+#### 8.4.2. OIDC用户会话记录映射器 {#OIDC_User_Session_Note_Mappers}
+用户会话详细信息是通过映射器，并取决于各种标准。 在客户端上使用或启用功能时，将自动包含用户会话详细信息。 您还可以单击`Add builtin`按钮以包含会话详细信息。
 
-Impersonated user sessions provide the following details:
+模拟的用户会话提供以下详细信息：
 
-- `IMPERSONATOR_ID`: The ID of an impersonating user
-- `IMPERSONATOR_USERNAME`: The username of an impersonating user
+- `IMPERSONATOR_ID`: 模拟用户的ID
+- `IMPERSONATOR_USERNAME`: 模拟用户的用户名
 
-Service account sessions provide the following details:
+服务帐户会话提供以下详细信息：
 
-- `clientId`: The client ID of the service account
-- `clientAddress`: The remote host IP of the service account authenticated device
-- `clientHost`: The remote host name of the service account authenticated device
+- `clientId`: 服务帐户的客户端ID
+- `clientAddress`: 服务帐户验证设备的远程主机IP
+- `clientHost`: 服务帐户验证设备的远程主机名
 
-### 8.5. Generating Client Adapter Config {#Generating_Client_Adapter_Config}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/installation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/installation.adoc)
+### 8.5. 生成客户端适配器配置 {#Generating_Client_Adapter_Config}
 
-The Keycloak can pre-generate configuration files that you can use to install a client adapter for in your application’s deployment environment. A number of adapter types are supported for both OIDC and SAML. Go to the `Installation` tab of the client you want to generate configuration for.
+Keycloak可以预先生成配置文件，您可以使用这些配置文件在应用程序的部署环境中安装客户端适配器。 OIDC和SAML都支持许多适配器类型。 转到要为其生成配置的客户端的`Installation`选项卡。
 
 ![client installation](assets/client-installation.png)
 
-Select the `Format Option` you want configuration generated for. All Keycloak client adapters for OIDC and SAML are supported. The mod-auth-mellon Apache HTTPD adapter for SAML is supported as well as standard SAML entity descriptor files.
+选择要为其生成配置的`Format Option`。 支持所有用于OIDC和SAML的Keycloak客户端适配器。 支持SAML的`mod-auth-mellon Apache HTTPD`适配器以及标准SAML实体描述符文件。
 
-### 8.6. Client Scopes {#Client_Scopes}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/clients/client-scopes.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/clients/client-scopes.adoc)
+### 8.6. 客户端作用域 {#Client_Scopes}
 
-If you have many applications you need to secure and register within your organization, it can become tedious to configure the [protocol mappers](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers) and [role scope mappings](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings) for each of these clients. Keycloak allows you to define a shared client configuration in an entity called a *client scope*.
+如果您需要在组织内保护和注册许多应用程序，为每个客户端配置[协议映射器](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers) 和 [角色范围映射](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings) 可能会变得很繁琐。 Keycloak允许您在名为*client scope*的实体中定义共享客户端配置。
 
-Client scopes also provide support for the OAuth 2 `scope` parameter, which allows a client application to request more or fewer claims or roles in the access token, according to the application needs.
+客户端作用域还为OAuth 2的`scope`参数提供支持，该参数允许客户端应用程序根据应用程序需求在访问令牌中请求更多或更少的声明或角色。
 
-To create a client scope, follow these steps:
+要创建客户端作用域，请按照下列步骤操作：
 
-- Go to the `Client Scopes` left menu item. This initial screen shows you a list of currently defined client scopes.
+- 转到`Client Scopes`左侧菜单项。 此初始屏幕显示当前定义的客户端作用域列表。
 
 Client Scopes List
 
 ![client scopes list](assets/client-scopes-list.png)
 
-- Click the `Create` button. Name the client scope and save. A *client scope* will have similar tabs to a regular clients. You can define [protocol mappers](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers) and [role scope mappings](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings), which can be inherited by other clients, and which are configured to inherit from this client scope.
+- 单击`Create`按钮。 命名客户端范围并保存。 A *client scope(客户端作用域)* 将具有与常规客户端类似的选项卡。 您可以定义[协议映射器](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers) 和 [角色范围映射](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings)，可以由其他客户端继承，并配置为从此客户端作用域继承。
 
-#### 8.6.1. Protocol {#Protocol}
-When you are creating the client scope, you must choose the `Protocol`. Only the clients which use same protocol can then be linked with this client scope.
+#### 8.6.1. 协议 {#Protocol}
+在创建客户端作用域时，必须选择`Protocol`。 然后，只有使用相同协议的客户端才能与此客户端作用域链接。
 
-Once you have created new realm, you can see that there is a list of pre-defined (builtin) client scopes in the menu.
+创建新领域后，您可以看到菜单中有一个预定义（内置）客户端作用域列表。
 
-- For the SAML protocol, there is one builtin client scope, `roles_list`, which contains one protocol mapper for showing the roles list in the SAML assertion.
-- For the OpenID Connect protocol, there are client scopes `profile`, `email`, `address`, `phone`, `offline_access`, `roles`, `web-origins` and `microprofile-jwt`.
+- 对于SAML协议，有一个内置客户端作用域`roles_list`，其中包含一个协议映射器，用于显示SAML断言中的角色列表。
+- 对于OpenID Connect协议，有客户端作用域`profile`，`email`，`address`，`phone`，`offline_access`，`roles`，`web-originins`和`microprofile-jwt`。
 
-The client scope, `offline_access`, is useful when client wants to obtain offline tokens. Learn about offline tokens in the[Offline Access section](https://www.keycloak.org/docs/latest/server_admin/index.html#_offline-access) or in the [OpenID Connect specification](https://openid.net/specs/openid-connect-core-1_0.html#OfflineAccess), where scope parameter is defined with the value `offline_access`.
+当客户端想要获取脱机令牌时，客户端作用域`offline_access`非常有用。 在[离线访问部分](https://www.keycloak.org/docs/latest/server_admin/index.html#_offline-access) 或 [OpenID Connect规范](https://openid.net/specs/openid-connect-core-1_0.html#OfflineAccess) 中了解离线令牌，其中scope参数定义为值`offline_access`。
 
-The client scopes `profile`, `email`, `address` and `phone` are also defined in the [OpenID Connect specification](https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims). These client scopes do not have any role scope mappings defined, but they have some protocol mappers defined, and these mappers correspond to the claims defined in the OpenID Connect specification.
+客户端作用域 `profile`，`email`，`address`和`phone`也在[OpenID Connect规范](https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims)中定义。 这些客户端作用域没有定义任何角色作用域映射，但是它们定义了一些协议映射器，并且这些映射器对应于OpenID Connect规范中定义的声明。
 
-For example, when you click to open the `phone` client scope and open the `Mappers` tab, you will see the protocol mappers, which correspond to the claims defined in the specification for the scope `phone`.
+例如，当您单击打开`phone`客户端范围并打开`Mappers`选项卡时，您将看到协议映射器，它对应于范围`phone`的规范中定义的声明。
 
 Client Scope Mappers
 
 ![client scopes phone](assets/client-scopes-phone.png)
 
-When the `phone` client scope is linked to a client, that client automatically inherits all the protocol mappers defined in the`phone` client scope. Access tokens issued for this client will contain the phone number information about the user, assuming that the user has a defined phone number.
+当`phone`客户端作用域链接到客户端时，该客户端自动继承在`phone`客户端作用域中定义的所有协议映射器。 为该客户端发出的访问令牌将包含有关用户的电话号码信息，假设用户具有已定义的电话号码。
 
-Builtin client scopes contain exactly the protocol mappers as defined per the specification, however you are free to edit client scopes and create/update/remove any protocol mappers (or role scope mappings).
+Builtin客户端作用域包含按照规范定义的协议映射器，但是您可以自由编辑客户端作用域并`创建/更新/删除`任何协议映射器（或角色作用域映射）。
 
-The client scope `roles` is not defined in the OpenID Connect specification and it is also not added automatically to the `scope` claim in the access token. This client scope has some mappers, which are used to add roles of the user to the access token and possibly add some audiences for the clients with at least one client role as described in the [Audience section](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_resolve).
+客户端作用域`roles`未在OpenID Connect规范中定义，也不会自动添加到访问令牌中的`scope`声明中。 此客户端范围有一些映射器，用于将用户的角色添加到访问令牌，并可能为具有至少一个客户端角色的客户端添加一些受众，如[受众节](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_resolve)部分所述。
 
-The client scope `web-origins` is also not defined in the OpenID Connect specification and not added to the `scope` claim. This is used to add allowed web origins to the access token `allowed-origins` claim.
+客户端范围`web-originins`也没有在OpenID Connect规范中定义，也没有添加到`scope`声明中。 这用于将允许的Web来源添加到访问令牌`allowed-origins`声明中。
 
-The client scope `microprofile-jwt` was created to handle the claims defined in the [MicroProfile/JWT Auth Specification](https://wiki.eclipse.org/MicroProfile/JWT_Auth). This client scope defines a user property mapper for the `upn` claim and also a realm role mapper for the `groups` claim. These mappers can be changed as needed so that different properties can be used to create the MicroProfile/JWT specific claims.
+创建客户端作用域`microprofile-jwt`以处理[MicroProfile / JWT Auth Specification](https://wiki.eclipse.org/MicroProfile/JWT_Auth)中定义的声明。 此客户端作用域为`upn`声明定义了一个用户属性映射器，并为`groups`声明定义了一个领域角色映射器。 可以根据需要更改这些映射器，以便可以使用不同的属性来创建`MicroProfile/JWT`特定声明。
 
-#### 8.6.2. Consent related settings {#Consent_related_settings}
-Client scope contains options related to the consent screen. Those options are useful only if the linked client is configured to require consent (if the `Consent Required` switch is enabled on the client).
+#### 8.6.2. 同意相关设置 {#Consent_related_settings}
+客户端作用域包含与同意屏幕相关的选项。 仅当链接客户端配置为需要同意时（如果在客户端上启用了`Consent Required(同意所需)`开关），这些选项才有用。
 
-- Display On Consent Screen
+- 在同意屏幕上显示
 
-  If on, and if this client scope is added to a client with consent required, then the text specified by `Consent Screen Text`will be displayed on the consent screen, which is shown once the user is authenticated and right before he is redirected from Keycloak to the client. If the switch is off, then this client scope will not be displayed on the consent screen.
+  如果启用，并且如果将此客户端作用域添加到需要同意的客户端，则`Consent Screen Text(同意屏幕文本)`指定的文本将显示在同意屏幕上，一旦用户通过身份验证并且在重定向之前显示 给客户的Keycloak。 如果开关已关闭，则此同一客户端作用域将不会显示在同意屏幕上。
 
-- Consent Screen Text
+- 同意屏幕文字
 
-  The text shown on the consent screen when this client scope is added to some client with consent required defaults to the name of client scope. The value for this text is localizable by specifying a substitution variable with `${var-name}` strings. The localized value is then configured within property files in your theme. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information on localization.
+  当此客户端作用域被添加到需要同意的某个客户端时，同意屏幕上显示的文本默认为客户端范围的名称。 通过使用`${var-name}`字符串指定替换变量，可以对此文本的值进行本地化。 然后，在主题的属性文件中配置本地化值。 有关本地化的更多信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-#### 8.6.3. Link Client Scope with the Client {#Link_Client_Scope_with_the_Client}
-Linking between client scope and client is configured in the `Client Scopes` tab of the particular client. There are 2 ways of linking between client scope and client.
+#### 8.6.3. 将客户端作用域与客户端链接 {#Link_Client_Scope_with_the_Client}
+客户端作用域和客户端之间的链接在特定客户端的`Client Scopes`选项卡中配置。 客户端作用域和客户端之间有两种链接方式。
 
 - Default Client Scopes
 
-  This is applicable for both OpenID Connect and SAML clients. Default client scopes are always applied when issuing OpenID Connect tokens or SAML assertions for this client. The client will inherit Protocol mappers and Role Scope Mappings defined on the client scope. For the OpenID Connect Protocol, the Mappers and Role Scope Mappings are always applied, regardless of the value used for the scope parameter in the OpenID Connect authorization request.
+  这适用于OpenID Connect和SAML客户端。 在为此客户端发出OpenID Connect令牌或SAML断言时，始终应用默认客户端作用域。 客户端将继承客户端作用域上定义的协议映射器和角色作用域映射。 对于OpenID Connect协议，无论在OpenID Connect授权请求中使用scope参数的值如何，始终应用Mappers和Role Scope Mappings。
 
 - Optional Client Scopes
 
-  This is applicable only for OpenID Connect clients. Optional client scopes are applied when issuing tokens for this client, but only when they are requested by the `scope` parameter in the OpenID Connect authorization request.
+  这仅适用于OpenID Connect客户端。 在为此客户端发出令牌时应用可选的客户端作用域，但仅当它们由OpenID Connect授权请求中的`scope`参数请求时才应用。
 
-##### Example {#Example}
-For this example, we assume that the client has `profile` and `email` linked as default client scopes, and `phone` and `address` are linked as optional client scopes. The client will use the value of the scope parameter when sending a request to the OpenID Connect authorization endpoint:
+##### 例子 {#Example}
+对于此示例，我们假设客户端将`profile`和`email`链接为默认客户端作用域，并且`phone`和`address`作为可选的客户端作用域链接。 在向OpenID Connect授权端点发送请求时，客户端将使用scope参数的值：
 
-```
+```properties
 scope=openid phone
 ```
 
-The scope parameter contains the string, with the scope values divided by space (which is also the reason why a client scope name cannot contain a space character in it). The value `openid` is the meta-value used for all OpenID Connect requests, so we will ignore it for this example. The token will contain mappers and role scope mappings from the client scopes `profile`, `email` (which are default scopes) and `phone` (an optional client scope requested by the scope parameter).
+scope参数包含字符串，范围值除以空格（这也是客户端范围名称中不能包含空格字符的原因）。 值`openid`是用于所有OpenID Connect请求的元值，因此我们将在此示例中忽略它。 令牌将包含来自客户端作用域`profile`，`email`（默认作用域）和`phone`（作用域参数请求的可选客户端作用域）的映射器和角色作用域映射。
 
-#### 8.6.4. Evaluating Client Scopes {#Evaluating_Client_Scopes}
-The tabs `Mappers` and `Scope` of the client contain the protocol mappers and role scope mappings declared solely for this client. They do not contain the mappers and scope mappings inherited from client scopes. However, it may be useful to see what the effective protocol mappers will be (protocol mappers defined on the client itself as well as inherited from the linked client scopes) and the effective role scope mappings used when you generate the token for the particular client.
+#### 8.6.4. 评估客户端作用域 {#Evaluating_Client_Scopes}
+客户端的`Mappers` 和 `Scope`选项卡包含仅为此客户端声明的协议映射器和角色范围映射。 它们不包含从客户端作用域继承的映射器和作用域映射。 但是，查看有效协议映射器将是什么（在客户端本身定义的协议映射器以及从链接的客户端作用域继承）以及为特定客户端生成令牌时使用的有效角色作用域映射可能很有用。
 
-You can see all of these when you click the `Client Scopes` tab for the client and then open the sub-tab `Evaluate`. From here you can select the optional client scopes that you want to apply. This will also show you the value of the `scope`parameter, which needs to be sent from the application to the Keycloak OpenID Connect authorization endpoint.
+当您单击客户端的`Client Scopes`选项卡，然后打开子选项卡`Evaluate(评估)`时，您可以看到所有这些。 从这里，您可以选择要应用的可选客户端范围。 这还将显示`scope`参数的值，该值需要从应用程序发送到Keycloak OpenID Connect授权端点。
 
 Evaluating Client Scopes
 
 ![client scopes evaluate](assets/client-scopes-evaluate.png)
 
-|      | If you want to see how you can send a custom value for a `scope` parameter from your application, see the[parameters forwarding section](https://www.keycloak.org/docs/6.0/securing_apps/#_params_forwarding), if your application uses the servlet adapter, or the [javascript adapter section](https://www.keycloak.org/docs/6.0/securing_apps/#_javascript_adapter), if your application uses the javascript adapter. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 如果您想了解如何从应用程序发送`scope`参数的自定义值，请参阅[参数转发部分](https://www.keycloak.org/docs/6.0/securing_apps/#_params_forwarding)， 如果您的应用程序使用servlet适配器，或[javascript适配器部分](https://www.keycloak.org/docs/6.0/securing_apps/#_javascript_adapter)，如果您的应用程序使用javascript适配器。
 
-##### Generating Example Tokens {#Generating_Example_Tokens}
-To see an example of a real access token, generated for the particular user and issued for the particular client, with the specified value of `scope` parameter, select the user from the `Evaluate` screen. This will generate an example token that includes all of the claims and role mappings used.
+##### 生成示例令牌 {#Generating_Example_Tokens}
+要查看为特定用户生成并为特定客户端发出的具有指定值`scope`参数的实际访问令牌的示例，请从`Evaluate`屏幕中选择用户。 这将生成一个示例标记，其中包含所有使用的声明和角色映射。
 
-#### 8.6.5. Client Scopes Permissions {#Client_Scopes_Permissions}
-When issuing tokens for a particular user, the client scope is applied only if the user is permitted to use it. In the case that a client scope does not have any role scope mappings defined on itself, then each user is automatically permitted to use this client scope. However, when a client scope has any role scope mappings defined on itself, then the user must be a member of at least one of the roles. In other words, there must be an intersection between the user roles and the roles of the client scope. Composite roles are taken into account when evaluating this intersection.
+#### 8.6.5. 客户端作用域权限 {#Client_Scopes_Permissions}
+为特定用户颁发令牌时，仅在允许用户使用客户端作用域时才应用客户端作用域。 如果客户端作用域没有自己定义的任何角色作用域映射，则会自动允许每个用户使用此客户端作用域。 但是，当客户端作用域具有自身定义的任何角色作用域映射时，用户必须至少是其中一个角色的成员。 换句话说，用户角色与客户端范围的角色之间必须存在交集。 评估此交集时会考虑复合角色。
 
-If a user is not permitted to use the client scope, then no protocol mappers or role scope mappings will be used when generating tokens and the client scope will not appear in the *scope* value in the token.
+如果不允许用户使用客户端作用域，则在生成令牌时将不使用协议映射器或角色作用域映射，并且客户端作用域不会出现在令牌中的*scope*值中。
 
-#### 8.6.6. Realm Default Client Scopes {#Realm_Default_Client_Scopes}
-The `Realm Default Client Scopes` allow you to define set of client scopes, which will be automatically linked to newly created clients.
+#### 8.6.6. 领域默认客户端作用域 {#Realm_Default_Client_Scopes}
+`Realm Default Client Scopes`允许您定义一组客户端作用域，这些作用域将自动链接到新创建的客户端。
 
-Open the left menu item `Client Scopes` and then select `Default Client Scopes`.
+打开左侧菜单项`Client Scopes`，然后选择`Default Client Scopes`。
 
-From here, select the client scopes that you want to add as `Default Client Scopes` to newly created clients and `Optional Client Scopes` to newly created clients.
+从此处，为新创建的客户端选择要添加为`Default Client Scopes`的客户端作用域，为新创建的客户端选择`Optional Client Scopes`。
 
 Default Client Scopes
 
 ![client scopes default](assets/client-scopes-default.png)
 
-Once the client is created, you can unlink the default client scopes, if needed. This is similar to how you remove [Default Roles](https://www.keycloak.org/docs/latest/server_admin/index.html#_default_roles).
+创建客户端后，您可以根据需要取消链接默认客户端作用域。 这与删除[默认角色](https://www.keycloak.org/docs/latest/server_admin/index.html#_default_roles)的方式类似。
 
-#### 8.6.7. Scopes explained {#Scopes_explained}
-The term `scope` is used in Keycloak on few places. Various occurrences of scopes are related to each other, but may have a different context and meaning. To clarify, here we explain the various `scopes` used in Keycloak.
+#### 8.6.7. 作用域解释 {#Scopes_explained}
+术语`scope`在Keycloak中用于少数几个地方。 各种作用域的出现彼此相关，但可能具有不同的上下文和含义。 为了澄清，这里我们解释Keycloak中使用的各种`scopes`。
 
 - Client scope
 
-  Referenced in this chapter. Client scopes are entities in Keycloak, which are configured at the realm level and they can be linked to clients. The client scopes are referenced by their name when a request is sent to the Keycloak authorization endpoint with a corresponding value of the `scope` parameter. The details are described in the [section about client scopes linking](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_linking).
+  在本章中引用。 客户端作用域是Keycloak中的实体，它们在领域级别配置，并且可以链接到客户端。 当使用相应的`scope`参数值向Keycloak授权端点发送请求时，客户端作用域将通过其名称引用。 详细信息在[关于客户端作用域链接的部分](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_linking)中进行了描述。
 
 - Role scope mapping
 
-  This can be seen when you open tab `Scope` of a client or client scope. Role scope mapping allows you to limit the roles which can be used in the access tokens. The details are described in the [Role Scope Mappings section](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings).
+  当您打开客户端或客户端范围的`Scope`选项卡时，可以看到这一点。 角色作用域映射允许您限制可以在访问令牌中使用的角色。 详细信息在[Role Scope Mappings部分](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings)中描述。
 
 - Authorization scopes
 
-  This is used by the Authorization feature. The `Authorization Scope` is the action which can be done in the application. More details in the [Authorization Services Guide](https://www.keycloak.org/docs/6.0/authorization_services/).
+  这由授权功能使用。 `Authorization Scope`是可以在应用程序中完成的操作。 [授权服务指南](https://www.keycloak.org/docs/6.0/authorization_services/)中的更多详细信息。
 
-## 9. Roles {#Roles}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/roles.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/roles.adoc)
+## 9. 角色 {#Roles}
 
-Roles identify a type or category of user. `Admin`, `user`, `manager`, and `employee` are all typical roles that may exist in an organization. Applications often assign access and permissions to specific roles rather than individual users as dealing with users can be too fine grained and hard to manage. For example, the Admin Console has specific roles which give permission to users to access parts of the Admin Console UI and perform certain actions. There is a global namespace for roles and each client also has its own dedicated namespace where roles can be defined.
+角色标识用户的类型或类别。 `Admin`，`user`，`manager`和`employee`都是组织中可能存在的典型角色。 应用程序通常为特定角色而不是单个用户分配访问权限和权限，因为与用户打交道可能过于细粒度且难以管理。 例如，管理控制台具有特定角色，这些角色授予用户访问管理控制台UI部分并执行某些操作的权限。 角色有一个全局命名空间，每个客户端也有自己的专用命名空间，可以定义角色。
 
-### 9.1. Realm Roles {#Realm_Roles}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/roles/realm-roles.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/roles/realm-roles.adoc)
+### 9.1. 领域角色 {#Realm_Roles}
 
-Realm-level roles are a global namespace to define your roles. You can see the list of built-in and created roles by clicking the `Roles` left menu item.
+领域级角色是定义角色的全局命名空间。 您可以通过单击`Roles`左侧菜单项来查看内置和创建的角色列表。
 
 ![roles](assets/roles.png)
 
-To create a role, click **Add Role** on this page, enter in the name and description of the role, and click **Save**.
+要创建角色，请单击此页面上的**Add Role**，输入角色的名称和描述，然后单击**Save**。
 
 Add Role
 
 ![role](assets/role.png)
 
-The value for the `description` field is localizable by specifying a substitution variable with `${var-name}` strings. The localized value is then configured within property files in your theme. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information on localization.
+通过使用`${var-name}`字符串指定替换变量，可以对`description`字段的值进行本地化。 然后，在主题的属性文件中配置本地化值。 有关本地化的更多信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-### 9.2. Client Roles {#Client_Roles}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/roles/client-roles.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/roles/client-roles.adoc)
+### 9.2. 客户端 角色 {#Client_Roles}
 
-Client roles are basically a namespace dedicated to a client. Each client gets its own namespace. Client roles are managed under the `Roles` tab under each individual client. You interact with this UI the same way you do for realm-level roles.
+客户端角色基本上是专用于客户端的命名空间。 每个客户端都有自己的命名空间 客户角色在每个客户端下的`Roles`选项卡下进行管理。 您与此UI的交互方式与您对领域级角色的交互方式相同。
 
-### 9.3. Composite Roles {#Composite_Roles}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/roles/composite.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/roles/composite.adoc)
+### 9.3. 复合 角色 {#Composite_Roles}
 
-Any realm or client level role can be turned into a *composite role*. A *composite role* is a role that has one or more additional roles associated with it. When a composite role is mapped to the user, the user also gains the roles associated with that composite. This inheritance is recursive so any composite of composites also gets inherited.
+任何领域或客户级角色都可以转换为*composite role(复合角色)*。 一个 *composite role*是具有一个或多个与之关联的其他角色的角色。 将复合角色映射到用户时，用户还将获得与该复合关联的角色。 这种继承是递归的，因此任何复合合成也都会被继承。
 
-To turn a regular role into a composite role, go to the role detail page and flip the `Composite Role` switch on.
+要将常规角色转换为复合角色，请转到角色详细信息页面并打开`Composite Role`开关。
 
 Composite Role
 
 ![composite role](assets/composite-role.png)
 
-Once you flip this switch the role selection UI will be displayed lower on the page and you’ll be able to associate realm level and client level roles to the composite you are creating. In this example, the `employee` realm-level role was associated with the `developer` composite role. Any user with the `developer` role will now also inherit the `employee` role too.
+一旦您翻转此开关，角色选择UI将显示在页面的较低位置，您将能够将领域级别和客户端级别角色与您正在创建的组合关联。 在此示例中，`employee`领域级角色与`developer`复合角色相关联。 任何具有`developer`角色的用户现在也将继承`employee`角色。
 
-|      | When tokens and SAML assertions are created, any composite will also have its associated roles added to the claims and assertions of the authentication response sent back to the client. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 创建令牌和SAML断言时，任何组合也将其相关角色添加到发送回客户端的身份验证响应的声明和断言中。
 
-### 9.4. User Role Mappings {#User_Role_Mappings}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/roles/user-role-mappings.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/roles/user-role-mappings.adoc)
+### 9.4. 用户角色映射 {#User_Role_Mappings}
 
-User role mappings can be assigned individually to each user through the `Role Mappings` tab for that single user.
+用户角色映射可以通过该单个用户的`Role Mappings(角色映射)`选项卡单独分配给每个用户。
 
 Role Mappings
 
 ![user role mappings](assets/user-role-mappings.png)
 
-In the above example, we are about to assign the composite role `developer` that was created in the [Composite Roles](https://www.keycloak.org/docs/latest/server_admin/index.html#_composite-roles)chapter.
+在上面的例子中，我们将分配在[Composite Roles](https://www.keycloak.org/docs/latest/server_admin/index.html#_composite-roles)章节中创建的复合角色`developer`。
 
 Effective Role Mappings
 
 ![effective role mappings](assets/effective-role-mappings.png)
 
-Once the `developer` role is assigned, you see that the `employee` role that is associated with the `developer` composite shows up in the `Effective Roles`. `Effective Roles` are all roles that are explicitly assigned to the user as well as any roles that are inherited from composites.
+一旦分配了`developer`角色，您就会看到与`developer`合成相关联的`employee`角色出现在`Effective Roles(有效角色)`中。 `Effective Roles`是显式分配给用户的所有角色以及从复合体继承的任何角色。
 
-#### 9.4.1. Default Roles {#Default_Roles}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/roles/user-role-mappings/default-roles.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/roles/user-role-mappings/default-roles.adoc)
+#### 9.4.1. 默认角色 {#Default_Roles}
 
-Default roles allow you to automatically assign user role mappings when any user is newly created or imported through [Identity Brokering](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker). To specify default roles go to the `Roles` left menu item, and click the `Default Roles` tab.
+默认角色允许您在通过[Identity Brokering](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker)新创建或导入任何用户时自动分配用户角色映射。 要指定默认角色，请转到`Roles`左侧菜单项，然后单击`Default Roles`选项卡。
 
 Default Roles
 
 ![default roles](assets/default-roles.png)
 
-As you can see from the screenshot, there are already a number of *default roles* set up by default.
+从屏幕截图中可以看出，默认情况下已经设置了许多*default roles*。
 
-### 9.5. Role Scope Mappings {#Role_Scope_Mappings}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/roles/role-scope-mappings.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/roles/role-scope-mappings.adoc)
+### 9.5. 角色范围映射 {#Role_Scope_Mappings}
 
-When an OIDC access token or SAML assertion is created, all the user role mappings of the user are, by default, added as claims within the token or assertion. Applications use this information to make access decisions on the resources controlled by that application. In Keycloak, access tokens are digitally signed and can actually be re-used by the application to invoke on other remotely secured REST services. This means that if an application gets compromised or there is a rogue client registered with the realm, attackers can get access tokens that have a broad range of permissions and your whole network is compromised. This is where *role scope mappings* becomes important.
+创建OIDC访问令牌或SAML断言时，默认情况下，用户的所有用户角色映射都会在令牌或断言中添加为声明。 应用程序使用此信息对该应用程序控制的资源进行访问决策。 在Keycloak中，访问令牌经过数字签名，实际上可以被应用程序重用，以调用其他远程安全的REST服务。 这意味着，如果某个应用程序受到攻击或者该域名中存在一个流氓客户端，则攻击者可以获得具有广泛权限的访问权限，并且您的整个网络都会受到攻击。 这就是*role scope mappings(角色范围映射)*变得重要的地方。
 
-*Role Scope Mappings* is a way to limit the roles that get declared inside an access token. When a client requests that a user be authenticated, the access token they receive back will only contain the role mappings you’ve explicitly specified for the client’s scope. This allows you to limit the permissions each individual access token has rather than giving the client access to all of the user’s permissions. By default, each client gets all the role mappings of the user. You can view this in the `Scope` tab of each client.
+*Role Scope Mappings*是一种限制在访问令牌中声明的角色的方法。 当客户端请求对用户进行身份验证时，他们收到的访问令牌将仅包含您为客户端范围明确指定的角色映射。 这允许您限制每个单独的访问令牌具有的权限，而不是让客户端访问所有用户的权限。 默认情况下，每个客户端都会获取用户的所有角色映射。 您可以在每个客户端的`Scope`选项卡中查看此内容。
 
 Full Scope
 
 ![full client scope](assets/full-client-scope.png)
 
-You can see from the picture that the effective roles of the scope are every declared role in the realm. To change this default behavior, you must explicitly turn off the `Full Scope Allowed` switch and declare the specific roles you want in each individual client. Alternatively, you can also use [client scopes](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes) to define the same role scope mappings for a whole set of clients.
+从图中可以看出，范围的有效角色是领域中每个声明的角色。 要更改此默认行为，您必须明确关闭`Full Scope Allowed(允许的全范围)`开关，并在每个单独的客户端中声明所需的特定角色。 或者，您也可以使用[客户端作用域](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes)为整组客户端定义相同的角色作用域映射。
 
 Partial Scope
 
 ![client scope](assets/client-scope.png)
 
-## 10. Groups {#Groups}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/groups.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/groups.adoc)
+## 10. 组 {#Groups}
 
-Groups in Keycloak allow you to manage a common set of attributes and role mappings for a set of users. Users can be members of zero or more groups. Users inherit the attributes and role mappings assigned to each group. To manage groups go to the `Groups` left menu item.
+Keycloak中的组允许您为一组用户管理一组通用属性和角色映射。 用户可以是零个或多个组的成员。 用户继承分配给每个组的属性和角色映射。 要管理组，请转到`Groups`左侧菜单项。
 
 Groups
 
 ![groups](assets/groups.png)
 
-Groups are hierarchical. A group can have many subgroups, but a group can only have one parent. Subgroups inherit the attributes and role mappings from the parent. This applies to the user as well. So, if you have a parent group and a child group and a user that only belongs to the child group, the user inherits the attributes and role mappings of both the parent and child. In this example, we have a top level `Sales` group and a child `North America` subgroup. To add a group, click on the parent you want to add a new child to and click `New` button. Select the `Groups` icon in the tree to make a top-level group. Entering in a group name in the `Create Group` screen and hitting `Save` will bring you to the individual group management page.
+组是分层的。 一个组可以有许多子组，但一个组只能有一个父组。 子组从父级继承属性和角色映射。 这也适用于用户。 因此，如果您有父组和子组以及仅属于子组的用户，则用户将继承父级和子级的属性和角色映射。 在这个例子中，我们有一个顶级的`Sales`组和一个子`North America`子组。 要添加组，请单击要添加新子项的父项，然后单击`New`按钮。 选择树中的`Groups`图标以创建顶级组。 在`Create Group`屏幕中输入组名并点击`Save`将进入单个组管理页面。
 
 Group
 
 ![group](assets/group.png)
 
-The `Attributes` and `Role Mappings` tab work exactly as the tabs with similar names under a user. Any attributes and role mappings you define will be inherited by the groups and users that are members of this group.
+`Attributes`和`Role Mappings`选项卡的工作方式与用户下具有相似名称的选项卡完全相同。 您定义的任何属性和角色映射都将由作为该组成员的组和用户继承。
 
-To add a user to a group you need to go all the way back to the user detail page and click on the `Groups` tab there.
+要将用户添加到组，您需要一直返回到用户详细信息页面，然后单击那里的`Groups`选项卡。
 
 User Groups
 
 ![user groups](assets/user-groups.png)
 
-Select a group from the `Available Groups` tree and hit the `join` button to add the user to a group. Vice versa to remove a group. Here we’ve added the user *Jim* to the *North America* sales group. If you go back to the detail page for that group and select the `Membership` tab, *Jim* is now displayed there.
+从`Available Groups`树中选择一个组，然后单击`join`按钮将用户添加到组中。 反之亦然删除一个组。 在这里，我们将用户*Jim*添加到*North America*销售组。 如果您返回该组的详细信息页面并选择`Membership`选项卡，则*Jim*现在显示在那里。
 
 Group Membership
 
 ![group membership](assets/group-membership.png)
 
-### 10.1. Groups vs. Roles {#Groups_vs__Roles}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/groups/groups-vs-roles.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/groups/groups-vs-roles.adoc)
+### 10.1. 群组与角色 {#Groups_vs__Roles}
 
-In the IT world the concepts of Group and Role are often blurred and interchangeable. In Keycloak, Groups are just a collection of users that you can apply roles and attributes to in one place. Roles define a type of user and applications assign permission and access control to roles
+在IT世界中，组和角色的概念通常是模糊和可互换的。 在Keycloak中，组只是一组用户，您可以在一个位置应用角色和属性。 角色定义一种用户，应用程序为角色分配权限和访问控制
 
-Aren’t [Composite Roles](https://www.keycloak.org/docs/latest/server_admin/index.html#_composite-roles) also similar to Groups? Logically they provide the same exact functionality, but the difference is conceptual. Composite roles should be used to apply the permission model to your set of services and applications. Groups should focus on collections of users and their roles in your organization. Use groups to manage users. Use composite roles to manage applications and services.
+是不是[复合角色](https://www.keycloak.org/docs/latest/server_admin/index.html#_composite-roles)也与群组相似？ 从逻辑上讲，它们提供了相同的功能，但区别在于概念。 应使用组合角色将权限模型应用于您的服务和应用程序集。 组应关注用户集合及其在组织中的角色。 使用组来管理用户。 使用复合角色来管理应用程序和服务。
 
-### 10.2. Default Groups {#Default_Groups}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/groups/default-groups.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/groups/default-groups.adoc)
+### 10.2. 默认组 {#Default_Groups}
 
-Default groups allow you to automatically assign group membership whenever any new user is created or imported through [Identity Brokering](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker). To specify default groups go to the `Groups` left menu item, and click the `Default Groups` tab.
+默认组允许您在通过[Identity Brokering](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker)创建或导入任何新用户时自动分配组成员资格。 要指定默认组，请转到`Groups`左侧菜单项，然后单击`Default Groups`选项卡。
 
 Default Groups
 
 ![default groups](assets/default-groups.png)
 
-## 11. Admin Console Access Control and Permissions {#Admin_Console_Access_Control_and_Permissions}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/admin-console-permissions.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/admin-console-permissions.adoc)
+## 11. 管理控制台访问控制和权限 {#Admin_Console_Access_Control_and_Permissions}
 
-Each realm created on the Keycloak has a dedicated Admin Console from which that realm can be managed. The `master` realm is a special realm that allows admins to manage more than one realm on the system. You can also define fine-grained access to users in different realms to manage the server. This chapter goes over all the scenarios for this.
+Keycloak上创建的每个领域都有一个专用的管理控制台，可以从中管理该领域。 `master`领域是一个特殊的领域，允许管理员管理系统上的多个领域。 您还可以定义对不同领域中的用户的细粒度访问以管理服务器。 本章将讨论所有场景。
 
-### 11.1. Master Realm Access Control {#Master_Realm_Access_Control}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/admin-console-permissions/master-realm.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/admin-console-permissions/master-realm.adoc)
+### 11.1. Master Realm访问控制 {#Master_Realm_Access_Control}
 
-The `master` realm in Keycloak is a special realm and treated differently than other realms. Users in the Keycloak `master` realm can be granted permission to manage zero or more realms that are deployed on the Keycloak server. When a realm is created, Keycloak automatically creates various roles that grant fine-grain permissions to access that new realm. Access to The Admin Console and Admin REST endpoints can be controlled by mapping these roles to users in the `master` realm. It’s possible to create multiple super users, as well as users that can only manage specific realms.
+Keycloak中的`master`领域是一个特殊的领域，与其他领域的处理方式不同。 可以授予Keycloak`master`域中的用户管理部署在Keycloak服务器上的零个或多个域的权限。 创建领域时，Keycloak会自动创建各种角色，授予细粒度权限以访问新领域。 可以通过将这些角色映射到`master`领域中的用户来控制对`Admin Console`和`Admin REST`端点的访问。 可以创建多个超级用户，以及只能管理特定领域的用户。
 
 #### 11.1.1. Global Roles {#Global_Roles}
-There are two realm-level roles in the `master` realm. These are:
+在`master`领域有两个领域级别的角色。 这些是：
 
 - admin
 - create-realm
 
-Users with the `admin` role are super users and have full access to manage any realm on the server. Users with the `create-realm` role are allowed to create new realms. They will be granted full access to any new realm they create.
+具有`admin`角色的用户是超级用户，并且拥有管理服务器上任何领域的完全访问权限。 具有`create-realm`角色的用户可以创建新领域。 他们将被授予对他们创建的任何新领域的完全访问权限。
 
-#### 11.1.2. Realm Specific Roles {#Realm_Specific_Roles}
-Admin users within the `master` realm can be granted management privileges to one or more other realms in the system. Each realm in Keycloak is represented by a client in the `master` realm. The name of the client is `<realm name>-realm`. These clients each have client-level roles defined which define varying level of access to manage an individual realm.
+#### 11.1.2. 领域特定角色 {#Realm_Specific_Roles}
+`master`领域内的管理员用户可以被授予系统中一个或多个其他领域的管理权限。 Keycloak中的每个领域都由`master`领域的客户端代表。 客户端的名称是`<realm name>-realm`。 这些客户端每个都定义了客户端级角色，这些角色定义了管理单个领域的不同访问级别。
 
-The roles available are:
-
-- view-realm
-- view-users
-- view-clients
-- view-events
-- manage-realm
-- manage-users
-- create-client
-- manage-clients
-- manage-events
-- view-identity-providers
-- manage-identity-providers
-- impersonation
-
-Assign the roles you want to your users and they will only be able to use that specific part of the administration console.
-
-|      | Admins with the `manage-users` role will only be able to assign admin roles to users that they themselves have. So, if an admin has the `manage-users` role but doesn’t have the `manage-realm` role, they will not be able to assign this role. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
-
-### 11.2. Dedicated Realm Admin Consoles {#Dedicated_Realm_Admin_Consoles}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/admin-console-permissions/per-realm.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/admin-console-permissions/per-realm.adoc)
-
-Each realm has a dedicated Admin Console that can be accessed by going to the url `/auth/admin/{realm-name}/console`. Users within that realm can be granted realm management permissions by assigning specific user role mappings.
-
-Each realm has a built-in client called `realm-management`. You can view this client by going to the `Clients` left menu item of your realm. This client defines client-level roles that specify permissions that can be granted to manage the realm.
+可用的角色是：
 
 - view-realm
 - view-users
@@ -2306,272 +2262,287 @@ Each realm has a built-in client called `realm-management`. You can view this cl
 - manage-identity-providers
 - impersonation
 
-Assign the roles you want to your users and they will only be able to use that specific part of the administration console.
+将您想要的角色分配给您的用户，他们只能使用管理控制台的特定部分。
 
-### 11.3. Fine Grain Admin Permissions {#Fine_Grain_Admin_Permissions}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/admin-console-permissions/fine-grain.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/admin-console-permissions/fine-grain.adoc)
+> 具有`manage-users`角色的管理员只能为自己拥有的用户分配管理员角色。 因此，如果管理员具有`manage-users角`色但没有`manage-realm`角色，则他们将无法分配此角色。
 
-|      | Fine Grain Admin Permissions is **Technology Preview** and is not fully supported. This feature is disabled by default.To enable start the server with `-Dkeycloak.profile=preview` or `-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled` . For more details see [Profiles](https://www.keycloak.org/docs/6.0/server_installation/#profiles). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+### 11.2. 专用领域管理控制台 {#Dedicated_Realm_Admin_Consoles}
 
-Sometimes roles like `manage-realm` or `manage-users` are too coarse grain and you want to create restricted admin accounts that have more fine grain permissions. Keycloak allows you to define and assign restricted access policies for managing a realm. Things like:
+每个领域都有一个专用的管理控制台，可以通过访问url`/auth/admin/{realm-name}/console`来访问。 通过分配特定的用户角色映射，可以为该领域中的用户授予领域管理权限。
 
-- Managing one specific client
-- Managing users that belong to a specific group
-- Managing membership of a group
-- Limited user management.
-- Fine grain impersonization control
-- Being able to assign a specific restricted set of roles to users.
-- Being able to assign a specific restricted set of roles to a composite role.
-- Being able to assign a specific restricted set of roles to a client’s scope.
-- New general policies for viewing and managing users, groups, roles, and clients.
+每个领域都有一个名为`realm-management`的内置客户端。 您可以通过转到领域的`Clients`左侧菜单项来查看此客户端。 此客户端定义客户端级角色，这些角色指定可以授予管理域的权限。
 
-There’s some important things to note about fine grain admin permissions:
+- view-realm
+- view-users
+- view-clients
+- view-events
+- manage-realm
+- manage-users
+- create-client
+- manage-clients
+- manage-events
+- view-identity-providers
+- manage-identity-providers
+- impersonation
 
-- Fine grain admin permissions were implemented on top of [Authorization Services](https://www.keycloak.org/docs/6.0/authorization_services/). It is highly recommended that you read up on those features before diving into fine grain permissions.
-- Fine grain permissions are only available within [dedicated admin consoles](https://www.keycloak.org/docs/latest/server_admin/index.html#_per_realm_admin_permissions) and admins defined within those realms. You cannot define cross-realm fine grain permissions.
-- Fine grain permissions are used to grant additional permissions. You cannot override the default behavior of the built in admin roles.
+将您想要的角色分配给您的用户，他们只能使用管理控制台的特定部分。
 
-#### 11.3.1. Managing One Specific Client {#Managing_One_Specific_Client}
-Let’s look first at allowing an admin to manage one client and one client only. In our example we have a realm called `test`and a client called `sales-application`. In realm `test` we will give a user in that realm permission to only manage that application.
+### 11.3. 细粒度管理员权限 {#Fine_Grain_Admin_Permissions}
 
-|      | You cannot do cross realm fine grain permissions. Admins in the `master` realm are limited to the predefined admin roles defined in previous chapters. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> Fine Grain管理员权限是**技术预览**，并不完全支持。 默认情况下禁用此功能。要启用`-Dkeycloak.profile=preview`或`-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled`启动服务器。 有关详细信息，请参阅[配置文件](https://www.keycloak.org/docs/6.0/server_installation/#profiles)。
 
-##### Permission Setup {#Permission_Setup}
-The first thing we must do is login to the Admin Console so we can set up permissions for that client. We navigate to the management section of the client we want to define fine-grain permissions for.
+有时像`manage-realm`或`manage-users`这样的角色太粗糙，你想要创建具有更多细粒度权限的受限管理员帐户。 Keycloak允许您定义和分配用于管理领域的受限访问策略。 像：
+
+- 管理一个特定的客户
+- 管理属于特定组的用户
+- 管理组的成员身份
+- 有限的用户管理
+- 细粒模仿控制
+- 能够为用户分配特定的受限制角色集
+- 能够将特定的受限制角色集分配给复合角色
+- 能够将特定的受限制角色集分配给客户的范围
+- 用于查看和管理用户，组，角色和客户端的新常规策略
+
+有关细粒度管理员权限的一些重要事项需要注意：
+
+- 细粒度管理员权限在[授权服务](https://www.keycloak.org/docs/6.0/authorization_services/)之上实现。 强烈建议您在深入了解细粒度权限之前先阅读这些功能。
+- 细粒度权限仅在[专用管理控制台](https://www.keycloak.org/docs/latest/server_admin/index.html#_per_realm_admin_permissions)和在这些领域内定义的管理员中可用。 您无法定义跨领域细粒度权限。
+- 细粒度权限用于授予其他权限。 您无法覆盖内置管理角色的默认行为。
+
+#### 11.3.1. 管理一个特定的客户 {#Managing_One_Specific_Client}
+让我们首先看一下管理员只管理一个客户端和一个客户端。 在我们的例子中，我们有一个名为`test`的领域和一个名为`sales-application`的客户端。 在领域`test`中，我们将为该领域的用户授予仅管理该应用程序的权限。
+
+> 你不能做cross realm细粒度权限。 `master`领域的管理员仅限于前面章节中定义的预定义管理员角色。
+
+##### 权限设置 {#Permission_Setup}
+我们必须做的第一件事是登录管理控制台，以便我们可以为该客户端设置权限。 我们导航到我们要为其定义细粒度权限的客户端的管理部分。
 
 Client Management
 
 ![fine grain client](assets/fine-grain-client.png)
 
-You should see a tab menu item called `Permissions`. Click on that tab.
+您应该看到一个名为`Permissions`的标签菜单项。 单击该选项卡。
 
 Client Permissions Tab
 
 ![fine grain client permissions tab off](assets/fine-grain-client-permissions-tab-off.png)
 
-By default, each client is not enabled to do fine grain permissions. So turn the `Permissions Enabled` switch to on to initialize permissions.
+默认情况下，不启用每个客户端来执行细粒度权限。 因此，将`Permissions Enabled`开关设置为on以初始化权限。
 
-|      | If you turn the `Permissions Enabled` switch to off, it will delete any and all permissions you have defined for this client. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 如果您将`Permissions Enabled`开关设置为off，它将删除您为此客户端定义的所有权限。
 
 Client Permissions Tab
 
 ![fine grain client permissions tab on](assets/fine-grain-client-permissions-tab-on.png)
 
-When you witch `Permissions Enabled` to on, it initializes various permission objects behind the scenes using [Authorization Services](https://www.keycloak.org/docs/6.0/authorization_services/). For this example, we’re interested in the `manage` permission for the client. Clicking on that will redirect you to the permission that handles the `manage` permission for the client. All authorization objects are contained in the `realm-management` client’s `Authorization` tab.
+当您启用`Permissions Enabled`时，它会使用[授权服务](https://www.keycloak.org/docs/6.0/authorization_services/)在幕后初始化各种权限对象。 对于此示例，我们对客户端的`manage`权限感兴趣。 单击它会将您重定向到处理客户端`manage`权限的权限。 所有授权对象都包含在`realm-management`客户端的`Authorization`选项卡中。
 
 Client Manage Permission
 
 ![fine grain client manage permissions](assets/fine-grain-client-manage-permissions.png)
 
-When first initialized the `manage` permission does not have any policies associated with it. You will need to create one by going to the policy tab. To get there fast, click on the `Authorization` link shown in the above image. Then click on the policies tab.
+首次初始化时，`manage`权限没有任何与之关联的策略。 您需要转到策略选项卡创建一个。 要快速到达，请单击上图中显示的`Authorization(授权)`链接。 然后单击“策略”选项卡。
 
-There’s a pull down menu on this page called `Create policy`. There’s a multitude of policies you can define. You can define a policy that is associated with a role or a group or even define rules in JavaScript. For this simple example, we’re going to create a `User Policy`.
+这个页面上有一个名为`Create policy`的下拉菜单。 您可以定义多种策略。 您可以定义与角色或组关联的策略，甚至可以在JavaScript中定义规则。 对于这个简单的例子，我们将创建一个`User Policy`。
 
 User Policy
 
 ![fine grain client user policy](assets/fine-grain-client-user-policy.png)
 
-This policy will match a hard-coded user in the user database. In this case it is the `sales-admin` user. We must then go back to the `sales-application` client’s `manage` permission page and assign the policy to the permission object.
+此策略将匹配用户数据库中的硬编码用户。 在这种情况下，它是`sales-admin`用户。 然后我们必须回到`sales-application`客户端的`manage`权限页面并将策略分配给权限对象。
 
 Assign User Policy
 
 ![fine grain client assign user policy](assets/fine-grain-client-assign-user-policy.png)
 
-The `sales-admin` user can now has permission to manage the `sales-application` client.
+`sales-admin`用户现在可以拥有管理`sales-application`客户端的权限。
 
-There’s one more thing we have to do. Go to the `Role Mappings` tab and assign the `query-clients` role to the `sales-admin`.
+我们还有一件事要做。 转到`Role Mappings`选项卡并将`query-clients`角色分配给`sales-admin`。
 
 Assign query-clients
 
 ![fine grain assign query clients](assets/fine-grain-assign-query-clients.png)
 
-Why do you have to do this? This role tells the Admin Console what menu items to render when the `sales-admin` visits the Admin Console. The `query-clients` role tells the Admin Console that it should render client menus for the `sales-admin`user.
+你为什么要这样做？ 此角色告诉管理控制台当`sales-admin`访问管理控制台时要呈现的菜单项。 `query-clients`角色告诉管理控制台它应该为`sales-admin`user呈现客户菜单。
 
-IMPORTANT If you do not set the `query-clients` role, restricted admins like `sales-admin` will not see any menu options when they log into the Admin Console
+重要: 如果您没有设置`query-clients`角色，那么受限制的管理员（例如`sales-admin`）在登录管理控制台时将看不到任何菜单选项
 
-##### Testing It Out. {#Testing_It_Out_}
-Next we log out of the master realm and re-login to the [dedicated admin console](https://www.keycloak.org/docs/latest/server_admin/index.html#_per_realm_admin_permissions) for the `test` realm using the `sales-admin` as a username. This is located under `/auth/admin/test/console`.
+##### 测试它 {#Testing_It_Out_}
+接下来，我们退出主域并重新登录到[专用管理控制台](https://www.keycloak.org/docs/latest/server_admin/index.html#_per_realm_admin_permissions)，用于`test`域使用 `sales-admin`作为用户名。 它位于`/auth/admin/test/console`下。
 
 Sales Admin Login
 
 ![fine grain sales admin login](assets/fine-grain-sales-admin-login.png)
 
-This admin is now able to manage this one client.
+此管理员现在可以管理这个客户端。
 
-#### 11.3.2. Restrict User Role Mapping {#Restrict_User_Role_Mapping}
-Another thing you might want to do is to restrict the set a roles an admin is allowed to assign to a user. Continuing our last example, let’s expand the permission set of the 'sales-admin' user so that he can also control which users are allowed to access this application. Through fine grain permissions we can enable it so that the `sales-admin` can only assign roles that grant specific access to the `sales-application`. We can also restrict it so that the admin can only map roles and not perform any other types of user administration.
+#### 11.3.2. 限制用户角色映射 {#Restrict_User_Role_Mapping}
+您可能想要做的另一件事是限制集合允许管理员分配给用户的角色。 继续我们的最后一个示例，让我们扩展`sales-admin`用户的权限集，以便他还可以控制允许哪些用户访问此应用程序。 通过细粒度权限，我们可以启用它，以便`sales-admin`只能分配授予对`sales-application`的特定访问权限的角色。 我们还可以对其进行限制，以便管理员只能映射角色而不执行任何其他类型的用户管理。
 
-The `sales-application` has defined three different client roles.
+`sales-application`定义了三种不同的客户角色。
 
-Sales Application Roles
+销售应用程序角色
 
 ![fine grain sales application roles](assets/fine-grain-sales-application-roles.png)
 
-We want the `sales-admin` user to be able to map these roles to any user in the system. The first step to do this is to allow the role to be mapped by the admin. If we click on the `viewLeads` role, you’ll see that there is a `Permissions` tab for this role.
+我们希望`sales-admin`用户能够将这些角色映射到系统中的任何用户。 执行此操作的第一步是允许管理员映射角色。 如果我们单击`viewLeads`角色，您将看到此角色有一个`Permissions`选项卡。
 
-View Leads Role Permission Tab
+查看潜在客户角色权限选项卡
 
 ![fine grain view leads role tab](assets/fine-grain-view-leads-role-tab.png)
 
-If we click on that tab and turn the `Permissions Enabled` on, you’ll see that there are a number of actions we can apply policies to.
+如果我们单击该选项卡并打开`Permissions Enabled`，您将看到我们可以应用策略执行多项操作。
 
-View Leads Permissions
+查看潜在客户权限
 
 ![fine grain view leads permissions](assets/fine-grain-view-leads-permissions.png)
 
-The one we are interested in is `map-role`. Click on this permission and add the same User Policy that was created in the earlier example.
+我们感兴趣的是`map-role`。 单击此权限并添加在先前示例中创建的相同用户策略。
 
-Map-roles Permission
+映射角色权限
 
 ![fine grain map roles permission](assets/fine-grain-map-roles-permission.png)
 
-What we’ve done is say that the `sales-admin` can map the `viewLeads` role. What we have not done is specify which users the admin is allowed to map this role too. To do that we must go to the `Users` section of the admin console for this realm. Clicking on the `Users` left menu item brings us to the users interface of the realm. You should see a `Permissions` tab. Click on that and enable it.
+我们所做的就是说`sales-admin`可以映射`viewLeads`角色。 我们尚未做的是指定管理员也可以映射此角色的用户。 为此，我们必须转到此领域的管理控制台的`Users`部分。 单击`Users`左侧菜单项将我们带到领域的用户界面。 你应该看到一个`Permissions`选项卡。 单击它并启用它。
 
-Users Permissions
+用户权限
 
 ![fine grain users permissions](assets/fine-grain-users-permissions.png)
 
-The permission we are interested in is `map-roles`. This is a restrictive policy in that it only allows admins the ability to map roles to a user. If we click on the `map-roles` permission and again add the User Policy we created for this, our `sales-admin` will be able to map roles to any user.
+我们感兴趣的权限是`map-roles`。 这是一项限制性策略，因为它只允许管理员将角色映射到用户。 如果我们点击`map-roles`权限并再次添加我们为此创建的用户策略，我们的`sales-admin`将能够将角色映射到任何用户。
 
-The last thing we have to do is add the `view-users` role to the `sales-admin`. This will allow the admin to view users in the realm he wants to add the `sales-application` roles to.
+我们要做的最后一件事是将`view-users`角色添加到`sales-admin`。 这将允许管理员查看他想要添加`sales-application`角色的领域中的用户。
 
-Add view-users
+添加视图用户
 
 ![fine grain add view users](assets/fine-grain-add-view-users.png)
 
-##### Testing It Out. {#Testing_It_Out_}
-Next we log out of the master realm and re-login to the [dedicated admin console](https://www.keycloak.org/docs/latest/server_admin/index.html#_per_realm_admin_permissions) for the `test` realm using the `sales-admin` as a username. This is located under `/auth/admin/test/console`.
+##### 测试它. {#Testing_It_Out_}
+接下来，我们退出主域并重新登录到[专用管理控制台](https://www.keycloak.org/docs/latest/server_admin/index.html#_per_realm_admin_permissions)，用于`test`域使用 `sales-admin`作为用户名。 它位于`/auth/admin/test/console`下。
 
-You will see that now the `sales-admin` can view users in the system. If you select one of the users you’ll see that each user detail page is read only, except for the `Role Mappings` tab. Going to these tab you’ll find that there are no `Available` roles for the admin to map to the user except when we browse the `sales-application` roles.
+您将看到`sales-admin`现在可以查看系统中的用户。 如果您选择其中一个用户，您将看到每个用户详细信息页面都是只读的，`Role Mappings`选项卡除外。 转到这些选项卡，您会发现管理员没有`Available`角色映射到用户，除非我们浏览`sales-application`角色。
 
 Add viewLeads
 
 ![fine grain add view leads](assets/fine-grain-add-view-leads.png)
 
-We’ve only specified that the `sales-admin` can map the `viewLeads` role.
+我们只指定`sales-admin`可以映射`viewLeads`角色。
 
-##### Per Client map-roles Shortcut {#Per_Client_map_roles_Shortcut}
-It would be tedious if we had to do this for every client role that the `sales-application` published. to make things easier, there’s a way to specify that an admin can map any role defined by a client. If we log back into the admin console to our master realm admin and go back to the `sales-application` permissions page, you’ll see the `map-roles` permission.
+##### 每个客户端 映射-角色 快捷方式 {#Per_Client_map_roles_Shortcut}
+如果我们必须为`sales-application`发布的每个客户角色执行此操作，那将是单调乏味的。 为了简化操作，有一种方法可以指定管理员可以映射客户端定义的任何角色。 如果我们重新登录管理控制台到我们的主域管理员并返回到`sales-application`权限页面，您将看到`map-roles`权限。
 
-Client map-roles Permission
+客户端 映射-角色 权限
 
 ![fine grain client permissions tab on](assets/fine-grain-client-permissions-tab-on.png)
 
-If you grant access to this particular parmission to an admin, that admin will be able map any role defined by the client.
+如果您授予管理员对此特定权限的访问权限，则该管理员将能够映射客户端定义的任何角色。
 
-#### 11.3.3. Full List of Permissions {#Full_List_of_Permissions}
-You can do a lot more with fine grain permissions beyond managing a specific client or the specific roles of a client. This chapter defines the whole list of permission types that can be described for a realm.
+#### 11.3.3. 完整的权限列表 {#Full_List_of_Permissions}
+除了管理特定客户端或客户端的特定角色之外，您还可以使用细粒度权限执行更多操作。 本章定义了可以为领域描述的权限类型的完整列表。
 
 ##### Role {#Role}
-When going to the `Permissions` tab for a specific role, you will see these permission types listed.
+当转到特定角色的`Permissions`选项卡时，您将看到列出的这些权限类型。
 
 - map-role
 
-  Policies that decide if an admin can map this role to a user. These policies only specify that the role can be mapped to a user, not that the admin is allowed to perform user role mapping tasks. The admin will also have to have manage or role mapping permissions. See [Users Permissions](https://www.keycloak.org/docs/latest/server_admin/index.html#_users-permissions) for more information.
+  决定管理员是否可以将此角色映射到用户的策略。 这些策略仅指定角色可以映射到用户，而不是允许管理员执行用户角色映射任务。 管理员还必须具有管理或角色映射权限。 有关详细信息，请参阅[用户权限](https://www.keycloak.org/docs/latest/server_admin/index.html#_users-permissions)。
 
 - map-role-composite
 
-  Policies that decide if an admin can map this role as a composite to another role. An admin can define roles for a client if he has manage permissions for that client but he will not be able to add composites to those roles unless he has the `map-role-composite` privileges for the role he wants to add as a composite.
+  决定管理员是否可以将此角色作为复合映射到另一个角色的策略。 管理员可以为客户定义角色，如果他具有该客户的管理权限，但他将无法向这些角色添加复合，除非他对要添加为复合的角色具有`map-role-composite`权限。
 
 - map-role-client-scope
 
-  Policies that decide if an admin can apply this role to the scope of a client. Even if the admin can manage the client, he will not have permission to create tokens for that client that contain this role unless this privilege is granted.
+  决定管理员是否可以将此角色应用于客户端范围的策略。 即使管理员可以管理客户端，他也无权为包含此角色的客户端创建令牌，除非授予此权限。
 
-##### Client {#Client}
-When going to the `Permissions` tab for a specific client, you will see these permission types listed.
+##### 客户端 {#Client}
+当转到特定客户端的`Permissions`选项卡时，您将看到列出的这些权限类型。
 
 - view
 
-  Policies that decide if an admin can view the client’s configuration.
+  决定管理员是否可以查看客户端配置的策略。
 
 - manage
 
-  Policies that decide if an admin can view and manage the client’s configuration. There is some issues with this in that privileges could be leaked unintentionally. For example, the admin could define a protocol mapper that hardcoded a role even if the admin does not have privileges to map the role to the client’s scope. This is currently the limitation of protocol mappers as they don’t have a way to assign individual permissions to them like roles do.
+  决定管理员是否可以查看和管理客户端配置的策略。 这有一些问题，特权可能会无意中泄露。 例如，管理员可以定义一个协议映射器，即使管理员没有将角色映射到客户端范围的权限，也会对该角色进行硬编码。 这是目前协议映射器的限制，因为它们没有办法像角色那样为它们分配单独的权限。
 
 - configure
 
-  Reduced set of prileges to manage the client. Its like the `manage` scope except the admin is not allowed to define protocol mappers, change the client template, or the client’s scope.
+  减少了一组管理客户端的权利。 它类似于`manage`范围，但管理员不允许定义协议映射器，更改客户端模板或客户端范围。
 
 - map-roles
 
-  Policies that decide if an admin can map any role defined by the client to a user. This is a shortcut, easy-of-use feature to avoid having to defin policies for each and every role defined by the client.
+  决定管理员是否可以将客户端定义的任何角色映射到用户的策略。 这是一种易于使用的快捷方式，可避免为客户定义的每个角色定义策略。
 
 - map-roles-composite
 
-  Policies that decide if an admin can map any role defined by the client as a composite to another role. This is a shortcut, easy-of-use feature to avoid having to define policies for each and every role defined by the client.
+  决定管理员是否可以将客户端定义的任何角色作为复合映射到另一个角色的策略。 这是一种易于使用的快捷方式，可避免为客户端定义的每个角色定义策略。
 
 - map-roles-client-scope
 
-  Policies that decide if an admin can map any role defined by the client to the scope of another client. This is a shortcut, easy-of-use feature to avoid having to define policies for each and every role defined by the client.
+  决定管理员是否可以将客户端定义的任何角色映射到另一个客户端范围的策略。 这是一种易于使用的快捷方式，可避免为客户端定义的每个角色定义策略。
 
-##### Users {#Users}
-When going to the `Permissions` tab for all users, you will see these permission types listed.
+##### 用户 {#Users}
+当进入所有用户的`Permissions`选项卡时，您将看到列出的这些权限类型。
 
 - view
 
-  Policies that decide if an admin can view all users in the realm.
+  决定管理员是否可以查看领域中所有用户的策略。
 
 - manage
 
-  Policies that decide if an admin can manage all users in the realm. This permission grants the admin the privilege to perfor user role mappings, but it does not specify which roles the admin is allowed to map. You’ll need to define the privilege for each role you want the admin to be able to map.
+  决定管理员是否可以管理领域中所有用户的策略。 此权限授予管理员执行用户角色映射的权限，但不指定管理员允许映射的角色。 您需要为管理员能够映射的每个角色定义权限。
 
 - map-roles
 
-  This is a subset of the privileges granted by the `manage` scope. In this case the admin is only allowed to map roles. The admin is not allowed to perform any other user management operation. Also, like `manage`, the roles that the admin is allowed to apply must be specified per role or per set of roles if dealing with client roles.
+  这是`manage`范围授予的权限的子集。 在这种情况下，只允许管理员映射角色。 不允许管理员执行任何其他用户管理操作。 此外，与`manage`一样，如果处理客户端角色，则必须为每个角色或每组角色指定允许管理员应用的角色。
 
 - manage-group-membership
 
-  Similar to `map-roles` except that it pertains to group membership: which groups a user can be added or removed from. These policies just grant the admin permission to manage group membership, not which groups the admin is allowed to manage membership for. You’ll have to specify policies for each group’s `manage-members` permission.
+  类似于`map-roles`，除了它与组成员资格相关：可以添加或删除用户的组。 这些策略仅授予管理员管理组成员资格的权限，而不授予管理员管理其成员资格的组。 您必须为每个组的`manage-members`权限指定策略。
 
 - impersonate
 
-  Policies that decide if the admin is allowed to impersonate other users. These policies are applied to the admin’s attributes and role mappings.
+  决定是否允许管理员模仿其他用户的策略。 这些策略应用于管理员的属性和角色映射。
 
 - user-impersonated
 
-  Policies that decide which users can be impersonated. These policies will be applied to the user being impersonated. For example, you might want to define a policy that will forbid anybody from impersonating a user that has admin privileges.
+  决定可以模拟哪些用户的策略。 这些策略将应用于被模拟的用户。 例如，您可能希望定义一个策略，禁止任何人冒充具有管理员权限的用户。
 
-##### Group {#Group}
-When going to the `Permissions` tab for a specific group, you will see these permission types listed.
+##### 组 {#Group}
+当转到特定组的`Permissions`选项卡时，您将看到列出的这些权限类型。
 
 - view
 
-  Policies that decide if the admin can view information about the group.
+  决定管理员是否可以查看有关该组的信息的策略。
 
 - manage
 
-  Policies that decide if the admin can manage the configuration of the group.
+  决定管理员是否可以管理组配置的策略。
 
 - view-members
 
-  Policies that decide if the admin can view the user details of members of the group.
+  决定管理员是否可以查看该组成员的用户详细信息的策略。
 
 - manage-members
 
-  Policies that decide if the admin can manage the users that belong to this group.
+  决定管理员是否可以管理属于该组的用户的策略。
 
 - manage-membership
 
-  Policies that decide if an admin can change the membership of the group. Add or remove members from the group.
+  决定管理员是否可以更改组成员身份的策略。 在组中添加或删除成员。
 
-### 11.4. Realm Keys {#Realm_Keys}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/realms/keys.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/realms/keys.adoc)
+### 11.4. 领域密钥 {#Realm_Keys}
 
-The authentication protocols that are used by Keycloak require cryptographic signatures and sometimes encryption. Keycloak uses asymmetric key pairs, a private and public key, to accomplish this.
+Keycloak使用的身份验证协议需要加密签名，有时还需要加密。 Keycloak使用非对称密钥对，私钥和公钥来实现这一目标。
 
-Keycloak has a single active keypair at a time, but can have several passive keys as well. The active keypair is used to create new signatures, while the passive keypairs can be used to verify previous signatures. This makes it possible to regularly rotate the keys without any downtime or interruption to users.
+Keycloak一次只有一个活动密钥对，但也可以有几个被动密钥。 活动密钥对用于创建新签名，而被动密钥对可用于验证以前的签名。 这使得可以定期旋转键而无需停机或中断用户。
 
-When a realm is created a key pair and a self-signed certificate is automatically generated.
+创建领域时，会自动生成密钥对和自签名证书。
 
-To view the active keys for a realm select the realm in the admin console click on `Realm settings` then `Keys`. This will show the currently active keys for the realm. Keycloak currently only supports RSA signatures so there is only one active keypair. In the future as more signature algorithms are added there will be more active keypairs.
+要查看领域的活动密钥，请在管理控制台中选择领域，单击`Realm settings`，然后单击`Keys`。 这将显示领域的当前活动密钥。 Keycloak目前仅支持RSA签名，因此只有一个活动密钥对。 将来随着更多签名算法的增加，将会有更多活跃的密钥对。
 
-To view all available keys select `All`. This will show all active, passive and disabled keys. A keypair can have the status `Active`, but still not be selected as the currently active keypair for the realm. The selected active pair which is used for signatures is selected based on the first key provider sorted by priority that is able to provide an active keypair.
+要查看所有可用键，请选择`All`。 这将显示所有活动，被动和禁用键。 密钥对可以具有`Active`状态，但仍未被选为该领域的当前活动密钥对。 基于按能够提供活动密钥对的优先级排序的第一密钥提供者来选择用于签名的所选活动对。
 
 #### 11.4.1. Rotating keys {#Rotating_keys}
 It’s recommended to regularly rotate keys. To do so you should start by creating new keys with a higher priority than the existing active keys. Or create new keys with the same priority and making the previous keys passive.
