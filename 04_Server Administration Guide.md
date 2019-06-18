@@ -2544,426 +2544,397 @@ Keycloak一次只有一个活动密钥对，但也可以有几个被动密钥。
 
 要查看所有可用键，请选择`All`。 这将显示所有活动，被动和禁用键。 密钥对可以具有`Active`状态，但仍未被选为该领域的当前活动密钥对。 基于按能够提供活动密钥对的优先级排序的第一密钥提供者来选择用于签名的所选活动对。
 
-#### 11.4.1. Rotating keys {#Rotating_keys}
-It’s recommended to regularly rotate keys. To do so you should start by creating new keys with a higher priority than the existing active keys. Or create new keys with the same priority and making the previous keys passive.
+#### 11.4.1. 轮流密钥 {#Rotating_keys}
+建议定期轮流密钥。 为此，您应该首先创建优先级高于现有活动密钥的新密钥。 或者创建具有相同优先级的新密钥并使之前的密钥处于被动状态。
 
-Once new keys are available all new tokens and cookies will be signed with the new keys. When a user authenticates to an application the SSO cookie is updated with the new signature. When OpenID Connect tokens are refreshed new tokens are signed with the new keys. This means that over time all cookies and tokens will use the new keys and after a while the old keys can be removed.
+一旦有新密钥可用，所有新令牌和cookie都将使用新密钥进行签名。 当用户对应用程序进行身份验证时，将使用新签名更新SSO cookie。 刷新OpenID Connect令牌时，将使用新密钥对新令牌进行签名。 这意味着随着时间的推移，所有cookie和令牌都将使用新密钥，过一会儿就可以删除旧密钥。
 
-How long you wait to delete old keys is a tradeoff between security and making sure all cookies and tokens are updated. In general it should be acceptable to drop old keys after a few weeks. Users that have not been active in the period between the new keys where added and the old keys removed will have to re-authenticate.
+您等待删除旧密钥的时间是安全性之间的权衡，并确保更新所有cookie和令牌。 一般来说，几周后丢弃旧密钥应该是可以接受的。 在添加的新密钥和删除的旧密钥之间的时间段内未处于活动状态的用户必须重新进行身份验证。
 
-This also applies to offline tokens. To make sure they are updated the applications need to refresh the tokens before the old keys are removed.
+这也适用于离线令牌。 为确保更新它们，应用程序需要在删除旧密钥之前刷新令牌。
 
-As a guideline it may be a good idea to create new keys every 3-6 months and delete old keys 1-2 months after the new keys where created.
+作为指导，每3-6个月创建一个新密钥并在创建新密钥后1-2个月删除旧密钥可能是个好主意。
 
-#### 11.4.2. Adding a generated keypair {#Adding_a_generated_keypair}
-To add a new generated keypair select `Providers` and choose `rsa-generated` from the dropdown. You can change the priority to make sure the new keypair becomes the active keypair. You can also change the `keysize` if you want smaller or larger keys (default is 2048, supported values are 1024, 2048 and 4096).
+#### 11.4.2. 添加生成的密钥对 {#Adding_a_generated_keypair}
+要添加新生成的密钥对，请选择`Providers`并从下拉列表中选择`rsa-generated`。 您可以更改优先级以确保新密钥对成为活动密钥对。 如果需要更小或更大的键，也可以更改`keysize`（默认值为2048，支持的值为1024,2048和4096）。
 
-Click `Save` to add the new keys. This will generated a new keypair including a self-signed certificate.
+单击`Save`以添加新密钥。 这将生成一个新的密钥对，包括自签名证书。
 
-Changing the priority for a provider will not cause the keys to be re-generated, but if you want to change the keysize you can edit the provider and new keys will be generated.
+更改提供程序的优先级不会导致重新生成密钥，但如果要更改密钥大小，则可以编辑提供程序并生成新密钥。
 
-#### 11.4.3. Adding an existing keypair and certificate {#Adding_an_existing_keypair_and_certificate}
-To add a keypair and certificate obtained elsewhere select `Providers` and choose `rsa` from the dropdown. You can change the priority to make sure the new keypair becomes the active keypair.
+#### 11.4.3. 添加现有密钥对和证书 {#Adding_an_existing_keypair_and_certificate}
+要添加在其他地方获得的密钥对和证书，请选择`Providers`并从下拉列表中选择`rsa`。 您可以更改优先级以确保新密钥对成为活动密钥对。
 
-Click on `Select file` for `Private RSA Key` to upload your private key. The file should be encoded in PEM format. You don’t need to upload the public key as it is automatically extracted from the private key.
+单击`Select RSA Key`的`Select file`以上传您的私钥。 该文件应以PEM格式编码。 您无需上传公钥，因为它是从私钥中自动提取的。
 
-If you have a signed certificate for the keys click on `Select file` next to `X509 Certificate`. If you don’t have one you can skip this and a self-signed certificate will be generated.
+如果您有密钥的签名证书，请单击`X509证书`旁边的`Select file`。 如果您没有，则可以跳过此项，并生成自签名证书。
 
-#### 11.4.4. Loading keys from a Java Keystore {#Loading_keys_from_a_Java_Keystore}
-To add a keypair and certificate stored in a Java Keystore file on the host select `Providers` and choose `java-keystore`from the dropdown. You can change the priority to make sure the new keypair becomes the active keypair.
+#### 11.4.4. 从Java密钥库加载密钥 {#Loading_keys_from_a_Java_Keystore}
+要在主机上添加存储在Java Keystore文件中的密钥对和证书，请选择`Providers`并从下拉列表中选择`java-keystore`。 您可以更改优先级以确保新密钥对成为活动密钥对。
 
-Fill in the values for `Keystore`, `Keystore Password`, `Key Alias` and `Key Password` and click on `Save`.
+填写`Keystore`，`Keystore Password`，`Key Alias`和`Key Password`的值，然后单击`Save`。
 
-#### 11.4.5. Making keys passive {#Making_keys_passive}
-Locate the keypair in `Active` or `All` then click on the provider in the `Provider` column. This will take you to the configuration screen for the key provider for the keys. Click on `Active` to turn it `OFF`, then click on `Save`. The keys will no longer be active and can only be used for verifying signatures.
+#### 11.4.5. 使密钥消极 {#Making_keys_passive}
+在`Active`或`All`中找到密钥对，然后单击`Provider`列中的提供程序。 这将带您进入密钥的密钥提供程序的配置屏幕。 点击`Active`将其变为`OFF`，然后点击`Save`。 密钥将不再处于活动状态，只能用于验证签名。
 
-#### 11.4.6. Disabling keys {#Disabling_keys}
-Locate the keypair in `Active` or `All` then click on the provider in the `Provider` column. This will take you to the configuration screen for the key provider for the keys. Click on `Enabled` to turn it `OFF`, then click on `Save`. The keys will no longer be enabled.
+#### 11.4.6. 禁用密钥 {#Disabling_keys}
+在`Active`或`All`中找到密钥对，然后单击`Provider`列中的提供程序。 这将带您进入密钥的密钥提供程序的配置屏幕。 单击`Enabled`将其设置为`OFF`，然后单击`Save`。 将不再启用密钥。
 
-Alternatively, you can delete the provider from the `Providers` table.
+或者，您可以从`Providers`表中删除提供程序。
 
-#### 11.4.7. Compromised keys {#Compromised_keys}
-Keycloak has the signing keys stored just locally and they are never shared with the client applications, users or other entities. However if you think that your realm signing key was compromised, you should first generate new keypair as described above and then immediatelly remove the compromised keypair.
+#### 11.4.7. 泄露的密钥 {#Compromised_keys}
+Keycloak只在本地存储签名密钥，它们永远不会与客户端应用程序，用户或其他实体共享。 但是，如果您认为您的域签名密钥已被破坏，则应首先生成如上所述的新密钥对，然后立即删除受损密钥对。
 
-Then to ensure that client applications won’t accept the tokens signed by the compromised key, you should update and push not-before policy for the realm, which is doable from the admin console. Pushing new policy will ensure that client applications won’t accept the existing tokens signed by the compromised key, but also the client application will be forced to download new keypair from the Keycloak, hence the tokens signed by the compromised key won’t be valid anymore. Note that your REST and confidential clients must have set `Admin URL`, so that Keycloak is able to send them the request about pushed not-before policy.
+然后，为了确保客户端应用程序不接受受攻击密钥签名的令牌，您应该更新并推送域的非先行策略，这可以从管理控制台执行。 推出新策略将确保客户端应用程序不会接受由受感染密钥签名的现有令牌，但客户端应用程序将被强制从Keycloak下载新密钥对，因此受攻击密钥签名的令牌将无效了。 请注意，您的REST和机密客户端必须设置`Admin URL`,以便Keycloak能够向他们发送有关推送的不在之前策略的请求。
 
-## 12. Identity Brokering {#Identity_Brokering}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker.adoc)
+## 12. 身份代理 {#Identity_Brokering}
 
-An Identity Broker is an intermediary service that connects multiple service providers with different identity providers. As an intermediary service, the identity broker is responsible for creating a trust relationship with an external identity provider in order to use its identities to access internal services exposed by service providers.
+Identity Broker是一种中间服务，它将多个服务提供者与不同的身份提供者连接起来。 作为中间服务，身份代理负责与外部身份提供者建立信任关系，以便使用其身份访问服务提供者公开的内部服务。
 
-From a user perspective, an identity broker provides a user-centric and centralized way to manage identities across different security domains or realms. An existing account can be linked with one or more identities from different identity providers or even created based on the identity information obtained from them.
+从用户的角度来看，身份代理提供了一种以用户为中心的集中方式来管理不同安全域或领域的身份。 现有帐户可以与来自不同身份提供者的一个或多个身份链接，或甚至基于从他们获得的身份信息创建。
 
-An identity provider is usually based on a specific protocol that is used to authenticate and communicate authentication and authorization information to their users. It can be a social provider such as Facebook, Google or Twitter. It can be a business partner whose users need to access your services. Or it can be a cloud-based identity service that you want to integrate with.
+身份提供者通常基于特定协议，该协议用于向其用户验证和传递身份验证和授权信息。 它可以是Facebook，Google或Twitter等社交提供商。 它可以是用户需要访问您的服务的业务合作伙伴。 或者它可以是您要与之集成的基于云的身份服务。
 
-Usually, identity providers are based on the following protocols:
+通常，身份提供者基于以下协议：
 
 - `SAML v2.0`
 - `OpenID Connect v1.0`
 - `OAuth v2.0`
 
-In the next sections we’ll see how to configure and use Keycloak as an identity broker, covering some important aspects such as:
+在下一节中，我们将了解如何配置和使用Keycloak作为身份代理，涵盖一些重要方面，例如：
 
 - `Social Authentication`
 - `OpenID Connect v1.0 Brokering`
 - `SAML v2.0 Brokering`
 - `Identity Federation`
 
-### 12.1. Brokering Overview {#Brokering_Overview}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/overview.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/overview.adoc)
+### 12.1. 经纪概述 {#Brokering_Overview}
 
-When using Keycloak as an identity broker, users are not forced to provide their credentials in order to authenticate in a specific realm. Instead, they are presented with a list of identity providers from which they can authenticate.
+使用Keycloak作为身份代理时，不会强制用户提供其凭据以在特定领域中进行身份验证。 相反，它们会显示一个身份提供者列表，他们可以从中进行身份验证。
 
-You can also configure a default identity provider. In this case the user will not be given a choice, but will instead be redirected directly to the default provider.
+您还可以配置默认身份提供程序。 在这种情况下，将不会为用户提供选择，而是将其直接重定向到默认提供程序。
 
-The following diagram demonstrates the steps involved when using Keycloak to broker an external identity provider:
+下图演示了使用Keycloak代理外部身份提供程序时涉及的步骤：
 
-Identity Broker Flow
+身份代理流程
 
 ![identity broker flow](assets/identity_broker_flow.png)
 
-1. User is not authenticated and requests a protected resource in a client application.
-2. The client applications redirects the user to Keycloak to authenticate.
-3. At this point the user is presented with the login page where there is a list of identity providers configured in a realm.
-4. User selects one of the identity providers by clicking on its respective button or link.
-5. Keycloak issues an authentication request to the target identity provider asking for authentication and the user is redirected to the login page of the identity provider. The connection properties and other configuration options for the identity provider were previously set by the administrator in the Admin Console.
-6. User provides his credentials or consent in order to authenticate with the identity provider.
-7. Upon a successful authentication by the identity provider, the user is redirected back to Keycloak with an authentication response. Usually this response contains a security token that will be used by Keycloak to trust the authentication performed by the identity provider and retrieve information about the user.
-8. Now Keycloak is going to check if the response from the identity provider is valid. If valid, it will import and create a new user or just skip that if the user already exists. If it is a new user, Keycloak may ask the identity provider for information about the user if that info doesn’t already exist in the token. This is what we call *identity federation*. If the user already exists Keycloak may ask him to link the identity returned from the identity provider with the existing account. We call this process *account linking*. What exactly is done is configurable and can be specified by setup of [First Login Flow](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker_first_login). At the end of this step, Keycloak authenticates the user and issues its own token in order to access the requested resource in the service provider.
-9. Once the user is locally authenticated, Keycloak redirects the user to the service provider by sending the token previously issued during the local authentication.
-10. The service provider receives the token from Keycloak and allows access to the protected resource.
+1. 用户未经过身份验证，并在客户端应用程序中请求受保护的资源。
+2. 客户端应用程序将用户重定向到Keycloak进行身份验证。
+3. 此时，向用户呈现登录页面，其中存在在领域中配置的身份提供者列表。
+4. 用户通过单击其相应的按钮或链接来选择一个身份提供者。
+5. Keycloak向目标身份提供者发出身份验证请求，要求进行身份验证，并将用户重定向到身份提供者的登录页面。 身份提供程序的连接属性和其他配置选项先前由管理员在管理控制台中设置。
+6. 用户提供其凭据或同意，以便与身份提供商进行身份验证。
+7. 在身份提供商成功进行身份验证后，用户将通过身份验证响应重定向回Keycloak。 通常，此响应包含一个安全令牌，Keycloak将使用该令牌来信任身份提供程序执行的身份验证并检索有关该用户的信息。
+8. 现在，Keycloak将检查身份提供者的响应是否有效。 如果有效，它将导入并创建新用户，或者如果用户已存在则跳过该用户。 如果是新用户，Keycloak可能会向身份提供者询问有关用户的信息，如果该信息中尚不存在该信息。 这就是我们所说的*identity federation*。 如果用户已存在，Keycloak可能会要求他将身份提供商返回的身份与现有帐户相关联。 我们将此流程称为*account linking*。 具体做法是可配置的，可以通过[首次登录流程](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker_first_login)的设置来指定。 在此步骤结束时，Keycloak对用户进行身份验证并发出自己的令牌，以便访问服务提供者中请求的资源。
+9. 一旦用户进行了本地身份验证，Keycloak就会通过发送先前在本地身份验证期间发出的令牌将用户重定向到服务提供者。
+10. 服务提供商从Keycloak接收令牌并允许访问受保护资源。
 
-There are some variations of this flow that we will talk about later. For instance, instead of presenting a list of identity providers, the client application can request a specific one. Or you can tell Keycloak to force the user to provide additional information before federating his identity.
+我们将在稍后讨论这种流程的一些变化。 例如，客户端应用程序可以请求特定的身份提供者，而不是呈现身份提供者列表。 或者，您可以告诉Keycloak强制用户在联合其身份之前提供其他信息。
 
-|      | Different protocols may require different authentication flows. At this moment, all the identity providers supported by Keycloak use a flow just like described above. However, regardless of the protocol in use, user experience should be pretty much the same. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 不同协议可能需要不同的认证流程。 此时，Keycloak支持的所有身份提供者都使用如上所述的流程。 但是，无论使用何种协议，用户体验应该基本相同。
 
-As you may notice, at the end of the authentication process Keycloak will always issue its own token to client applications. What this means is that client applications are completely decoupled from external identity providers. They don’t need to know which protocol (eg.: SAML, OpenID Connect, OAuth, etc) was used or how the user’s identity was validated. They only need to know about Keycloak.
+您可能会注意到，在身份验证过程结束时，Keycloak将始终向客户端应用程序发出自己的令牌。 这意味着客户端应用程序与外部身份提供程序完全分离。 他们不需要知道使用了哪种协议（例如：SAML，OpenID Connect，OAuth等）或如何验证用户的身份。 他们只需要了解Keycloak。
 
-### 12.2. Default Identity Provider {#Default_Identity_Provider}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/default-provider.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/default-provider.adoc)
+### 12.2. 默认身份提供者 {#Default_Identity_Provider}
 
-It is possible to automatically redirect to a identity provider instead of displaying the login form. To enable this go to the `Authentication` page in the administration console and select the `Browser` flow. Then click on config for the `Identity Provider Redirector` authenticator. Set `Default Identity Provider` to the alias of the identity provider you want to automatically redirect users to.
+可以自动重定向到身份提供者，而不是显示登录表单。 要启用此功能，请转到管理控制台中的`Authentication`页面，然后选择`Browser`流程。 然后单击`Identity Provider Redirector`身份验证器。 将`Default Identity Provider`设置为您要自动将用户重定向到的身份提供程序的别名。
 
-If the configured default identity provider is not found the login form will be displayed instead.
+如果未找到配置的默认身份提供程序，则将显示登录表单。
 
-This authenticator is also responsible for dealing with the `kc_idp_hint` query parameter. See [client suggested identity provider](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_suggested_idp) section for more details.
+此验证器还负责处理`kc_idp_hint`查询参数。 有关详细信息，请参阅[客户建议的身份提供商](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_suggested_idp) 部分。
 
-### 12.3. General Configuration {#General_Configuration}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/configuration.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/configuration.adoc)
+### 12.3. 一般配置 {#General_Configuration}
 
-The identity broker configuration is all based on identity providers. Identity providers are created for each realm and by default they are enabled for every single application. That means that users from a realm can use any of the registered identity providers when signing in to an application.
+身份代理配置全部基于身份提供者。 为每个领域创建身份提供程序，默认情况下，它们为每个应用程序启用。 这意味着来自领域的用户在登录应用程序时可以使用任何已注册的身份提供者。
 
-In order to create an identity provider click the `Identity Providers` left menu item.
+要创建身份提供程序，请单击`Identity Providers`左侧菜单项。
 
-Identity Providers
+身份提供者
 
 ![identity providers](assets/identity-providers.png)
 
-In the drop down list box, choose the identity provider you want to add. This will bring you to the configuration page for that identity provider type.
+在下拉列表框中，选择要添加的身份提供程序。 这将带您进入该身份提供程序类型的配置页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![add identity provider](assets/add-identity-provider.png)
 
-Above is an example of configuring a Google social login provider. Once you configure an IDP, it will appear on the Keycloak login page as an option.
+以上是配置Google社交登录提供程序的示例。 配置IDP后，它将作为选项显示在Keycloak登录页面上。
 
-IDP login page
+IDP登录页面
 
 ![identity provider login page](assets/identity-provider-login-page.png)
 
-- Social
+- 社交
 
-  Social providers allow you to enable social authentication in your realm. Keycloak makes it easy to let users log in to your application using an existing account with a social network. Currently supported providers include: Twitter, Facebook, Google, LinkedIn, Instagram, Microsoft, PayPal, Openshift v3, GitHub, GitLab, Bitbucket, and Stack Overflow.
+  社交提供程序允许您在您的领域中启用社交身份验证。 Keycloak使用户可以轻松地使用具有社交网络的现有帐户登录您的应用程序。 目前支持的提供商包括：Twitter，Facebook，谷歌，LinkedIn，Instagram，微软，PayPal，Openshift v3，GitHub，GitLab，Bitbucket和Stack Overflow。
 
 - Protocol-based
 
-  Protocol-based providers are those that rely on a specific protocol in order to authenticate and authorize users. They allow you to connect to any identity provider compliant with a specific protocol. Keycloak provides support for SAML v2.0 and OpenID Connect v1.0 protocols. It makes it easy to configure and broker any identity provider based on these open standards.
+  基于协议的提供程序是依赖于特定协议以对用户进行身份验证和授权的提供程序。 它们允许您连接到符合特定协议的任何身份提供者。 Keycloak支持SAML v2.0和OpenID Connect v1.0协议。 它可以根据这些开放标准轻松配置和代理任何身份提供商。
 
-Although each type of identity provider has its own configuration options, all of them share some very common configuration. Regardless of which identity provider you are creating, you’ll see the following configuration options available:
+虽然每种类型的身份提供者都有自己的配置选项，但它们都共享一些非常常见的配置。 无论您创建哪个身份提供程序，您都会看到以下配置选项：
 
-| Configuration          | Description                                                  |
+| 配置          | 描述                                                  |
 | :--------------------- | :----------------------------------------------------------- |
-| Alias                  | The alias is a unique identifier for an identity provider. It is used to reference an identity provider internally. Some protocols such as OpenID Connect require a redirect URI or callback url in order to communicate with an identity provider. In this case, the alias is used to build the redirect URI. Every single identity provider must have an alias. Examples are `facebook`, `google`, `idp.acme.com`, etc. |
-| Enabled                | Turn the provider on/off.                                    |
-| Hide on Login Page     | When this switch is on, this provider will not be shown as a login option on the login page. Clients can still request to use this provider by using the 'kc_idp_hint' parameter in the URL they use to request a login. |
-| Account Linking Only   | When this switch is on, this provider cannot be used to login users and will not be shown as an option on the login page. Existing accounts can still be linked with this provider though. |
-| Store Tokens           | Whether or not to store the token received from the identity provider. |
-| Stored Tokens Readable | Whether or not users are allowed to retrieve the stored identity provider token. This also applies to the *broker* client-level role *read token*. |
-| Trust Email            | If the identity provider supplies an email address this email address will be trusted. If the realm required email validation, users that log in from this IDP will not have to go through the email verification process. |
-| GUI Order              | The order number that sorts how the available IDPs are listed on the login page. |
-| First Login Flow       | This is the authentication flow that will be triggered for users that log into Keycloak through this IDP for the first time ever. |
-| Post Login Flow        | Authentication flow that is triggered after the user finishes logging in with the external identity provider. |
+| Alias                  | 别名是身份提供者的唯一标识符。 它用于在内部引用身份提供者。 某些协议（如OpenID Connect）需要重定向URI或回调URL才能与身份提供者进行通信。 在这种情况下，别名用于构建重定向URI。 每个身份提供者都必须拥有别名。 例如`facebook`，`google`，`idp.acme.com`等。 |
+| Enabled                | 打开/关闭提供商。                                    |
+| Hide on Login Page     | 当此开关打开时，此提供程序将不会在登录页面上显示为登录选项。 客户端仍然可以通过在用于请求登录的URL中使用`kc_idp_hint`参数来请求使用此提供程序。 |
+| Account Linking Only   | 当此开关打开时，此提供程序不能用于登录用户，也不会在登录页面上显示为选项。 但是，现有帐户仍可与此提供商链接。 |
+| Store Tokens           | 是否存储从身份提供者收到的令牌。 |
+| Stored Tokens Readable | 是否允许用户检索存储的身份提供者令牌。 这也适用于*broker*客户端级角色*read token(读取令牌)*。 |
+| Trust Email            | 如果身份提供商提供电子邮件地址，则此电子邮件地址将受信任。 如果领域需要电子邮件验证，则从此IDP登录的用户将不必通过电子邮件验证过程。 |
+| GUI Order              | 用于对登录页面上列出的可用IDP进行排序的订单号。 |
+| First Login Flow       | 这是第一次通过此IDP登录Keycloak的用户将触发的身份验证流程。 |
+| Post Login Flow        | 用户完成使用外部身份提供程序登录后触发的身份验证流。 |
 
-### 12.4. Social Identity Providers {#Social_Identity_Providers}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social-login.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social-login.adoc)
+### 12.4. 社交身份提供者 {#Social_Identity_Providers}
 
-For Internet facing applications, it is quite burdensome for users to have to register at your site to obtain access. It requires them to remember yet another username and password combination. Social identity providers allow you to delegate authentication to a semi-trusted and respected entity where the user probably already has an account. Keycloak provides built-in support for the most common social networks out there, such as Google, Facebook, Twitter, GitHub, LinkedIn, Microsoft and Stack Overflow.
+对于面向Internet的应用程序，用户必须在您的站点注册才能获得访问权限，这非常麻烦。 它要求他们记住另一个用户名和密码组合。 社交身份提供程序允许您将身份验证委派给用户可能已拥有帐户的半受信任和受尊重的实体。 Keycloak为最常见的社交网络提供内置支持，例如Google，Facebook，Twitter，GitHub，LinkedIn，Microsoft和Stack Overflow。
 
 #### 12.4.1. Bitbucket {#Bitbucket}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/bitbucket.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/bitbucket.adoc)
 
-There are a number of steps you have to complete to be able to enable login with Bitbucket.
+您必须完成许多步骤才能启用Bitbucket登录。
 
-First, open the `Identity Providers` left menu item and select `Bitbucket` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+首先，打开`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Bitbucket`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![bitbucket add identity provider](assets/bitbucket-add-identity-provider.png)
 
-Before you can click `Save`, you must obtain a `Client ID` and `Client Secret` from Bitbucket.
+在您单击`Save`之前，您必须从Bitbucket获取`Client ID`和`Client Secret`。
 
-|      | You will use the `Redirect URI` from this page in a later step, which you will provide to Bitbucket when you register Keycloak as a client there. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 您将在稍后的步骤中使用此页面中的`Redirect URI`，当您在其中注册Keycloak作为客户端时，您将提供给Bitbucket。
 
-Add a New App
+添加新应用
 
-To enable login with Bitbucket you must first register an application project in [OAuth on Bitbucket Cloud](https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html).
+要使用Bitbucket启用登录，您必须首先在[关于Bitbucket Cloud的OAuth](https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html)中注册一个应用程序项目。
 
-|      | Bitbucket often changes the look and feel of application registration, so what you see on the Bitbucket site may differ. If in doubt, see the Bitbucket documentation. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> Bitbucket经常改变应用程序注册的外观和感觉，所以你在Bitbucket网站上看到的可能会有所不同。 如有疑问，请参阅Bitbucket文档。
 
 ![bitbucket developer applications](assets/bitbucket-developer-applications.png)
 
-Click the `Add consumer` button.
+单击`Add consumer`按钮。
 
-Register App
+注册应用程序
 
 ![bitbucket register app](assets/bitbucket-register-app.png)
 
-Copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and enter it into the Callback URL field on the Bitbucket Add OAuth Consumer page.
+从Keycloak`Addd Identity Provider`页面复制`Redirect URI`并将其输入`Bitbucket Add OAuth Consumer`页面上的`Callback URL`字段。
 
-On the same page, mark the `Email` and `Read` boxes under `Account` to allow your application to read user email.
+在同一页面上，在`Account`下标记`Email`和`Read`框，以允许您的应用程序读取用户电子邮件。
 
-Bitbucket App Page
+Bitbucket应用页面
 
 ![bitbucket app page](assets/bitbucket-app-page.png)
 
-When you are done registering, click `Save`. This will open the application management page in Bitbucket. Find the client ID and secret from this page so you can enter them into the Keycloak `Add identity provider` page. Click `Save`.
+完成注册后，单击`Save`。 这将打开Bitbucket中的应用程序管理页面。 从此页面中查找客户端ID和密码，以便您可以将其输入Keycloak`Add identity provider`页面。 点击`Save`。
 
 #### 12.4.2. Facebook {#Facebook}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/facebook.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/facebook.adoc)
 
-There are a number of steps you have to complete to be able to enable login with Facebook. First, go to the `Identity Providers` left menu item and select `Facebook` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+您必须完成许多步骤才能启用Facebook登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Facebook`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![facebook add identity provider](assets/facebook-add-identity-provider.png)
 
-You can’t click save yet, as you’ll need to obtain a `Client ID` and `Client Secret` from Facebook. One piece of data you’ll need from this page is the `Redirect URI`. You’ll have to provide that to Facebook when you register Keycloak as a client there, so copy this URI to your clipboard.
+您无法单击`保存`，因为您需要从Facebook获取`Client ID`和`Client Secret`。 您需要从此页面获得的一条数据是`Redirect URI`。 当您在其中注册Keycloak作为客户端时，您必须向Facebook提供该功能，因此请将此URI复制到剪贴板。
 
-To enable login with Facebook you first have to create a project and a client in the [Facebook Developer Console](https://developers.facebook.com/).
+要启用Facebook登录，首先必须在[Facebook Developer Console](https://developers.facebook.com/)中创建项目和客户端。
 
-|      | Facebook often changes the look and feel of the Facebook Developer Console, so these directions might not always be up to date and the configuration steps might be slightly different. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> Facebook经常改变Facebook Developer Console的外观和风格，因此这些指示可能并不总是最新的，配置步骤可能略有不同。
 
-Once you’ve logged into the console there is a pull down menu in the top right corner of the screen that says `My Apps`. Select the `Add a New App` menu item.
+登录控制台后，屏幕右上角会出现一个下拉菜单，上面写着`My Apps`。 选择`Add a New App`菜单项。
 
-Add a New App
+添加新应用
 
 ![facebook add new app](assets/facebook-add-new-app.png)
 
-Select the `Website` icon. Click the `Skip and Create App ID` button.
+选择`Website`图标。 单击`Skip and Create App ID`按钮。
 
-Create a New App ID
+创建一个新的应用程序ID
 
 ![facebook create app id](assets/facebook-create-app-id.png)
 
-The email address and app category are required fields. Once you’re done with that, you will be brought to the dashboard for the application. Click the `Settings` left menu item.
+电子邮件地址和应用类别是必填字段。 完成后，您将被带到应用程序的仪表板。 单击`Settings`左侧菜单项。
 
-Create a New App ID
+创建一个新的应用程序ID
 
 ![facebook app settings](assets/facebook-app-settings.png)
 
-Click on the `+ Add Platform` button at the end of this page and select the `Website` icon. Copy and paste the `Redirect URI` from the Keycloak `Add identity provider` page into the `Site URL` of the Facebook `Website` settings block.
+单击本页末尾的`+ Add Platform`按钮，然后选择`Website`图标。 将`Redirect  URI`从Keycloak`Add identity provider`页面复制并粘贴到Facebook`Website`设置块的`Site  URL`中。
 
-Specify Website
+指定网站
 
 ![facebook app settings website](assets/facebook-app-settings-website.png)
 
-After this it is necessary to make the Facebook app public. Click `App Review` left menu item and switch button to "Yes".
+在此之后，有必要公开Facebook应用程序。 单击`App Review`左侧菜单项，然后将按钮切换为`Yes`。
 
-You will need also to obtain the App ID and App Secret from this page so you can enter them into the Keycloak `Add identity provider` page. To obtain this click on the `Dashboard` left menu item and click on `Show` under `App Secret`. Go back to Keycloak and specify those items and finally save your Facebook Identity Provider.
+您还需要从此页面获取`App ID`和`App Secret`，以便将其输入Keycloak`Add identity provider`页面。 要获得此单击`Dashboard`左侧菜单项并单击`App Secret`下的`Show`。 返回Keycloak并指定这些项目，最后保存您的Facebook身份提供商。
 
-One config option to note on the `Add identity provider` page for Facebook is the `Default Scopes` field. This field allows you to manually specify the scopes that users must authorize when authenticating with this provider. For a complete list of scopes, please take a look at <https://developers.facebook.com/docs/graph-api>. By default, Keycloak uses the following scopes: `email`.
+在Facebook的`Add identity provider`页面上注释的一个配置选项是`Default Scopes`字段。 此字段允许您手动指定用户在使用此提供程序进行身份验证时必须授权的范围。 有关范围的完整列表，请查看`<https://developers.facebook.com/docs/graph-api>`。 默认情况下，Keycloak使用以下范围：`email`。
 
 #### 12.4.3. GitHub {#GitHub}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/github.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/github.adoc)
 
-There are a number of steps you have to complete to be able to enable login with GitHub. First, go to the `Identity Providers` left menu item and select `GitHub` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+您必须完成许多步骤才能启用GitHub登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`GitHub`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![github add identity provider](assets/github-add-identity-provider.png)
 
-You can’t click save yet, as you’ll need to obtain a `Client ID` and `Client Secret` from GitHub. One piece of data you’ll need from this page is the `Redirect URI`. You’ll have to provide that to GitHub when you register Keycloak as a client there, so copy this URI to your clipboard.
+您无法单击`Save`，因为您需要从GitHub获取`Client ID`和`Client Secret`。 您需要从此页面获得的一条数据是`Redirect  URI`。 当您在其中注册Keycloak作为客户端时，您必须将其提供给GitHub，因此请将此URI复制到剪贴板。
 
-To enable login with GitHub you first have to register an application project in [GitHub Developer applications](https://github.com/settings/developers).
+要使用GitHub启用登录，首先必须在[GitHub Developer applications](https://github.com/settings/developers)中注册一个应用程序项目。
 
-|      | GitHub often changes the look and feel of application registration, so these directions might not always be up to date and the configuration steps might be slightly different. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> GitHub经常更改应用程序注册的外观，因此这些指示可能并不总是最新的，配置步骤可能略有不同。
 
-Add a New App
+添加新应用
 
 ![github developer applications](assets/github-developer-applications.png)
 
-Click the `Register a new application` button.
+单击`Register a new application`按钮。
 
-Register App
+注册应用程序
 
 ![github register app](assets/github-register-app.png)
 
-You’ll have to copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and enter it into the`Authorization callback URL` field on the GitHub `Register a new OAuth application` page. Once you’ve completed this page you will be brought to the application’s management page.
+您必须从Keycloak`Addd Identity Provider`页面复制`Redirect URI`并将其输入到GitHub上的`Authorization callback URL` 字段 `Register a new OAuth application`页面。 完成此页面后，您将进入应用程序的管理页面。
 
-GitHub App Page
+GitHub应用页面
 
 ![github app page](assets/github-app-page.png)
 
-You will need to obtain the client ID and secret from this page so you can enter them into the Keycloak `Add identity provider` page. Go back to Keycloak and specify those items.
+您需要从此页面获取客户端ID和密码，以便将其输入Keycloak`Add identity provider`页面。 返回Keycloak并指定这些项目。
 
 #### 12.4.4. GitLab {#GitLab}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/gitlab.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/gitlab.adoc)
 
-There are a number of steps you have to complete to be able to enable login with GitLab.
+为了能够使用GitLab启用登录，您必须完成许多步骤。
 
-First, go to the `Identity Providers` left menu item and select `GitLab` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`GitLab`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![gitlab add identity provider](assets/gitlab-add-identity-provider.png)
 
-Before you can click `Save`, you must obtain a `Client ID` and `Client Secret` from GitLab.
+在单击`Save`之前，您必须从GitLab获取`Client ID`和`Client Secret`。
 
-|      | You will use the `Redirect URI` from this page in a later step, which you will provide to GitLab when you register Keycloak as a client there. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 您将在稍后的步骤中使用此页面中的 `Redirect URI`，当您在其中注册Keycloak作为客户端时，您将提供给GitLab。
 
-To enable login with GitLab you first have to register an application in [GitLab as OAuth2 authentication service provider](https://docs.gitlab.com/ee/integration/oauth_provider.html).
+要使用GitLab启用登录，首先必须在[GitLab as OAuth2身份验证服务提供商](https://docs.gitlab.com/ee/integration/oauth_provider.html)中注册应用程序。
 
-|      | GitLab often changes the look and feel of application registration, so what you see on the GitLab site may differ. If in doubt, see the GitLab documentation. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> GitLab经常更改应用程序注册的外观，因此您在GitLab站点上看到的内容可能会有所不同。 如有疑问，请参阅GitLab文档。
 
-Add a New App
+添加新应用
 
 ![gitlab developer applications](assets/gitlab-developer-applications.png)
 
-Copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and enter it into the Redirect URI field on the GitLab Add new application page.
+从Keycloak `Add Identity Provider`页面复制`Redirect URI`，并将其输入到GitLab添加新应用程序页面的重定向URI字段中。
 
-GitLab App Page
+GitLab应用页面
 
 ![gitlab app page](assets/gitlab-app-page.png)
 
-When you are done registering, click `Save application`. This will open the application management page in GitLab. Find the client ID and secret from this page so you can enter them into the Keycloak `Add identity provider` page.
+完成注册后，单击`Save application`。 这将打开GitLab中的应用程序管理页面。 从此页面中查找客户端ID和密码，以便您可以将其输入Keycloak `Add identity provider`页面。
 
-To finish, return to Keycloak and enter them. Click `Save`.
+完成后，返回Keycloak并输入它们。 点击`Save`。
 
 #### 12.4.5. Google {#Google}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/google.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/google.adoc)
 
-There are a number of steps you have to complete to be able to enable login with Google. First, go to the `Identity Providers` left menu item and select `Google` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+您必须完成许多步骤才能启用Google登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Google`。 这将带您进入 `Add identity provider` 页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![google add identity provider](assets/google-add-identity-provider.png)
 
-You can’t click save yet, as you’ll need to obtain a `Client ID` and `Client Secret` from Google. One piece of data you’ll need from this page is the `Redirect URI`. You’ll have to provide that to Google when you register Keycloak as a client there, so copy this URI to your clipboard.
+您无法单击`Save`，因为您需要从Google获取`Client ID` 和 `Client Secret`。 您需要从此页面获得的一条数据是`Redirect URI`。 当您在其中注册Keycloak作为客户端时，您必须向Google提供该功能，因此请将此URI复制到剪贴板。
 
-To enable login with Google you first have to create a project and a client in the [Google Developer Console](https://console.cloud.google.com/project). Then you need to copy the client ID and secret into the Keycloak Admin Console.
+要启用Google登录，您首先必须在[Google Developer Console](https://console.cloud.google.com/project)中创建项目和客户。 然后，您需要将客户端ID和密钥复制到Keycloak管理控制台。
 
-|      | Google often changes the look and feel of the Google Developer Console, so these directions might not always be up to date and the configuration steps might be slightly different. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> Google经常更改Google Developer Console的外观，因此这些说明可能并不总是最新的，配置步骤可能略有不同。
 
-Let’s see first how to create a project with Google.
+我们先来看看如何使用Google创建项目。
 
-Log in to the [Google Developer Console](https://console.cloud.google.com/project).
+登录到[Google Developer Console](https://console.cloud.google.com/project)。
 
 Google Developer Console
 
 ![google developer console](assets/google-developer-console.png)
 
-Click the `Create Project` button. Use any value for `Project name` and `Project ID` you want, then click the `Create`button. Wait for the project to be created (this may take a while). Once created you will be brought to the project’s dashboard.
+单击`Create Project`按钮。 使用所需的`Project name`和`Project  ID`的任何值，然后单击`Create`按钮。 等待创建项目（这可能需要一段时间）。 创建后，您将被带到项目的仪表板。
 
-Dashboard
+仪表板
 
 ![google dashboard](assets/google-dashboard.png)
 
-Then navigate to the `APIs & Services` section in the Google Developer Console. On that screen, navigate to `Credentials`administration.
+然后导航到Google Developer Console中的`APIs & Services`部分。 在该屏幕上，导航到`Credentials`管理。
 
-When users log into Google from Keycloak they will see a consent screen from Google which will ask the user if Keycloak is allowed to view information about their user profile. Thus Google requires some basic information about the product before creating any secrets for it. For a new project, you have first to configure `OAuth consent screen`.
+当用户从Keycloak登录Google时，他们会看到Google的同意屏幕，该屏幕将询问用户是否允许Keycloak查看有关其用户个人资料的信息。 因此，在为其创建任何秘密之前，Google需要一些有关该产品的基本信息。 对于新项目，您首先要配置`OAuth consent screen`。
 
-For the very basic setup, filling in the Application name is sufficient. You can also set additional details like scopes for Google APIs in this page.
+对于非常基本的设置，填写应用程序名称就足够了。 您还可以在此页面中设置其他详细信息，例如Google API的范围。
 
-Fill in OAuth consent screen details
+填写OAuth同意屏幕详细信息
 
 ![google oauth consent screen](assets/google-oauth-consent-screen.png)
 
-The next step is to create OAuth client ID and client secret. Back in `Credentials` administration, navigate to `Credentials`tab and select `OAuth client ID` under the `Create credentials` button.
+下一步是创建OAuth客户端ID和客户端密钥。 回到`Credentials`管理，导航到`Credentials`tab并在`Create credentials`按钮下选择`OAuth client ID`。
 
-Create credentials
+创建凭据
 
 ![google create credentials](assets/google-create-credentials.png)
 
-You will then be brought to the `Create OAuth client ID` page. Select `Web application` as the application type. Specify the name you want for your client. You’ll also need to copy and paste the `Redirect URI` from the Keycloak `Add Identity Provider` page into the `Authorized redirect URIs` field. After you do this, click the `Create` button.
+然后，您将进入`Create OAuth client ID`页面。 选择`Web application`作为应用程序类型。 指定客户端所需的名称。 您还需要将`Redirect URI`从Keycloak `Add Identity Provider`页面复制并粘贴到 `Authorized redirect URIs`字段中。 完成后，单击`Create`按钮。
 
-Create OAuth client ID
+创建OAuth客户端ID
 
 ![google create oauth id](assets/google-create-oauth-id.png)
 
-After you click `Create` you will be brought to the `Credentials` page. Click on your new OAuth 2.0 Client ID to view the settings of your new Google Client.
+单击`Create`后，您将进入`Credentials`页面。 点击新的OAuth 2.0客户端ID可查看新Google客户端的设置。
 
-Google Client Credentials
+Google客户端凭据
 
 ![google client credentials](assets/google-client-credentials.png)
 
-You will need to obtain the client ID and secret from this page so you can enter them into the Keycloak `Add identity provider` page. Go back to Keycloak and specify those items.
+您需要从此页面获取客户端ID和密码，以便将其输入Keycloak `Add identity provider`页面。 返回Keycloak并指定这些项目。
 
-One config option to note on the `Add identity provider` page for Google is the `Default Scopes` field. This field allows you to manually specify the scopes that users must authorize when authenticating with this provider. For a complete list of scopes, please take a look at <https://developers.google.com/oauthplayground/> . By default, Keycloak uses the following scopes: `openid` `profile` `email`.
+在Google的`Add identity provider`页面上注明的一个配置选项是`Default Scopes`字段。 此字段允许您手动指定用户在使用此提供程序进行身份验证时必须授权的范围。 有关范围的完整列表，请查看`<https://developers.google.com/oauthplayground/>`。 默认情况下，Keycloak使用以下范围：`openid` `profile` `email`。
 
-If your organization uses the G Suite and you want to restrict access to only members of your organization, you must enter the domain that is used for the G Suite into the `Hosted Domain` field to enable it.
+如果您的组织使用G Suite并且您希望仅限制对组织成员的访问，则必须将用于G Suite的域输入`Hosted Domain`字段以启用它。
 
 #### 12.4.6. LinkedIn {#LinkedIn}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/linked-in.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/linked-in.adoc)
 
-There are a number of steps you have to complete to be able to enable login with LinkedIn. First, go to the `Identity Providers` left menu item and select `LinkedIn` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+您必须完成许多步骤才能启用LinkedIn登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`LinkedIn`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![linked in add identity provider](assets/linked-in-add-identity-provider.png)
 
-You can’t click save yet, as you’ll need to obtain a `Client ID` and `Client Secret` from LinkedIn. One piece of data you’ll need from this page is the `Redirect URI`. You’ll have to provide that to LinkedIn when you register Keycloak as a client there, so copy this URI to your clipboard.
+您无法单击`Save`，因为您需要从LinkedIn获取`Client ID`和`Client Secret`。 您需要从此页面获得的一条数据是`Redirect  URI`。 当您在其中注册Keycloak作为客户端时，您必须向LinkedIn提供该功能，因此请将此URI复制到剪贴板。
 
-To enable login with LinkedIn you first have to create an application in [LinkedIn Developer Network](https://www.linkedin.com/developer/apps).
+要启用LinkedIn登录，首先必须在[LinkedIn开发人员网络](https://www.linkedin.com/developer/apps)中创建应用程序。
 
-|      | LinkedIn may change the look and feel of application registration, so these directions may not always be up to date. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> LinkedIn可能会更改应用程序注册的外观，因此这些说明可能并不总是最新的。
 
-Developer Network
+开发者网络
 
 ![linked in developer network](assets/linked-in-developer-network.png)
 
-Click on the `Create Application` button. This will bring you to the `Create a New Application` Page.
+单击`Create Application`按钮。 这将带您进入`Create a New Application`页面。
 
-Create App
+创建应用程序
 
 ![linked in create app](assets/linked-in-create-app.png)
 
-Fill in the form with the appropriate values, then click the `Submit` button. This will bring you to the new application’s settings page.
+使用适当的值填写表单，然后单击`Submit`按钮。 这将带您进入新应用程序的设置页面。
 
-App Settings
+应用设置
 
 ![linked in app settings](assets/linked-in-app-settings.png)
 
-Select `r_basicprofile` and `r_emailaddress` in the `Default Application Permissions` section. You’ll have to copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and enter it into the `OAuth 2.0` `Authorized Redirect URLs` field on the LinkedIn app settings page. Don’t forget to click the `Update` button after you do this!
+在`Default Application Permissions`部分中选择`r_basicprofile`和`r_emailaddress`。 您必须从Keycloak `Add Identity Provider`页面复制`Redirect URI`并将其输入到LinkedIn应用程序设置页面上的`OAuth 2.0` `Authorized Redirect URLs`字段中。 执行此操作后，请不要忘记单击`Update`按钮！
 
-You will then need to obtain the client ID and secret from this page so you can enter them into the Keycloak `Add identity provider` page. Go back to Keycloak and specify those items.
+然后，您需要从此页面获取客户端ID和密码，以便将其输入Keycloak `Add identity provider`页面。 返回Keycloak并指定这些项目。
 
 #### 12.4.7. Microsoft {#Microsoft}
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/microsoft.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/microsoft.adoc)
