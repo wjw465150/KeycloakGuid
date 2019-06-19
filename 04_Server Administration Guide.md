@@ -2937,58 +2937,50 @@ Google客户端凭据
 然后，您需要从此页面获取客户端ID和密码，以便将其输入Keycloak `Add identity provider`页面。 返回Keycloak并指定这些项目。
 
 #### 12.4.7. Microsoft {#Microsoft}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/microsoft.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/microsoft.adoc)
 
-There are a number of steps you have to complete to be able to enable login with Microsoft. First, go to the `Identity Providers` left menu item and select `Microsoft` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+您必须完成许多步骤才能启用Microsoft登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Microsoft`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![microsoft add identity provider](assets/microsoft-add-identity-provider.png)
 
-You can’t click save yet, as you’ll need to obtain a `Client ID` and `Client Secret` from Microsoft. One piece of data you’ll need from this page is the `Redirect URI`. You’ll have to provide that to Microsoft when you register Keycloak as a client there, so copy this URI to your clipboard.
+您无法单击`Save`，因为您需要从Microsoft获取`Client  ID` 和 `Client Secret`。 您需要从此页面获得的一条数据是`Redirect URI`。 当您在其中注册Keycloak作为客户端时，您必须向Microsoft提供此功能，因此请将此URI复制到剪贴板。
 
-To enable login with Microsoft account you first have to register an OAuth application at Microsoft. Go to the [Microsoft Application Registration](https://account.live.com/developers/applications/create) url.
+要启用使用Microsoft帐户登录，首先必须在Microsoft注册OAuth应用程序。 转到[Microsoft应用程序注册](https://account.live.com/developers/applications/create)URL。
 
-|      | Microsoft often changes the look and feel of application registration, so these directions might not always be up to date and the configuration steps might be slightly different. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> Microsoft经常更改应用程序注册的外观，因此这些说明可能并不总是最新的，配置步骤可能略有不同。
 
-Register Application
+注册应用程序
 
 ![microsoft app register](assets/microsoft-app-register.png)
 
-Enter in the application name and click `Create application`. This will bring you to the application settings page of your new application.
+输入应用程序名称，然后单击`Create application`。 这将带您进入新应用程序的应用程序设置页面。
 
-Settings
+设置
 
 ![microsoft app settings](assets/microsoft-app-settings.png)
 
-You’ll have to copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and add it to the `Redirect URIs`field on the Microsoft application page. Be sure to click the `Add Url` button and `Save` your changes.
+您必须从Keycloak`Addd Identity Provider`页面复制`Redirect URI`并将其添加到Microsoft应用程序页面上的`Redirect URIs`字段中。 一定要点击`Add Url`按钮并`Save`您的更改。
 
-Finally, you will need to obtain the Application ID and secret from this page so you can enter them back on the Keycloak `Add identity provider` page. Go back to Keycloak and specify those items.
+最后，您需要从此页面获取应用程序ID和密码，以便您可以在Keycloak `Add identity provider`页面上输入它们。 返回Keycloak并指定这些项目。
 
-|      | From November 2018 onwards, Microsoft is removing support for the Live SDK API in favor of the new Microsoft Graph API. The Keycloak Microsoft identity provider has been updated to use the new endpoints so make sure to upgrade to Keycloak version 4.6.0 or later in order to use this provider. Furthermore, client applications registered with Microsoft under "Live SDK applications" will need to be re-registered in the [Microsoft Application Registration](https://account.live.com/developers/applications/create) portal to obtain an application id that is compatible with the Microsoft Graph API. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 从2018年11月起，Microsoft将取消对Live SDK API的支持，转而使用新的Microsoft Graph API。 Keycloak Microsoft身份提供程序已更新为使用新端点，因此请确保升级到Keycloak 4.6.0或更高版本才能使用此提供程序。 此外，在“Live SDK应用程序”下向Microsoft注册的客户端应用程序需要在[Microsoft应用程序注册](https://account.live.com/developers/applications/create)门户中重新注册才能获取应用程序ID 与Microsoft Graph API兼容。
 
 #### 12.4.8. OpenShift {#OpenShift}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/openshift.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/openshift.adoc)
 
-|      | OpenShift Online is currently in the developer preview mode. This documentation has been based on on-premise installations and local `minishift` development environment. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> OpenShift Online目前处于开发者预览模式。 本文档基于本地安装和本地`minishift`开发环境。
 
-There are a just a few steps you have to complete to be able to enable login with OpenShift. First, go to the `Identity Providers` left menu item and select `OpenShift` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+您需要完成几个步骤才能启用OpenShift登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`OpenShift`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![openshift add identity provider](assets/openshift-add-identity-provider.png)
 
-Registering OAuth client
+注册OAuth客户端
 
-You can register your client using `oc` command line tool.
+您可以使用`oc`命令行工具注册您的客户端。
 
-```
+```bash
 $ oc create -f <(echo '
 kind: OAuthClient
 apiVersion: v1
@@ -3001,217 +2993,209 @@ grantMethod: prompt
 ')
 ```
 
-|      | The `name` of your OAuth client. Passed as `client_id` request parameter when making requests to `*<openshift_master>*/oauth/authorize` and `*<openshift_master>*/oauth/token`. |
-| ---- | ------------------------------------------------------------ |
-|      | `secret` is used as the `client_secret` request parameter.   |
-|      | The `redirect_uri` parameter specified in requests to `*<openshift_master>*/oauth/authorize` and `*<openshift_master>*/oauth/token` must be equal to (or prefixed by) one of the URIs in `redirectURIs`. |
-|      | The `grantMethod` is used to determine what action to take when this client requests tokens and has not yet been granted access by the user. |
+> 您的OAuth客户端的`name`。 在向`*<openshift_master>*/oauth/authorize` 和 `*<openshift_master>*/oauth/token`发出请求时，将其作为`client_id`请求参数传递。
 
-Use client ID and secret defined by `oc create` command to enter them back on the Keycloak `Add identity provider`page. Go back to Keycloak and specify those items.
+> `secret`用作`client_secret`请求参数。
 
-Please refer to [official OpenShift documentation](https://docs.okd.io/latest/architecture/additional_concepts/authentication.html#oauth) for more detailed guides.
+> 在对`*<openshift_master>*/oauth/authorize` 和 `*<openshift_master>*/oauth/token`的请求中指定的`redirect_uri`参数必须等于（或以前缀为）`redirectURIs`中的一个URI。
+
+> `grantMethod`用于确定当此客户端请求令牌并且尚未被用户授予访问权时要采取的操作。
+
+使用`oc create`命令定义的客户机ID和密码将它们输入Keycloak `Addd identity provider` 页面。 返回Keycloak并指定这些项目。
+
+有关更多详细指南，请参阅[官方OpenShift文档](https://docs.okd.io/latest/architecture/additional_concepts/authentication.html#oauth)。
 
 #### 12.4.9. PayPal {#PayPal}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/paypal.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/paypal.adoc)
 
-There are a number of steps you have to complete to be able to enable login with PayPal. First, go to the `Identity Providers` left menu item and select `PayPal` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+您必须完成许多步骤才能启用PayPal登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`PayPal`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![paypal add identity provider](assets/paypal-add-identity-provider.png)
 
-You can’t click save yet, as you’ll need to obtain a `Client ID` and `Client Secret` from PayPal. One piece of data you’ll need from this page is the `Redirect URI`. You’ll have to provide that to PayPal when you register Keycloak as a client there, so copy this URI to your clipboard.
+您无法单击`Save`，因为您需要从PayPal获取`Client ID`和`Client Secret`。 您需要从此页面获得的一条数据是`Redirect URI`。 当您在其中注册Keycloak作为客户端时，您必须将其提供给PayPal，因此请将此URI复制到剪贴板。
 
-To enable login with PayPal you first have to register an application project in [PayPal Developer applications](https://developer.paypal.com/developer/applications).
+要使用PayPal启用登录，首先必须在[PayPal开发人员应用程序](https://developer.paypal.com/developer/applications)中注册应用程序项目。
 
-Add a New App
+添加新应用
 
 ![paypal developer applications](assets/paypal-developer-applications.png)
 
-Click the `Create App` button.
+单击 `Create App` 按钮。
 
-Register App
+注册应用程序
 
 ![paypal register app](assets/paypal-register-app.png)
 
-You will now be brought to the app settings page.
+现在，您将进入应用程序设置页面。
 
-Do the following changes
+进行以下更改
 
-- Choose to configure either Sandbox or Live (choose Live if you haven’t enabled the `Target Sandbox` switch on the `Add identity provider` page)
-- Copy Client ID and Secret so you can paste them into the Keycloak `Add identity provider` page.
-- Scroll down to `App Settings`
-- Copy the `Redirect URI` from the Keycloak `Add Identity Provider` page and enter it into the `Return URL` field.
-- Check the `Log In with PayPal` checkbox.
-- Check the `Full name` checkbox under the personal information section.
-- Check the `Email address` checkbox under the address information section.
-- Add both a privacy and a user agreement URL pointing to the respective pages on your domain.
+- 选择配置Sandbox或Live（如果尚未在`Add identity provider` 页面上启用`Target Sandbox`开关，请选择“Live (实时)”）
+- 复制客户端ID和密码，以便将它们粘贴到Keycloak `Add identity provider`页面。
+- 向下滚动到 `App Settings`
+- 从Keycloak `Addd Identity Provider`页面复制 `Redirect URI` 并将其输入到 `Return URL`字段中。
+- 选中 `Log In with PayPal` 复选框。
+- 检查个人信息部分下的 `Full name` 复选框。
+- 检查地址信息部分下的 `Email address` 复选框。
+- 添加指向您域中相应页面的隐私和用户协议URL。
 
 #### 12.4.10. Stack Overflow {#Stack_Overflow}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/stack-overflow.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/stack-overflow.adoc)
 
-There are a number of steps you have to complete to be able to enable login with Stack Overflow. First, go to the `Identity Providers` left menu item and select `Stack Overflow` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+为了能够使用Stack Overflow启用登录，您必须完成许多步骤。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Stack Overflow`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![stack overflow add identity provider](assets/stack-overflow-add-identity-provider.png)
 
-To enable login with Stack Overflow you first have to register an OAuth application on [StackApps](https://stackapps.com/). Go to [registering your application on Stack Apps](https://stackapps.com/apps/oauth/register) URL and login.
+要使用Stack Overflow启用登录，首先必须在[StackApps](https://stackapps.com/)上注册OAuth应用程序。 转到[在Stack Apps上注册您的应用程序](https://stackapps.com/apps/oauth/register) URL并登录。
 
-|      | Stack Overflow often changes the look and feel of application registration, so these directions might not always be up to date and the configuration steps might be slightly different. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 堆栈溢出通常会更改应用程序注册的外观，因此这些指示可能并不总是最新的，配置步骤可能略有不同。
 
-Register Application
+注册应用程序
 
 ![stack overflow app register](assets/stack-overflow-app-register.png)
 
-Enter in the application name and the OAuth Domain Name of your application and click `Register your Application`. Type in anything you want for the other items.
+输入应用程序的应用程序名称和OAuth域名，然后单击`Register your Application`。 输入您想要的其他项目。
 
-Settings
+设置
 
 ![stack overflow app settings](assets/stack-overflow-app-settings.png)
 
-Finally, you will need to obtain the client ID, secret, and key from this page so you can enter them back on the Keycloak `Add identity provider` page. Go back to Keycloak and specify those items.
+最后，您需要从此页面获取客户端ID，密钥和密钥，以便您可以在Keycloak `Add identity provider` 页面上输入它们。 返回Keycloak并指定这些项目。
 
 #### 12.4.11. Twitter {#Twitter}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/social/twitter.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/social/twitter.adoc)
 
-There are a number of steps you have to complete to be able to enable login with Twitter. First, go to the `Identity Providers` left menu item and select `Twitter` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+您必须完成许多步骤才能启用Twitter登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Twitter`。 这将带您进入 `Add identity provider` 页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![twitter add identity provider](assets/twitter-add-identity-provider.png)
 
-You can’t click save yet, as you’ll need to obtain a `Client ID` and `Client Secret` from Twitter. One piece of data you’ll need from this page is the `Redirect URI`. You’ll have to provide that to Twitter when you register Keycloak as a client there, so copy this URI to your clipboard.
+您无法单击`Save`，因为您需要从Twitter获取 `Client ID` 和 `Client Secret`。 您需要从此页面获得的一条数据是`Redirect URI`。 当您在其中注册Keycloak作为客户端时，您必须将其提供给Twitter，因此请将此URI复制到剪贴板。
 
-To enable login with Twtter you first have to create an application in the [Twitter Application Management](https://developer.twitter.com/apps/).
+要使用Twtter启用登录，首先必须在[Twitter应用程序管理](https://developer.twitter.com/apps/)中创建应用程序。
 
-Register Application
+注册应用程序
 
 ![twitter app register](assets/twitter-app-register.png)
 
-Click on the `Create New App` button. This will bring you to the `Create an Application` page.
+单击 `Create New App` 按钮。 这将带您进入 `Create an Application` 页面。
 
-Register Application
+注册应用程序
 
 ![twitter app create](assets/twitter-app-create.png)
 
-Enter in a Name and Description. The Website can be anything, but cannot have a `localhost` address. For the `Callback URL` you must copy the `Redirect URI` from the Keycloak `Add Identity Provider` page.
+输入名称和描述。 网站可以是任何东西，但不能有`localhost`地址。 对于`Callback URL`，您必须从Keycloak `Addd Identity Provider` 页面复制`Redirect URI`。
 
-|      | You cannot use `localhost` in the `Callback URL`. Instead replace it with `127.0.0.1` if you are trying to test drive Twitter login on your laptop. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 你不能在`Callback URL`中使用`localhost`。 如果您尝试在笔记本电脑上试驾Twitter登录，请将其替换为`127.0.0.1`。
 
-After clicking save you will be brought to the `Details` page.
+单击保存后，您将进入 `Details` 页面。
 
-App Details
+应用详情
 
 ![twitter details](assets/twitter-details.png)
 
-Next go to the `Keys and Access Tokens` tab.
+接下来转到 `Keys and Access Tokens` 选项卡。
 
-Keys and Access Tokens
+密钥和访问令牌
 
 ![twitter keys](assets/twitter-keys.png)
 
-Finally, you will need to obtain the API Key and secret from this page and copy them back into the `Client ID` and `Client Secret` fields on the Keycloak `Add identity provider` page.
+最后，您需要从此页面获取API密钥和密钥，并将它们复制回Keycloak `Add identity provider` 页面上的 `Client ID` 和 `Client Secret`字段。
 
-### 12.5. OpenID Connect v1.0 Identity Providers {#OpenID_Connect_v1_0_Identity_Providers}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/oidc.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/oidc.adoc)
+### 12.5. OpenID Connect v1.0 身份提供商 {#OpenID_Connect_v1_0_Identity_Providers}
 
-Keycloak can broker identity providers based on the OpenID Connect protocol. These IDPs must support the [Authorization Code Flow](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc) as defined by the specification in order to authenticate the user and authorize access.
+Keycloak可以基于OpenID Connect协议来代理身份提供商。 这些IDP必须支持规范定义的[授权代码流程](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc)，以便对用户进行身份验证并授权访问。
 
-To begin configuring an OIDC provider, go to the `Identity Providers` left menu item and select `OpenID Connect v1.0`from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+要开始配置OIDC提供程序，请转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`OpenID Connect v1.0`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![oidc add identity provider](assets/oidc-add-identity-provider.png)
 
-The initial configuration options on this page are described in [General IDP Configuration](https://www.keycloak.org/docs/latest/server_admin/index.html#_general-idp-config). You must define the OpenID Connect configuration options as well. They basically describe the OIDC IDP you are communicating with.
+此常规配置选项在[常规IDP配置](https://www.keycloak.org/docs/latest/server_admin/index.html#_general-idp-config)中介绍。 您还必须定义OpenID Connect配置选项。 它们基本上描述了您正在与之通信的`OIDC IDP`。
 
-| Configuration            | Description                                                  |
+| 配置            | 描述                                                  |
 | :----------------------- | :----------------------------------------------------------- |
-| Authorization URL        | Authorization URL endpoint required by the OIDC protocol.    |
-| Token URL                | Token URL endpoint required by the OIDC protocol.            |
-| Logout URL               | Logout URL endpoint defined in the OIDC protocol. This value is optional. |
-| Backchannel Logout       | Backchannel logout is a background, out-of-band, REST invocation to the IDP to logout the user. Some IDPs can only perform logout through browser redirects as they may only be able to identity sessions via a browser cookie. |
-| User Info URL            | User Info URL endpoint defined by the OIDC protocol. This is an endpoint from which user profile information can be downloaded. |
-| Client ID                | This realm will act as an OIDC client to the external IDP. Your realm will need an OIDC client ID when using the Authorization Code Flow to interact with the external IDP. |
-| Client Secret            | This realm will need a client secret to use when using the Authorization Code Flow. |
-| Issuer                   | Responses from the IDP may contain an issuer claim. This config value is optional. If specified, this claim will be validated against the value you provide. |
-| Default Scopes           | Space-separated list of OIDC scopes to send with the authentication request. The default is `openid`. |
-| Prompt                   | Another optional switch. This is the prompt parameter defined by the OIDC specification. Through it you can force re-authentication and other options. See the specification for more details. |
-| Validate Signatures      | Another optional switch. This is to specify if Keycloak will verify the signatures on the external ID Token signed by this identity provider. If this is on, the Keycloak will need to know the public key of the external OIDC identity provider. See below for how to set it up. WARNING: For the performance purposes, Keycloak caches the public key of the external OIDC identity provider. If you think that private key of your identity provider was compromised, it is obviously good to update your keys, but it’s also good to clear the keys cache. See [Clearing the cache](https://www.keycloak.org/docs/latest/server_admin/index.html#_clear-cache)section for more details. |
-| Use JWKS URL             | Applicable if `Validate Signatures` is on. If the switch is on, then identity provider public keys will be downloaded from given JWKS URL. This allows great flexibility because new keys will be always re-downloaded when the identity provider generates new keypair. If the switch is off, then public key (or certificate) from the Keycloak DB is used, so whenever the identity provider keypair changes, you will always need to import the new key to the Keycloak DB as well. |
-| JWKS URL                 | URL where the identity provider JWK keys are stored. See the [JWK specification](https://self-issued.info/docs/draft-ietf-jose-json-web-key.html) for more details. If you use an external Keycloak as an identity provider, then you can use URL like <http://broker-keycloak:8180/auth/realms/test/protocol/openid-connect/certs> assuming your brokered Keycloak is running on [http://broker-keycloak:8180](http://broker-keycloak:8180/) and it’s realm is `test`. |
-| Validating Public Key    | Applicable if `Use JWKS URL` is off. Here is the public key in PEM format that must be used to verify external IDP signatures. |
-| Validating Public Key Id | Applicable if `Use JWKS URL` is off. This field specifies ID of the public key in PEM format. This config value is optional. As there is no standard way for computing key ID from key, various external identity providers might use different algorithm from Keycloak. If the value of this field is not specified, the validating public key specified above is used for all requests regardless of key ID sent by external IDP. When set, value of this field serves as key ID used by Keycloak for validating signatures from such providers and must match the key ID specified by the IDP. |
+| Authorization URL        | OIDC协议所需的授权URL端点。    |
+| Token URL                | OIDC协议所需的令牌URL端点。 |
+| Logout URL               | OIDC协议中定义的注销URL端点。 该值是可选的。 |
+| Backchannel Logout       | Backchannel注销是IDP的后台带外REST调用，用于注销用户。 一些IDP只能通过浏览器重定向执行注销，因为它们可能只能通过浏览器cookie识别会话。 |
+| User Info URL            | 用户信息由OIDC协议定义的URL端点。 这是可以从中下载用户配置文件信息的端点。 |
+| Client ID                | 该领域将充当外部IDP的OIDC客户端。 使用授权代码流与外部IDP交互时，您的领域将需要OIDC客户端ID。 |
+| Client Secret            | 在使用授权代码流时，此领域需要使用客户端密钥。 |
+| Issuer                   | 国内流离失所者的回应可能包含发行人索赔。 此配置值是可选的。 如果指定，此声明将根据您提供的值进行验证。 |
+| Default Scopes           | 以空格分隔的OIDC范围列表，以便与身份验证请求一起发送。 默认为`openid`。 |
+| Prompt                   | 另一个可选开关。 这是OIDC规范定义的提示参数。 通过它，您可以强制重新身份验证和其他选项。 有关详细信息，请参阅规范。 |
+| Validate Signatures      | 另一个可选开关。 这是为了指定Keycloak是否将验证由此身份提供者签名的外部ID令牌上的签名。 如果启用此选项，Keycloak将需要知道外部OIDC身份提供程序的公钥。 请参阅下文，了解如何进行设置。 警告：出于性能目的，Keycloak会缓存外部OIDC身份提供程序的公钥。 如果您认为您的身份提供商的私钥遭到破坏，那么更新密钥显然很好，但清除密钥缓存也很好。 有关详细信息，请参阅[清除缓存](https://www.keycloak.org/docs/latest/server_admin/index.html#_clear-cache) 部分。 |
+| Use JWKS URL             | 如果启用 `Validate Signatures`，则适用。 如果开关打开，则将从给定的JWKS URL下载身份提供者公钥。 这允许极大的灵活性，因为当身份提供者生成新的密钥对时，将始终重新下载新密钥。 如果交换机关闭，则使用Keycloak DB中的公钥（或证书），因此每当身份提供程序密钥对更改时，您始终需要将新密钥导入Keycloak DB。 |
+| JWKS URL                 | 存储身份提供程序JWK密钥的URL。 有关详细信息，请参阅[JWK规范](https://self-issued.info/docs/draft-ietf-jose-json-web-key.html)。 如果您使用外部Keycloak作为身份提供者，那么您可以使用URL，如`<http://broker-keycloak:8180/auth/realms/test/protocol/openid-connect/certs>`，假设您的代理密钥泄露正在运行http://broker-keycloak:8180](http://broker-keycloak:8180/)，它的领域是`test`。 |
+| Validating Public Key    | 如果 `Use JWKS URL` 已关闭，则适用。 以下是PEM格式的公钥，必须用于验证外部IDP签名。 |
+| Validating Public Key Id | 如果 `Use JWKS URL` 已关闭，则适用。 该字段以PEM格式指定公钥的ID。 此配置值是可选的。 由于没有从密钥计算密钥ID的标准方法，因此各种外部身份提供商可能使用Keycloak中的不同算法。 如果未指定此字段的值，则无论外部IDP发送的密钥ID如何，上面指定的验证公钥都将用于所有请求。 设置时，此字段的值用作Keycloak用于验证来自此类提供程序的签名的密钥ID，并且必须与IDP指定的密钥ID匹配。 |
 
-You can also import all this configuration data by providing a URL or file that points to OpenID Provider Metadata (see OIDC Discovery specification). If you are connecting to a Keycloak external IDP, you can import the IDP settings from the url `<root>/auth/realms/{realm-name}/.well-known/openid-configuration`. This link is a JSON document describing metadata about the IDP.
+您还可以通过提供指向OpenID提供程序元数据的URL或文件来导入所有此配置数据（请参阅OIDC发现规范）。 如果要连接到Keycloak外部IDP，则可以从URL `<root>/auth/realms/{realm-name}/.well-known/openid-configuration` 导入IDP设置。 此链接是一个JSON文档，描述有关IDP的元数据。
 
-### 12.6. SAML v2.0 Identity Providers {#SAML_v2_0_Identity_Providers}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/saml.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/saml.adoc)
+### 12.6. SAML v2.0 身份提供商 {#SAML_v2_0_Identity_Providers}
 
-Keycloak can broker identity providers based on the SAML v2.0 protocol.
+Keycloak可以基于SAML v2.0协议代理身份提供商。
 
-To begin configuring an SAML v2.0 provider, go to the `Identity Providers` left menu item and select `SAML v2.0` from the `Add provider` drop down list. This will bring you to the `Add identity provider` page.
+要开始配置SAML v2.0提供程序，请转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`SAML v2.0`。 这将带您进入`Add identity provider`页面。
 
-Add Identity Provider
+添加身份提供者
 
 ![saml add identity provider](assets/saml-add-identity-provider.png)
 
-The initial configuration options on this page are described in [General IDP Configuration](https://www.keycloak.org/docs/latest/server_admin/index.html#_general-idp-config). You must define the SAML configuration options as well. They basically describe the SAML IDP you are communicating with.
+此常规配置选项在[常规IDP配置](https://www.keycloak.org/docs/latest/server_admin/index.html#_general-idp-config)中介绍。 您还必须定义SAML配置选项。 它们基本上描述了您正在与之通信的`SAML IDP`。
 
-| Configuration                      | Description                                                  |
+| 配置                      | 描述                                                  |
 | :--------------------------------- | :----------------------------------------------------------- |
-| Single Sign-On Service URL         | This is a required field and specifies the SAML endpoint to start the authentication process. If your SAML IDP publishes an IDP entity descriptor, the value of this field will be specified there. |
-| Single Logout Service URL          | This is an optional field that specifies the SAML logout endpoint. If your SAML IDP publishes an IDP entity descriptor, the value of this field will be specified there. |
-| Backchannel Logout                 | Enable if your SAML IDP supports backchannel logout.         |
-| NameID Policy Format               | Specifies the URI reference corresponding to a name identifier format. Defaults to `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`. |
-| HTTP-POST Binding Response         | When this realm responds to any SAML requests sent by the external IDP, which SAML binding should be used? If set to `off`, then the Redirect Binding will be used. |
-| HTTP-POST Binding for AuthnRequest | When this realm requests authentication from the external SAML IDP, which SAML binding should be used? If set to `off`, then the Redirect Binding will be used. |
-| Want AuthnRequests Signed          | If true, it will use the realm’s keypair to sign requests sent to the external SAML IDP. |
-| Signature Algorithm                | If `Want AuthnRequests Signed` is on, then you can also pick the signature algorithm to use. |
-| SAML Signature Key Name            | Signed SAML documents sent via POST binding contain identification of signing key in `KeyName` element. This by default contains Keycloak key ID. However various external SAML IDPs might expect a different key name or no key name at all. This switch controls whether `KeyName` contains key ID (option `KEY_ID`), subject from certificate corresponding to the realm key (option `CERT_SUBJECT` - expected for instance by Microsoft Active Directory Federation Services), or that the key name hint is completely omitted from the SAML message (option `NONE`). |
-| Force Authentication               | Indicates that the user will be forced to enter their credentials at the external IDP even if they are already logged in. |
-| Validate Signature                 | Whether or not the realm should expect that SAML requests and responses from the external IDP to be digitally signed. It is highly recommended you turn this on! |
-| Validating X509 Certificate        | The public certificate that will be used to validate the signatures of SAML requests and responses from the external IDP. |
+| Single Sign-On Service URL         | 这是必填字段，指定SAML端点以启动身份验证过程。 如果您的SAML IDP发布IDP实体描述符，则将在此处指定此字段的值。 |
+| Single Logout Service URL          | 这是一个可选字段，用于指定SAML注销端点。 如果您的SAML IDP发布IDP实体描述符，则将在此处指定此字段的值。 |
+| Backchannel Logout                 | 如果您的SAML IDP支持反向信道注销，则启用。 |
+| NameID Policy Format               | 指定与名称标识符格式对应的URI引用。 默认为 `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`。 |
+| HTTP-POST Binding Response         | 当这个领域响应外部IDP发送的任何SAML请求时，应该使用哪个SAML绑定？ 如果设置为`off`，则将使用Redirect Binding。 |
+| HTTP-POST Binding for AuthnRequest | 当此领域从外部SAML IDP请求身份验证时，应使用哪个SAML绑定？ 如果设置为`off`，则将使用Redirect Binding。 |
+| Want AuthnRequests Signed          | 如果为true，它将使用领域的密钥对来签署发送到外部SAML IDP的请求。 |
+| Signature Algorithm                | 如果启用了 `Want AuthnRequests Signed` ，那么您也可以选择要使用的签名算法。 |
+| SAML Signature Key Name            | 通过POST绑定发送的签名SAML文档包含`KeyName`元素中的签名密钥的标识。 默认情况下，此项包含Keycloak密钥ID。 但是，各种外部SAML IDP可能需要不同的密钥名称或根本没有密钥名称。 此开关控制`KeyName`是否包含密钥ID（选项`KEY_ID`），来自对应于领域密钥的证书（选项`CERT_SUBJECT` - 例如Microsoft Active Directory联合服务预期），或者密钥名称提示是完全的 从SAML消息中省略（选项`NONE`）。 |
+| Force Authentication               | 表示即使用户已经登录，也会强制用户在外部IDP上输入凭据。 |
+| Validate Signature                 | 该域是否应该期望来自外部IDP的SAML请求和响应被数字签名。 强烈建议你打开它！ |
+| Validating X509 Certificate        | 将用于验证来自外部IDP的SAML请求和响应的签名的公共证书。 |
 
 You can also import all this configuration data by providing a URL or file that points to the SAML IDP entity descriptor of the external IDP. If you are connecting to a Keycloak external IDP, you can import the IDP settings from the URL `<root>/auth/realms/{realm-name}/protocol/saml/descriptor`. This link is an XML document describing metadata about the IDP.
 
 You can also import all this configuration data by providing a URL or XML file that points to the entity descriptor of the external SAML IDP you want to connect to.
 
-#### 12.6.1. SP Descriptor {#SP_Descriptor}
-Once you create a SAML provider, there is an `EXPORT` button that appears when viewing that provider. Clicking this button will export a SAML SP entity descriptor which you can use to import into the external SP.
+#### 12.6.1. SP描述符 {#SP_Descriptor}
+创建SAML提供程序后，在查看该提供程序时会出现一个`EXPORT`按钮。 单击此按钮将导出SAML SP实体描述符，您可以使用该描述符导入外部SP。
 
-This metadata is also available publicly by going to the URL.
+此元数据也可通过转到URL公开获得。
 
-```
+```javascript
 http[s]://{host:port}/auth/realms/{realm-name}/broker/{broker-alias}/endpoint/descriptor
 ```
 
-### 12.7. Client-suggested Identity Provider {#Client_suggested_Identity_Provider}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/suggested.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/suggested.adoc)
+### 12.7. 客户建议身份提供商 {#Client_suggested_Identity_Provider}
 
-OIDC applications can bypass the Keycloak login page by specifying a hint on which identity provider they want to use.
+OIDC应用程序可以通过指定他们想要使用哪个身份提供者的提示来绕过Keycloak登录页面。
 
-This is done by setting the `kc_idp_hint` query parameter in the Authorization Code Flow authorization endpoint.
+这是通过在授权代码流授权端点中设置`kc_idp_hint`查询参数来完成的。
 
-Keycloak OIDC client adapters also allow you to specify this query parameter when you access a secured resource at the application.
+Keycloak OIDC客户端适配器还允许您在应用程序中访问受保护资源时指定此查询参数。
 
-For example:
+例如：
 
-```
+```javascript
 GET /myapplication.com?kc_idp_hint=facebook HTTP/1.1
 Host: localhost:8080
 ```
 
-In this case, it is expected that your realm has an identity provider with an alias `facebook`. If this provider doesn’t exist the login form will be displayed.
+在这种情况下，预计您的领域有一个带有别名`facebook`的身份提供者。 如果此提供程序不存在，将显示登录表单。
 
-If you are using `keycloak.js` adapter, you can also achieve the same behavior:
+如果您使用`keycloak.js`适配器，您也可以实现相同的行为：
 
-```
+```javascript
 var keycloak = new Keycloak('keycloak.json');
 
 keycloak.createLoginUrl({
@@ -3219,216 +3203,200 @@ keycloak.createLoginUrl({
 });
 ```
 
-The `kc_idp_hint` query parameter also allows the client to override the default identity provider if one is configured for the `Identity Provider Redirector` authenticator. The client can also disable the automatic redirecting by setting the `kc_idp_hint` query parameter to an empty value.
+`kc_idp_hint`查询参数还允许客户端覆盖默认身份提供者（如果为`Identity Provider Redirector`身份验证器配置了一个身份提供者）。 客户端还可以通过将`kc_idp_hint`查询参数设置为空值来禁用自动重定向。
 
-### 12.8. Mapping Claims and Assertions {#Mapping_Claims_and_Assertions}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/mappers.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/mappers.adoc)
+### 12.8. 映射声明和断言 {#Mapping_Claims_and_Assertions}
 
-You can import the SAML and OpenID Connect metadata provided by the external IDP you are authenticating with into the environment of the realm. This allows you to extract user profile metadata and other information so that you can make it available to your applications.
+您可以将要进行身份验证的外部IDP提供的SAML和OpenID Connect元数据导入到领域的环境中。 这允许您提取用户配置文件元数据和其他信息，以便您可以将其提供给您的应用程序。
 
-Each new user that logs into your realm via an external identity provider will have an entry for them created in the local Keycloak database, based on the metadata from the SAML or OIDC assertions and claims.
+通过外部身份提供者登录您的领域的每个新用户将根据SAML或OIDC断言和声明中的元数据，在本地Keycloak数据库中创建一个条目。
 
-If you click on an identity provider listed in the `Identity Providers` page for your realm, you will be brought to the IDPs`Settings` tab. On this page there is also a `Mappers` tab. Click on that tab to start mapping your incoming IDP metadata.
+如果您点击您所在领域的“身份提供商”页面中列出的身份提供商，您将被带到IDP `Settings` 标签。 在这个页面上还有一个`Mappers`选项卡。 单击该选项卡以开始映射传入的IDP元数据。
 
 ![identity provider mappers](assets/identity-provider-mappers.png)
 
-There is a `Create` button on this page. Clicking on this create button allows you to create a broker mapper. Broker mappers can import SAML attributes or OIDC ID/Access token claims into user attributes and user role mappings.
+这个页面上有一个 `Create` 按钮。 单击此创建按钮可以创建代理映射器。 Broker mappers可以将SAML属性或 `OIDC ID/Access` 令牌声明导入用户属性和用户角色映射。
 
 ![identity provider mapper](assets/identity-provider-mapper.png)
 
-Select a mapper from the `Mapper Type` list. Hover over the tooltip to see a description of what the mapper does. The tooltips also describe what configuration information you need to enter. Click `Save` and your new mapper will be added.
+从`Mapper Type`列表中选择一个映射器。 将鼠标悬停在工具提示上可查看映射器的功能说明。 工具提示还描述了您需要输入的配置信息。 单击`Save`，将添加新的映射器。
 
-For JSON based claims, you can use dot notation for nesting and square brackets to access array fields by index. For example 'contact.address[0].country'.
+对于基于JSON的声明，您可以使用点表示法进行嵌套，使用方括号来按索引访问数组字段。 例如`contact.address[0].country`。
 
-To investigate the structure of user profile JSON data provided by social providers you can enable the `DEBUG` level logger `org.keycloak.social.user_profile_dump`. This is done in the server’s app-server configuration file (domain.xml or standalone.xml).
+要调查社交提供程序提供的用户配置文件JSON数据的结构，您可以启用`DEBUG`级别记录器`org.keycloak.social.user_profile_dump`。 这是在服务器的app-server配置文件（domain.xml或standalone.xml）中完成的。
 
-### 12.9. Available User Session Data {#Available_User_Session_Data}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/session-data.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/session-data.adoc)
+### 12.9. 可用的用户会话数据 {#Available_User_Session_Data}
 
-After a user logs in from the external IDP, there is some additional user session note data that Keycloak stores that you can access. This data can be propagated to the client requesting a login via the token or SAML assertion being passed back to it by using an appropriate client mapper.
+用户从外部IDP登录后，Keycloak会存储一些您可以访问的其他用户会话记录数据。 此数据可以传播到客户端，通过令牌请求登录，或者使用适当的客户端映射器将SAML断言传递回客户端。
 
 - identity_provider
 
-  This is the IDP alias of the broker used to perform the login.
+  这是用于执行登录的代理的IDP别名。
 
 - identity_provider_identity
 
-  This is the IDP username of the currently authenticated user. This is often the same as the Keycloak username, but doesn’t necessarily needs to be. For example Keycloak user `john` can be linked to the Facebook user `john123@gmail.com`, so in that case value of user session note will be `john123@gmail.com` .
+  这是当前经过身份验证的用户的IDP用户名。 这通常与Keycloak用户名相同，但不一定需要。 例如，Keycloak用户`john`可以链接到Facebook用户`john123@gmail.com`，因此在这种情况下，用户会话注释的值将是`john123@gmail.com`。
 
-You can use a [Protocol Mapper](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers) of type `User Session Note` to propagate this information to your clients.
+您可以使用类型为 `User Session Note` 的[协议映射器](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers)将此信息传播给您的客户端。
 
-### 12.10. First Login Flow {#First_Login_Flow}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/first-login-flow.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/first-login-flow.adoc)
+### 12.10. 首次登录流程 {#First_Login_Flow}
 
-When a user logs in through identity brokering some aspects of the user are imported and linked within the realm’s local database. When Keycloak successfully authenticates users through an external identity provider there can be two situations:
+当用户通过身份代理登录时，会在域的本地数据库中导入和链接用户的某些方面。 当Keycloak通过外部身份提供商成功验证用户时，可能存在两种情况：
 
-- There is already a Keycloak user account imported and linked with the authenticated identity provider account. In this case, Keycloak will just authenticate as the existing user and redirect back to application.
-- There is not yet an existing Keycloak user account imported and linked for this external user. Usually you just want to register and import the new account into Keycloak database, but what if there is an existing Keycloak account with the same email? Automatically linking the existing local account to the external identity provider is a potential security hole as you can’t always trust the information you get from the external identity provider.
+- 已导入Keycloak用户帐户并与经过身份验证的身份提供商帐户关联。 在这种情况下，Keycloak将仅作为现有用户进行身份验证并重定向回应用程序。
+- 尚未为此外部用户导入和链接现有的Keycloak用户帐户。 通常，您只想注册并将新帐户导入Keycloak数据库，但如果现有的Keycloak帐户使用相同的电子邮件，该怎么办？ 自动将现有本地帐户链接到外部身份提供商是一个潜在的安全漏洞，因为您无法始终信任从外部身份提供商处获得的信息。
 
-Different organizations have different requirements when dealing with some of the conflicts and situations listed above. For this, there is a `First Login Flow` option in the IDP settings which allows you to choose a [workflow](https://www.keycloak.org/docs/latest/server_admin/index.html#_authentication-flows) that will be used after a user logs in from an external IDP the first time. By default it points to `first broker login` flow, but you can configure and use your own flow and use different flows for different identity providers.
+在处理上面列出的一些冲突和情况时，不同的组织有不同的要求。 为此，IDP设置中有一个`First Login Flow`选项，允许您选择[工作流程](https://www.keycloak.org/docs/latest/server_admin/index.html#_authentication-flows)用户首次从外部IDP登录后使用。 默认情况下，它指向 `first broker login` 流，但您可以配置和使用自己的流，并为不同的身份提供者使用不同的流。
 
-The flow itself is configured in admin console under `Authentication` tab. When you choose `First Broker Login` flow, you will see what authenticators are used by default. You can re-configure the existing flow. (For example you can disable some authenticators, mark some of them as `required`, configure some authenticators, etc).
+流本身在管理控制台的 `Authentication` 选项卡下配置。 当您选择 `First Broker Login` 流程时，您将看到默认情况下使用的验证器。 您可以重新配置现有流。 （例如，您可以禁用某些验证器，将其中一些标记为`required`，配置一些验证器等）。
 
-You can also create a new authentication flow and/or write your own Authenticator implementations and use it in your flow. See [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more details.
+您还可以创建新的身份验证流和/或编写自己的身份验证器实现，并在流中使用它。 有关详细信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-#### 12.10.1. Default First Login Flow {#Default_First_Login_Flow}
-Let’s describe the default behavior provided by `First Broker Login` flow.
+#### 12.10.1. 默认首次登录流程 {#Default_First_Login_Flow}
+让我们描述`First Broker Login`流程提供的默认行为。
 
-- Review Profile
+- Review Profile(回顾概要)
 
-  This authenticator might display the profile info page, where the user can review their profile retrieved from an identity provider. The authenticator is configurable. You can set the `Update Profile On First Login` option. When `On`, users will be always presented with the profile page asking for additional information in order to federate their identities. When `missing`, users will be presented with the profile page only if some mandatory information (email, first name, last name) is not provided by the identity provider. If `Off`, the profile page won’t be displayed, unless user clicks in later phase on `Review profile info` link (page displayed in later phase by `Confirm Link Existing Account` authenticator).
+  此验证器可能会显示配置文件信息页面，用户可以在其中查看从身份提供商处检索到的配置文件。 验证器是可配置的。 您可以设置`Update Profile On First Login`选项。 当`On`时，将始终向用户显示要查询其他信息的个人资料页面，以便联合他们的身份。 当`missing`时，只有在身份提供者未提供某些必需信息（电子邮件，名字，姓氏）时，才会向用户显示个人资料页面。 如果`Off`，则不会显示配置文件页面，除非用户在`Review profile info`链接的后续阶段点击（后续阶段显示的页面为`Confirm Link Existing Account`验证者）。
 
-- Create User If Unique
+- Create User If Unique(创建用户如果唯一)
 
-  This authenticator checks if there is already an existing Keycloak account with the same email or username like the account from the identity provider. If it’s not, then the authenticator just creates a new local Keycloak account and links it with the identity provider and the whole flow is finished. Otherwise it goes to the next `Handle Existing Account`subflow. If you always want to ensure that there is no duplicated account, you can mark this authenticator as `REQUIRED`. In this case, the user will see the error page if there is an existing Keycloak account and the user will need to link his identity provider account through Account management.
+  此身份验证器检查是否已存在具有相同电子邮件或用户名的现有Keycloak帐户，例如来自身份提供商的帐户。 如果不是，那么验证者只需创建一个新的本地Keycloak帐户并将其与身份提供者链接，整个流程就完成了。 否则它将转到下一个`Handle Existing Account`子流。 如果您始终希望确保没有重复的帐户，则可以将此身份验证器标记为`REQUIRED`。 在这种情况下，如果存在现有的Keycloak帐户，则用户将看到错误页面，并且用户需要通过帐户管理链接其身份提供商帐户。
 
-- Confirm Link Existing Account
+- Confirm Link Existing Account(确认链接现有帐户)
 
-  On the info page, the user will see that there is an existing Keycloak account with the same email. They can review their profile again and use different email or username (flow is restarted and goes back to `Review Profile` authenticator). Or they can confirm that they want to link their identity provider account with their existing Keycloak account. Disable this authenticator if you don’t want users to see this confirmation page, but go straight to linking identity provider account by email verification or re-authentication.
+  在信息页面上，用户将看到存在具有相同电子邮件的现有Keycloak帐户。 他们可以再次查看他们的个人资料并使用不同的电子邮件或用户名（重新启动流程并返回`Review Profile`身份验证器）。 或者他们可以确认他们想要将他们的身份提供者帐户与他们现有的Keycloak帐户相关联。 如果您不希望用户看到此确认页面，请禁用此身份验证器，但直接通过电子邮件验证或重新身份验证链接身份提供商帐户。
 
-- Verify Existing Account By Email
+- Verify Existing Account By Email(通过电子邮件验证现有帐户)
 
-  This authenticator is `ALTERNATIVE` by default, so it’s used only if the realm has SMTP setup configured. It will send email to the user, where they can confirm that they want to link the identity provider with their Keycloak account. Disable this if you don’t want to confirm linking by email, but instead you always want users to reauthenticate with their password (and alternatively OTP).
+  默认情况下，此身份验证器为`ALTERNATIVE`，因此仅在域配置了SMTP设置时才使用它。 它将向用户发送电子邮件，在那里他们可以确认他们想要将身份提供者与他们的Keycloak帐户相关联。 如果您不想通过电子邮件确认链接，请禁用此选项，但您始终希望用户使用其密码（以及OTP）重新进行身份验证。
 
-- Verify Existing Account By Re-authentication
+- 通过重新身份验证验证现有帐户
 
-  This authenticator is used if email authenticator is disabled or not available (SMTP not configured for realm). It will display a login screen where the user needs to authenticate with his password to link their Keycloak account with the Identity provider. User can also re-authenticate with some different identity provider, which is already linked to their Keycloak account. You can also force users to use OTP. Otherwise it’s optional and used only if OTP is already set for the user account.
+  如果禁用或不可用电子邮件身份验证器（SMTP未配置为域），则使用此身份验证器。 它将显示一个登录屏幕，用户需要使用其密码进行身份验证，以将其Keycloak帐户与身份提供商进行链接。 用户还可以使用某些不同的身份提供程序重新进行身份验证，该提供程序已与其Keycloak帐户相关联。 您还可以强制用户使用OTP。 否则它是可选的，仅在已为用户帐户设置OTP时使用。
 
-#### 12.10.2. Automatically Link Existing First Login Flow {#Automatically_Link_Existing_First_Login_Flow}
-|      | The AutoLink authenticator would be dangerous in a generic environment where users can register themselves using arbitrary usernames/email addresses. Do not use this authenticator unless registration of users is carefully curated and usernames/email addresses are assigned, not requested. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+#### 12.10.2. 自动链接现有的第一个登录流程 {#Automatically_Link_Existing_First_Login_Flow}
+> 在用户可以使用任意`用户名/电子邮件地址`注册自己的通用环境中，AutoLink身份验证器会很危险。 除非精心策划用户注册并分配`用户名/电子邮件地址`，否则请勿使用此身份验证器。
 
-In order to configure a first login flow in which users are automatically linked without being prompted, create a new flow with the following two authenticators:
+要配置第一个登录流，用户在不提示的情况下自动链接，请使用以下两个身份验证器创建新流：
 
-- Create User If Unique
+- Create User If Unique(创建用户如果唯一)
 
-  This authenticator ensures that unique users are handled. Set the authenticator requirement to "Alternative".
+  此身份验证器可确保处理唯一用户。 将验证者要求设置为"Alternative(备选)"。
 
-- Automatically Link Brokered Account
+- Automatically Link Brokered Account(自动链接经纪人账户)
 
-  Automatically link brokered identities without any validation with this authenticator. This is useful in an intranet environment of multiple user databases each with overlapping usernames/email addresses, but different passwords, and you want to allow users to use any password without having to validate. This is only reasonable if you manage all internal databases, and usernames/email addresses from one database matching those in another database belong to the same person. Set the authenticator requirement to "Alternative".
+  使用此身份验证器自动链接代理身份而无需任何验证。 这在多个用户数据库的Intranet环境中非常有用，每个用户数据库都有重叠的`用户名/电子邮件地址`，但密码不同，并且您希望允许用户使用任何密码而无需验证。 如果您管理所有内部数据库，并且来自与另一个数据库中的`用户名/电子邮件地址`匹配的`用户名/电子邮件地址`属于同一个人，则这是合理的。 将验证者要求设置为"Alternative(备选)"。
 
-|      | The described setup uses two authenticators, and is the simplest one, but it is possible to use other authenticators according to your needs. For example, you can add the Review Profile authenticator to the beginning of the flow if you still want end users to confirm their profile information. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 所描述的设置使用两个验证器，并且是最简单的验证器，但可以根据您的需要使用其他验证器。 例如，如果您仍希望最终用户确认其配置文件信息，则可以将审阅配置文件身份验证器添加到流的开头。
 
-### 12.11. Retrieving External IDP Tokens {#Retrieving_External_IDP_Tokens}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/tokens.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/tokens.adoc)
+### 12.11. 检索外部IDP令牌 {#Retrieving_External_IDP_Tokens}
 
-Keycloak allows you to store tokens and responses from the authentication process with the external IDP. For that, you can use the `Store Token` configuration option on the IDP’s settings page.
+Keycloak允许您使用外部IDP存储令牌和来自身份验证过程的响应。 为此，您可以在IDP的设置页面上使用`Store Token`配置选项。
 
-Application code can retrieve these tokens and responses to pull in extra user information, or to securely invoke requests on the external IDP. For example, an application might want to use the Google token to invoke on other Google services and REST APIs. To retrieve a token for a particular identity provider you need to send a request as follows:
+应用程序代码可以检索这些令牌和响应以提取额外的用户信息，或安全地调用外部IDP上的请求。 例如，应用程序可能希望使用Google令牌来调用其他Google服务和REST API。 要检索特定身份提供者的令牌，您需要发送请求，如下所示：
 
-```
+```javascript
 GET /auth/realms/{realm}/broker/{provider_alias}/token HTTP/1.1
 Host: localhost:8080
 Authorization: Bearer <KEYCLOAK ACCESS TOKEN>
 ```
 
-An application must have authenticated with Keycloak and have received an access token. This access token will need to have the `broker` client-level role `read-token` set. This means that the user must have a role mapping for this role and the client application must have that role within its scope. In this case, given that you are accessing a protected service in Keycloak, you need to send the access token issued by Keycloak during the user authentication. In the broker configuration page you can automatically assign this role to newly imported users by turning on the `Stored Tokens Readable` switch.
+应用程序必须已通过Keycloak进行身份验证并已收到访问令牌。 此访问令牌需要设置`broker`客户端级别角色`read-token`。 这意味着用户必须具有此角色的角色映射，并且客户端应用程序必须在其范围内具有该角色。 在这种情况下，假设您在Keycloak中访问受保护的服务，则需要在用户身份验证期间发送Keycloak发出的访问令牌。 在代理配置页面中，您可以通过打开`Stored Tokens Readable`开关，自动将此角色分配给新导入的用户。
 
-These external tokens can be re-established by either logging in again through the provider, or using the client-initiated account linking API.
+可以通过再次通过提供程序登录或使用客户端启动的帐户链接API重新建立这些外部令牌。
 
-### 12.12. Identity broker logout {#Identity_broker_logout}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/logout.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/identity-broker/logout.adoc)
+### 12.12. 身份代理注销 {#Identity_broker_logout}
 
-When logout from Keycloak is triggered, Keycloak will send a request to the external identity provider that was used to login to Keycloak, and the user will be logged out from this identity provider as well. It is possible to skip this behavior and avoid logout at the external identity provider. See [adapter logout documentation](https://www.keycloak.org/docs/6.0/securing_apps/#_java_adapter_logout) for more details.
+当触发从Keycloak注销时，Keycloak将向用于登录Keycloak的外部身份提供者发送请求，并且该用户也将从该身份提供者注销。 可以跳过此行为并避免在外部身份提供程序中注销。 有关详细信息，请参阅[适配器注销文档](https://www.keycloak.org/docs/6.0/securing_apps/#_java_adapter_logout)。
 
-## 13. User Session Management {#User_Session_Management}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/sessions.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/sessions.adoc)
+## 13. 用户会话管理 {#User_Session_Management}
 
-When a user logs into a realm, Keycloak maintains a user session for them and remembers each and every client they have visited within the session. There are a lot of administrative functions that realm admins can perform on these user sessions. They can view login stats for the entire realm and dive down into each client to see who is logged in and where. Admins can logout a user or set of users from the Admin Console. They can revoke tokens and set up all the token and session timeouts there too.
+当用户登录领域时，Keycloak会为他们维护一个用户会话，并记住他们在会话中访问过的每个客户端。 领域管理员可以对这些用户会话执行许多管理功能。 他们可以查看整个领域的登录统计信息，并深入到每个客户端以查看谁登录以及在哪里登录。 管理员可以从管理控制台注销用户或用户组。 他们可以撤销令牌并在那里设置所有令牌和会话超时。
 
-### 13.1. Administering Sessions {#Administering_Sessions}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/sessions/administering.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/sessions/administering.adoc)
+### 13.1. 管理会话 {#Administering_Sessions}
 
-If you go to the `Sessions` left menu item you can see a top level view of the number of sessions that are currently active in the realm.
+如果您转到`Sessions`左侧菜单项，您可以看到该领域当前活动的会话数的顶级视图。
 
 Sessions
 
 ![sessions](assets/sessions.png)
 
-A list of clients is given and how many active sessions there currently are for that client. You can also logout all users in the realm by clicking the `Logout all` button on the right side of this list.
+给出了客户端列表以及当前为该客户端提供的活动会话数。 您还可以通过单击此列表右侧的`Logout all`按钮注销域中的所有用户。
 
-#### 13.1.1. Logout All Limitations {#Logout_All_Limitations}
-Any SSO cookies set will now be invalid and clients that request authentication in active browser sessions will now have to re-login. Only certain clients are notified of this logout event, specifically clients that are using the Keycloak OIDC client adapter. Other client types (i.e. SAML) will not receive a backchannel logout request.
+#### 13.1.1. 退出所有限制 {#Logout_All_Limitations}
+任何SSO cookie集现在都将无效，并且在活动浏览器会话中请求身份验证的客户端现在必须重新登录。 只有某些客户端会收到此注销事件的通知，特别是使用Keycloak OIDC客户端适配器的客户端。 其他客户端类型（即SAML）将不会收到反向信道注销请求。
 
-It is important to note that any outstanding access tokens are not revoked by clicking `Logout all`. They have to expire naturally. You have to push a [revocation policy](https://www.keycloak.org/docs/latest/server_admin/index.html#_revocation-policy) out to clients, but that also only works with clients using the Keycloak OIDC client adapter.
+重要的是要注意，单击“全部注销”不会撤消任何未完成的访问令牌。 他们必须自然到期。 您必须将[撤销策略](https://www.keycloak.org/docs/latest/server_admin/index.html#_revocation-policy)推送到客户端，但这也仅适用于使用Keycloak OIDC客户端的客户端 适配器。
 
-#### 13.1.2. Application Drilldown {#Application_Drilldown}
-On the `Sessions` page, you can also drill down to each client. This will bring you to the `Sessions` tab of that client. Clicking on the `Show Sessions` button there allows you to see which users are logged into that application.
+#### 13.1.2. 应用追溯 {#Application_Drilldown}
+在`Sessions`页面上，您还可以深入查看每个客户端。 这将带您进入该客户端的`Sessions`选项卡。 单击`Show Sessions`按钮，可以查看哪些用户登录到该应用程序。
 
-Application Sessions
+Application Sessions(应用程序会话)
 
 ![application sessions](assets/application-sessions.png)
 
-#### 13.1.3. User Drilldown {#User_Drilldown}
-If you go to the `Sessions` tab of an individual user, you can also view the session information.
+#### 13.1.3. 用户追溯 {#User_Drilldown}
+如果您转到单个用户的`Sessions`选项卡，您还可以查看会话信息。
 
-User Sessions
+User Sessions(用户会话)
 
 ![user sessions](assets/user-sessions.png)
 
-### 13.2. Revocation Policies {#Revocation_Policies}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/sessions/revocation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/sessions/revocation.adoc)
+### 13.2. 撤销策略 {#Revocation_Policies}
 
-If your system is compromised you will want a way to revoke all sessions and access tokens that have been handed out. You can do this by going to the `Revocation` tab of the `Sessions` screen.
+如果您的系统遭到入侵，您将需要一种方法来撤销所有会话并访问已分发的令牌。 您可以通过转到`Sessions`屏幕的`Revocation`选项卡来完成此操作。
 
-Revocation
+Revocation(撤销)
 
 ![revocation](assets/revocation.png)
 
-You can only set a time-based revocation policy. The console allows you to specify a time and date where any session or token issued before that time and date is invalid. The `Set to now` will set the policy to the current time and date. The `Push`button will push this revocation policy to any registered OIDC client that has the Keycloak OIDC client adapter installed.
+您只能设置基于时间的撤销策略。 控制台允许您指定在该时间和日期之前发出的任何会话或令牌无效的时间和日期。 `Set to now`将策略设置为当前时间和日期。 `Push`按钮会将此撤销策略推送到任何已安装Keycloak OIDC客户端适配器的已注册OIDC客户端。
 
-### 13.3. Session and Token Timeouts {#Session_and_Token_Timeouts}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/sessions/timeouts.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/sessions/timeouts.adoc)
+### 13.3. 会话和令牌超时 {#Session_and_Token_Timeouts}
 
-Keycloak gives you fine grain control of session, cookie, and token timeouts. This is all done on the `Tokens`tab in the `Realm Settings` left menu item.
+Keycloak为您提供对会话，cookie和令牌超时的精细控制。 这都是在`Realm Settings`左侧菜单项的`Tokens`选项卡上完成的。
 
 Tokens Tab
 
 ![tokens tab](assets/tokens-tab.png)
 
-Let’s walk through each of the items on this page.
+让我们来看看这个页面上的每个项目。
 
-| Configuration                           | Description                                                  |
+| 配置                           | 描述                                                  |
 | :-------------------------------------- | :----------------------------------------------------------- |
-| Revoke Refresh Token                    | For OIDC clients that are doing the refresh token flow, this flag, if on, will revoke that refresh token and issue another with the request that the client has to use. This basically means that refresh tokens have a one time use. |
-| SSO Session Idle                        | Also pertains to OIDC clients. If the user is not active for longer than this timeout, the user session will be invalidated. How is idle time checked? A client requesting authentication will bump the idle timeout. Refresh token requests will also bump the idle timeout. There is a small window of time that is always added to the idle timeout before the session is actually invalidated (See note below). |
-| SSO Session Max                         | Maximum time before a user session is expired and invalidated. This is a hard number and time. It controls the maximum time a user session can remain active, regardless of activity. |
-| SSO Session Idle Remember Me            | Same as the standard SSO Session Idle configuration but specific to logins with remember me enabled. It allows for the specification of longer session idle timeouts when remember me is selected during the login process. It is an optional configuration and if not set to a value bigger than 0 it uses the same idle timeout set in the SSO Session Idle configuration. |
-| SSO Session Max Remember Me             | Same as the standard SSO Session Max but specific to logins with remember me enabled. It allows for the specification of longer lived sessions when remember me is selected during the login process. It is an optional configuration and if not set to a value bigger than 0 it uses the same session lifespan set in the SSO Session Max configuration. |
-| Offline Session Idle                    | For [offline access](https://www.keycloak.org/docs/latest/server_admin/index.html#_offline-access), this is the time the session is allowed to remain idle before the offline token is revoked. There is a small window of time that is always added to the idle timeout before the session is actually invalidated (See note below). |
-| Offline Session Max Limited             | For [offline access](https://www.keycloak.org/docs/latest/server_admin/index.html#_offline-access), if this flag is on, Offline Session Max is enabled to control the maximum time the offline token can remain active, regardless of activity. |
-| Offline Session Max                     | For [offline access](https://www.keycloak.org/docs/latest/server_admin/index.html#_offline-access), this is the maximum time before the corresponding offline token is revoked. This is a hard number and time. It controls the maximum time the offline token can remain active, regardless of activity. |
-| Access Token Lifespan                   | When an OIDC access token is created, this value affects the expiration. |
-| Access Token Lifespan For Implicit Flow | With the Implicit Flow no refresh token is provided. For this reason there’s a separate timeout for access tokens created with the Implicit Flow. |
-| Client login timeout                    | This is the maximum time that a client has to finish the Authorization Code Flow in OIDC. |
-| Login timeout                           | Total time a login must take. If authentication takes longer than this time then the user will have to start the authentication process over. |
-| Login action timeout                    | Maximum time a user can spend on any one page in the authentication process. |
-| User-Initiated Action Lifespan          | Maximum time before an action permit sent by a user (e.g. forgot password e-mail) is expired. This value is recommended to be short because it is expected that the user would react to self-created action quickly. |
-| Default Admin-Initiated Action Lifespan | Maximum time before an action permit sent to a user by an admin is expired. This value is recommended to be long to allow admins send e-mails for users that are currently offline. The default timeout can be overridden right before issuing the token. |
-| Override User-Initiated Action Lifespan | Permits the possibility of having independent timeouts per operation (e.g. e-mail verification, forgot password, user actions and Identity Provider E-mail Verification). This field is non mandatory and if nothing is specified it defaults to the value configured at *User-Initiated Action Lifespan*. |
+| Revoke Refresh Token                    | 对于正在执行刷新令牌流的OIDC客户端，此标志（如果启用）将撤消该刷新令牌，并发出另一个请求客户端必须使用的令牌。 这基本上意味着刷新令牌具有一次性使用。 |
+| SSO Session Idle                        | 也适用于OIDC客户。 如果用户的活动时间超过此超时时间，则用户会话将失效。 如何检查空闲时间？ 请求身份验证的客户端将阻止空闲超时。 刷新令牌请求也会影响空闲超时。 在会话实际无效之前，始终会有一个小的时间窗口添加到空闲超时（请参阅下面的注释）。 |
+| SSO Session Max                         | 用户会话到期和无效之前的最长时间。 这是一个艰难的数字和时间。 它控制用户会话保持活动状态的最长时间，无论活动如何。 |
+| SSO Session Idle Remember Me            | 与标准SSO会话空闲配置相同，但特定于登录并记住我已启用。 当在登录过程中选择记住我时，它允许规定更长的会话空闲超时。 它是可选配置，如果未设置为大于0的值，则使用SSO会话空闲配置中设置的相同空闲超时。 |
+| SSO Session Max Remember Me             | 与标准SSO会话最大值相同，但特定于登录并记住我已启用。 当在登录过程中选择记住我时，它允许规定更长寿的会话。 它是可选配置，如果未设置为大于0的值，则使用SSO会话最大配置中设置的相同会话生命周期。 |
+| Offline Session Idle                    | 对于[离线访问](https://www.keycloak.org/docs/latest/server_admin/index.html#_offline-access)，这是在撤消脱机令牌之前允许会话保持空闲的时间。 在会话实际无效之前，始终会有一个小的时间窗口添加到空闲超时（请参阅下面的注释）。 |
+| Offline Session Max Limited             | 对于[离线访问](https://www.keycloak.org/docs/latest/server_admin/index.html#_offline-access)，如果启用此标志，则启用Offline Session Max以控制脱机令牌的最长时间 无论活动如何，都可以保持活跃状态 |
+| Offline Session Max                     | 对于[离线访问](https://www.keycloak.org/docs/latest/server_admin/index.html#_offline-access)，这是撤消相应脱机令牌之前的最长时间。 这是一个艰难的数字和时间。 它控制脱机令牌保持活动状态的最长时间，无论活动如何。 |
+| Access Token Lifespan                   | 创建OIDC访问令牌时，此值会影响到期时间。 |
+| Access Token Lifespan For Implicit Flow | 使用Implicit Flow，不提供刷新令牌。 因此，使用Implicit Flow创建的访问令牌会有单独的超时。 |
+| Client login timeout                    | 这是客户端在OIDC中完成授权代码流的最长时间。 |
+| Login timeout                           | 登录必须花费的总时间。 如果身份验证的时间超过此时间，则用户必须启动身份验证过程。 |
+| Login action timeout                    | 用户在身份验证过程中可以在任何一个页面上花费的最长时间。 |
+| User-Initiated Action Lifespan          | 用户发送的动作许可证（例如，忘记密码电子邮件）之前的最长时间已过期。 建议此值较短，因为预计用户会快速响应自行创建的操作。 |
+| Default Admin-Initiated Action Lifespan | 管理员向用户发送操作许可证之前的最长时间已过期。 建议此值很长，以允许管理员为当前处于脱机状态的用户发送电子邮件。 在发出令牌之前，可以覆盖默认超时。 |
+| Override User-Initiated Action Lifespan | 允许每次操作具有独立超时的可能性（例如，电子邮件验证，忘记密码，用户操作和身份提供商电子邮件验证）。 此字段不是必需的，如果未指定任何内容，则默认为 *User-Initiated Action Lifespan* 中配置的值。 |
 
-|      | For idle timeouts, there is a small window of time (2 minutes) during which the session is kept unexpired. For example, when you have timeout set to 30 minutes, it will be actually 32 minutes before the session is expired. This is needed for some corner-case scenarios in cluster and cross-datacenter environments, in cases where the token was refreshed on one cluster node for a very short time before the expiration and the other cluster nodes would in the meantime incorrectly consider the session as expired, because they had not yet received the message about successful refresh from the node which did the refresh. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 对于空闲超时，会有一个小的时间窗口（2分钟），在此期间会话保持未到期。 例如，当您将超时设置为30分钟时，它实际上将在会话过期前32分钟。 对于集群和跨数据中心环境中的某些角落情况，如果令牌在到期前的一个集群节点上刷新很短的时间，而其他集群节点在此期间错误地将会话视为 已过期，因为他们尚未从执行刷新的节点收到有关成功刷新的消息。
 
-### 13.4. Offline Access {#Offline_Access}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/sessions/offline.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/sessions/offline.adoc)
+### 13.4. 离线访问 {#Offline_Access}
 
-Offline access is a feature described in [OpenID Connect specification](https://openid.net/specs/openid-connect-core-1_0.html#OfflineAccess) . The idea is that during login, your client application will request an Offline token instead of a classic Refresh token. The application can save this offline token in a database or on disk and can use it later even if user is logged out. This is useful if your application needs to do some "offline" actions on behalf of user even when the user is not online. An example is a periodic backup of some data every night.
+脱机访问是[OpenID Connect规范](https://openid.net/specs/openid-connect-core-1_0.html#OfflineAccess)中描述的功能。 我们的想法是，在登录期间，您的客户端应用程序将请求脱机令牌而不是经典的刷新令牌。 应用程序可以将此脱机令牌保存在数据库或磁盘上，即使用户已注销，也可以在以后使用它。 如果您的应用程序需要代表用户执行某些"offline"操作，即使用户不在线，这也很有用。 一个例子是每晚定期备份一些数据。
 
-Your application is responsible for persisting the offline token in some storage (usually a database) and then using it to manually retrieve new access token from Keycloak server.
+您的应用程序负责将脱机令牌保存在某个存储（通常是数据库）中，然后使用它从Keycloak服务器手动检索新的访问令牌。
 
-The difference between a classic Refresh token and an Offline token is, that an offline token will never expire by default and is not subject of `SSO Session Idle timeout` and `SSO Session Max lifespan` . The offline token is valid even after a user logout or server restart. However by default you do need to use the offline token for a refresh token action at least once per 30 days (this value, `Offline Session Idle timeout`, can be changed in the administration console in the `Tokens` tab under `Realm Settings`). Moreover, if you enable the option `Offline Session Max Limited`, then the offline token expires after 60 days regardless of using the offline token for a refresh token action (this value, `Offline Session Max lifespan`, can also be changed in the administration console in the Tokens tab under Realm Settings). Also if you enable the option `Revoke refresh tokens`, then each offline token can be used just once. So after refresh, you always need to store the new offline token from refresh response into your DB instead of the previous one.
+经典刷新令牌和离线令牌之间的区别在于，离线令牌在默认情况下永不过期，并且不受 `SSO Session Idle timeout` 和 `SSO Session Max lifespan` 的影响。即使在用户注销或服务器重新启动后，脱机令牌仍然有效。但是，默认情况下，您需要至少每30天使用脱机令牌进行一次刷新令牌操作（此值，`Offline Session Idle timeout`，可以在管理控制台中的`Tokens`选项卡中更改为`Realm Settings`设置）。此外，如果启用`Offline Session Max Limited`选项，则脱机令牌将在60天后过期，无论使用脱机令牌进行刷新令牌操作（此值，`Offline Session Max lifespan`，也可以在“领域设置”下的“令牌”选项卡中的管理控制台。此外，如果启用`Revoke refresh tokens`选项，则每个脱机令牌只能使用一次。因此，刷新后，您始终需要将刷新响应中的新脱机令牌存储到您的数据库中，而不是之前的数据库中。
 
-Users can view and revoke offline tokens that have been granted by them in the [User Account Service](https://www.keycloak.org/docs/latest/server_admin/index.html#_account-service). The admin user can revoke offline tokens for individual users in admin console in the `Consents` tab of a particular user. The admin can also view all the offline tokens issued in the `Offline Access` tab of each client. Offline tokens can also be revoked by setting a [revocation policy](https://www.keycloak.org/docs/latest/server_admin/index.html#_revocation-policy).
+用户可以在[用户帐户服务](https://www.keycloak.org/docs/latest/server_admin/index.html#_account-service)中查看和撤消已由他们授予的脱机令牌。 管理员用户可以在特定用户的`Consents(同意)`选项卡中撤消管理控制台中各个用户的离线令牌。 管理员还可以查看在每个客户端的`Offline Access`选项卡中发布的所有脱机令牌。 也可以通过设置[撤销策略](https://www.keycloak.org/docs/latest/server_admin/index.html#_revocation-policy)撤销离线令牌。
 
-To be able to issue an offline token, users need to have the role mapping for the realm-level role `offline_access`. Clients also need to have that role in their scope. Finally, the client needs to have an `offline_access` client scope added as an `Optional client scope` to it, which is done by default.
+为了能够发出脱机令牌，用户需要具有领域级角色`offline_access`的角色映射。 客户还需要在其范围内具有该角色。 最后，客户端需要将`offline_access`客户端作用域添加为`Optional client scope`，默认情况下完成。
 
-The client can request an offline token by adding the parameter `scope=offline_access` when sending authorization request to Keycloak. The Keycloak OIDC client adapter automatically adds this parameter when you use it to access secured URL of your application (i.e. http://localhost:8080/customer-portal/secured?scope=offline_access). The Direct Access Grant and Service Accounts also support offline tokens if you include `scope=offline_access` in the body of the authentication request.
+客户端可以在向Keycloak发送授权请求时通过添加参数`scope=offline_access`来请求脱机令牌。 当您使用Keycloak OIDC客户端适配器访问应用程序的安全URL（即`http://localhost:8080/customer-portal/secured?scope=offline_access`）时，它会自动添加此参数。 如果在身份验证请求的正文中包含`scope=offline_access`，则直接访问授权和服务帐户也支持脱机令牌。
 
 ## 14. User Storage Federation {#User_Storage_Federation}
 [Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/user-federation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/user-federation.adoc)
