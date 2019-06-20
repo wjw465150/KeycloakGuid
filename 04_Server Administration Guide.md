@@ -3398,214 +3398,209 @@ Tokens Tab
 
 客户端可以在向Keycloak发送授权请求时通过添加参数`scope=offline_access`来请求脱机令牌。 当您使用Keycloak OIDC客户端适配器访问应用程序的安全URL（即`http://localhost:8080/customer-portal/secured?scope=offline_access`）时，它会自动添加此参数。 如果在身份验证请求的正文中包含`scope=offline_access`，则直接访问授权和服务帐户也支持脱机令牌。
 
-## 14. User Storage Federation {#User_Storage_Federation}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/user-federation.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/user-federation.adoc)
+## 14. 用户存储联合 {#User_Storage_Federation}
 
-Many companies have existing user databases that hold information about users and their passwords or other credentials. In many cases, it is just not possible to migrate off of those existing stores to a pure Keycloak deployment. Keycloak can federate existing external user databases. Out of the box we have support for LDAP and Active Directory. You can also code your own extension for any custom user databases you might have using our User Storage SPI.
+许多公司都有现有的用户数据库，用于保存有关用户及其密码或其他凭据的信息。 在许多情况下，无法将这些现有存储迁移到纯粹的Keycloak部署。 Keycloak可以联合现有的外部用户数据库。 开箱即用，我们支持LDAP和Active Directory。 您还可以使用我们的用户存储SPI为您可能拥有的任何自定义用户数据库编写自己的扩展。
 
-The way it works is that when a user logs in, Keycloak will look into its own internal user store to find the user. If it can’t find it there it will iterate over every User Storage provider you have configured for the realm until it finds a match. Data from the external store is mapped into a common user model that is consumed by the Keycloak runtime. This common user model can then be mapped to OIDC token claims and SAML assertion attributes.
+它的工作方式是当用户登录时，Keycloak将查看其自己的内部用户存储以查找用户。 如果它找不到它，它将遍历为域配置的每个用户存储提供程序，直到找到匹配项。 来自外部存储的数据映射到Keycloak运行时使用的公共用户模型。 然后，可以将此公共用户模型映射到OIDC令牌声明和SAML断言属性。
 
-External user databases rarely have every piece of data needed to support all the features that Keycloak has. In this case, the User Storage Provider can opt to store some things locally in the Keycloak user store. Some providers even import the user locally and sync periodically with the external store. All this depends on the capabilities of the provider and how its configured. For example, your external user store may not support OTP. Depending on the provider, this OTP can be handled and stored by Keycloak.
+外部用户数据库很少拥有支持Keycloak所具有的所有功能所需的每一项数据。 在这种情况下，用户存储提供程序可以选择在Keycloak用户存储中本地存储一些内容。 有些提供商甚至在本地导入用户并定期与外部商店同步。 所有这些都取决于提供商的功能及其配置方式。 例如，您的外部用户存储可能不支持OTP。 根据提供商的不同，Keycloak可以处理和存储此OTP。
 
-### 14.1. Adding a Provider {#Adding_a_Provider}
-To add a storage provider go to the `User Federation` left menu item in the Admin Console.
+### 14.1. 添加提供商 {#Adding_a_Provider}
+要添加存储提供程序，请转到管理控制台中的`User Federation`左侧菜单项。
 
-User Federation
+用户联盟
 
 ![user federation](assets/user-federation.png)
 
-On the center, there is an `Add Provider` list box. Choose the provider type you want to add and you will be brought to the configuration page of that provider.
+在中心，有一个`Add Provider`列表框。 选择要添加的提供程序类型，然后您将进入该提供程序的配置页面。
 
-### 14.2. Dealing with Provider Failures {#Dealing_with_Provider_Failures}
-If a User Storage Provider fails, that is, if your LDAP server is down, you may have trouble logging in and may not be able to view users in the admin console. Keycloak does not catch failures when using a Storage Provider to lookup a user. It will abort the invocation. So, if you have a Storage Provider with a higher priority that fails during user lookup, the login or user query will fail entirely with an exception and abort. It will not fail over to the next configured provider.
+### 14.2. 处理提供商失败 {#Dealing_with_Provider_Failures}
+如果用户存储提供程序失败，也就是说，如果LDAP服务器已关闭，则可能无法登录，并且可能无法在管理控制台中查看用户。 使用存储提供程序查找用户时，Keycloak不会捕获故障。 它将中止调用。 因此，如果您有一个优先级较高的存储提供程序在用户查找期间失败，则登录或用户查询将完全失败并发生异常并中止。 它不会故障转移到下一个配置的提供程序。
 
-The local Keycloak user database is always searched first to resolve users before any LDAP or custom User Storage Provider. You may want to consider creating an admin account that is stored in the local Keycloak user database just in case any problems come up in connecting to your LDAP and custom back ends.
+始终首先搜索本地Keycloak用户数据库，以便在任何LDAP或自定义用户存储提供程序之前解析用户。 您可能需要考虑创建存储在本地Keycloak用户数据库中的管理员帐户，以防万一在连接到LDAP和自定义后端时出现任何问题。
 
-Each LDAP and custom User Storage Provider has an `enable` switch on its admin console page. Disabling the User Storage Provider will skip the provider when doing user queries so that you can view and login with users that might be stored in a different provider with lower priority. If your provider is using an `import` strategy and you disable it, imported users are still available for lookup, but only in read only mode. You will not be able to modify these users until you re-enable the provider.
+每个LDAP和自定义用户存储提供程序在其管理控制台页面上都有一个`enable`开关。 禁用用户存储提供程序将在执行用户查询时跳过提供程序，以便您可以查看和登录可能存储在具有较低优先级的其他提供程序中的用户。 如果您的提供商使用`import`策略并禁用它，则导入的用户仍可用于查找，但仅限于只读模式。 在重新启用提供程序之前，您将无法修改这些用户。
 
-The reason why Keycloak does not fail over if a Storage Provider lookup fails is that user databases often have duplicate usernames or duplicate emails between them. This can cause security issues and unforeseen problems as the user may be loaded from one external store when the admin is expecting the user to be loaded from another.
+如果存储提供程序查找失败，Keycloak不会进行故障转移的原因是用户数据库通常具有重复的用户名或它们之间的重复电子邮件。 这可能导致安全问题和无法预料的问题，因为当管理员期望从另一个用户加载用户时，可以从一个外部存储加载用户。
 
-### 14.3. LDAP and Active Directory {#LDAP_and_Active_Directory}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/user-federation/ldap.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/user-federation/ldap.adoc)
+### 14.3. LDAP和Active Directory {#LDAP_and_Active_Directory}
 
-Keycloak comes with a built-in LDAP/AD provider. It is possible to federate multiple different LDAP servers in the same Keycloak realm. You can map LDAP user attributes into the Keycloak common user model. By default, it maps username, email, first name, and last name, but you are free to configure additional [mappings](https://www.keycloak.org/docs/latest/server_admin/index.html#_ldap_mappers). The LDAP provider also supports password validation via LDAP/AD protocols and different storage, edit, and synchronization modes.
+Keycloak附带内置的`LDAP/AD`提供程序。 可以在同一Keycloak领域中联合多个不同的LDAP服务器。 您可以将LDAP用户属性映射到Keycloak通用用户模型。 默认情况下，它映射用户名，电子邮件，名字和姓氏，但您可以自由配置其他[映射](https://www.keycloak.org/docs/latest/server_admin/index.html#_ldap_mappers)。 LDAP提供程序还支持通过`LDAP/AD`协议进行密码验证以及不同的存储，编辑和同步模式。
 
-To configure a federated LDAP store go to the Admin Console. Click on the `User Federation` left menu option. When you get to this page there is an `Add Provider` select box. You should see *ldap* within this list. Selecting *ldap* will bring you to the LDAP configuration page.
+要配置联合LDAP存储，请转至管理控制台。 单击 `User Federation` 左侧菜单选项。 当你到达这个页面时，有一个`Add Provider`选择框。 您应该在此列表中看到*ldap*。 选择*ldap*将带您进入LDAP配置页面。
 
-#### 14.3.1. Storage Mode {#Storage_Mode}
-By default, Keycloak will import users from LDAP into the local Keycloak user database. This copy of the user is either synchronized on demand, or through a periodic background task. The one exception to this is passwords. Passwords are not imported and password validation is delegated to the LDAP server. The benefits to this approach is that all Keycloak features will work as any extra per-user data that is needed can be stored locally. This approach also reduces load on the LDAP server as uncached users are loaded from the Keycloak database the 2nd time they are accessed. The only load your LDAP server will have is password validation. The downside to this approach is that when a user is first queried, this will require a Keycloak database insert. The import will also have to be synchronized with your LDAP server as needed.
+#### 14.3.1. 存储模式 {#Storage_Mode}
+默认情况下，Keycloak会将用户从LDAP导入到本地Keycloak用户数据库中。 该用户副本可以按需同步，也可以通过定期后台任务同步。 一个例外是密码。 不会导入密码，并且会将密码验证委派给LDAP服务器。 这种方法的好处是所有Keycloak功能都可以工作，因为所需的任何额外的每用户数据都可以存储在本地。 此方法还减少了LDAP服务器上的负载，因为第二次访问时，Keycloak数据库会加载未缓存的用户。 LDAP服务器唯一的负载是密码验证。 这种方法的缺点是，当首次查询用户时，这将需要Keycloak数据库插入。 导入还必须根据需要与LDAP服务器同步。
 
-Alternatively, you can choose not to import users into the Keycloak user database. In this case, the common user model that the Keycloak runtime uses is backed only by the LDAP server. This means that if LDAP doesn’t support a piece of data that a Keycloak feature needs that feature will not work. The benefit to this approach is that you do not have the overhead of importing and synchronizing a copy of the LDAP user into the Keycloak user database.
+或者，您可以选择不将用户导入Keycloak用户数据库。 在这种情况下，Keycloak运行时使用的公共用户模型仅由LDAP服务器支持。 这意味着如果LDAP不支持Keycloak功能所需的数据，则该功能将无法使用。 这种方法的好处是您没有将LDAP用户的副本导入和同步到Keycloak用户数据库的开销。
 
-This storage mode is controled by the `Import Users` switch. Set to `On` to import users.
+此存储模式由`Import Users`开关控制。 设置为`On`以导入用户。
 
-#### 14.3.2. Edit Mode {#Edit_Mode}
-Users, through the [User Account Service](https://www.keycloak.org/docs/latest/server_admin/index.html#_account-service), and admins through the Admin Console have the ability to modify user metadata. Depending on your setup you may or may not have LDAP update privileges. The `Edit Mode` configuration option defines the edit policy you have with your LDAP store.
+#### 14.3.2. 编辑模式 {#Edit_Mode}
+用户通过[用户帐户服务](https://www.keycloak.org/docs/latest/server_admin/index.html#_account-service)和管理员通过管理控制台可以修改用户元数据。 根据您的设置，您可能拥有或不拥有LDAP更新权限。 `Edit Mode`配置选项定义了LDAP存储的编辑策略。
 
-- READONLY
+- READONLY(只读)
 
-  Username, email, first name, last name, and other mapped attributes will be unchangeable. Keycloak will show an error anytime anybody tries to update these fields. Also, password updates will not be supported.
+  用户名，电子邮件，名字，姓氏和其他映射属性将不可更改。 任何人试图更新这些字段时，Keycloak都会显示错误。 此外，不支持密码更新。
 
-- WRITABLE
+- WRITABLE(可写)
 
-  Username, email, first name, last name, and other mapped attributes and passwords can all be updated and will be synchronized automatically with your LDAP store.
+  用户名，电子邮件，名字，姓氏以及其他映射的属性和密码都可以更新，并将自动与LDAP存储同步。
 
-- UNSYNCED
+- UNSYNCED(不同步)
 
-  Any changes to username, email, first name, last name, and passwords will be stored in Keycloak local storage. It is up to you to figure out how to synchronize back to LDAP. This allows Keycloak deployments to support updates of user metadata on a read-only LDAP server. This option only applies when you are importing users from LDAP into the local Keycloak user database.
+  对用户名，电子邮件，名字，姓氏和密码的任何更改都将存储在Keycloak本地存储中。 由您决定如何同步回LDAP。 这允许Keycloak部署支持在只读LDAP服务器上更新用户元数据。 此选项仅在将用户从LDAP导入本地Keycloak用户数据库时适用。
 
-#### 14.3.3. Other config options {#Other_config_options}
-- Console Display Name
+#### 14.3.3. 其他配置选项 {#Other_config_options}
+- Console Display Name(控制台显示名称)
 
-  Name used when this provider is referenced in the admin console
+  在管理控制台中引用此提供程序时使用的名称
 
-- Priority
+- Priority(优先级)
 
-  The priority of this provider when looking up users or adding a user.
+  查找用户或添加用户时此提供程序的优先级。
 
-- Sync Registrations
+- Sync Registrations(同步注册)
 
-  Does your LDAP support adding new users? Click this switch if you want new users created by Keycloak in the admin console or the registration page to be added to LDAP.
+  您的LDAP是否支持添加新用户？ 如果希望将管理控制台中的Keycloak创建的新用户或注册页面添加到LDAP，请单击此开关。
 
-- Allow Kerberos authentication
+- Allow Kerberos authentication(允许Kerberos身份验证)
 
-  Enable Kerberos/SPNEGO authentication in realm with users data provisioned from LDAP. More info in [Kerberos section](https://www.keycloak.org/docs/latest/server_admin/index.html#_kerberos).
+  使用从LDAP配置的用户数据在领域中启用`Kerberos/SPNEGO`身份验证。 更多信息请参见[Kerberos部分](https://www.keycloak.org/docs/latest/server_admin/index.html#_kerberos)。
 
-- Other options
+- Other options(其他选项)
 
-  The rest of the configuration options should be self explanatory. You can mouseover the tooltips in Admin Console to see some more details about them.
+  其余配置选项应该是自解释的。 您可以将鼠标悬停在管理控制台中的工具提示，以查看有关它们的更多详细信息。
 
-#### 14.3.4. Connect to LDAP over SSL {#Connect_to_LDAP_over_SSL}
-When you configure a secured connection URL to your LDAP store(for example `ldaps://myhost.com:636` ), Keycloak will use SSL for the communication with LDAP server. The important thing is to properly configure a truststore on the Keycloak server side, otherwise Keycloak can’t trust the SSL connection to LDAP.
+#### 14.3.4. 通过SSL连接到LDAP {#Connect_to_LDAP_over_SSL}
+当您为LDAP存储配置安全连接URL时（例如`ldaps://myhost.com:636`），Keycloak将使用SSL与LDAP服务器进行通信。 重要的是在Keycloak服务器端正确配置信任库，否则Keycloak不能信任到LDAP的SSL连接。
 
-The global truststore for the Keycloak can be configured with the Truststore SPI. Please check out the [Server Installation and Configuration Guide](https://www.keycloak.org/docs/6.0/server_installation/) for more detail. If you don’t configure the truststore SPI, the truststore will fallback to the default mechanism provided by Java (either the file provided by system property `javax.net.ssl.trustStore` or the cacerts file from the JDK if the system property is not set).
+可以使用Truststore SPI配置Keycloak的全局信任库。 有关更多详细信息，请查看[服务器安装和配置指南](https://www.keycloak.org/docs/6.0/server_installation/)。 如果未配置信任库SPI，则信任库将回退到Java提供的缺省机制（系统属性`javax.net.ssl.trustStore`提供的文件或JDK提供的cacerts文件，如果系统属性为 没有设置）。
 
-There is a configuration property `Use Truststore SPI` in the LDAP federation provider configuration, where you can choose whether the Truststore SPI is used. By default, the value is `Only for ldaps`, which is fine for most deployments. The Truststore SPI will only be used if the connection to LDAP starts with `ldaps`.
+在LDAP联合提供程序配置中有一个配置属性`Use Truststore SPI`，您可以在其中选择是否使用`Truststore SPI`。 默认情况下，该值为`Only for ldaps`，这适用于大多数部署。 仅当与LDAP的连接以`ldaps`开头时，才会使用`Truststore SPI`。
 
-#### 14.3.5. Sync of LDAP users to Keycloak {#Sync_of_LDAP_users_to_Keycloak}
-If you have import enabled, the LDAP Provider will automatically take care of synchronization (import) of needed LDAP users into the Keycloak local database. As users log in, the LDAP provider will import the LDAP user into the Keycloak database and then authenticate against the LDAP password. This is the only time users will be imported. If you go to the `Users` left menu item in the Admin Console and click the `View all users` button, you will only see those LDAP users that have been authenticated at least once by Keycloak. It is implemented this way so that admins don’t accidentally try to import a huge LDAP DB of users.
+#### 14.3.5. LDAP用户与Keycloak的同步 {#Sync_of_LDAP_users_to_Keycloak}
+如果启用了导入，LDAP提供程序将自动负责将所需LDAP用户同步（导入）到Keycloak本地数据库中。 当用户登录时，LDAP提供程序会将LDAP用户导入Keycloak数据库，然后根据LDAP密码进行身份验证。 这是用户导入的唯一时间。 如果您转到管理控制台中的`Users`左侧菜单项并单击`View all users`按钮，您将只看到那些已被Keycloak至少验证过一次的LDAP用户。 它以这种方式实现，以便管理员不会意外地尝试导入庞大的LDAP用户数据库。
 
-If you want to sync all LDAP users into the Keycloak database, you may configure and enable the `Sync Settings` of the LDAP provider you configured. There are 2 types of synchronization:
+如果要将所有LDAP用户同步到Keycloak数据库，可以配置并启用您配置的LDAP提供程序的`Sync Settings`。 有两种类型的同步：
 
-- Periodic Full sync
+- 定期完全同步
 
-  This will synchronize all LDAP users into Keycloak DB. Those LDAP users, which already exist in Keycloak and were changed in LDAP directly will be updated in Keycloak DB (For example if user `Mary Kelly` was changed in LDAP to `Mary Smith`).
+  这会将所有LDAP用户同步到Keycloak DB中。 那些已经存在于Keycloak中并在LDAP中直接更改的LDAP用户将在Keycloak DB中更新（例如，如果用户`Mary Kelly`在LDAP中更改为'Mary Smith`）。
 
-- Periodic Changed users sync
+- 定期更改用户同步
 
-  When syncing occurs, only those users that were created or updated after the last sync will be updated and/or imported.
+  发生同步时，仅更新和/或导入在上次同步后创建或更新的用户。
 
-The best way to handle syncing is to click the `Synchronize all users` button when you first create the LDAP provider, then set up a periodic sync of changed users. The configuration page for your LDAP Provider has several options to support you.
+处理同步的最佳方法是在首次创建LDAP提供程序时单击`Synchronize all users`按钮，然后设置已更改用户的定期同步。 LDAP提供程序的配置页面有几个选项可以为您提供支持。
 
-#### 14.3.6. LDAP Mappers {#LDAP_Mappers}
-LDAP mappers are `listeners`, which are triggered by the LDAP Provider at various points, provide another extension point to LDAP integration. They are triggered when a user logs in via LDAP and needs to be imported, during Keycloak initiated registration, or when a user is queried from the Admin Console. When you create an LDAP Federation provider, Keycloak will automatically provide set of built-in `mappers` for this provider. You are free to change this set and create a new mapper or update/delete existing ones.
+#### 14.3.6. LDAP映射器 {#LDAP_Mappers}
+LDAP映射器是`listeners`，由LDAP提供程序在各个点触发，为LDAP集成提供另一个扩展点。 当用户通过LDAP登录并需要导入，在Keycloak启动的注册期间或从管理控制台查询用户时，会触发它们。 当您创建LDAP联合提供程序时，Keycloak将自动为此提供程序提供一组内置的`mappers`。 您可以自由更改此设置并创建新的映射器或更新/删除现有映射器。
 
-- User Attribute Mapper
+- User Attribute Mapper(用户属性映射器)
 
-  This allows you to specify which LDAP attribute is mapped to which attribute of Keycloak user. So, for example, you can configure that LDAP attribute `mail` to the attribute `email` in the Keycloak database. For this mapper implementation, there is always a one-to-one mapping (one LDAP attribute is mapped to one Keycloak attribute)
+  这允许您指定将哪个LDAP属性映射到Keycloak用户的哪个属性。 因此，例如，您可以将LDAP属性`mail`配置为Keycloak数据库中的`email`属性。 对于此映射器实现，始终存在一对一映射（一个LDAP属性映射到一个Keycloak属性）
 
-- FullName Mapper
+- FullName Mapper(全名映射器)
 
-  This allows you to specify that the full name of the user, which is saved in some LDAP attribute (usually `cn` ) will be mapped to `firstName` and `lastname` attributes in the Keycloak database. Having `cn` to contain full name of user is a common case for some LDAP deployments.
+  这允许您指定保存在某个LDAP属性（通常是`cn`）中的用户的全名将映射到Keycloak数据库中的`firstName`和`lastname`属性。 让`cn`包含用户的全名是某些LDAP部署的常见情况。
 
-- Role Mapper
+- Role Mapper(角色映射器)
 
-  This allows you to configure role mappings from LDAP into Keycloak role mappings. One Role mapper can be used to map LDAP roles (usually groups from a particular branch of LDAP tree) into roles corresponding to either realm roles or client roles of a specified client. It’s not a problem to configure more Role mappers for the same LDAP provider. So for example you can specify that role mappings from groups under `ou=main,dc=example,dc=org` will be mapped to realm role mappings and role mappings from groups under `ou=finance,dc=example,dc=org` will be mapped to client role mappings of client `finance` .
+  这允许您配置从LDAP到Keycloak角色映射的角色映射。 可以使用一个角色映射器将LDAP角色（通常是来自LDAP树的特定分支的组）映射到与指定客户端的域角色或客户端角色相对应的角色。 为同一LDAP提供程序配置更多角色映射器不是问题。 因此，例如，您可以指定来自`ou=main,dc=example,dc=org`下的组的角色映射将映射到域`ou=finance,dc=example,dc=org`下的域中的域角色映射和角色映射 `将映射到客户端`finance`的客户端角色映射。
 
-- Hardcoded Role Mapper
+- Hardcoded Role Mapper(硬编码角色映射器)
 
-  This mapper will grant a specified Keycloak role to each Keycloak user linked with LDAP.
+  此映射器将为与LDAP链接的每个Keycloak用户授予指定的Keycloak角色。
 
-- Group Mapper
+- Group Mapper(组映射器)
 
-  This allows you to configure group mappings from LDAP into Keycloak group mappings. Group mapper can be used to map LDAP groups from a particular branch of an LDAP tree into groups in Keycloak. It will also propagate user-group mappings from LDAP into user-group mappings in Keycloak.
+  这允许您将组映射从LDAP配置为Keycloak组映射。 组映射器可用于将LDAP树的特定分支中的LDAP组映射到Keycloak中的组。 它还会将用户组映射从LDAP传播到Keycloak中的用户组映射。
 
-- MSAD User Account Mapper
+- MSAD User Account Mapper(MSAD用户帐户映射器)
 
-  This mapper is specific to Microsoft Active Directory (MSAD). It’s able to tightly integrate the MSAD user account state into the Keycloak account state (account enabled, password is expired etc). It’s using the `userAccountControl` and `pwdLastSet` LDAP attributes. (both are specific to MSAD and are not LDAP standard). For example if `pwdLastSet` is `0`, the Keycloak user is required to update their password and there will be an UPDATE_PASSWORD required action added to the user. If `userAccountControl` is `514` (disabled account) the Keycloak user is disabled as well.
+  此映射器特定于Microsoft Active Directory(MSAD)。 它能够将MSAD用户帐户状态紧密集成到Keycloak帐户状态（启用帐户，密码已过期等）。 它使用`userAccountControl`和`pwdLastSet` LDAP属性。 （两者都是MSAD特有的，不是LDAP标准）。 例如，如果`pwdLastSet`为`0`，则Keycloak用户需要更新其密码，并且将向用户添加UPDATE_PASSWORD所需的操作。 如果`userAccountControl`是`514`（禁用帐户），Keycloak用户也被禁用。
 
-By default, there are User Attribute mappers that map basic Keycloak user attributes like username, firstname, lastname, and email to corresponding LDAP attributes. You are free to extend these and provide additional attribute mappings. Admin console provides tooltips, which should help with configuring the corresponding mappers.
+默认情况下，有用户属性映射器将基本的Keycloak用户属性（如用户名，名字，姓氏和电子邮件）映射到相应的LDAP属性。 您可以自由扩展这些并提供其他属性映射。 管理控制台提供工具提示，这有助于配置相应的映射器。
 
-#### 14.3.7. Password Hashing {#Password_Hashing}
-When the password of user is updated from Keycloak and sent to LDAP, it is always sent in plain-text. This is different from updating the password to built-in Keycloak database, when the hashing and salting is applied to the password before it is sent to DB. In the case of LDAP, the Keycloak relies on the LDAP server to provide hashing and salting of passwords.
+#### 14.3.7. 密码哈希 {#Password_Hashing}
+当用户的密码从Keycloak更新并发送到LDAP时，它始终以纯文本形式发送。 这与将密码更新为内置Keycloak数据库不同，当在将密码发送到DB之前对密码应用散列和salting时。 对于LDAP，Keycloak依赖于LDAP服务器来提供密码的散列和腌制。
 
-Most of LDAP servers (Microsoft Active Directory, RHDS, FreeIPA) provide this by default. Some others (OpenLDAP, ApacheDS) may store the passwords in plain-text by default and you may need to explicitly enable password hashing for them. See the documentation of your LDAP server more details.
+大多数LDAP服务器（Microsoft Active Directory，RHDS，FreeIPA）默认提供此功能。 其他一些（OpenLDAP，ApacheDS）可能默认以纯文本形式存储密码，您可能需要为它们显式启用密码散列。 请参阅LDAP服务器的文档更多详细信息。
 
-### 14.4. SSSD and FreeIPA Identity Management Integration {#SSSD_and_FreeIPA_Identity_Management_Integration}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/user-federation/sssd.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/user-federation/sssd.adoc)
+### 14.4. SSSD和FreeIPA身份管理集成 {#SSSD_and_FreeIPA_Identity_Management_Integration}
 
-Keycloak also comes with a built-in [SSSD](https://fedoraproject.org/wiki/Features/SSSD) (System Security Services Daemon) plugin. SSSD is part of the latest Fedora or Red Hat Enterprise Linux and provides access to multiple identity and authentication providers. It provides benefits such as failover and offline support. To see configuration options and for more information see [the Red Hat Enterprise Linux Identity Management documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/sssd).
+Keycloak还附带了一个内置的[SSSD](https://fedoraproject.org/wiki/Features/SSSD)（系统安全服务守护程序）插件。 SSSD是最新的Fedora或Red Hat Enterprise Linux的一部分，可以访问多个身份和身份验证提供程序。 它提供故障转移和脱机支持等好处。 有关配置选项的详细信息，请参阅[红帽企业Linux身份管理文档](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/sssd)。
 
-SSSD also integrates with the FreeIPA identity management (IdM) server, providing authentication and access control. For Keycloak, we benefit from this integration authenticating against PAM services and retrieving user data from SSSD. For more information about using Red Hat Identity Management in Linux environments, see [the Red Hat Enterprise Linux Identity Management documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/linux_domain_identity_authentication_and_policy_guide/index).
+SSSD还与FreeIPA身份管理（IdM）服务器集成，提供身份验证和访问控制。 对于Keycloak，我们受益于此集成验证PAM服务和从SSSD检索用户数据。 有关在Linux环境中使用Red Hat Identity Management的更多信息，请参阅[Red Hat Enterprise Linux身份管理文档](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/linux_domain_identity_authentication_and_policy_guide/index)。
 
 ![keycloak sssd freeipa integration overview](assets/keycloak-sssd-freeipa-integration-overview.png)
 
-Most of the communication between Keycloak and SSSD occurs through read-only D-Bus interfaces. For this reason, the only way to provision and update users is to use the FreeIPA/IdM administration interface. By default, like the LDAP federation provider, it is set up only to import username, email, first name, and last name.
+Keycloak和SSSD之间的大多数通信都是通过只读D-Bus接口实现的。 因此，配置和更新用户的唯一方法是使用`FreeIPA/IdM`管理界面。 默认情况下，与LDAP联合提供程序一样，它仅设置为导入用户名，电子邮件，名字和姓氏。
 
-|      | Groups and roles are automatically registered, but not synchronized, so any changes made by the Keycloak administrator directly in Keycloak is not synchronized with SSSD. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 组和角色会自动注册，但不会同步，因此Keycloak管理员直接在Keycloak中所做的任何更改都不会与SSSD同步。
 
-Information on how to configure the FreeIPA/IdM server follows.
+下面是有关如何配置`FreeIPA/IdM`服务器的信息。
 
-#### 14.4.1. FreeIPA/IdM Server {#FreeIPA_IdM_Server}
-As a matter of simplicity, a [FreeIPA Docker image](https://hub.docker.com/r/freeipa/freeipa-server/) already available is used. To set up a server, see the [FreeIPA documentation](https://www.freeipa.org/page/Quick_Start_Guide).
+#### 14.4.1. FreeIPA/IdM服务器 {#FreeIPA_IdM_Server}
+为简单起见，使用了[FreeIPA Docker image](https://hub.docker.com/r/freeipa/freeipa-server/)。 要设置服务器，请参阅[FreeIPA文档](https://www.freeipa.org/page/Quick_Start_Guide)。
 
-Running a FreeIPA server with Docker requires this command:
+使用Docker运行FreeIPA服务器需要以下命令：
 
-```
+```bash
 docker run --name freeipa-server-container -it \
 -h server.freeipa.local -e PASSWORD=YOUR_PASSWORD \
 -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
 -v /var/lib/ipa-data:/data:Z freeipa/freeipa-server
 ```
 
-The parameter `-h` with `server.freeipa.local` represents the FreeIPA/IdM server hostname. Be sure to change `YOUR_PASSWORD` to a password of your choosing.
+带有`server.freeipa.local`的参数`-h`代表FreeIPA/IdM服务器主机名。 务必将`YOUR_PASSWORD`更改为您选择的密码。
 
-After the container starts, change `/etc/hosts` to:
+容器启动后，将`/etc/hosts`更改为：
 
 ```
 x.x.x.x     server.freeipa.local
 ```
 
-If you do not make this change, you must set up a DNS server.
+如果不进行此更改，则必须设置DNS服务器。
 
-So that the SSSD federation provider is started and running on Keycloak you must enroll your Linux machine in the IPA domain:
+为了在Keycloak上启动并运行SSSD联合提供程序，您必须在IPA域中注册Linux机器：
 
-```
+```bash
 ipa-client-install --mkhomedir -p admin -w password
 ```
 
-To ensure that everything is working as expected, on the client machine, run:
+要确保一切按预期工作，请在客户端计算机上运行：
 
-```
+```bash
 kinit admin
 ```
 
-You should be prompted for the password. After that, you can add users to the IPA server using this command:
+系统将提示您输入密码。 之后，您可以使用以下命令将用户添加到IPA服务器：
 
-```
+```bash
 $ ipa user-add john --first=John --last=Smith --email=john@smith.com --phone=042424242 --street="Testing street" \      --city="Testing city" --state="Testing State" --postalcode=0000000000
 ```
 
 #### 14.4.2. SSSD and D-Bus {#SSSD_and_D_Bus}
-As mentioned previously, the federation provider obtains the data from SSSD using D-BUS and authentication occurs using PAM.
+如前所述，联合提供程序使用D-BUS从SSSD获取数据，并使用PAM进行身份验证。
 
-First, you have to install the sssd-dbus RPM, which allows information from SSSD to be transmitted over the system bus.
+首先，您必须安装sssd-dbus RPM，它允许来自SSSD的信息通过系统总线传输。
 
-```
+```bash
 $ sudo yum install sssd-dbus
 ```
 
-You must run the provisioning script available from the Keycloak distribution:
+您必须运行Keycloak发行版中提供的配置脚本：
 
-```
+```bash
 $ bin/federation-sssd-setup.sh
 ```
 
-This script makes the necessary changes to `/etc/sssd/sssd.conf`:
+该脚本对`/etc/sssd/sssd.conf`进行必要的更改：
 
-```
+```properties
 [domain/your-hostname.local]
 ...
 ldap_user_extra_attrs = mail:mail, sn:sn, givenname:givenname, telephoneNumber:telephoneNumber
@@ -3618,36 +3613,36 @@ allowed_uids = root, yourOSUsername
 user_attributes = +mail, +telephoneNumber, +givenname, +sn
 ```
 
-Also, a `keycloak` file is included under `/etc/pam.d/`:
+另外，`/etc/pam.d/`下包含`keycloak`文件：
 
 ```
 auth    required   pam_sss.so
 account required   pam_sss.so
 ```
 
-Ensure everything is working as expected by running `dbus-send`:
+通过运行`dbus-send`确保一切正常运行：
 
-```
+```bash
 sudo dbus-send --print-reply --system --dest=org.freedesktop.sssd.infopipe /org/freedesktop/sssd/infopipe org.freedesktop.sssd.infopipe.GetUserGroups string:john
 ```
 
-You should be able to see the user’s group. If this command returns a timeout or an error, it means that the federation provider will also not be able to retrieve anything on Keycloak.
+您应该能够看到用户的组。 如果此命令返回超时或错误，则表示联合提供程序也无法在Keycloak上检索任何内容。
 
-Most of the time this occurs because the machine was not enrolled in the FreeIPA IdM server or you do not have permission to access the SSSD service.
+大多数情况下，这是因为机器未注册FreeIPA IdM服务器或您无权访问SSSD服务。
 
-If you do not have permission, ensure that the user running Keycloak is included in the `/etc/sssd/sssd.conf` file in the following section:
+如果您没有权限，请确保运行Keycloak的用户包含在以下部分的`/etc/sssd/sssd.conf`文件中：
 
-```
+```properties
 [ifp]
 allowed_uids = root, your_username
 ```
 
-#### 14.4.3. Enabling the SSSD Federation Provider {#Enabling_the_SSSD_Federation_Provider}
-Keycloak uses DBus-Java to communicate at a low level with D-Bus, which depends on the [Unix Sockets Library](http://www.matthew.ath.cx/projects/java/).
+#### 14.4.3. 启用SSSD联合提供程序 {#Enabling_the_SSSD_Federation_Provider}
+Keycloak使用DBus-Java与D-Bus进行低级通信，这取决于[Unix套接字库](http://www.matthew.ath.cx/projects/java/)。
 
-An RPM for this library can be found in [this repository](https://github.com/keycloak/libunix-dbus-java/releases). Before installing it, be sure to check the RPM signature:
+可以在[此存储库](https://github.com/keycloak/libunix-dbus-java/releases)中找到此库的RPM。 在安装之前，请务必检查RPM签名：
 
-```
+```bash
 $ rpm -K libunix-dbus-java-0.8.0-1.fc24.x86_64.rpm
 libunix-dbus-java-0.8.0-1.fc24.x86_64.rpm:
   Header V4 RSA/SHA256 Signature, key ID 84dc9914: OK
@@ -3657,99 +3652,96 @@ libunix-dbus-java-0.8.0-1.fc24.x86_64.rpm:
 $ sudo yum install libunix-dbus-java-0.8.0-1.fc24.x86_64.rpm
 ```
 
-For authentication with PAM Keycloak uses JNA. Be sure you have this package installed:
+使用PAM进行身份验证Keycloak使用JNA。 确保安装了此软件包：
 
-```
+```bash
 $ sudo yum install jna
 ```
 
-Use `sssctl user-checks` command to validate your setup:
+使用`sssctl user-checks`命令验证您的设置：
 
-```
+```bash
 $ sudo sssctl user-checks admin -s keycloak
 ```
 
-### 14.5. Configuring a Federated SSSD Store {#Configuring_a_Federated_SSSD_Store}
-After installation, you need to configure a federated SSSD store.
+### 14.5. 配置联合SSSD存储 {#Configuring_a_Federated_SSSD_Store}
+安装后，您需要配置联合SSSD存储。
 
-To configure a federated SSSD store, complete the following steps:
+要配置联合SSSD存储，请完成以下步骤：
 
-1. Navigate to the Administration Console.
-2. From the left menu, select **User Federation.**
-3. From the **Add Provider** dropdown list, select **sssd.** The sssd configuration page opens.
-4. Click **Save**.
+1. 导航到管理控制台。
+2. 从左侧菜单中选择 **User Federation.**
+3. 从**Add Provider**下拉列表中，选择**sssd**将打开sssd配置页面。
+4. 点击**Save**。
 
-Now you can authenticate against Keycloak using FreeIPA/IdM credentials.
+现在，您可以使用`FreeIPA/IdM`凭据对Keycloak进行身份验证。
 
-### 14.6. Custom Providers {#Custom_Providers}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/user-federation/custom.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/user-federation/custom.adoc)
+### 14.6. 定制供应商 {#Custom_Providers}
 
-Keycloak does have an SPI for User Storage Federation that you can use to write your own custom providers. You can find documentation for this in our [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/).
+Keycloak确实有一个用于用户存储联合的SPI，您可以使用它来编写自己的自定义提供程序。 您可以在我们的[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)中找到相关文档。
 
-## 15. Auditing and Events {#Auditing_and_Events}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/events.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/events.adoc)
+## 15. 审计和事件 {#Auditing_and_Events}
 
-Keycloak provides a rich set of auditing capabilities. Every single login action can be recorded and stored in the database and reviewed in the Admin Console. All admin actions can also be recorded and reviewed. There is also a Listener SPI with which plugins can listen for these events and perform some action. Built-in listeners include a simple log file and the ability to send an email if an event occurs.
+Keycloak提供丰富的审计功能。 每个登录操作都可以记录并存储在数据库中，并在管理控制台中查看。 还可以记录和审查所有管理操作。 还有一个监听器SPI，插件可以监听这些事件并执行某些操作。 内置侦听器包括简单的日志文件以及在事件发生时发送电子邮件的功能。
 
-### 15.1. Login Events {#Login_Events}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/events/login.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/events/login.adoc)
+### 15.1. 登录活动 {#Login_Events}
 
-Login events occur for things like when a user logs in successfully, when somebody enters in a bad password, or when a user account is updated. Every single event that happens to a user can be recorded and viewed. By default, no events are stored or viewed in the Admin Console. Only error events are logged to the console and the server’s log file. To start persisting you’ll need to enable storage. Go to the `Events` left menu item and select the `Config` tab.
+登录事件发生在用户成功登录，有人输入错误密码或用户帐户更新时。 可以记录和查看发生在用户身上的每个事件。 默认情况下，管理控制台中不会存储或查看任何事件。 只有错误事件记录到控制台和服务器的日志文件中。 要开始持久化，您需要启用存储。 转到`Events`左侧菜单项并选择`Config`选项卡。
 
-Event Configuration
+事件配置
 
 ![login events config](assets/login-events-config.png)
 
-To start storing events you’ll need to turn the `Save Events` switch to on under the `Login Events Settings`.
+要开始存储事件，您需要在`Login Events Settings`下将`Save Events`开关打开。
 
-Save Events
+Save Events(保存事件)
 
 ![login events settings](assets/login-events-settings.png)
 
-The `Saved Types` field allows you to specify which event types you want to store in the event store. The `Clear events`button allows you to delete all the events in the database. The `Expiration` field allows you to specify how long you want to keep events stored. Once you’ve enabled storage of login events and decided on your settings, don’t forget to click the `Save`button on the bottom of this page.
+`Saved Types`字段允许您指定要在事件存储中存储的事件类型。 `Clear events`按钮允许您删除数据库中的所有事件。 `Expiration`字段允许您指定要保存事件的时间。 一旦您启用了登录事件的存储并决定了您的设置，请不要忘记单击本页底部的`Save`按钮。
 
-To view events, go to the `Login Events` tab.
+要查看事件，请转到`Login Events`选项卡。
 
-Login Events
+Login Events(登录事件)
 
 ![login events](assets/login-events.png)
 
-As you can see, there’s a lot of information stored and, if you are storing every event, there are a lot of events stored for each login action. The `Filter` button on this page allows you to filter which events you are actually interested in.
+如您所见，存储了大量信息，如果您要存储每个事件，则每个登录操作都会存储大量事件。 此页面上的`Filter`按钮允许您过滤您实际感兴趣的事件。
 
-Login Event Filter
+Login Event Filter(登录事件过滤器)
 
 ![login events filter](assets/login-events-filter.png)
 
-In this screenshot, we’re filtering only `Login` events. Clicking the `Update` button runs the filter.
+在此屏幕截图中，我们仅过滤了`Login`事件。 单击`Update`按钮可运行过滤器。
 
-#### 15.1.1. Event Types {#Event_Types}
-Login events:
+#### 15.1.1. 事件类型 {#Event_Types}
+登录事件：
 
-- Login - A user has logged in.
-- Register - A user has registered.
-- Logout - A user has logged out.
-- Code to Token - An application/client has exchanged a code for a token.
-- Refresh Token - An application/client has refreshed a token.
+- Login - 用户已登录。
+- Register - 用户已注册。
+- Logout - 用户已注销。
+- Code to Token - 应用程序/客户端已交换令牌代码。
+- Refresh Token - 应用程序/客户端刷新了令牌。
 
-Account events:
+帐户事件：
 
-- Social Link - An account has been linked to a social provider.
-- Remove Social Link - A social provider has been removed from an account.
-- Update Email - The email address for an account has changed.
-- Update Profile - The profile for an account has changed.
-- Send Password Reset - A password reset email has been sent.
-- Update Password - The password for an account has changed.
-- Update TOTP - The TOTP settings for an account have changed.
-- Remove TOTP - TOTP has been removed from an account.
-- Send Verify Email - An email verification email has been sent.
-- Verify Email - The email address for an account has been verified.
+- Social Link - 帐户已与社交提供商相关联。
+- Remove Social Link - 已从帐户中删除社交提供程序。
+- Update Email - 帐户的电子邮件地址已更改。
+- Update Profile - 帐户的个人资料已更改。
+- Send Password Reset - 已发送密码重置电子邮件。
+- Update Password - 帐户的密码已更改。
+- Update TOTP - 帐户的TOTP设置已更改。
+- Remove TOTP - TOTP已从帐户中删除。
+- Send Verify Email - 已发送电子邮件验证电子邮件。
+- Verify Email - 帐户的电子邮件地址已经过验证。
 
-For all events there is a corresponding error event.
+对于所有事件，都存在相应的错误事件。
 
-#### 15.1.2. Event Listener {#Event_Listener}
-Event listeners listen for events and perform an action based on that event. There are two built-in listeners that come with Keycloak: Logging Event Listener and Email Event Listener.
+#### 15.1.2. 事件监听器 {#Event_Listener}
+事件侦听器侦听事件并基于该事件执行操作。 Keycloak附带了两个内置监听器：`Logging Event Listener` 和 `Email Event Listener`。
 
-The Logging Event Listener writes to a log file whenever an error event occurs and is enabled by default. Here’s an example log message:
+每当发生错误事件时，`Logging Event Listener`都会写入日志文件，并且默认情况下处于启用状态。 这是一个示例日志消息：
 
 ```
 11:36:09,965 WARN  [org.keycloak.events] (default task-51) type=LOGIN_ERROR, realmId=master,
@@ -3760,20 +3752,20 @@ The Logging Event Listener writes to a log file whenever an error event occurs a
                     code_id=b669da14-cdbb-41d0-b055-0810a0334607, username=admin
 ```
 
-This logging is very useful if you want to use a tool like Fail2Ban to detect if there is a hacker bot somewhere that is trying to guess user passwords. You can parse the log file for `LOGIN_ERROR` and pull out the IP Address. Then feed this information into Fail2Ban so that it can help prevent attacks.
+如果您想使用像Fail2Ban这样的工具来检测是否存在试图猜测用户密码的黑客机器人，则此日志记录非常有用。 您可以解析日志文件中的`LOGIN_ERROR`并提出IP地址。 然后将此信息提供给Fail2Ban，以便它可以帮助防止攻击。
 
-The Email Event Listener sends an email to the user’s account when an event occurs. The Email Event Listener only supports the following events at the moment:
+发生事件时，电子邮件事件监听器会向用户的帐户发送电子邮件。 电子邮件事件监听器目前仅支持以下事件：
 
-- Login Error
-- Update Password
-- Update TOTP
-- Remove TOTP
+- Login Error(登录错误)
+- Update Password(更新密码)
+- Update TOTP(更新TOTP)
+- Remove TOTP(删除TOTP)
 
-To enable the Email Listener go to the `Config` tab and click on the `Event Listeners` field. This will show a drop down list box where you can select email.
+要启用电子邮件侦听器，请转到`Config`选项卡，然后单击`Event Listeners`字段。 这将显示一个下拉列表框，您可以在其中选择电子邮件。
 
-You can exclude one or more events by editing the `standalone.xml`, `standalone-ha.xml`, or `domain.xml` that comes with your distribution and adding for example:
+您可以通过编辑分发附带的`standalone.xml`，`standalone-ha.xml`或`domain.xml`来排除一个或多个事件，例如：
 
-```
+```xml
 <spi name="eventsListener">
   <provider name="email" enabled="true">
     <properties>
@@ -3783,130 +3775,121 @@ You can exclude one or more events by editing the `standalone.xml`, `standalone-
 </spi>
 ```
 
-See the [Server Installation and Configuration Guide](https://www.keycloak.org/docs/6.0/server_installation/) for more details on where the `standalone.xml`, `standalone-ha.xml`, or `domain.xml` file lives.
+有关`standalone.xml`，`standalone-ha.xml`或`domain的详细信息，请参阅[服务器安装和配置指南](https://www.keycloak.org/docs/6.0/server_installation/)。
 
-### 15.2. Admin Events {#Admin_Events}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/events/admin.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/events/admin.adoc)
+### 15.2. 管理事件 {#Admin_Events}
 
-Any action an admin performs within the admin console can be recorded for auditing purposes. The Admin Console performs administrative functions by invoking on the Keycloak REST interface. Keycloak audits these REST invocations. The resulting events can then be viewed in the Admin Console.
+可以记录管理员在管理控制台中执行的任何操作以进行审计。 管理控制台通过调用Keycloak REST接口来执行管理功能。 Keycloak审核这些REST调用。 然后，可以在管理控制台中查看生成的事件。
 
-To enable auditing of Admin actions, go to the `Events` left menu item and select the `Config` tab.
+要启用管理员操作的审核，请转到`Events`左侧菜单项并选择`Config`选项卡。
 
-Event Configuration
+Event Configuration(事件配置)
 
 ![login events config](assets/login-events-config.png)
 
-In the `Admin Events Settings` section, turn on the `Save Events` switch.
+在`Admin Events Settings`部分中，打开`Save Events`开关。
 
-Admin Event Configuration
+Admin Event Configuration(管理事件配置)
 
 ![admin events settings](assets/admin-events-settings.png)
 
-The `Include Representation` switch will include any JSON document that is sent through the admin REST API. This allows you to view exactly what an admin has done, but can lead to a lot of information stored in the database. The `Clear admin events` button allows you to wipe out the current information stored.
+`Include Representation`开关将包含通过管理REST API发送的任何JSON文档。 这使您可以准确查看管理员已完成的操作，但可以导致存储在数据库中的大量信息。 `Clear admin events`按钮允许您清除存储的当前信息。
 
-To view the admin events go to the `Admin Events` tab.
+要查看管理事件，请转到`Admin Events`选项卡。
 
-Admin Events
+Admin Events(管理事)
 
 ![admin events](assets/admin-events.png)
 
-If the `Details` column has a `Representation` box, you can click on that to view the JSON that was sent with that operation.
+如果`Details`列有一个`Representation`框，你可以点击它来查看随该操作发送的JSON。
 
-Admin Representation
+Admin Representation(管理员代表)
 
 ![admin events representation](assets/admin-events-representation.png)
 
-You can also filter for the events you are interested in by clicking the `Filter` button.
+您还可以通过单击`Filter`按钮来过滤您感兴趣的事件。
 
-Admin Event Filter
+Admin Event Filter(管理事件筛选器)
 
 ![admin events filter](assets/admin-events-filter.png)
 
-## 16. Export and Import {#Export_and_Import}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/export-import.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/export-import.adoc)
+## 16. 导出和导入 {#Export_and_Import}
 
-Keycloak has the ability to export and import the entire database. This can be especially useful if you want to migrate your whole Keycloak database from one environment to another or migrate to a different database (for example from MySQL to Oracle). Export and import is triggered at server boot time and its parameters are passed in via Java system properties. It is important to note that because import and export happens at server startup, no other actions should be taken on the server or the database while this happens.
+Keycloak具有导出和导入整个数据库的能力。 如果要将整个Keycloak数据库从一个环境迁移到另一个环境或迁移到其他数据库（例如从MySQL到Oracle），这可能特别有用。 导出和导入在服务器启动时触发，其参数通过Java系统属性传递。 需要注意的是，由于导入和导出是在服务器启动时发生的，因此在发生这种情况时，不应对服务器或数据库执行任何其他操作。
 
-You can export/import your database either to:
+您可以将数据库导出/导入到：
 
-- Directory on local filesystem
-- Single JSON file on your filesystem
+- 本地文件系统上的目录
+- 文件系统上的单个JSON文件
 
-When importing using the directory strategy, note that the files need to follow the naming convention specified below. If you are importing files which were previously exported, the files already follow this convention.
+使用目录策略导入时，请注意文件需要遵循下面指定的命名约定。 如果要导入先前导出的文件，则文件已遵循此约定。
 
-- <REALM_NAME>-realm.json, such as "acme-roadrunner-affairs-realm.json" for the realm named "acme-roadrunner-affairs"
-- <REALM_NAME>-users-<INDEX>.json, such as "acme-roadrunner-affairs-users-0.json" for the first users file of the realm named "acme-roadrunner-affairs"
+- <REALM_NAME>-realm.json，例如名为"acme-roadrunner-affairs"的"acme-roadrunner-affairs-realm.json"
+- `<REALM_NAME>-users-<INDEX>.json`，例如"acme-roadrunner-affairs-users-0.json"，用于名为"acme-roadrunner-affairs"的域的第一个用户文件
 
-If you export to a directory, you can also specify the number of users that will be stored in each JSON file.
+如果导出到目录，还可以指定将存储在每个JSON文件中的用户数。
 
-|      | If you have bigger amount of users in your database (500 or more), it’s highly recommended to export into directory rather than to single file. Exporting into single file may lead to the very big file. Also the directory provider is using separate transaction for each "page" (file with users), which leads to much better performance. Default count of users per file (and transaction) is 50, which showed us best performance, but you have possibility to override (See below). Exporting to single file is using one transaction per whole export and one per whole import, which results in bad performance with large amount of users. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 如果您的数据库中有大量用户（500或更多），强烈建议导出到目录而不是单个文件。 导出到单个文件可能会导致非常大的文件。 此外，目录提供程序正在为每个"page"（具有用户的文件）使用单独的事务，这会带来更好的性能。 每个文件（和事务）的默认用户数为50，这表明我们的性能最佳，但您可以覆盖（见下文）。 导出到单个文件每个导出使用一个事务，每个导入使用一个事务，这导致大量用户的性能不佳。
 
-To export into unencrypted directory you can use:
+要导出到未加密的目录，您可以使用：
 
-```
+```bash
 bin/standalone.sh -Dkeycloak.migration.action=export
 -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=<DIR TO EXPORT TO>
 ```
 
-And similarly for import just use `-Dkeycloak.migration.action=import` instead of `export` . To export into single JSON file you can use:
+同样，对于import，只需使用`-Dkeycloak.migration.action=import`而不是`export`。 要导出到单个JSON文件，您可以使用：
 
-```
+```bash
 bin/standalone.sh -Dkeycloak.migration.action=export
 -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=<FILE TO EXPORT TO>
 ```
 
-Here’s an example of importing:
+以下是导入示例：
 
-```
+```bash
 bin/standalone.sh -Dkeycloak.migration.action=import
 -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=<FILE TO IMPORT>
 -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
 ```
 
-Other available options are:
+其他可用选项包括：
 
 - -Dkeycloak.migration.realmName
 
-  This property is used if you want to export just one specified realm instead of all. If not specified, then all realms will be exported.
+  如果要仅导出一个指定的域而不是全部，则使用此属性。 如果未指定，则将导出所有领域。
 
 - -Dkeycloak.migration.usersExportStrategy
 
-  This property is used to specify where users are exported. Possible values are:DIFFERENT_FILES - Users will be exported into different files according to the maximum number of users per file. This is default value.SKIP - Exporting of users will be skipped completely.REALM_FILE - All users will be exported to same file with the realm settings. (The result will be a file like "foo-realm.json" with both realm data and users.)SAME_FILE - All users will be exported to same file but different from the realm file. (The result will be a file like "foo-realm.json" with realm data and "foo-users.json" with users.)
+  此属性用于指定用户的导出位置。 可能的值有：`DIFFERENT_FILES` - 根据每个文件的最大用户数将用户导出到不同的文件中。 这是默认值. `SKIP` - 将完全跳过用户导出. `REALM_FILE` - 所有用户将使用领域设置导出到同一文件。 （结果将是一个文件，如"foo-realm.json"，包含领域数据和用户。）`SAME_FILE` - 所有用户将被导出到同一文件但不同于领域文件。 （结果将是带有领域数据的"foo-realm.json"文件和带有用户的"foo-users.json"。）
 
 - -Dkeycloak.migration.usersPerFile
 
-  This property is used to specify the number of users per file (and also per DB transaction). It’s 50 by default. It’s used only if usersExportStrategy is DIFFERENT_FILES
+  此属性用于指定每个文件的用户数（以及每个数据库事务）。 它默认为50。 仅当usersExportStrategy为DIFFERENT_FILES时才使用它
 
 - -Dkeycloak.migration.strategy
 
-  This property is used during import. It can be used to specify how to proceed if a realm with same name already exists in the database where you are going to import data. Possible values are:IGNORE_EXISTING - Ignore importing if a realm of this name already exists.OVERWRITE_EXISTING - Remove existing realm and import it again with new data from the JSON file. If you want to fully migrate one environment to another and ensure that the new environment will contain the same data as the old one, you can specify this.
+  导入期间使用此属性。 如果要导入数据的数据库中已存在具有相同名称的域，则可以使用它指定如何继续。 可能的值有：`IGNORE_EXISTING` - 如果此名称的域已经存在，则忽略导入. `OVERWRITE_EXISTING` - 删除现有域并使用JSON文件中的新数据再次导入它。 如果要将一个环境完全迁移到另一个环境并确保新环境包含与旧环境相同的数据，则可以指定此环境。
 
-When importing realm files that weren’t exported before, the option `keycloak.import` can be used. If more than one realm file needs to be imported, a comma separated list of file names can be specified. This is more appropriate than the cases before, as this will happen only after the master realm has been initialized. Examples:
+导入以前未导出的域文件时，可以使用选项`keycloak.import`。 如果需要导入多个域文件，则可以指定逗号分隔的文件名列表。 这比以前的情况更合适，因为只有在初始化主域之后才会发生这种情况。 例子：
 
 - -Dkeycloak.import=/tmp/realm1.json
 - -Dkeycloak.import=/tmp/realm1.json,/tmp/realm2.json
 
-### 16.1. Admin console export/import {#Admin_console_export_import}
-Import of most resources can be performed from the admin console as well as export of most resources. Export of users is not supported.
+### 16.1. 管理控制台导出/导入 {#Admin_console_export_import}
+可以从管理控制台执行大多数资源的导入，也可以导出大多数资源。 不支持导出用户。
 
-Note: Attributes containing secrets or private information will be masked in export file. Export files obtained via Admin Console are thus not appropriate for backups or data transfer between servers. Only boot-time exports are appropriate for that.
+注意：包含机密或私人信息的属性将在导出文件中屏蔽。 因此，通过管理控制台获取的导出文件不适用于服务器之间的备份或数据传输。 只有启动时导出才适合。
 
-The files created during a "startup" export can also be used to import from the admin UI. This way, you can export from one realm and import to another realm. Or, you can export from one server and import to another. Note: The admin console export/import allows just one realm per file.
+在"startup"导出期间创建的文件也可用于从管理UI导入。 这样，您可以从一个领域导出并导入到另一个领域。 或者，您可以从一台服务器导出并导入到另一台服务器。 注意：管理控制台导出/导入每个文件只允许一个域。
 
-|      | The admin console import allows you to "overwrite" resources if you choose. Use this feature with caution, especially on a production system. Export .json files from Admin Console Export operation are generally not appropriate for data import since they contain invalid values for secrets. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 管理控制台导入允许您在选择时"overwrite"资源。 请谨慎使用此功能，尤其是在生产系统上。 从管理控制台导出操作导出.json文件通常不适合数据导入，因为它们包含无效的机密值。
 
-|      | The admin console export allows you to export clients, groups, and roles. If there is a great number of any of these assets in your realm, the operation may take some time to complete. During that time server may not be responsive to user requests. Use this feature with caution, especially on a production system. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 管理控制台导出允许您导出客户端，组和角色。 如果您的领域中存在大量这些资产，则操作可能需要一些时间才能完成。 在此期间，服务器可能无法响应用户请求。 请谨慎使用此功能，尤其是在生产系统上。
 
-## 17. User Account Service {#User_Account_Service}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/account.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/account.adoc)
+## 17. 用户帐户服务 {#User_Account_Service}
 
-Keycloak has a built-in User Account Service which every user has access to. This service allows users to manage their account, change their credentials, update their profile, and view their login sessions. The URL to this service is `<server-root>/auth/realms/{realm-name}/account`.
+Keycloak有一个内置的用户帐户服务，每个用户都可以访问。 此服务允许用户管理其帐户，更改其凭据，更新其个人资料以及查看其登录会话。 此服务的URL是`<server-root>/auth/realms/{realm-name}/account`。
 
 Account Service
 
