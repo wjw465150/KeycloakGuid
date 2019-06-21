@@ -3891,67 +3891,65 @@ bin/standalone.sh -Dkeycloak.migration.action=import
 
 Keycloak有一个内置的用户帐户服务，每个用户都可以访问。 此服务允许用户管理其帐户，更改其凭据，更新其个人资料以及查看其登录会话。 此服务的URL是`<server-root>/auth/realms/{realm-name}/account`。
 
-Account Service
+Account Service(帐户服务)
 
 ![account service profile](assets/account-service-profile.png)
 
-The initial page is the user’s profile, which is the `Account` left menu item. This is where they specify basic data about themselves. This screen can be extended to allow the user to manage additional attributes. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/)for more details.
+初始页面是用户的配置文件，即`Account`左侧菜单项。 这是他们指定自己的基本数据的地方。 可以扩展此屏幕以允许用户管理其他属性。 有关详细信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-The `Password` left menu item allows the user to change their password.
+`Password`左侧菜单项允许用户更改其密码。
 
-Password Update
+Password Update(密码更新)
 
 ![account service password](assets/account-service-password.png)
 
-The `Authenticator` menu item allows the user to set up OTP if they desire. This will only show up if OTP is a valid authentication mechanism for your realm. Users are given directions to install [FreeOTP](https://freeotp.github.io/) or [Google Authenticator](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2) on their mobile device to be their OTP generator. The QR code you see in the screen shot can be scanned into the FreeOTP or Google Authenticator mobile application for nice and easy setup.
+`Authenticator`菜单项允许用户根据需要设置OTP。 这只会在OTP是您的领域的有效身份验证机制时显示。 用户可以获得安装[FreeOTP](https://freeotp.github.io/)或[Google身份验证器](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2)他们的移动设备上的OTP生成器。 您在屏幕截图中看到的QR码可以扫描到FreeOTP或Google Authenticator移动应用程序中，以便进行简单的设置。
 
-OTP Authenticator
+OTP Authenticator(OTP身份验证器)
 
 ![account service authenticator](assets/account-service-authenticator.png)
 
-The `Federated Identity` menu item allows the user to link their account with an [identity broker](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker) (this is usually used to link social provider accounts together). This will show the list of external identity providers you have configured for your realm.
+`Federated Identity`菜单项允许用户将他们的帐户与[身份代理](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker)链接（这通常用于链接 社交提供者帐户在一起）。 这将显示您为领域配置的外部身份提供程序列表。
 
-Federated Identity
+Federated Identity(联合身份)
 
 ![account service federated identity](assets/account-service-federated-identity.png)
 
-The `Sessions` menu item allows the user to view and manage which devices are logged in and from where. They can perform logout of these sessions from this screen too.
+`Sessions`菜单项允许用户查看和管理登录和从哪里登录的设备。 他们也可以从这个屏幕执行这些会话的注销。
 
-Sessions
+Sessions(会话)
 
 ![account service sessions](assets/account-service-sessions.png)
 
-The `Applications` menu item shows users which applications they have access to.
+`Applications`菜单项向用户显示他们可以访问的应用程序。
 
-Applications
+Applications(应用)
 
 ![account service apps](assets/account-service-apps.png)
 
-### 17.1. Themeable {#Themeable}
-Like all UIs in Keycloak, the User Account Service is completely themeable and internationalizable. See the [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more details.
+### 17.1. 主题化 {#Themeable}
+与Keycloak中的所有UI一样，用户帐户服务完全可以主题化和国际化。 有关详细信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-## 18. Threat Model Mitigation {#Threat_Model_Mitigation}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat.adoc)
+## 18. 威胁模型缓解 {#Threat_Model_Mitigation}
 
-This chapter discusses possible security vulnerabilities any authentication server could have and how Keycloak mitigates those vulnerabilities. A good list of potential vulnerabilities and what security implementations should do to mitigate them can be found in the [OAuth 2.0 Threat Model](https://tools.ietf.org/html/rfc6819) document put out by the IETF. Many of those vulnerabilities are discussed here.
+本章讨论了任何身份验证服务器可能存在的安全漏洞以及Keycloak如何减轻这些漏洞。 在IETF提出的[OAuth 2.0威胁模型](https://tools.ietf.org/html/rfc6819)文档中可以找到一个很好的潜在漏洞清单以及安全实施应该采取哪些措施来缓解这些漏洞。 这里讨论了许多漏洞。
 
-### 18.1. Host {#Host}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/host.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/host.adoc)
+### 18.1. 主机名 {#Host}
 
-Keycloak uses the public hostname for a number of things. For example, in the token issuer fields and URLs sent in password reset emails.
+Keycloak使用公共主机名进行许多操作。 例如，在密码重置电子邮件中发送的令牌颁发者字段和URL中。
 
-By default, the hostname is based on the request headers and there is no check to make sure this hostname is valid.
+默认情况下，主机名基于请求标头，并且不会检查以确保此主机名有效。
 
-If you are not using a load balancer or proxy in front of Keycloak that prevents invalid host headers, you must explicitly configure what hostnames should be accepted.
+如果您未在Keycloak前面使用负载均衡器或代理来阻止无效的主机标头，则必须明确配置应接受的主机名。
 
-The Hostname SPI provides a way to configure the hostname for a request. Out of the box there are two providers. These are request and fixed. It is also possible to develop your own provider in the case the built-in providers do not provide the functionality needed.
+Hostname SPI提供了一种为请求配置主机名的方法。 开箱即用有两个提供商。 这些是请求和修复。 如果内置提供程序不提供所需的功能，也可以开发自己的提供程序。
 
-#### 18.1.1. Request provider {#Request_provider}
-This is the default hostname provider and uses request headers to determine the hostname. As it uses the headers from the request it is important to use this in combination with a proxy or a filter that rejects invalid hostnames.
+#### 18.1.1. 请求提供者 {#Request_provider}
+这是默认的主机名提供程序，并使用请求标头来确定主机名。 由于它使用请求中的标头，因此将其与代理或拒绝无效主机名的过滤器结合使用非常重要。
 
-It is beyond the scope of this documentation to provide instructions on how to configure valid hostnames for a proxy. To configure it in a filter you need to edit standalone.xml to set permitted aliases for the server. The following example will only permit requests to `auth.example.com`:
+提供有关如何为代理配置有效主机名的说明超出了本文档的范围。 要在过滤器中对其进行配置，您需要编辑standalone.xml以为服务器设置允许的别名。 以下示例仅允许对`auth.example.com`的请求：
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
     <server name="default-server" default-host="ignore">
         ...
@@ -3963,25 +3961,25 @@ It is beyond the scope of this documentation to provide instructions on how to c
 </subsystem>
 ```
 
-The changes that have been made from the default config is to add the attribute `default-host="ignore"` and update the attribute `alias`. `default-host="ignore"` prevents unknown hosts from being handled, while `alias` is used to list the accepted hosts.
+从默认配置中进行的更改是添加属性`default-host="ignore"`并更新属性`alias`。 `default-host="ignore"`防止处理未知主机，而`alias`用于列出接受的主机。
 
-Here is the equivalent configuration using CLI commands:
+以下是使用CLI命令的等效配置：
 
-```
+```bash
 /subsystem=undertow/server=default-server:write-attribute(name=default-host,value=ignore)
 /subsystem=undertow/server=default-server/host=default-host:write-attribute(name=alias,value=[auth.example.com]
 
 :reload
 ```
 
-#### 18.1.2. Fixed provider {#Fixed_provider}
-The fixed provider makes it possible to configure a fixed hostname. Unlike the request provider the fixed provider allows internal applications to invoke Keycloak on an alternative URL (for example an internal IP address). It is also possible to override the hostname for a specific realm through the configuration of the realm in the admin console.
+#### 18.1.2. 固定提供商 {#Fixed_provider}
+固定提供程序可以配置固定主机名。 与请求提供程序不同，固定提供程序允许内部应用程序在备用URL（例如内部IP地址）上调用Keycloak。 还可以通过管理控制台中域的配置覆盖特定域的主机名。
 
-This is the recommended provider to use in production.
+这是在生产中使用的推荐提供商。
 
-To change to the fixed provider and configure the hostname edit standalone.xml. The following example shows the fixed provider with the hostname set to auth.example.com:
+要更改为固定提供程序并配置主机名编辑`standalone.xml`。 以下示例显示了主机名设置为`auth.example.com`的固定提供程序：
 
-```
+```xml
 <spi name="hostname">
     <default-provider>fixed</default-provider>
     <provider name="fixed" enabled="true">
@@ -3994,39 +3992,38 @@ To change to the fixed provider and configure the hostname edit standalone.xml. 
 </spi>
 ```
 
-Here is the equivalent configuration using CLI commands:
+以下是使用CLI命令的等效配置：
 
 ```
 /subsystem=keycloak-server/spi=hostname:write-attribute(name=default-provider, value="fixed")
 /subsystem=keycloak-server/spi=hostname/provider=fixed:write-attribute(name=properties.hostname,value="auth.example.com")
 ```
 
-By default the `httpPort` and `httpsPort` are received from the request. As long as any proxies are configured correctly it should not be necessary to change this. It is possible to configure fixed ports if necessary by setting the `httpPort` and`httpsPort` properties on the fixed provider.
+默认情况下，从请求中接收`httpPort`和`httpsPort`。 只要正确配置了任何代理，就不必更改它。 如有必要，可以通过在固定提供程序上设置`httpPort`和`httpsPort`属性来配置固定端口。
 
-In most cases the scheme should be set correctly. This may not be true if the reverse proxy is unable to set the `X-Forwarded-For` header correctly, or if there is an internal application using non-https to invoke Keycloak. In such cases it is possible to set the `alwaysHttps` to `true`.
+在大多数情况下，应该正确设置方案。 如果反向代理无法正确设置`X-Forwarded-For`标头，或者如果有内部应用程序使用非https来调用Keycloak，则可能不是这样。 在这种情况下，可以将`alwaysHttps`设置为`true`。
 
-#### 18.1.3. Custom provider {#Custom_provider}
-To develop a custom hostname provider you need to implement `org.keycloak.urls.HostnameProviderFactory` and`org.keycloak.urls.HostnameProvider`.
+#### 18.1.3. 定制提供商 {#Custom_provider}
+要开发自定义主机名提供程序，您需要实现`org.keycloak.urls.HostnameProviderFactory`和`orl.keycloak.urls.HostnameProvider`。
 
-Follow the instructions in the Service Provider Interfaces section in [Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/) for more information on how to develop a custom provider.
+按照[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)中“服务提供商接口”部分中的说明，了解有关如何开发自定义提供程序的更多信息。
 
-### 18.2. Admin Endpoints and Console {#Admin_Endpoints_and_Console}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/admin.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/admin.adoc)
+### 18.2. 管理员端点和控制台 {#Admin_Endpoints_and_Console}
 
-The Keycloak administrative REST API and the web console are exposed by default on the same port as non-admin usage. If you are exposing Keycloak on the Internet, we recommend not also exposing the admin endpoints on the Internet.
+默认情况下，Keycloak管理REST API和Web控制台在与非管理员用法相同的端口上公开。 如果您在Internet上公开Keycloak，我们建议您不要在Internet上公开管理端点。
 
-This can be achieve either directly in Keycloak or with a proxy such as Apache or nginx.
+这可以直接在Keycloak中实现，也可以使用Apache或nginx等代理实现。
 
-For the proxy option please follow the documentation for the proxy. You need to control access to any requests to `/auth/admin`.
+有关代理选项，请按照代理的文档进行操作。 您需要控制对`/auth/admin`的任何请求的访问。
 
-To achieve this directly in Keycloak there are a few options. This document covers two options, IP restriction and separate ports.
+要在Keycloak中直接实现这一点，有一些选择。 本文档包含两个选项，IP限制和单独端口。
 
-#### 18.2.1. IP Restriction {#IP_Restriction}
-It is possible to restrict access to `/auth/admin` to only specific IP addresses.
+#### 18.2.1. IP限制 {#IP_Restriction}
+可以将对`/auth/admin`的访问限制为仅限于特定的IP地址。
 
-The following example restricts access to `/auth/admin` to IP addresses in the range `10.0.0.1` to `10.0.0.255`.
+以下示例将对`/auth/admin`的访问限制为`10.0.0.1`到`10.0.0.255`范围内的IP地址。
 
-```
+```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
     ...
     <server name="default-server">
@@ -4043,21 +4040,19 @@ The following example restricts access to `/auth/admin` to IP addresses in the r
 </subsystem>
 ```
 
-Equivalent configuration using CLI commands:
+使用CLI命令进行等效配置：
 
 ```
 /subsystem=undertow/configuration=filter/expression-filter=ipAccess:add(,expression="path-prefix[/auth/admin] -> ip-access-control(acl={'10.0.0.0/24 allow'})")
 /subsystem=undertow/server=default-server/host=default-host/filter-ref=ipAccess:add()
 ```
 
-|      | For IP restriction if you are using a proxy it is important to configure it correctly to make sure Keycloak receives the client IP address and not the proxy IP address |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 对于IP限制，如果您使用代理，请务必正确配置以确保Keycloak接收客户端IP地址而不是代理IP地址
 
-#### 18.2.2. Port Restriction {#Port_Restriction}
-It is possible to expose `/auth/admin` to a different port that is not exposed on the Internet.
+#### 18.2.2. 端口限制 {#Port_Restriction}
+可以将`/auth/admin`暴露给未在Internet上公开的其他端口。
 
-The following example exposes `/auth/admin` on port `8444` while not permitting access with the default port `8443`.
+以下示例在端口`8444`上公开`/auth/admin`，而不允许使用默认端口`8443`进行访问。
 
 ```xml
 <subsystem xmlns="urn:jboss:domain:undertow:8.0">
@@ -4087,7 +4082,7 @@ The following example exposes `/auth/admin` on port `8444` while not permitting 
 </socket-binding-group>
 ```
 
-Equivalent configuration using CLI commands:
+使用CLI命令进行等效配置：
 
 ```bash
 /socket-binding-group=standard-sockets/socket-binding=https-admin/:add(port=8444)
@@ -4098,179 +4093,166 @@ Equivalent configuration using CLI commands:
 /subsystem=undertow/server=default-server/host=default-host/filter-ref=portAccess:add()
 ```
 
-### 18.3. Password guess: brute force attacks {#Password_guess:_brute_force_attacks}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/brute-force.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/brute-force.adoc)
+### 18.3. 密码猜测：暴力攻击 {#Password_guess:_brute_force_attacks}
 
-A brute force attack happens when an attacker is trying to guess a user’s password. Keycloak has some limited brute force detection capabilities. If turned on, a user account will be temporarily disabled if a threshold of login failures is reached. To enable this feature go to the `Realm Settings` left menu item, click on the `Security Defenses` tab, then additional go to the `Brute Force Detection` sub-tab.
+当攻击者试图猜测用户的密码时，会发生暴力攻击。 Keycloak具有一些有限的强力检测功能。 如果启用，则在达到登录失败阈值时将暂时禁用用户帐户。 要启用此功能，请转到`Realm Settings`左侧菜单项，单击`Security Defenses`选项卡，然后转到`Brute Force Detection`子选项卡。
 
-Brute Force Detection
+Brute Force Detection(蛮力检测)
 
 ![brute force](assets/brute-force.png)
 
-There are 2 different configurations for brute force detection; permanent lockout and temporary lockout. Permanent lockout will disable a user’s account after an attack is detected; the account will be disabled until an administrator renables it. Temporary lockout will disable a user’s account for a time period after an attack is detected; the time period for which the account is disabled increases the longer the attack continues.
+蛮力检测有2种不同的配置; 永久锁定和临时锁定。 永久锁定将在检测到攻击后禁用用户的帐户; 该帐户将被禁用，直到管理员将其重新设置为止。 临时锁定将在检测到攻击后的一段时间内禁用用户的帐户; 帐户被禁用的时间段越长，攻击持续的时间越长。
 
-**Common Parameters**
+**常用参数**
 
-- Max Login Failures
+- Max Login Failures(最大登录失败)
 
-  Maximum number of login failures permitted. Default value is 30.
+  允许的最大登录失败次数。 默认值为30。
 
-- Quick Login Check Milli Seconds
+- Quick Login Check Milli Seconds(快速登录检查毫秒)
 
-  Minimum time required between login attempts. Default is 1000.
+  登录尝试之间所需的最短时间。 默认值为1000。
 
-- Minimum Quick Login Wait
+- 最低快速登录等待
 
-  Minimum amount of time the user will be temporarily disabled if logins attempts are quicker than *Quick Login Check Milli Seconds*. Default is 1 minute.
+  如果登录尝试比*快速登录检查毫秒*更快，则用户将被暂时禁用的最短时间。 默认为1分钟。
 
-**Temporary Lockout Parameters**
+**临时锁定参数**
 
-- Wait Increment
+- Wait Increment(等待增量)
 
-  Amount of time added to the time a user is temporarily disabled after each time *Max Login Failures* is reached. Default is 1 minute.
+  每次达到*Max Login Failures(最大登录失败)*后暂时禁用用户的时间量。 默认为1分钟。
 
-- Max Wait
+- Max Wait(最长等待)
 
-  The maximum amount of time for which a user will be temporarily disabled. Default is 15 minutes.
+  用户暂时禁用的最长时间。 默认为15分钟。
 
-- Failure Reset Time
+- Failure Reset Time(失败重置时间)
 
-  Time after which the failure count will be reset; timer runs from the last failed login. Default is 12 hours.
+  重置故障计数的时间; 计时器从上次失败的登录中运行。 默认为12小时。
 
-**Permanent Lockout Algorithm**
+**永久锁定算法**
 
-1. On successful login
-   1. Reset `count`
-2. On failed login
-   1. Increment `count`
-   2. If `count` greater than *Max Login Failures*
-      1. Permanently disable user
-   3. Else if time between this failure and the last failure is less than *Quick Login Check Milli Seconds*
-      1. Temporarily disable user for *Minimum Quick Login Wait*
+1. 成功登录后
+   1. 重置`count`
+2. 登录失败
+   1. 增加 `count`
+   2. 如果`count`大于*Max Login Failures(最大登录失败)*
+      1. 永久禁用用户
+   3. 否则，如果此故障与上次故障之间的时间间隔小于*快速登录检查毫秒*
+      1. 暂时禁用用户*最小快速登录等待*
 
-When a user is disabled they can not login until an administrator enables the user; enabling an account resets `count`.
+当用户被禁用时，他们无法登录，直到管理员启用该用户; 启用帐户会重置`count`。
 
-**Temporary Lockout Algorithm**
+**临时锁定算法**
 
-1. On successful login
-   1. Reset `count`
-2. On failed login
-   1. If time between this failure and the last failure is greater than *Failure Reset Time*
-      1. Reset `count`
-   2. Increment `count`
-   3. Calculate `wait` using *Wait Increment* * (`count` / *Max Login Failures*). The division is an integer division so will always be rounded down to a whole number
-   4. If `wait` equals 0 and time between this failure and the last failure is less than *Quick Login Check Milli Seconds* then set `wait` to *Minimum Quick Login Wait* instead
-      1. Temporarily disable the user for the smaller of `wait` and *Max Wait* seconds
+1. 成功登录后
+   1. 重置 `count`
+2. 登录失败
+   1. 如果此故障与上次故障之间的时间间隔大于*故障重置时间*
+      1. 重置 `count`
+   2. 增加 `count`
+   3. 使用*Wait Increment* * (`count` / *Max Login Failures*)计算`wait`。 除法是整数除法，因此总是向下舍入为整数
+   4. 如果`wait`等于0，则此故障与上次故障之间的时间小于 *Quick Login Check Milli Seconds* 然后将`wait`设置为 *Minimum Quick Login Wait*
+      1. 暂时禁用用户较小的`wait`和*Max Wait*秒
 
-Login failures when a user is temporarily disabled do not increment `count`.
+暂时禁用用户时登录失败不会增加`count`。
 
-The downside of Keycloak brute force detection is that the server becomes vulnerable to denial of service attacks. An attacker can simply try to guess passwords for any accounts it knows and these account will be disabled. Eventually we will expand this functionality to take client IP address into account when deciding whether to block a user.
+Keycloak强力检测的缺点是服务器容易受到拒绝服务攻击。 攻击者可以简单地尝试猜测其知道的任何帐户的密码，并且这些帐户将被禁用。 最终，我们将扩展此功能，以在决定是否阻止用户时考虑客户端IP地址。
 
-A better option might be a tool like [Fail2Ban](http://www.fail2ban.org/wiki/index.php/Main_Page). You can point this service at the Keycloak server’s log file. Keycloak logs every login failure and client IP address that had the failure. Fail2Ban can be used to modify firewalls after it detects an attack to block connections from specific IP addresses.
+更好的选择可能是像[Fail2Ban]这样的工具(http://www.fail2ban.org/wiki/index.php/Main_Page)。 您可以将此服务指向Keycloak服务器的日志文件。 Keycloak记录每次登录失败和发生故障的客户端IP地址。 在检测到阻止来自特定IP地址的连接的攻击后，Fail2Ban可用于修改防火墙。
 
-#### 18.3.1. Password Policies {#Password_Policies}
-Another thing you should do to prevent password guess is to have a complex enough password policy to ensure that users pick hard to guess passwords. See the [Password Policies](https://www.keycloak.org/docs/latest/server_admin/index.html#_password-policies) chapter for more details.
+#### 18.3.1. 密码策略 {#Password_Policies}
+防止密码猜测应该做的另一件事是拥有足够复杂的密码策略，以确保用户选择难以猜测的密码。 有关详细信息，请参阅[密码策略](https://www.keycloak.org/docs/latest/server_admin/index.html#_password-policies)一章。
 
-The best way to prevent password guessing though is to set up the server to use a one-time-password (OTP).
+防止密码猜测的最佳方法是将服务器设置为使用一次性密码（OTP）。
 
-### 18.4. Clickjacking {#Clickjacking}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/clickjacking.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/clickjacking.adoc)
+### 18.4. 点击劫持 {#Clickjacking}
 
-With clickjacking, a malicious site loads the target site in a transparent iFrame overlaid on top of a set of dummy buttons that are carefully constructed to be placed directly under important buttons on the target site. When a user clicks a visible button, they are actually clicking a button (such as a "login" button) on the hidden page. An attacker can steal a user’s authentication credentials and access their resources.
+通过点击劫持，恶意网站将目标网站加载到覆盖在一组虚拟按钮顶部的透明iFrame中，这些虚拟按钮经过精心构造，可直接放置在目标站点上的重要按钮下。 当用户单击可见按钮时，他们实际上是在隐藏页面上单击按钮（例如“登录”按钮）。 攻击者可以窃取用户的身份验证凭据并访问其资源。
 
-By default, every response by Keycloak sets some specific browser headers that can prevent this from happening. Specifically, it sets [X-FRAME_OPTIONS](https://tools.ietf.org/html/rfc7034) and [Content-Security-Policy](http://www.w3.org/TR/CSP/). You should take a look at the definition of both of these headers as there is a lot of fine-grain browser access you can control. In the admin console you can specify the values these headers will have. Go to the `Realm Settings` left menu item and click the `Security Defenses` tab and make sure you are on the `Headers` sub-tab.
+默认情况下，Keycloak的每个响应都会设置一些特定的浏览器标头，以防止这种情况发生。 具体来说，它设置[X-FRAME_OPTIONS](https://tools.ietf.org/html/rfc7034) 和 [Content-Security-Policy](http://www.w3.org/TR/CSP/)。 你应该看一下这两个标题的定义，因为你可以控制很多细粒度的浏览器访问。 在管理控制台中，您可以指定这些标头将具有的值。 转到`Realm Settings`左侧菜单项，然后单击`Security Defenses`选项卡，确保您位于`Headers`子选项卡上。
 
 ![security headers](assets/security-headers.png)
 
-By default, Keycloak only sets up a *same-origin* policy for iframes.
+默认情况下，Keycloak仅为iframe设置*同源(same-origin)*政策。
 
-### 18.5. SSL/HTTPS Requirement {#SSL_HTTPS_Requirement}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/ssl.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/ssl.adoc)
+### 18.5. SSL/HTTPS要求 {#SSL_HTTPS_Requirement}
 
-If you do not use SSL/HTTPS for all communication between the Keycloak auth server and the clients it secures, you will be very vulnerable to man in the middle attacks. OAuth 2.0/OpenID Connect uses access tokens for security. Without SSL/HTTPS, attackers can sniff your network and obtain an access token. Once they have an access token they can do any operation that the token has been given permission for.
+如果您没有使用`SSL/HTTPS`进行Keycloak auth服务器与它所保护的客户端之间的所有通信，那么在中间攻击中您将非常容易受到攻击。 `OAuth 2.0/OpenID Connect`使用访问令牌来提高安全性。 如果没有`SSL/HTTPS`，攻击者可以嗅探您的网络并获取访问令牌。 一旦他们拥有访问令牌，他们就可以执行令牌已获得权限的任何操作。
 
-Keycloak has [three modes for SSL/HTTPS](https://www.keycloak.org/docs/latest/server_admin/index.html#_ssl_modes). SSL can be hard to set up, so out of the box, Keycloak allows non-HTTPS communication over private IP addresses like localhost, 192.168.x.x, and other private IP addresses. In production, you should make sure SSL is enabled and required across the board.
+Keycloak有[SSL / HTTPS的三种模式](https://www.keycloak.org/docs/latest/server_admin/index.html#_ssl_modes)。 SSL可能很难设置，因此开箱即用，Keycloak允许通过私有IP地址（如`localhost`，`192.168.x.x`和其他私有IP地址）进行非HTTPS通信。 在生产中，您应该确保SSL已全面启用并且是必需的。
 
-On the adapter/client side, Keycloak allows you to turn off the SSL trust manager. The trust manager ensures identity the client is talking to. It checks the DNS domain name against the server’s certificate. In production you should make sure that each of your client adapters is configured to use a truststore. Otherwise you are vulnerable to DNS man in the middle attacks.
+在适配器/客户端，Keycloak允许您关闭SSL信任管理器。 信任管理器确保客户端正在与之交谈。 它根据服务器的证书检查DNS域名。 在生产中，您应确保将每个客户端适配器配置为使用信任库。 否则你在中间攻击中容易受到DNS人员的攻击。
 
-### 18.6. CSRF Attacks {#CSRF_Attacks}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/csrf.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/csrf.adoc)
+### 18.6. CSRF 攻击 {#CSRF_Attacks}
 
-Cross-site request forgery (CSRF) is a web-based attack whereby HTTP requests are transmitted from a user that the web site trusts or has authenticated with(e.g. via HTTP redirects or HTML forms). Any site that uses cookie based authentication is vulnerable to these types of attacks. These attacks are mitigated by matching a state cookie against a posted form or query parameter.
+跨站点请求伪造（CSRF）是基于Web的攻击，其中HTTP请求从网站信任或已经过身份验证的用户（例如，通过HTTP重定向或HTML表单）传输。 任何使用基于cookie的身份验证的站点都容易受到这些类型的攻击。 通过将状态cookie与发布的表单或查询参数进行匹配来减轻这些攻击。
 
-The OAuth 2.0 login specification requires that a state cookie be used and matched against a transmitted state parameter. Keycloak fully implements this part of the specification so all logins are protected.
+OAuth 2.0登录规范要求使用状态cookie并与传输的状态参数进行匹配。 Keycloak完全实现了规范的这一部分，因此所有登录都受到保护。
 
-The Keycloak Admin Console is a pure JavaScript/HTML5 application that makes REST calls to the backend Keycloak admin REST API. These calls all require bearer token authentication and are made via JavaScript Ajax calls. CSRF does not apply here. The admin REST API can also be configured to validate the CORS origins as well.
+Keycloak管理控制台是一个纯JavaScript / HTML5应用程序，可以对后端Keycloak管理REST API进行REST调用。 这些调用都需要承载令牌认证，并通过JavaScript Ajax调用进行。 CSRF不适用于此处。 管理REST API也可以配置为验证CORS源。
 
-The only part of Keycloak that really falls into CSRF is the user account management pages. To mitigate this Keycloak sets a state cookie and also embeds the value of this state cookie within hidden form fields or query parameters in action links. This query or form parameter is checked against the state cookie to verify that the call was made by the user.
+Keycloak中唯一真正落入CSRF的部分是用户帐户管理页面。 要缓解此Keycloak设置状态cookie，并将此状态cookie的值嵌入隐藏表单字段或操作链接中的查询参数。 将针对状态cookie检查此查询或表单参数，以验证用户是否进行了调用。
 
-### 18.7. Unspecific Redirect URIs {#Unspecific_Redirect_URIs}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/redirect.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/redirect.adoc)
+### 18.7. 非特定的重定向URI {#Unspecific_Redirect_URIs}
 
-For the [Authorization Code Flow](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows), if you register redirect URIs that are too general, then it would be possible for a rogue client to impersonate a different client that has a broader scope of access. This could happen for instance if two clients live under the same domain. So, it’s a good idea to make your registered redirect URIs as specific as feasible.
+对于[授权代码流程](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows)，如果您注册过于笼统的重定向URI，那么就有可能 对于流氓客户端冒充具有更广泛访问范围的不同客户端。 例如，如果两个客户端位于同一域下，则可能发生这种情况。 因此，最好使注册的重定向URI尽可能具体。
 
-### 18.8. Compromised Access and Refresh Tokens {#Compromised_Access_and_Refresh_Tokens}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/compromised-tokens.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/compromised-tokens.adoc)
+### 18.8. 受损的访问和刷新令牌 {#Compromised_Access_and_Refresh_Tokens}
 
-There are a few things you can do to mitigate access tokens and refresh tokens from being stolen. The most important thing is to enforce SSL/HTTPS communication between Keycloak and its clients and applications. It might seem obvious, but since Keycloak does not have SSL enabled by default, an administrator might not realize that it is necessary.
+您可以采取一些措施来减少访问令牌并刷新令牌被盗。 最重要的是在Keycloak及其客户端和应用程序之间强制执行`SSL/HTTPS`通信。 这似乎很明显，但由于Keycloak默认情况下没有启用SSL，因此管理员可能没有意识到这是必要的。
 
-Another thing you can do to mitigate leaked access tokens is to shorten their lifespans. You can specify this within the [timeouts page](https://www.keycloak.org/docs/latest/server_admin/index.html#_timeouts). Short lifespans (minutes) for access tokens for clients and applications to refresh their access tokens after a short amount of time. If an admin detects a leak, they can logout all user sessions to invalidate these refresh tokens or set up a revocation policy. Making sure refresh tokens always stay private to the client and are never transmitted ever is very important as well.
+您可以采取的另一项措施是减少泄露的访问权限，缩短其生命周期。 您可以在[超时页面](https://www.keycloak.org/docs/latest/server_admin/index.html#_timeouts)中指定。 用于访问令牌的短寿命（分钟），以便客户端和应用程序在短时间内刷新其访问令牌。 如果管理员检测到泄漏，他们可以注销所有用户会话以使这些刷新令牌无效或设置撤销策略。 确保刷新令牌永远保持对客户端的私密性并且永远不会传输也是非常重要的。
 
-You can also mitigate against leaked access tokens and refresh tokens by issuing these tokens as holder-of-key tokens. See [OAuth 2.0 Mutual TLS Client Certificate Bound Access Token](https://www.keycloak.org/docs/latest/server_admin/index.html#_mtls-client-certificate-bound-tokens) to learn how.
+您还可以通过将这些令牌作为持有者密钥令牌来缓解泄露的访问令牌和刷新令牌。 请参阅[OAuth 2.0 Mutual TLS客户端证书绑定访问令牌](https://www.keycloak.org/docs/latest/server_admin/index.html#_mtls-client-certificate-bound-tokens)以了解具体方法。
 
-If an access token or refresh token is compromised, the first thing you should do is go to the admin console and push a not-before revocation policy to all applications. This will enforce that any tokens issued prior to that date are now invalid. Pushing new not-before policy will also ensure that application will be forced to download new public keys from Keycloak, hence it is also useful for the case, when you think that realm signing key was compromised. More info in the [keys chapter](https://www.keycloak.org/docs/latest/server_admin/index.html#realm_keys).
+如果访问令牌或刷新令牌受到威胁，您应该做的第一件事就是转到管理控制台并将一个不在之前的撤销策略推送到所有应用程序。 这将强制执行在该日期之前发布的任何令牌现在无效。 推出新的not-before策略还将确保应用程序将被迫从Keycloak下载新的公钥，因此当您认为领域签名密钥被泄露时，它也适用于该案例。 [密钥章节](https://www.keycloak.org/docs/latest/server_admin/index.html#realm_keys)中的更多信息。
 
-You can also disable specific applications, clients, and users if you feel that any one of those entities is completely compromised.
+如果您认为这些实体中的任何一个完全受到损害，您还可以禁用特定应用程序，客户端和用户。
 
-### 18.9. Compromised Authorization Code {#Compromised_Authorization_Code}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/compromised-codes.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/compromised-codes.adoc)
+### 18.9. 受损的授权码 {#Compromised_Authorization_Code}
 
-For the [OIDC Auth Code Flow](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows), it would be very hard for an attacker to compromise Keycloak authorization codes. Keycloak generates a cryptographically strong random value for its authorization codes so it would be very hard to guess an access token. An authorization code can only be used once to obtain an access token. In the admin console you can specify how long an authorization code is valid for on the [timeouts page](https://www.keycloak.org/docs/latest/server_admin/index.html#_timeouts). This value should be really short, as short as a few seconds and just long enough for the client to make the request to obtain a token from the code.
+对于[OIDC Auth Code Flow](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows)，攻击者很难破解Keycloak授权码。 Keycloak为其授权码生成加密强随机值，因此很难猜测访问令牌。 授权代码只能使用一次才能获得访问令牌。 在管理控制台中，您可以在[超时页面](https://www.keycloak.org/docs/latest/server_admin/index.html#_timeouts)上指定授权代码的有效期。 这个值应该非常短，只需几秒钟，并且足够长，以便客户端从代码中获取请求以获取令牌。
 
-### 18.10. Open redirectors {#Open_redirectors}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/open-redirect.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/open-redirect.adoc)
+### 18.10. 打开重定向器 {#Open_redirectors}
 
-An attacker could use the end-user authorization endpoint and the redirect URI parameter to abuse the authorization server as an open redirector. An open redirector is an endpoint using a parameter to automatically redirect a user agent to the location specified by the parameter value without any validation. An attacker could utilize a user’s trust in an authorization server to launch a phishing attack.
+攻击者可以使用最终用户授权端点和重定向URI参数将授权服务器滥用为开放重定向器。 开放重定向器是一个端点，使用参数自动将用户代理重定向到参数值指定的位置，而不进行任何验证。 攻击者可以利用用户对授权服务器的信任来发起网络钓鱼攻击。
 
-Keycloak requires that all registered applications and clients register at least one redirection URI pattern. Any time a client asks Keycloak to perform a redirect (on login or logout for example), Keycloak will check the redirect URI vs. the list of valid registered URI patterns. It is important that clients and applications register as specific a URI pattern as possible to mitigate open redirector attacks.
+Keycloak要求所有注册的应用程序和客户端至少注册一个重定向URI模式。 每当客户端要求Keycloak执行重定向（例如登录或注销）时，Keycloak将检查重定向URI与有效注册URI模式列表。 客户端和应用程序注册为特定的URI模式以减轻开放重定向器攻击非常重要。
 
-### 18.11. Password database compromised {#Password_database_compromised}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/password-db-compromised.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/password-db-compromised.adoc)
+### 18.11. 密码数据库受损 {#Password_database_compromised}
 
-Keycloak does not store passwords in raw text. It stores a hash of them using the PBKDF2 algorithm. It actually uses a default of 20,000 hashing iterations! This is the security community’s recommended number of iterations. This can be a rather large performance hit on your system as PBKDF2, by design, gobbles up a significant amount of CPU. It is up to you to decide how serious you want to be to protect your password database.
+Keycloak不会以原始文本存储密码。 它使用PBKDF2算法存储它们的散列。 它实际上使用默认的20,000次散列迭代！ 这是安全社区建议的迭代次数。 这可能会对您的系统产生相当大的性能影响，因为PBKDF2在设计上占用了大量的CPU。 您需要决定保护密码数据库的严肃程度。
 
-### 18.12. Limiting Scope {#Limiting_Scope}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/scope.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/scope.adoc)
+### 18.12. 限制范围 {#Limiting_Scope}
 
-By default, each new client application has an unlimited `role scope mappings`. This means that every access token that is created for that client will contain all the permissions the user has. If the client gets compromised and the access token is leaked, then each system that the user has permission to access is now also compromised. It is highly suggested that you limit the roles an access token is assigned by using the [Scope menu](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings) for each client. Or alternatively, you can set role scope mappings at the Client Scope level and assign Client Scopes to your client by using the [Client Scope menu](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_linking).
+默认情况下，每个新的客户端应用程序都具有无限的`角色范围映射`。 这意味着为该客户端创建的每个访问令牌都将包含用户拥有的所有权限。 如果客户端遭到入侵并且访问令牌泄露，则用户有权访问的每个系统现在也会受到损害。 强烈建议您使用每个客户端的[范围菜单](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings)限制访问令牌的角色。 或者，您可以在客户端作用域级别设置角色范围映射，并使用[客户端范围菜单](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_linking)将客户端范围分配给客户端。
 
-### 18.13. Limit Token Audience {#Limit_Token_Audience}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/audience-limit.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/audience-limit.adoc)
+### 18.13. 限制令牌受众 {#Limit_Token_Audience}
 
-In environments where the level of trust among services is low, it is a good practice to limit the audiences on the token. The motivation behind this is described in the [OAuth2 Threat Model](https://tools.ietf.org/html/rfc6819#section-5.1.5.5) document and more details are in the [Audience Support section](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience).
+在服务之间的信任级别较低的环境中，限制令牌上的受众是一种好习惯。 其背后的动机在[OAuth2威胁模型](https://tools.ietf.org/html/rfc6819#section-5.1.5.5)文档中有所描述，更多详细信息请参见[受众支持部分](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience)。
 
-### 18.14. SQL Injection Attacks {#SQL_Injection_Attacks}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/threat/sql.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/threat/sql.adoc)
+### 18.14. SQL注入攻击 {#SQL_Injection_Attacks}
 
-At this point in time, there is no knowledge of any SQL injection vulnerabilities in Keycloak.
+在这个时间点，没有在任何Keycloak SQL注入漏洞的知识。
 
-## 19. The Admin CLI {#The_Admin_CLI}
-[Edit this section](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/admin-cli.adoc)[Report an issue](https://issues.jboss.org/secure/CreateIssueDetails!init.jspa?pid=12313920&components=12323375&issuetype=1&priority=3&description=File: server_admin/topics/admin-cli.adoc)
+## 19. 管理员 命令行 {#The_Admin_CLI}
 
-In previous chapters, we described how to use the Keycloak Admin Console to perform administrative tasks. You can also perform those tasks from the command-line interface (CLI) by using the Admin CLI command-line tool.
+在前面的章节中，我们介绍了如何使用Keycloak管理控制台执行管理任务。 您还可以使用Admin CLI命令行工具从命令行界面（CLI）执行这些任务。
 
-### 19.1. Installing the Admin CLI {#Installing_the_Admin_CLI}
-The Admin CLI is packaged inside Keycloak Server distribution. You can find execution scripts inside the `bin` directory.
+### 19.1. 安装Admin CLI {#Installing_the_Admin_CLI}
+Admin CLI打包在Keycloak Server发行版中。 您可以在`bin`目录中找到执行脚本。
 
-The Linux script is called `kcadm.sh`, and the script for Windows is called `kcadm.bat`.
+Linux脚本称为`kcadm.sh`，Windows脚本称为`kcadm.bat`。
 
-You can add the Keycloak server directory to your `PATH` to use the client from any location on your file system.
+您可以将Keycloak服务器目录添加到`PATH`以从文件系统上的任何位置使用客户端。
 
-For example, on:
+例如，在：
 
 - Linux:
 
-```
+```bash
 $ export PATH=$PATH:$KEYCLOAK_HOME/bin
 $ kcadm.sh
 ```
@@ -4282,26 +4264,22 @@ c:\> set PATH=%PATH%;%KEYCLOAK_HOME%\bin
 c:\> kcadm
 ```
 
-We assume the `KEYCLOAK_HOME` environment (env) variable is set to the path where you extracted the Keycloak Server distribution.
+我们假设`KEYCLOAK_HOME`环境（env）变量设置为您解压缩Keycloak Server分发的路径。
 
-|      | To avoid repetition, the rest of this document only gives Windows examples in places where the difference in the CLI is more than just in the `kcadm` command name. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 为避免重复，本文档的其余部分仅在CLI中的差异超出`kcadm`命令名称的地方提供Windows示例。
 
-### 19.2. Using the Admin CLI {#Using_the_Admin_CLI}
-The Admin CLI works by making HTTP requests to Admin REST endpoints. Access to them is protected and requires authentication.
+### 19.2. 使用Admin CLI {#Using_the_Admin_CLI}
+Admin CLI通过向Admin REST端点发出HTTP请求来工作。 对它们的访问受到保护并需要身份验证。
 
-|      | Consult the Admin REST API documentation for details about JSON attributes for specific endpoints. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+  > 有关特定端点的JSON属性的详细信息，请参阅`Admin REST API`文档。  
 
-1. Start an authenticated session by providing credentials, that is, logging in. You are ready to perform create, read, update, and delete (CRUD) operations.
+1. 通过提供凭据（即登录）启动经过身份验证的会话。您已准备好执行创建，读取，更新和删除（CRUD）操作。
 
-   For example, on
+   例如，在: 
 
    - Linux:
 
-     ```
+     ```bash
      $ kcadm.sh config credentials --server http://localhost:8080/auth --realm demo --user admin --client admin
      $ kcadm.sh create realms -s realm=demorealm -s enabled=true -o
      $ CID=$(kcadm.sh create clients -r demorealm -s clientId=my_client -s 'redirectUris=["http://localhost:8980/myapp/*"]' -i)
@@ -4318,13 +4296,13 @@ The Admin CLI works by making HTTP requests to Admin REST endpoints. Access to t
      c:\> kcadm get clients/%CID%/installation/providers/keycloak-oidc-keycloak-json
      ```
 
-2. In a production environment, you must access Keycloak with `https:` to avoid exposing tokens to network sniffers. If a server’s certificate is not issued by one of the trusted certificate authorities (CAs) that are included in Java’s default certificate truststore, prepare a `truststore.jks` file and instruct the Admin CLI to use it.
+2. 在生产环境中，您必须使用 `https:` 访问Keycloak，以避免将令牌暴露给网络嗅探器。 如果服务器的证书不是由Java的默认证书信任库中包含的受信任证书颁发机构（CA）之一颁发的，请准备`truststore.jks`文件并指示Admin CLI使用它。
 
-   For example, on:
+   例如，在:
 
    - Linux:
 
-     ```
+     ```bash
      $ kcadm.sh config truststore --trustpass $PASSWORD ~/.keycloak/truststore.jks
      ```
 
@@ -4334,39 +4312,37 @@ The Admin CLI works by making HTTP requests to Admin REST endpoints. Access to t
      c:\> kcadm config truststore --trustpass %PASSWORD% %HOMEPATH%\.keycloak\truststore.jks
      ```
 
-### 19.3. Authenticating {#Authenticating}
-When you log in with the Admin CLI, you specify a server endpoint URL and a realm, and then you specify a user name. Another option is to specify only a clientId, which results in using a special "service account". When you log in using a user name, you must use a password for the specified user. When you log in using a clientId, you only need the client secret, not the user password. You could also use `Signed JWT` instead of the client secret.
+### 19.3. 认证 {#Authenticating}
+使用Admin CLI登录时，指定服务器端点URL和域，然后指定用户名。 另一种选择是仅指定clientId，这导致使用特殊的"(service account)服务帐户"。 使用用户名登录时，必须使用指定用户的密码。 使用clientId登录时，只需要客户端密码，而不是用户密码。 您也可以使用`Signed JWT`而不是客户端密钥。
 
-Make sure the account used for the session has the proper permissions to invoke Admin REST API operations. For example, the `realm-admin` role of the `realm-management` client allows the user to administer the realm within which the user is defined.
+确保用于会话的帐户具有调用Admin REST API操作的适当权限。 例如，`realm-management`客户端的`realm-admin`角色允许用户管理定义用户的领域。
 
-There are two primary mechanisms for authentication. One mechanism uses `kcadm config credentials` to start an authenticated session.
+验证有两种主要机制。 一种机制使用`kcadm config credentials`来启动经过身份验证的会话。
 
-```
+```bash
 $ kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user admin --password admin
 ```
 
-This approach maintains an authenticated session between the `kcadm` command invocations by saving the obtained access token and the associated refresh token. It may also maintain other secrets in a private configuration file. See [next chapter](https://www.keycloak.org/docs/latest/server_admin/index.html#_working_with_alternative_configurations) for more information on the configuration file.
+此方法通过保存获取的访问令牌和关联的刷新令牌来维护`kcadm`命令调用之间的经过身份验证的会话。 它还可以在私有配置文件中维护其他秘密。 有关配置文件的更多信息，请参见[下一章](https://www.keycloak.org/docs/latest/server_admin/index.html#_working_with_alternative_configurations)。
 
-The second approach only authenticates each command invocation for the duration of that invocation. This approach increases the load on the server and the time spent with roundtrips obtaining tokens. The benefit of this approach is not needing to save any tokens between invocations, which means nothing is saved to disk. This mode is used when the `--no-config` argument is specified.
+第二种方法仅在该调用期间验证每个命令调用。 这种方法增加了服务器上的负载以及通过往返获取令牌所花费的时间。 这种方法的好处是不需要在调用之间保存任何令牌，这意味着什么都没有保存到磁盘。 指定`--no-config`参数时使用此模式。
 
-For example, when performing an operation, we specify all the information required for authentication.
+例如，在执行操作时，我们指定身份验证所需的所有信息。
 
-```
+```bash
 $ kcadm.sh get realms --no-config --server http://localhost:8080/auth --realm master --user admin --password admin
 ```
 
-Run the `kcadm.sh help` command for more information on using the Admin CLI.
+有关使用Admin CLI的更多信息，请运行`kcadm.sh help`命令。
 
-Run the `kcadm.sh config credentials --help` command for more information about starting an authenticated session.
+运行`kcadm.sh config credentials --help`命令以获取有关启动经过身份验证的会话的更多信息。
 
-### 19.4. Working with alternative configurations {#Working_with_alternative_configurations}
-By default, the Admin CLI automatically maintains a configuration file called `kcadm.config` located under the user’s home directory. In Linux-based systems, the full path name is `$HOME/.keycloak/kcadm.config`. On Windows, the full path name is `%HOMEPATH%\.keycloak\kcadm.config`. You can use the `--config` option to point to a different file or location so you can maintain multiple authenticated sessions in parallel.
+### 19.4. 使用其他配置 {#Working_with_alternative_configurations}
+默认情况下，Admin CLI会自动维护位于用户主目录下的名为`kcadm.config`的配置文件。 在基于Linux的系统中，完整路径名是`$HOME/.keycloak/kcadm.config`。 在Windows上，完整路径名是`%HOMEPATH%\.keycloak\kcadm.config`。 您可以使用`--config`选项指向不同的文件或位置，以便您可以并行维护多个经过身份验证的会话。
 
-|      | It is best to perform operations tied to a single configuration file from a single thread. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> 最好从单个线程执行绑定到单个配置文件的操作。
 
-Make sure you do not make the configuration file visible to other users on the system. It contains access tokens and secrets that should be kept private. By default, the `~/.keycloak` directory and its content are created automatically with proper access limits. If the directory already exists, its permissions are not updated.
+确保不要使配置文件对系统上的其他用户可见。 它包含应该保密的访问令牌和秘密。 默认情况下，`~/.keycloak` 目录及其内容是使用适当的访问限制自动创建的。 如果该目录已存在，则不会更新其权限。
 
 If your unique circumstances require you to avoid storing secrets inside a configuration file, you can do so. It will be less convenient and you will have to make more token requests. To not store secrets, use the `--no-config` option with all your commands and specify all the authentication information needed by the `config credentials` command with each `kcadm`invocation.
 
