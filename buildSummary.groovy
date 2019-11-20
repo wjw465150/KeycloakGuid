@@ -1,3 +1,5 @@
+//构建SUMMARY.md里的章节
+
 def parten = ~/^#{2,3}\s{1}.{1,}/
 def parten2 = ~/[a-zA-Z]{1}[a-zA-Z -\\’]{1,}/
 

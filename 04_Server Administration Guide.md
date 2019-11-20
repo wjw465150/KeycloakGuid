@@ -154,7 +154,7 @@ Keycloak是您在网络上管理的独立服务器。应用程序配置为指向
 
 执行[服务器安装和配置指南](https://www.keycloak.org/docs/6.0/server_installation/)中定义的所有安装和配置任务后，您需要创建一个初始管理员帐户。 Keycloak没有开箱即用的任何已配置的管理员帐户。此帐户将允许您创建一个可以登录*master* realm管理控制台的管理员，以便您可以开始创建领域，用户并注册要由Keycloak保护的应用程序。
 
-如果您的服务器可以从`localhost`访问，则可以通过转到<http://localhost:8080/auth>URL来启动它并创建此管理员用户。
+如果您的服务器可以从`localhost`访问，则可以通过转到`http://localhost:8080/auth`URL来启动它并创建此管理员用户。
 
 欢迎页面
 
@@ -198,7 +198,7 @@ Windows
 
 ## 3. 管理控制台 {#Admin_Console}
 
-您的大部分管理任务将通过Keycloak管理控制台完成。 您可以直接转到<http://localhost:8080/auth/admin/>的控制台URL
+您的大部分管理任务将通过Keycloak管理控制台完成。 您可以直接转到`http://localhost:8080/auth/admin/`的控制台URL
 
 登录页面
 
@@ -1605,7 +1605,7 @@ Generate Keys
 
 Import Certificate
 
-![import client cert](assets/import-client-cert.png)
+![import_client_cert](assets/import-client-cert.png)
 
 您可以导入多种格式，只需选择存储证书的存档格式，选择文件，然后单击`Import`按钮。
 
@@ -1925,7 +1925,7 @@ IDP发起的登录实现更喜欢*POST* 通过 *REDIRECT* 绑定（检查[saml b
 http://host:port/auth/realms/master/clients/account/redirect
 ```
 
-将临时重定向到：`<http://host:port/auth/realms/master/account>`
+将临时重定向到：`http://host:port/auth/realms/master/account`
 
 ### 8.4. OIDC令牌和SAML断言映射 {#OIDC_Token_and_SAML_Assertion_Mappings}
 
@@ -3130,7 +3130,7 @@ Keycloak可以基于OpenID Connect协议来代理身份提供商。 这些IDP必
 | Prompt                   | 另一个可选开关。 这是OIDC规范定义的提示参数。 通过它，您可以强制重新身份验证和其他选项。 有关详细信息，请参阅规范。 |
 | Validate Signatures      | 另一个可选开关。 这是为了指定Keycloak是否将验证由此身份提供者签名的外部ID令牌上的签名。 如果启用此选项，Keycloak将需要知道外部OIDC身份提供程序的公钥。 请参阅下文，了解如何进行设置。 警告：出于性能目的，Keycloak会缓存外部OIDC身份提供程序的公钥。 如果您认为您的身份提供商的私钥遭到破坏，那么更新密钥显然很好，但清除密钥缓存也很好。 有关详细信息，请参阅[清除缓存](https://www.keycloak.org/docs/latest/server_admin/index.html#_clear-cache) 部分。 |
 | Use JWKS URL             | 如果启用 `Validate Signatures`，则适用。 如果开关打开，则将从给定的JWKS URL下载身份提供者公钥。 这允许极大的灵活性，因为当身份提供者生成新的密钥对时，将始终重新下载新密钥。 如果交换机关闭，则使用Keycloak DB中的公钥（或证书），因此每当身份提供程序密钥对更改时，您始终需要将新密钥导入Keycloak DB。 |
-| JWKS URL                 | 存储身份提供程序JWK密钥的URL。 有关详细信息，请参阅[JWK规范](https://self-issued.info/docs/draft-ietf-jose-json-web-key.html)。 如果您使用外部Keycloak作为身份提供者，那么您可以使用URL，如`<http://broker-keycloak:8180/auth/realms/test/protocol/openid-connect/certs>`，假设您的代理密钥泄露正在运行http://broker-keycloak:8180](http://broker-keycloak:8180/)，它的领域是`test`。 |
+| JWKS URL                 | 存储身份提供程序JWK密钥的URL。 有关详细信息，请参阅[JWK规范](https://self-issued.info/docs/draft-ietf-jose-json-web-key.html)。 如果您使用外部Keycloak作为身份提供者，那么您可以使用URL，如`http://broker-keycloak:8180/auth/realms/test/protocol/openid-connect/certs`，假设您的代理密钥泄露正在运行http://broker-keycloak:8180](http://broker-keycloak:8180/)，它的领域是`test`。 |
 | Validating Public Key    | 如果 `Use JWKS URL` 已关闭，则适用。 以下是PEM格式的公钥，必须用于验证外部IDP签名。 |
 | Validating Public Key Id | 如果 `Use JWKS URL` 已关闭，则适用。 该字段以PEM格式指定公钥的ID。 此配置值是可选的。 由于没有从密钥计算密钥ID的标准方法，因此各种外部身份提供商可能使用Keycloak中的不同算法。 如果未指定此字段的值，则无论外部IDP发送的密钥ID如何，上面指定的验证公钥都将用于所有请求。 设置时，此字段的值用作Keycloak用于验证来自此类提供程序的签名的密钥ID，并且必须与IDP指定的密钥ID匹配。 |
 
@@ -4364,9 +4364,9 @@ ENDPOINT is a target resource URI and can either be absolute (starting with `htt
 SERVER_URI/admin/realms/REALM/ENDPOINT
 ```
 
-For example, if you authenticate against the server <http://localhost:8080/auth> and realm is `master`, then using `users` as ENDPOINT results in the resource URL <http://localhost:8080/auth/admin/realms/master/users>.
+For example, if you authenticate against the server `http://localhost:8080/auth` and realm is `master`, then using `users` as ENDPOINT results in the resource URL `http://localhost:8080/auth/admin/realms/master/users`.
 
-If you set ENDPOINT to `clients`, the effective resource URI would be <http://localhost:8080/auth/admin/realms/master/clients>.
+If you set ENDPOINT to `clients`, the effective resource URI would be `http://localhost:8080/auth/admin/realms/master/clients`.
 
 There is a `realms` endpoint that is treated slightly differently because it is the container for realms. It resolves to:
 
