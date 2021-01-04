@@ -1,17 +1,20 @@
-# Keycloak入门指南 {#Getting_Started_Guide}
+# Keycloak入门指南
 
 [原文地址: https://www.keycloak.org/docs/latest/getting_started/index.html](https://www.keycloak.org/docs/latest/getting_started/index.html)
 
 
-## 1. 概述 {#Overview}
+<a name="1___1__概述"></a>
+## 1. 概述
 
 本指南可帮助您开始使用Keycloak。 它涵盖了服务器配置和默认数据库的使用。 不包括高级部署选项。 有关功能或配置选项的更深入说明，请参阅其他参考指南。
 
-## 2. 安装和启动 {#Installing_and_Booting}
+<a name="2___2__安装和启动"></a>
+## 2. 安装和启动
 
 本节介绍如何在独立模式下启动Keycloak服务器，设置初始管理员用户，以及登录Keycloak管理控制台。
 
-### 2.1. 安装分发文件 {#Installing_Distribution_Files}
+<a name="3____2_1__安装分发文件"></a>
+### 2.1. 安装分发文件
 
 下载Keycloak服务器分发文件:
 
@@ -39,7 +42,8 @@ Windows
 > unzip keycloak-6.0.1.zip
 ```
 
-### 2.2. 启动服务器 {#Booting_the_Server}
+<a name="4____2_2__启动服务器"></a>
+### 2.2. 启动服务器
 
 要启动Keycloak服务器，请转到服务器分发的`bin`目录并运行`standalone`启动脚本：
 
@@ -56,7 +60,8 @@ Windows
 > ...\bin\standalone.bat
 ```
 
-### 2.3. 创建管理员帐户 {#Creating_the_Admin_Account}
+<a name="5____2_3__创建管理员帐户"></a>
+### 2.3. 创建管理员帐户
 
 服务器启动后，在web浏览器中打开`http://localhost:8080/auth`。欢迎页面将指示服务器正在运行。
 
@@ -66,7 +71,8 @@ Windows
 
 > 如果使用`localhost`连接，则只能在欢迎页面上创建初始管理员用户。 这是一项安全预防措施。 您可以使用`add-user-keycloak.sh`脚本在命令行创建初始管理员用户。 有关详细信息，请参阅[服务器安装和配置指南](https://www.keycloak.org/docs/6.0/server_installation/)和[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/)。 
 
-### 2.4. 登录管理控制台 {#Logging_in_to_the_Admin_Console}
+<a name="6____2_4__登录管理控制台"></a>
+### 2.4. 登录管理控制台
 
 创建初始管理员帐户后，请使用以下步骤登录管理控制台：
 
@@ -78,15 +84,18 @@ Windows
 
    ![admin console](assets/admin-console.png)
 
-## 3. 创建领域和用户 {#Creating_a_Realm_and_User}
+<a name="7___3__创建领域和用户"></a>
+## 3. 创建领域和用户
 
 在本节中，您将在Keycloak管理控制台中创建一个新领域，并向该领域添加新用户。 您将使用该新用户登录到您的新域并访问所有用户都可以访问的内置用户帐户服务。
 
-### 3.1. 在你开始之前 {#Before_You_Start}
+<a name="8____3_1__在你开始之前"></a>
+### 3.1. 在你开始之前
 
 (https://www.keycloak.org/docs/latest/getting_started/index.html#_install-boot)
 
-### 3.2. 创建一个新领域 {#Creating_a_New_Realm}
+<a name="9____3_2__创建一个新领域"></a>
+### 3.2. 创建一个新领域
 
 要创建新领域，请完成以下步骤：
 
@@ -96,7 +105,8 @@ Windows
 
 创建领域后，将打开主管理控制台页面。 注意，当前的域现在设置为`demo`。 通过单击**Select realm**下拉菜单中的条目，在管理`master`领域和刚刚创建的领域之间切换。
 
-### 3.3. 创建新用户 {#Creating_a_New_User}
+<a name="10____3_3__创建新用户"></a>
+### 3.3. 创建新用户
 
 要在`demo`域中创建新用户，以及该新用户的临时密码，请完成以下步骤：
 
@@ -108,7 +118,8 @@ Windows
 
 > 此密码是临时的，用户需要在首次登录后进行更改。 要创建持久密码，请在单击**Reset Password**之前将**Temporary**开关从**On**翻转到**Off**。
 
-### 3.4. 用户帐户服务 {#User_Account_Service}
+<a name="11____3_4__用户帐户服务"></a>
+### 3.4. 用户帐户服务
 
 1. 创建新用户后，打开用户下拉菜单并选择**Sign Out**，注销管理控制台。
 2. 转到<http://localhost:8080/auth/realms/demo/account>并使用刚创建的用户登录您的`demo`域的用户帐户服务。
@@ -116,7 +127,8 @@ Windows
 
 将打开用户帐户服务页面。 默认情况下，领域中的每个用户都可以访问此帐户服务。 在此页面中，您可以更新配置文件信息并更改或添加其他凭据。 有关此服务的详细信息，请参阅[服务器管理指南](https://www.keycloak.org/docs/6.0/server_admin/)。
 
-## 4. 保护JBoss Servlet应用程序 {#Securing_a_JBoss_Servlet_Application}
+<a name="12___4__保护JBoss_Servlet应用程序"></a>
+## 4. 保护JBoss Servlet应用程序
 
 本节介绍如何通过以下方式在WildFly应用程序服务器上保护Java servlet应用程序：
 
@@ -124,7 +136,8 @@ Windows
 - 在Keycloak管理控制台中创建和注册客户端应用程序
 - 配置要由Keycloak保护的应用程序
 
-### 4.1. 在你开始之前 {#Before_You_Start}
+<a name="13____4_1__在你开始之前"></a>
+### 4.1. 在你开始之前
 
 在确保Java servlet应用程序安全之前，必须完成Keycloak的安装并创建初始管理员用户，如[安装和引导](https://www.keycloak.org/docs/latest/getting_started/index.html#_install-boot)中所示。
 
@@ -149,7 +162,8 @@ Windows
 
 启动Keycloak后，转到<http://localhost:8180/auth/admin/>以访问管理控制台。
 
-### 4.2. 安装客户端适配器 {#Installing_the_Client_Adapter}
+<a name="14____4_2__安装客户端适配器"></a>
+### 4.2. 安装客户端适配器
 
 下载WildFly发行版并将其从压缩文件中提取到计算机上的目录中。
 
@@ -204,7 +218,8 @@ Windows
 > ...\bin\standalone.bat
 ```
 
-### 4.3. 下载，构建和部署应用程序代码{#Downloading_Building_and_Deploying_Application_Code}
+<a name="15____4_3__下载，构建和部署应用程序代码"></a>
+### 4.3. 下载，构建和部署应用程序代码
 
 您必须在您的机器上安装以下软件，并在您的PATH路径中可用，然后才能继续:
 
@@ -232,7 +247,8 @@ $ mvn clean wildfly:deploy
 
 > 如果单击**Login**，浏览器将弹出BASIC auth登录对话框。 但是，应用程序尚未受到任何身份提供程序的保护，因此您在对话框中输入的任何内容都将导致服务器发回`Forbidden`消息。 您可以通过查找应用程序的`web.xml`文件中的设置来确认应用程序当前是通过`BASIC`authentication保护的。
 
-### 4.4. 创建和注册客户端 {#Creating_and_Registering_the_Client}
+<a name="16____4_4__创建和注册客户端"></a>
+### 4.4. 创建和注册客户端
 
 要在Keycloak管理控制台中定义和注册客户端，请完成以下步骤：
 
@@ -262,7 +278,8 @@ $ mvn clean wildfly:deploy
 
    ![client install selected](assets/client-install-selected.png)
 
-### 4.5. 配置子系统 {#Configuring_the_Subsystem}
+<a name="17____4_5__配置子系统"></a>
+### 4.5. 配置子系统
 
 要配置部署应用程序的WildFly实例，以便Keycloak保护此应用程序，请完成以下步骤。
 

@@ -1,9 +1,11 @@
 # Server Administration Guide(服务器管理指南)
 
-## 1. 概述 {#Overview}
+<a name="1___1__概述"></a>
+## 1. 概述
 Keycloak是针对Web应用程序和RESTful Web服务的单点登录解决方案。 Keycloak的目标是使安全性变得简单，以便应用程序开发人员可以轻松保护他们在组织中部署的应用程序和服务。开发人员通常必须为自己编写的安全功能是开箱即用的，并且可以根据组织的个性化需求轻松定制。 Keycloak为登录，注册，管理和帐户管理提供可定制的用户界面。您还可以使用Keycloak作为集成平台将其挂钩到现有的LDAP和Active Directory服务器中。您还可以将身份验证委派给第三方身份提供商，如Facebook和Google+。
 
-### 1.1. 特征 {#Features}
+<a name="2____1_1__特征"></a>
+### 1.1. 特征
 
 - 用于浏览器应用程序的单点登录和单点登录。
 - OpenID Connect支持。
@@ -26,11 +28,13 @@ Keycloak是针对Web应用程序和RESTful Web服务的单点登录解决方案�
 - 适用于JavaScript应用程序，WildFly，JBoss EAP，Fuse，Tomcat，Jetty，Spring等的客户端适配器
 - 支持具有OpenID Connect资源提供程序库或SAML 2.0服务提供程序库的任何平台/语言。
 
-### 1.2. 安全是如何工作的? {#How_Does_Security_Work_}
+<a name="3____1_2__安全是如何工作的_"></a>
+### 1.2. 安全是如何工作的?
 
 Keycloak是您在网络上管理的独立服务器。应用程序配置为指向此服务器并受其保护。 Keycloak使用开放协议标准，如[OpenID Connect](https://openid.net/connect/) 或 [SAML 2.0](http://saml.xml.org/saml-specifications)来保护您的应用程序。浏览器应用程序将用户的浏览器从应用程序重定向到Keycloak身份验证服务器，并在其中输入凭据。这很重要，因为用户与应用程序完全隔离，应用程序永远不会看到用户的凭据。相反，应用程序会获得一个加密签名的身份令牌或断言。这些令牌可以包含用户名，地址，电子邮件和其他个人资料数据等身份信息。他们还可以保存权限数据，以便应用程序可以做出授权决策。这些令牌还可用于对基于REST的服务进行安全调用。
 
-### 1.3. 核心概念和术语 {#Core_Concepts_and_Terms}
+<a name="4____1_3__核心概念和术语"></a>
+### 1.3. 核心概念和术语
 
 在尝试使用Keycloak保护Web应用程序和REST服务之前，您应该了解一些关键概念和术语。
 
@@ -150,7 +154,8 @@ Keycloak是您在网络上管理的独立服务器。应用程序配置为指向
 
   Keycloak提供的每个屏幕都有一个主题支持。主题定义HTML模板和样式表，您可以根据需要覆盖它们。
 
-## 2. 服务器初始化 {#Server_Initialization}
+<a name="5___2__服务器初始化"></a>
+## 2. 服务器初始化
 
 执行[服务器安装和配置指南](https://www.keycloak.org/docs/6.0/server_installation/)中定义的所有安装和配置任务后，您需要创建一个初始管理员帐户。 Keycloak没有开箱即用的任何已配置的管理员帐户。此帐户将允许您创建一个可以登录*master* realm管理控制台的管理员，以便您可以开始创建领域，用户并注册要由Keycloak保护的应用程序。
 
@@ -196,7 +201,8 @@ Windows
 > ...\bin\add-user-keycloak.bat --sc domain/servers/server-one/configuration -r master -u <username> -p <password>
 ```
 
-## 3. 管理控制台 {#Admin_Console}
+<a name="6___3__管理控制台"></a>
+## 3. 管理控制台
 
 您的大部分管理任务将通过Keycloak管理控制台完成。 您可以直接转到`http://localhost:8080/auth/admin/`的控制台URL
 
@@ -212,7 +218,8 @@ Windows
 
 左下拉菜单允许您选择要管理的领域或创建新领域。 右下拉菜单允许您查看用户帐户或注销。 如果您对管理控制台中的某个功能，按钮或字段感到好奇，只需将鼠标悬停在任何问号`？`图标上。 这将弹出工具提示文本以描述您感兴趣的控制台区域。上图显示了工具提示的实际操作。
 
-### 3.1. Master 领域 {#The_Master_Realm}
+<a name="7____3_1__Master_领域"></a>
+### 3.1. Master 领域
 
 当你第一次启动Keycloak时，Keycloak会为你创建一个预先定义的领域。 这个初始领域是*master*领域。 它是领域等级中的最高级别。 此领域中的管理员帐户具有查看和管理在服务器实例上创建的任何其他领域的权限。 定义初始管理员帐户时，可以在*master*域中创建帐户。 您最初登录管理控制台也将通过*master*领域。
 
@@ -220,7 +227,8 @@ Windows
 
 可以禁用*master*领域，并在您创建的每个新领域中定义管理员帐户。 每个领域都有自己的专用管理控制台，您可以使用本地帐户登录。 本指南在[Dedicated Realm Admin Consoles](https://www.keycloak.org/docs/latest/server_admin/index.html#_per_realm_admin_permissions)章节中详细介绍了这一点。
 
-### 3.2. 创造一个新领域 {#Create_a_New_Realm}
+<a name="8____3_2__创造一个新领域"></a>
+### 3.2. 创造一个新领域
 
 创建一个新领域非常简单。 将鼠标悬停在标题为`Master`的左上角下拉菜单中。 如果您已登录主域，则此下拉菜单会列出所有已创建的域。 此下拉菜单的最后一个条目始终是`Add Realm`。 单击此按钮可添加领域。
 
@@ -236,7 +244,8 @@ Windows
 
 创建领域后，您将返回主管理控制台页面。 现在的领域现在将设置为您刚刚创建的领域。 您可以通过在左上角的下拉菜单中执行鼠标操作来切换管理不同领域。
 
-### 3.3. SSL模式 {#SSL_Mode}
+<a name="9____3_3__SSL模式"></a>
+### 3.3. SSL模式
 
 每个领域都有一个与之关联的SSL模式。 SSL模式定义了与域进行交互的SSL/HTTPS要求。 与领域交互的浏览器和应用程序必须遵守SSL模式定义的SSL/HTTPS要求，否则将不允许它们与服务器交互。
 
@@ -262,7 +271,8 @@ Windows
 
   Keycloak要求所有IP地址都使用SSL。
 
-### 3.4. 清除服务器缓存 {#Clearing_Server_Caches}
+<a name="10____3_4__清除服务器缓存"></a>
+### 3.4. 清除服务器缓存
 
 Keycloak将在JVM的限制范围内和/或为其配置的限制内容缓存内存中的所有内容。 如果Keycloak数据库被服务器的REST API或管理控制台范围之外的第三方（即DBA）修改，则内存缓存的某些部分可能是陈旧的。 您可以通过转到`Realm Settings`左侧菜单项，从管理控制台清除外部公钥（外部客户端或身份提供者的公钥，Keycloak通常用于验证特定外部实体的签名）的域缓存，用户缓存或缓存 菜单项和`Cache`选项卡。
 
@@ -272,7 +282,8 @@ Keycloak将在JVM的限制范围内和/或为其配置的限制内容缓存内�
 
 只需单击要清除的缓存上的`clear`按钮即可。
 
-### 3.5. 电子邮件设置 {#Email_Settings}
+<a name="11____3_5__电子邮件设置"></a>
+### 3.5. 电子邮件设置
 
 Keycloak向用户发送电子邮件以验证他们的电子邮件地址，忘记密码时，或者管理员需要接收有关服务器事件的通知。 要启用Keycloak发送电子邮件，您需要向Keycloak提供SMTP服务器设置。 这是根据领域配置的。 转到`Realm Settings`左侧菜单项，然后单击`Email`选项卡。
 
@@ -312,7 +323,8 @@ Keycloak向用户发送电子邮件以验证他们的电子邮件地址，忘记
 
 如果您的SMTP服务器需要身份验证，请单击 `Enable Authentication`并插入`Username`和`Password`。
 
-### 3.6. 主题与国际化 {#Themes_and_Internationalization}
+<a name="12____3_6__主题与国际化"></a>
+### 3.6. 主题与国际化
 
 主题允许您更改Keycloak中任何UI的外观。 每个领域都配置了主题。 要更改主题，请转到`Realm Settings`左侧菜单项，然后单击`Themes`选项卡。
 
@@ -340,14 +352,17 @@ Themes 选项卡
 
 [服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/) 介绍了如何创建新主题或修改现有主题。
 
-#### 3.6.1. 国际化 {#Internationalization}
+<a name="13_____3_6_1__国际化"></a>
+#### 3.6.1. 国际化
 每个UI屏幕都在Keycloak中国际化。 默认语言是英语，但是如果打开`Theme`选项卡上的`Internationalization`开关，您可以选择要支持的语言环境以及默认语言环境。 用户下次登录时，他们将能够在登录页面上选择一种语言，用于登录屏幕，用户帐户管理UI和管理控制台。 [服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)介绍了如何提供其他语言。
 
-## 4. 用户管理 {#User_Management}
+<a name="14___4__用户管理"></a>
+## 4. 用户管理
 
 本节介绍管理用户的管理功能。
 
-### 4.1. 搜索用户 {#Searching_For_Users}
+<a name="15____4_1__搜索用户"></a>
+### 4.1. 搜索用户
 
 如果您需要管理特定用户，请单击左侧菜单栏中的`Users`。
 
@@ -362,7 +377,8 @@ Users
 
 有关详细信息，请参阅[用户联合](https://www.keycloak.org/docs/latest/server_admin/index.html#_user-storage-federation)。
 
-### 4.2. 创建新用户 {#Creating_New_Users}
+<a name="16____4_2__创建新用户"></a>
+### 4.2. 创建新用户
 
 要创建用户，请单击左侧菜单栏中的`Users`。
 
@@ -378,7 +394,8 @@ Add User
 
 唯一必填字段是`Username`。 点击保存。 这将带您进入新用户的管理页面。
 
-### 4.3. 删除用户 {#Deleting_Users}
+<a name="17____4_3__删除用户"></a>
+### 4.3. 删除用户
 
 要删除用户，请单击左侧菜单栏中的`Users`。
 
@@ -394,7 +411,8 @@ Add User
 
 在用户列表中，单击要删除的用户旁边的`Delete`。 系统将要求您确认是否要删除此用户。 单击确认框中的`Delete`进行确认。
 
-### 4.4. 用户属性 {#User_Attributes}
+<a name="18____4_4__用户属性"></a>
+### 4.4. 用户属性
 
 除了名称和电子邮件等基本用户元数据之外，您还可以存储任意用户属性。 选择要管理的用户，然后单击`Attributes`选项卡。
 
@@ -404,7 +422,8 @@ Users
 
 在空字段中输入属性名称和值，然后单击旁边的`Add`按钮以添加新字段。 请注意，在您点击`Save`按钮之前，您在此页面上所做的任何编辑都不会被存储。
 
-### 4.5. 用户凭据 {#User_Credentials}
+<a name="19____4_5__用户凭据"></a>
+### 4.5. 用户凭据
 
 当您查看用户时，如果您转到`Credentials`选项卡，则可以管理用户的凭据。
 
@@ -412,17 +431,20 @@ Credential Management
 
 ![user credentials](assets/user-credentials.png)
 
-#### 4.5.1. 更改密码 {#Changing_Passwords}
+<a name="20_____4_5_1__更改密码"></a>
+#### 4.5.1. 更改密码
 要更改用户密码，请键入新密码。 在您输入所有内容后，将显示`Reset Password`按钮。如果`Temporary`开关打开，则此新密码只能使用一次，并且用户将被要求更改密码 登录。
 
 或者，如果您设置了[email](https://www.keycloak.org/docs/latest/server_admin/index.html#_email)，则可以向用户发送电子邮件，要求他们重置密码。 从`Reset Actions`列表框中选择`Update Password`，然后单击`Send Email`。 您可以选择设置电子邮件链接的有效性，该链接默认为领域设置中`Tokens`选项卡中预设的一个。 发送的电子邮件包含一个链接，用于将用户带到更新密码屏幕。
 
-#### 4.5.2. 修改 OTPs {#Changing_OTPs}
+<a name="21_____4_5_2__修改_OTPs"></a>
+#### 4.5.2. 修改 OTPs
 您无法在管理控制台中为特定用户配置一次性密码。 这是用户的责任。 如果用户丢失了他们的OTP生成器，你可以在`Credentials`选项卡上为它们禁用OTP。 如果您的领域中的OTP是可选的，则用户必须转到用户帐户管理服务以重新配置新的OTP生成器。 如果需要OTP，则会要求用户在登录时重新配置新的OTP生成器。
 
 与密码一样，您也可以向用户发送电子邮件，要求他们重置OTP生成器。 在`Reset Actions`列表框中选择`Configure OTP`，然后单击`Send Email`按钮。 发送的电子邮件包含一个链接，用于将用户带到OTP设置屏幕。
 
-### 4.6. 必需操作 {#Required_Actions}
+<a name="22____4_6__必需操作"></a>
+### 4.6. 必需操作
 
 必需操作是用户在允许登录之前必须完成的任务。用户必须在执行所需操作之前提供其凭据。 完成所需操作后，用户将不必再次执行操作。 以下是一些内置必需操作类型的说明：
 
@@ -450,7 +472,8 @@ Setting Required Action
 
 在`Required User Actions`列表框中，选择要添加到帐户的所有操作。 如果要删除一个，请单击操作名称旁边的`X`。 还要记得在确定要添加的操作后单击`Save`按钮。
 
-#### 4.6.1. 默认必需操作 {#Default_Required_Actions}
+<a name="23_____4_6_1__默认必需操作"></a>
+#### 4.6.1. 默认必需操作
 您还可以指定在创建新用户时将添加到帐户的必需操作，即通过用户列表屏幕的`Add User`按钮，或通过[用户注册](https://www.keycloak.org/docs/latest/server_admin/index.html#_user-registration) 登录页面上的链接。 要指定默认的必需操作，请转到`Authentication`左侧菜单项，然后单击`Required Actions`选项卡。
 
 Default Required Actions
@@ -459,10 +482,12 @@ Default Required Actions
 
 只需单击全新用户登录时要执行的所需操作的`Default Action`列中的复选框即可。
 
-#### 4.6.2. 条款和条件 {#Terms_and_Conditions}
+<a name="24_____4_6_2__条款和条件"></a>
+#### 4.6.2. 条款和条件
 许多组织都要求当新用户第一次登录时，他们需要同意网站的条款和条件。 Keycloak将此功能实现为必需的操作，但它需要一些配置。 首先，您必须转到前面描述的`Required Actions`选项卡并启用`Terms and Conditions`操作。 您还必须编辑*base* login主题中的*terms.ftl*文件。 有关扩展和创建主题的更多信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/) 。
 
-### 4.7. 模拟 {#Impersonation}
+<a name="25____4_7__模拟"></a>
+### 4.7. 模拟
 
 管理员冒充用户通常很有用。 例如，用户可能在您的某个应用程序中遇到错误，并且管理员可能想要冒充用户以查看他们是否可以复制问题。 具有适当权限的管理员可以模拟用户。 管理员可以通过两个位置发起模拟。 第一个是在`Users`列表选项卡上。
 
@@ -484,7 +509,8 @@ User Details
 
 具有领域`impersonation`角色的任何用户都可以模拟用户。 有关分配管理权限的更多详细信息，请参阅[管理控制台访问控制](https://www.keycloak.org/docs/latest/server_admin/index.html#_admin_permissions)一章。
 
-### 4.8. 用户注册 {#User_Registration}
+<a name="26____4_8__用户注册"></a>
+### 4.8. 用户注册
 
 您可以启用Keycloak以允许用户自行注册。 启用后，登录页面会有一个注册链接，用户可以单击该链接以创建新帐户。
 
@@ -510,7 +536,8 @@ Registration Form
 
 您可以更改注册表单的外观，以及删除或添加必须输入的其他字段。 有关详细信息，请参阅[Server Developer Guide](https://www.keycloak.org/docs/6.0/server_development/)。
 
-#### 4.8.1. reCAPTCHA 支持 {#reCAPTCHA_Support}
+<a name="27_____4_8_1__reCAPTCHA_支持"></a>
+#### 4.8.1. reCAPTCHA 支持
 
 为了防止机器人注册，Keycloak与Google reCAPTCHA集成。 要启用此功能，您需要先访问[Google Recaptcha网站](https://developers.google.com/recaptcha/)并创建API密钥，以便获取reCAPTCHA网站密钥和密钥。 （仅供参考，localhost默认工作，因此您不必指定域）。
 
@@ -534,11 +561,13 @@ Authorizing Iframes
 
 完成此操作后，reCAPTCHA应显示在您的注册页面上。 您可能希望在登录主题中编辑*register.ftl*，以便使用reCAPTCHA按钮的放置和样式进行清理。 有关扩展和创建主题的更多信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-## 5. 登录页面设置 {#Login_Page_Settings}
+<a name="28___5__登录页面设置"></a>
+## 5. 登录页面设置
 
 如果您需要这些功能，可以启用几个很好的内置登录页面功能。
 
-### 5.1. 忘记密码 {#Forgot_Password}
+<a name="29____5_1__忘记密码"></a>
+### 5.1. 忘记密码
 
 如果您启用它，用户可以在忘记密码或丢失OTP生成器时重置其凭据。 转到`Realm Settings`左侧菜单项，然后单击`Login`选项卡。 打开`Forgot Password`开关。
 
@@ -568,7 +597,8 @@ Reset Credentials Flow
 
 如果你不想重置OTP，那么只需选择`Reset OTP`右侧的`disabled`单选按钮。
 
-### 5.2. 记住账号 {#Remember_Me}
+<a name="30____5_2__记住账号"></a>
+### 5.2. 记住账号
 
 如果登录用户关闭了他们的浏览器，他们的会话将被销毁，他们将不得不再次登录。 您可以进行设置，以便在用户选中*remember me*复选框时，即使浏览器已关闭，它们仍将保持登录状态。 这基本上将登录cookie从仅会话cookie转换为持久性cookie。
 
@@ -584,11 +614,13 @@ Remember Me
 
 ![remember me](assets/remember-me.png)
 
-## 6. 认证 {#Authentication}
+<a name="31___6__认证"></a>
+## 6. 认证
 
 在为领域配置身份验证时，您应该注意一些功能。 许多组织都有严格的密码和OTP策略，您可以通过管理控制台中的设置强制执行这些策略。 您可能希望也可能不希望要求不同的凭据类型进行身份验证。 您可能希望为用户提供通过Kerberos登录或禁用或启用各种内置凭据类型的选项。 本章涵盖所有这些主题。
 
-### 6.1. 密码策略 {#Password_Policies}
+<a name="32____6_1__密码策略"></a>
+### 6.1. 密码策略
 
 创建的每个新领域都没有与之关联的密码策略。 用户可以根据需要拥有尽可能短，复杂，不安全的密码。 简单的设置适用于开发或学习Keycloak，但在生产环境中是不可接受的。 Keycloak拥有一组丰富的密码策略，您可以通过管理控制台启用这些策略。
 
@@ -606,7 +638,8 @@ Failed Password Policy
 
 如果更新了密码策略，则必须为每个用户设置“更新密码”操作。 自动触发器被安排为未来的增强功能。
 
-#### 6.1.1. 密码策略类型 {#Password_Policy_Types}
+<a name="33_____6_1_1__密码策略类型"></a>
+#### 6.1.1. 密码策略类型
 以下是每种策略类型的说明：
 
 - HashAlgorithm
@@ -653,7 +686,8 @@ Failed Password Policy
 
   此策略检查给定密码是否包含在黑名单文件中，该文件可能是一个非常大的文件。 密码黑名单是带有Unix行结尾的UTF-8纯文本文件，其中每行代表一个列入黑名单的密码。 必须提供黑名单文件的文件名作为密码策略值，例如`10_million_password_list_top_1000000.txt`。 黑名单文件默认解析为`${jboss.server.data.dir}/password-blacklists/`。 可以通过`keycloak.password.blacklists.path`系统属性或`passwordBlacklist`策略SPI配置的`blacklistsPath`属性来定制此路径。
 
-### 6.2. OTP 策略 {#OTP_Policies}
+<a name="34____6_2__OTP_策略"></a>
+### 6.2. OTP 策略
 
 Keycloak有许多政策可以为FreeOTP或Google身份验证器一次性密码生成器设置。 单击`Authentication`左侧菜单项，然后转到`OTP Policy`选项卡。
 
@@ -663,12 +697,14 @@ OTP Policy
 
 您在此处设置的任何策略都将用于验证一次性密码。 配置OTP时，FreeOTP和Google Authenticator可以扫描在Keycloak所具有的OTP设置页面上生成的QR码。 条形码也是从`OTP Policy`选项卡上配置的信息生成的。
 
-#### 6.2.1. TOTP vs. HOTP {#TOTP_vs__HOTP}
+<a name="35_____6_2_1__TOTP_vs__HOTP"></a>
+#### 6.2.1. TOTP vs. HOTP
 您的OTP生成器有两种不同的算法可供选择。 基于时间（TOTP）和基于计数器（HOTP）。 对于TOTP，您的令牌生成器将散列当前时间和共享密钥。 服务器通过将特定时间窗口内的所有哈希值与提交的值进行比较来验证OTP。 因此，TOTP仅在短时间内（通常为30秒）有效。 对于HOTP，使用共享计数器而不是当前时间。 服务器会在每次成功的OTP登录时递增计数器。 因此，有效的OTP仅在成功登录后才会更改。
 
 TOTP被认为更安全，因为匹配的OTP仅在短时间内有效，而HOTP的OTP可以在不确定的时间内有效。 HOTP更加用户友好，因为用户在时间间隔结束之前不必急于进入他们的OTP。 随着Keycloak实施TOTP的方式，这种区别变得更加模糊。 每次服务器想要递增计数器时，HOTP都需要更新数据库。 当负载很重时，这可能会导致身份验证服务器的性能下降。 因此，为了提供更有效的替代方案，TOTP不记得使用的密码。 这绕过了进行任何数据库更新的需要，但缺点是TOTP可以在有效时间间隔内重复使用。 对于Keycloak的未来版本，计划您能够配置TOTP是否在时间间隔内检查较旧的OTP。
 
-#### 6.2.2. TOTP配置选项 {#TOTP_Configuration_Options}
+<a name="36_____6_2_2__TOTP配置选项"></a>
+#### 6.2.2. TOTP配置选项
 - OTP Hash Algorithm
 
   默认值为SHA1，更安全的选项是SHA256和SHA512。
@@ -685,7 +721,8 @@ TOTP被认为更安全，因为匹配的OTP仅在短时间内有效，而HOTP的
 
   服务器匹配哈希的时间间隔（以秒为单位）。 每次间隔通过时，令牌生成器将生成新的TOTP。
 
-#### 6.2.3. HOTP配置选项 {#HOTP_Configuration_Options}
+<a name="37_____6_2_3__HOTP配置选项"></a>
+#### 6.2.3. HOTP配置选项
 - OTP Hash Algorithm
 
   默认值为SHA1，更安全的选项是SHA256和SHA512。
@@ -702,7 +739,8 @@ TOTP被认为更安全，因为匹配的OTP仅在短时间内有效，而HOTP的
 
   初始计数器的价值是多少？
 
-### 6.3. 身份验证流程 {#Authentication_Flows}
+<a name="38____6_3__身份验证流程"></a>
+### 6.3. 身份验证流程
 
 *身份验证流程*是用于登录，注册和其他Keycloak工作流程期间必须执行的所有身份验证，屏幕和操作的容器。 如果您转到管理控制台`Authentication`左侧菜单项并转到`Flows`选项卡，您可以查看系统中所有已定义的流以及每个流所需的操作和检查。 本节将介绍浏览器登录流程。 在左侧下拉列表中选择`browser`进入如下界面：
 
@@ -738,7 +776,8 @@ Browser Flow
 4. Forms子流中的第一个执行是用户名密码表单。 此身份验证类型呈现用户名和密码页面。 它标记为*required*，因此用户必须输入有效的用户名和密码。
 5. 下一次执行是OTP表格。 这标记为*optional*。 如果用户已设置OTP，则此身份验证类型必须运行并成功。 如果用户未设置OTP，则忽略此身份验证类型。
 
-### 6.4. 执行 {#Executions}
+<a name="39____6_4__执行"></a>
+### 6.4. 执行
 可以使用执行
 
 脚本身份验证器
@@ -805,7 +844,8 @@ function authenticate(context) {
 }
 ```
 
-### 6.5. Kerberos {#Kerberos}
+<a name="40____6_5__Kerberos"></a>
+### 6.5. Kerberos
 
 Keycloak支持通过SPNEGO协议使用Kerberos票证登录。 SPNEGO（简单和受保护的GSSAPI协商机制）用于在登录其会话后对用户进行身份验证后通过Web浏览器进行透明身份验证。 对于非Web案例或在登录期间无法使用票证时，Keycloak还支持使用Kerberos用户名/密码登录。
 
@@ -825,7 +865,8 @@ Web身份验证的典型用例如下：
 2. Keycloak服务器的设置和配置
 3. 客户端计算机的设置和配置
 
-#### 6.5.1. Kerberos服务器的设置 {#Setup_of_Kerberos_server}
+<a name="41_____6_5_1__Kerberos服务器的设置"></a>
+#### 6.5.1. Kerberos服务器的设置
 这取决于平台。 确切的步骤取决于您将要使用的操作系统和Kerberos供应商。 有关如何设置和配置Kerberos服务器的详细信息，请参阅Windows Active Directory，MIT Kerberos和操作系统文档。
 
 至少你需要：
@@ -849,7 +890,8 @@ ktadd -k /tmp/http.keytab HTTP/www.mydomain.org@MYDOMAIN.ORG
 
 需要在运行Keycloak服务器的主机上访问Keytab文件`/tmp/http.keytab`。
 
-#### 6.5.2. Keycloak服务器的设置和配置 {#Setup_and_configuration_of_Keycloak_server}
+<a name="42_____6_5_2__Keycloak服务器的设置和配置"></a>
+#### 6.5.2. Keycloak服务器的设置和配置
 您需要在计算机上安装kerberos客户端。 这也取决于平台。 如果您使用的是Fedora，Ubuntu或RHEL，则可以安装包含Kerberos客户端和其他几个实用程序的`freeipa-client`软件包。 配置kerberos客户端（在Linux上，它在文件`/etc/krb5.conf`中）。 您需要放置Kerberos领域，并至少配置您的服务器将运行的HTTP域。 对于示例领域MYDOMAIN.ORG，您可以像这样配置`domain_realm`部分：
 
 ```properties
@@ -860,7 +902,8 @@ ktadd -k /tmp/http.keytab HTTP/www.mydomain.org@MYDOMAIN.ORG
 
 接下来，您需要使用HTTP主体导出keytab文件，并确保该文件可供运行Keycloak服务器的进程访问。 对于生产来说，如果它只是通过这个过程而不是其他人可读，那么它是理想的。 对于上面的MIT Kerberos示例，我们已经将keytab导出到`/tmp/http.keytab`。 如果您的KDC和Keycloak在同一主机上运行，则您已经可以使用该文件。
 
-##### 启用SPNEGO处理 {#Enable_SPNEGO_Processing}
+<a name="43______启用SPNEGO处理"></a>
+##### 启用SPNEGO处理
 Keycloak默认情况下没有打开SPNEGO协议支持。 因此，您必须转到[浏览器流程](https://www.keycloak.org/docs/latest/server_admin/index.html#_authentication-flows) 并启用`Kerberos`。
 
 Browser Flow
@@ -869,7 +912,8 @@ Browser Flow
 
 将`Kerberos`要求从*disabled*切换到*alternative*或*required*。 *Alternative *基本上意味着Kerberos是可选的。 如果用户的浏览器尚未配置为使用SPNEGO/Kerberos，则Keycloak将回退到常规登录屏幕。 如果将需求设置为*required*，则所有用户必须为其浏览器启用Kerberos。
 
-##### 配置Kerberos用户存储联合提供程序 {#Configure_Kerberos_User_Storage_Federation_Provider}
+<a name="44______配置Kerberos用户存储联合提供程序"></a>
+##### 配置Kerberos用户存储联合提供程序
 现在，在身份验证服务器上打开了SPNEGO协议，您需要配置Keycloak如何解释Kerberos票证。 这是通过[用户存储联合](https://www.keycloak.org/docs/latest/server_admin/index.html#_user-storage-federation)完成的。 我们有2个不同的联合提供程序，支持Kerberos身份验证。
 
 如果要使用LDAP服务器支持的Kerberos进行身份验证，则必须先配置[LDAP Federation Provider](https://www.keycloak.org/docs/latest/server_admin/index.html#_ldap)。 如果查看LDAP提供程序的配置页面，您将看到`Kerberos Integration`部分。
@@ -888,21 +932,26 @@ Kerberos User Storage Provider
 
 此提供程序解析Kerberos票证以获取简单的主体信息，并对本地Keycloak数据库进行少量导入。 不提供姓名、姓氏和电子邮件等用户概要信息。
 
-#### 6.5.3. 客户端计算机的设置和配置 {#Setup_and_configuration_of_client_machines}
+<a name="45_____6_5_3__客户端计算机的设置和配置"></a>
+#### 6.5.3. 客户端计算机的设置和配置
 客户端需要安装kerberos客户端并如上所述设置krb5.conf。 此外，他们还需要在浏览器中启用SPNEGO登录支持。 如果您使用的是该浏览器，请参阅[为Kerberos配置Firefox](http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html)。 必须在`network.negotiate-auth.trusted-uris`配置选项中允许URI` .mydomain.org`。
 
 在Windows域中，客户端通常不需要配置任何特殊内容，因为IE已经能够参与Windows域的SPNEGO身份验证。
 
-#### 6.5.4. 示例设置 {#Example_setups}
+<a name="46_____6_5_4__示例设置"></a>
+#### 6.5.4. 示例设置
 为了便于使用Kerberos进行测试，我们提供了一些示例设置进行测试。
 
-##### Keycloak and FreeIPA docker 镜像 {#Keycloak_and_FreeIPA_docker_image}
+<a name="47______Keycloak_and_FreeIPA_docker_镜像"></a>
+##### Keycloak and FreeIPA docker 镜像
 安装[docker](https://www.docker.com/)后，可以运行装有FreeIPA服务器的docker镜像。 FreeIPA提供集成的安全解决方案，包括MIT Kerberos和389 LDAP服务器等。 该镜像还提供了使用LDAP联合提供程序配置的Keycloak服务器，并针对FreeIPA服务器启用了SPNEGO/Kerberos身份验证。 详见[此处](https://github.com/mposolda/keycloak-freeipa-docker/blob/master/README.md)。
 
-##### ApacheDS测试Kerberos服务器 {#ApacheDS_testing_Kerberos_server}
+<a name="48______ApacheDS测试Kerberos服务器"></a>
+##### ApacheDS测试Kerberos服务器
 对于快速测试和单元测试，我们使用非常简单的[ApacheDS](http://directory.apache.org/apacheds/) Kerberos服务器。 您需要从源代码构建Keycloak，然后使用我们的测试套件中的maven-exec-plugin运行Kerberos服务器。 详见[此处](https://github.com/keycloak/keycloak/blob/master/docs/tests.md#kerberos-server) 。
 
-#### 6.5.5. 凭证授权 {#Credential_Delegation}
+<a name="49_____6_5_5__凭证授权"></a>
+#### 6.5.5. 凭证授权
 Kerberos 5支持凭证委派的概念。 在这种情况下，您的应用程序可能希望访问Kerberos票证，以便它们可以重新使用它与Kerberos保护的其他服务进行交互。 由于SPNEGO协议是在Keycloak服务器中处理的，因此您必须在OpenID Connect令牌声明或从Keycloak服务器传输到您的应用程序的SAML断言属性中将GSS凭据传播到您的应用程序。 要将此声明插入到令牌或断言中，每个应用程序都需要启用名为`gss delegation credential`的内置协议映射器。 这在应用程序客户端页面的`Mappers`选项卡中启用。 有关详细信息，请参阅[协议映射器](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers)一章。
 
 应用程序需要对从Keycloak收到的声明进行反序列化，然后才能使用它对其他服务进行GSS调用。 将凭证从访问令牌反序列化到GSSCredential对象后，需要创建GSSContext，并将此凭据传递给方法`GSSManager.createContext`，例如：
@@ -930,7 +979,8 @@ GSSContext context = gssManager.createContext(serviceName, krb5Oid,
 
 > 凭据授权具有一些安全隐患，因此只有在您真正需要时才使用它。 强烈建议将它与HTTPS一起使用。 有关详细信息，请参阅[本文](http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html)。
 
-#### 6.5.6. 跨领域的信任 {#Cross_realm_trust}
+<a name="50_____6_5_6__跨领域的信任"></a>
+#### 6.5.6. 跨领域的信任
 在Kerberos V5协议中，`realm`是Kerberos数据库（通常是LDAP服务器）中定义的一组Kerberos主体。 Kerberos协议具有跨领域信任的概念。 例如，如果有2个kerberos域A和B，则跨域信任将允许来自域A的用户访问域B的资源（服务）。这意味着域B信任域A.
 
 Kerberos cross-realm trust
@@ -949,14 +999,16 @@ Keycloak服务器支持跨领域信任。 要实现这一目标，有几件事�
 
 > 对于Kerberos用户存储提供程序，建议在kerberos领域中没有冲突用户。 如果存在冲突用户，则它们将映射到相同的Keycloak用户。 这也是我们希望在未来版本中改进的东西，并提供从Kerberos主体到Keycloak用户名的一些更灵活的映射。
 
-#### 6.5.7. 故障排除 {#Troubleshooting}
+<a name="51_____6_5_7__故障排除"></a>
+#### 6.5.7. 故障排除
 如果您遇到问题，我们建议您启用其他日志记录来调试问题：
 
 - 在管理控制台中为Kerberos或LDAP联合提供程序启用`Debug`标志
 - 在`standalone/configuration/standalone.xml`的日志记录部分中为类别`org.keycloak`启用TRACE日志记录，以获得更多信息`standalone/log/server.log`
 - 添加系统属性`-Dsun.security.krb5.debug=true` 和 `-Dsun.security.spnego.debug=true`
 
-### 6.6. X.509客户端证书用户身份验证 {#X_509_Client_Certificate_User_Authentication}
+<a name="52____6_6__X_509客户端证书用户身份验证"></a>
+### 6.6. X.509客户端证书用户身份验证
 
 如果服务器配置为进行相互SSL身份验证，Keycloak支持使用X.509客户端证书登录。
 
@@ -976,7 +1028,8 @@ Keycloak服务器支持跨领域信任。 要实现这一目标，有几件事�
   - 在浏览器流程中，服务器会提示用户确认身份或忽略身份，而是使用用户名/密码登录
   - 在直接授权流程的情况下，服务器登录用户
 
-#### 6.6.1. 特征 {#Features}
+<a name="53_____6_6_1__特征"></a>
+#### 6.6.1. 特征
 - 支持的证书标识源
 
   使用正则表达式匹配SubjectDNX500主题的电子邮件属性X500来自主题备用名称扩展名的主题电子邮件（RFC822Name通用名称）X500主题备用名称扩展名的主题另一个名称。 这通常是UPN（用户主体名称）X500主题的公共名称attributeMatch IssuerDN使用正则表达式X500颁发者的电子邮件属性X500颁发者的公共名称attributeCertificate序列号
@@ -1001,7 +1054,8 @@ emailAddress=(.*?)(?:,|$)
 
   使用 CRL/Distribution 进行CRLRevocation状态检查的撤销状态检查使用 OCSP/Responder 进行分发PointRevocation状态检查URICertificate KeyUsage validationCertificate ExtendedKeyUsage验证
 
-#### 6.6.2. 启用X.509客户端证书用户身份验证 {#Enable_X_509_Client_Certificate_User_Authentication}
+<a name="54_____6_6_2__启用X_509客户端证书用户身份验证"></a>
+#### 6.6.2. 启用X.509客户端证书用户身份验证
 以下部分介绍如何配置WildFly/Undertow和Keycloak Server以启用X.509客户端证书身份验证。
 
 - 在WildFly中启用相互SSL
@@ -1091,7 +1145,8 @@ emailAddress=(.*?)(?:,|$)
 
   如果设置为`REQUESTED`，服务器将可选择请求客户端证书。 如果没有提供客户端证书，则将该属性设置为`REQUIRED`将使服务器拒绝入站连接。
 
-#### 6.6.3. 将X.509客户端证书身份验证添加到浏览器流 {#Adding_X_509_Client_Certificate_Authentication_to_a_Browser_Flow}
+<a name="55_____6_6_3__将X_509客户端证书身份验证添加到浏览器流"></a>
+#### 6.6.3. 将X.509客户端证书身份验证添加到浏览器流
 - 选择一个领域，单击Authentication链接，选择“Browser”流程
 - 制作内置“Browser”流程的副本。 您可能希望为新流程指定一个独特的名称，即“X.509 Browser”
 - 使用下拉列表，选择复制的流程，然后单击“Add execution”
@@ -1159,7 +1214,8 @@ emailAddress=(.*?)(?:,|$)
 
   如果设置，X.509客户端证书身份验证将不会提示用户确认证书身份，并将在成功身份验证后自动登录用户。
 
-#### 6.6.4. 将X.509客户端证书身份验证添加到直接授权流程 {#Adding_X_509_Client_Certificate_Authentication_to_a_Direct_Grant_Flow}
+<a name="56_____6_6_4__将X_509客户端证书身份验证添加到直接授权流程"></a>
+#### 6.6.4. 将X.509客户端证书身份验证添加到直接授权流程
 - 使用Keycloak管理控制台，单击“Authentication”并选择“Direct Grant”流程，
 - 制作内置“Direct Grant”流程的副本。 您可能想给新流程一个独特的名称，即“X509 Direct Grant”，
 - 删除“Username Validation”和“Password”验证者，
@@ -1176,14 +1232,16 @@ emailAddress=(.*?)(?:,|$)
 
 ![x509 directgrant flow bindings](assets/x509-directgrant-flow-bindings.png)
 
-#### 6.6.5. 客户端证书查找 {#Client_certificate_lookup}
+<a name="57_____6_6_5__客户端证书查找"></a>
+#### 6.6.5. 客户端证书查找
 当HTTP请求直接发送到Keycloak服务器时，WildFly undertow 子系统将建立SSL握手并提取客户端证书。 然后，客户端证书将保存到HTTP请求的属性`javax.servlet.request.X509Certificate`中，如servlet规范中所指定。 然后，Keycloak X509身份验证器将能够从此属性中查找证书。
 
 但是，当Keycloak服务器侦听负载均衡器或反向代理后面的HTTP请求时，它可能是代理服务器，它提取客户端证书并建立相互SSL连接。 反向代理通常将经过身份验证的客户端证书放入基础请求的HTTP标头中，并将其转发到后端Keycloak服务器。 在这种情况下，Keycloak必须能够从HTTP标头而不是HTTP请求的属性中查找X.509证书链，就像Undertow所做的那样。
 
 如果Keycloak位于反向代理之后，通常需要在`KEYCLOAK_HOME/standalone/configuration/standalone.xml`中配置`x509cert-lookup` SPI的备用提供程序。 除了从HTTP头查找证书的`default`提供程序外，我们还有两个额外的内置提供程序：`haproxy`和`apache`，下面将对其进行描述。
 
-##### HAProxy证书查找提供程序 {#HAProxy_certificate_lookup_provider}
+<a name="58______HAProxy证书查找提供程序"></a>
+##### HAProxy证书查找提供程序
 当Keycloak服务器位于HAProxy反向代理后面时，您可以使用此提供程序。 像这样配置服务器：
 
 ```xml
@@ -1203,7 +1261,8 @@ emailAddress=(.*?)(?:,|$)
 
 有关如何配置客户端证书和客户端证书链的HTTP标头及其专有名称的详细信息，请参阅[HAProxy文档](http://www.haproxy.org/#docs)。
 
-##### Apache证书查找提供程序 {#Apache_certificate_lookup_provider}
+<a name="59______Apache证书查找提供程序"></a>
+##### Apache证书查找提供程序
 当Keycloak服务器位于Apache反向代理后面时，您可以使用此提供程序。 像这样配置服务器：
 
 ```xml
@@ -1221,7 +1280,8 @@ emailAddress=(.*?)(?:,|$)
 
 配置与`haproxy`提供程序相同。 请参阅[mod_ssl](https://httpd.apache.org/docs/current/mod/mod_ssl.html)和[mod_headers](https://httpd.apache.org/docs/current/mod/mod_headers.html)上的有关如何配置客户端证书和客户端证书链的HTTP标头及其专有名称的详细信息。
 
-##### Nginx证书查找提供程序 {#Nginx_certificate_lookup_provider}
+<a name="60______Nginx证书查找提供程序"></a>
+##### Nginx证书查找提供程序
 当Keycloak服务器位于Nginx反向代理后面时，您可以使用此提供程序。 像这样配置服务器：
 
 ```xml
@@ -1260,10 +1320,12 @@ emailAddress=(.*?)(?:,|$)
 
 > 必须将trusted-ca-list-for-client-auth.pem中的所有证书添加到 [Keycloak truststore](https://www.keycloak.org/docs/6.0/server_installation/#_truststore)。
 
-##### 其他反向代理实现 {#Other_reverse_proxy_implementations}
+<a name="61______其他反向代理实现"></a>
+##### 其他反向代理实现
 我们没有内置支持其他反向代理实现。 但是，可以使其他反向代理以与`apache`或`haproxy`类似的方式运行，并且可以使用其中一些提供程序。 如果这些都不起作用，您可能需要创建自己的`org.keycloak.services.x509.X509ClientCertificateLookupFactory`和`org.keycloak.services.x509.X509ClientCertificateLookup`提供程序的实现。 有关如何添加自己的提供程序的详细信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-#### 6.6.6. Troubleshooting {#Troubleshooting}
+<a name="62_____6_6_6__Troubleshooting"></a>
+#### 6.6.6. Troubleshooting
 - 转储HTTP标头
 
   如果要查看反向代理发送给Keycloak的内容，只需激活[RequestDumpingHandler](https://mirocupak.com/logging-requests-with-undertow/)并查阅`server.log`文件。
@@ -1316,11 +1378,13 @@ $ curl https://[host][:port]/auth/realms/master/protocol/openid-connect/token \
 
   公钥对中的私钥。 也期望以PEM格式。
 
-## 7. SSO协议 {#SSO_Protocols}
+<a name="63___7__SSO协议"></a>
+## 7. SSO协议
 
 本章简要概述了身份验证协议以及Keycloak身份验证服务器及其保护的应用程序如何与这些协议进行交互。
 
-### 7.1. OpenID 连接 {#OpenID_Connect}
+<a name="64____7_1__OpenID_连接"></a>
+### 7.1. OpenID 连接
 
 [OpenID Connect](https://openid.net/connect/) (OIDC)是一种身份验证协议，是 [OAuth 2.0](https://tools.ietf.org/html/rfc6749)的扩展。 虽然OAuth 2.0只是构建授权协议的框架，但主要是不完整的，OIDC是一种成熟的身份验证和授权协议。 OIDC还大量使用 [Json Web Token](https://jwt.io/) (JWT) 标准集。 这些标准定义了身份令牌JSON格式以及以紧凑和Web友好的方式对数据进行数字签名和加密的方法。
 
@@ -1328,10 +1392,12 @@ $ curl https://[host][:port]/auth/realms/master/protocol/openid-connect/token \
 
 第二种用例是希望获得远程服务访问权限的客户端。 在这种情况下，客户端要求Keycloak获取*access token*，它可以代表用户在其他远程服务上调用。 Keycloak对用户进行身份验证，然后要求用户同意授予访问请求它的客户端的权限。 然后客户端接收*access token*。 此*access token*由领域进行数字签名。 客户端可以使用此*access token*在远程服务上进行REST调用。 REST服务提取*access token*，验证令牌的签名，然后根据令牌内的访问信息决定是否处理请求。
 
-#### 7.1.1. OIDC Auth Flows {#OIDC_Auth_Flows}
+<a name="65_____7_1_1__OIDC_Auth_Flows"></a>
+#### 7.1.1. OIDC Auth Flows
 OIDC有不同的方式让客户端或应用程序对用户进行身份验证并接收*identity*和*access*令牌。 您使用的路径在很大程度上取决于请求访问的应用程序或客户端的类型。 所有这些流程都在OIDC和OAuth 2.0规范中进行了描述，因此这里仅提供简要概述。
 
-##### 授权代码流程 {#Authorization_Code_Flow}
+<a name="66______授权代码流程"></a>
+##### 授权代码流程
 这是一个基于浏览器的协议，我们建议您使用它来验证和授权基于浏览器的应用程序。 它大量使用浏览器重定向来获取*identity*和*access*令牌。 这是一个简短的总结：
 
 1. 浏览器访问应用, 应用程序注意到用户未登录，因此它将浏览器重定向到Keycloak进行身份验证。 应用程序传递回调URL（重定向URL）作为此浏览器重定向中的查询参数，Keycloak将在完成身份验证时使用该重定向。
@@ -1344,20 +1410,24 @@ OIDC有不同的方式让客户端或应用程序对用户进行身份验证并�
 
 Keycloak还支持可选的[代码交换证明密钥](https://tools.ietf.org/html/rfc7636)规范。
 
-##### 隐式流 {#Implicit_Flow}
+<a name="67______隐式流"></a>
+##### 隐式流
 这是一种基于浏览器的协议，类似于授权代码流，除了涉及的请求较少且没有刷新令牌。 我们不建议使用此流程，因为由于重定向URI（见下文）传递令牌，因此在浏览器历史记录中可能会泄漏*access*令牌。 此外，由于此流程不向客户端提供刷新令牌，因此访问令牌必须是长期存在的，或者用户在过期时必须重新进行身份验证。 支持此流程，因为它符合OIDC和OAuth 2.0规范。 以下是协议的简短摘要：
 
 1. 浏览器访问应用 应用程序注意到用户未登录，因此它将浏览器重定向到Keycloak进行身份验证。 应用程序传递回调URL（重定向URL）作为此浏览器重定向中的查询参数，Keycloak将在完成身份验证时使用该重定向。
 2. Keycloak对用户进行身份验证并创建*identity*和*access*令牌。 Keycloak使用前面提供的回调URL重定向回应用程序，并在回调URL中另外添加*identity*和*access* tokens作为查询参数。
 3. 应用程序从回调URL中提取*identity*和*access*标记。
 
-##### 资源所有者密码凭据授予 (直接访问授予) {#Resource_Owner_Password_Credentials_Grant__Direct_Access_Grants_}
+<a name="68______资源所有者密码凭据授予__直接访问授予_"></a>
+##### 资源所有者密码凭据授予 (直接访问授予)
 这在管理控制台中称为*Direct Access Grants*。 这是由希望代表用户获取令牌的REST客户端使用的。 它是一个HTTP POST请求，包含用户的凭据以及客户端的ID和客户端的秘密（如果它是机密客户端）。 用户的凭据在表单参数内发送。 HTTP响应包含*identity*，*access*和*refresh* tokens。
 
-##### 客户凭证授权 {#Client_Credentials_Grant}
+<a name="69______客户凭证授权"></a>
+##### 客户凭证授权
 REST客户端也使用它，但不是获取代表外部用户工作的令牌，而是根据与客户端关联的服务帐户的元数据和权限创建令牌。 更多信息和示例在[服务帐户](https://www.keycloak.org/docs/latest/server_admin/index.html#_service_accounts)章节中。
 
-#### 7.1.2. Keycloak Server OIDC URI端点 {#Keycloak_Server_OIDC_URI_Endpoints}
+<a name="70_____7_1_2__Keycloak_Server_OIDC_URI端点"></a>
+#### 7.1.2. Keycloak Server OIDC URI端点
 这是Keycloak发布的OIDC端点列表。 如果您使用非Keycloak客户端适配器与OIDC与auth服务器通信，这些URL非常有用。 这些都是相对URL，URL的根是HTTP(S)协议，主机名，通常以*/auth*为前缀的路径：即`https://localhost:8080/auth`
 
 - `/realms/{realm-name}/protocol/openid-connect/token`
@@ -1378,7 +1448,8 @@ REST客户端也使用它，但不是获取代表外部用户工作的令牌，�
 
 在所有这些中，将*{realm-name}*替换为领域的名称。
 
-### 7.2. SAML {#SAML}
+<a name="71____7_2__SAML"></a>
+### 7.2. SAML
 
 [SAML 2.0](http://saml.xml.org/saml-specifications) 是与OIDC类似的规范，但是更老，更成熟。 它的根源在于SOAP和过多的WS-*规范，所以它往往比OIDC更冗长。 SAML 2.0主要是一种身份验证协议，通过在身份验证服务器和应用程序之间交换XML文档来工作。 XML签名和加密用于验证请求和响应。
 
@@ -1386,10 +1457,12 @@ REST客户端也使用它，但不是获取代表外部用户工作的令牌，�
 
 第二种用例是希望获得远程服务访问权限的客户端。 在这种情况下，客户端要求Keycloak获取一个SAML断言，它可以代表用户在其他远程服务上调用它。
 
-#### 7.2.1.SAML绑定 {#SAML_Bindings}
+<a name="72_____7_2_1_SAML绑定"></a>
+#### 7.2.1.SAML绑定
 SAML定义了在执行身份验证协议时交换XML文档的几种不同方法。 *Redirect*和*Post*绑定涵盖基于浏览器的应用程序。 *ECP*绑定涵盖REST调用。 还有其他绑定类型，但Keycloak只支持这三种。
 
-##### 重定向绑定 {#Redirect_Binding}
+<a name="73______重定向绑定"></a>
+##### 重定向绑定
 *Redirect* 绑定 使用一系列浏览器重定向URI来交换信息。 这是它如何工作的粗略概述。
 
 1. 用户访问应用程序，应用程序发现用户未经过身份验证。 它生成XML身份验证请求文档，并将其编码为URI中的查询参数，该URI用于重定向到Keycloak服务器。 根据您的设置，应用程序还可以对此XML文档进行数字签名，并将此签名作为查询参数填充到Keycloak的重定向URI中。 此签名用于验证发送此请求的客户端。
@@ -1398,15 +1471,18 @@ SAML定义了在执行身份验证协议时交换XML文档的几种不同方法�
 4. 然后将XML身份验证响应文档编码为重定向URI中的查询参数，该重定向URI将浏览器带回应用程序。 数字签名也包括在查询参数中。
 5. 应用程序接收重定向URI并提取XML文档并验证领域的签名以确保它正在接收有效的身份验证响应。 然后，SAML断言内的信息用于制定访问决策或显示用户数据。
 
-##### POST 绑定 {#POST_Binding}
+<a name="74______POST_绑定"></a>
+##### POST 绑定
 SAML *POST*绑定的工作方式几乎与*Redirect*绑定完全相同，但不是GET请求，而是通过POST请求交换XML文档。 *POST* Binding使用JavaScript来欺骗浏览器在交换文档时向Keycloak服务器或应用程序发出POST请求。 基本上，HTTP响应包含一个HTML文档，其中包含带有嵌入式JavaScript的HTML表单。 加载页面时，JavaScript会自动调用表单。 你真的不需要知道这些东西，但这是一个非常聪明的技巧。
 
 由于安全性和大小限制，通常建议使用*POST*绑定。 使用*REDIRECT*时，SAML响应是URL的一部分（它是之前解释过的查询参数），因此可以在日志中捕获它，并且它被认为不太安全。 关于大小，如果断言包含很多或大的属性，则在HTTP有效负载内发送文档总是比在更有限的URL中更好。
 
-##### ECP {#ECP}
+<a name="75______ECP"></a>
+##### ECP
 ECP代表“Enhanced Client or Proxy(增强客户端或代理)”，SAML v.2.0配置文件，允许在Web浏览器的上下文之外交换SAML属性。 这通常用于REST或基于SOAP的客户端。
 
-#### 7.2.2. Keycloak Server SAML URI端点 {#Keycloak_Server_SAML_URI_Endpoints}
+<a name="76_____7_2_2__Keycloak_Server_SAML_URI端点"></a>
+#### 7.2.2. Keycloak Server SAML URI端点
 Keycloak实际上只有一个端点用于所有SAML请求。
 
 ```javascript
@@ -1415,7 +1491,8 @@ http(s)://authserver.host/auth/realms/{realm-name}/protocol/saml
 
 所有绑定都使用此端点。
 
-### 7.3. OpenID Connect 与 SAML {#OpenID_Connect_vs__SAML}
+<a name="77____7_3__OpenID_Connect_与_SAML"></a>
+### 7.3. OpenID Connect 与 SAML
 
 在OpenID Connect和SAML之间进行选择不仅仅是使用更新的协议（OIDC）而不是旧的更成熟的协议（SAML）。
 
@@ -1427,13 +1504,15 @@ SAML往往比OIDC更冗长。
 
 SAML虽然有它的用途。 正如您所看到的，OIDC规范的发展，您会发现它们实现了SAML多年来所拥有的越来越多的功能。 我们经常看到人们选择SAML而不是OIDC，因为人们认为它更成熟，也因为他们已经有了现有的应用程序。
 
-### 7.4. Docker Registry v2身份验证 {#Docker_Registry_v2_Authentication}
+<a name="78____7_4__Docker_Registry_v2身份验证"></a>
+### 7.4. Docker Registry v2身份验证
 
 > 默认情况下禁用Docker身份验证。 要启用，请参阅  [Profiles](https://www.keycloak.org/docs/6.0/server_installation/#profiles)。
 
 [Docker Registry V2身份验证](https://docs.docker.com/registry/spec/auth/)是一种OIDC-Like协议，用于根据Docker注册表对用户进行身份验证。 Keycloak对此协议的实现允许Docker客户端使用Keycloak身份验证服务器对注册表进行身份验证。 虽然该协议使用相当标准的令牌和签名机制，但它有一些缺点，使其不能被视为真正的OIDC实现。 最大的偏差包括用于请求和响应的非常特定的JSON格式，以及了解如何将存储库名称和权限映射到OAuth范围机制的能力。
 
-#### 7.4.1. Docker 验证 流程 {#Docker_Auth_Flow}
+<a name="79_____7_4_1__Docker_验证_流程"></a>
+#### 7.4.1. Docker 验证 流程
 [Docker API文档](https://docs.docker.com/registry/spec/auth/token/) 最好地描述和说明了这个过程，但是下面将从Keycloak认证服务器的角度给出一个简短的总结。
 
 > 此流假定已执行`docker login`命令
@@ -1444,18 +1523,21 @@ SAML虽然有它的用途。 正如您所看到的，OIDC规范的发展，您�
 - Docker客户端将从JSON响应中获取承载令牌，并在Authorization标头中使用它来请求受保护资源。
 - 当Docker注册表使用来自Keycloak服务器的令牌接收受保护资源的新请求时，注册表将验证令牌并授予对所请求资源的访问权限（如果适用）。
 
-#### 7.4.2. Keycloak Docker Registry v2身份验证服务器URI端点 {#Keycloak_Docker_Registry_v2_Authentication_Server_URI_Endpoints}
+<a name="80_____7_4_2__Keycloak_Docker_Registry_v2身份验证服务器URI端点"></a>
+#### 7.4.2. Keycloak Docker Registry v2身份验证服务器URI端点
 Keycloak实际上只有一个端点用于所有Docker auth v2请求。
 
 ```javascript
 http(s)://authserver.host/auth/realms/{realm-name}/protocol/docker-v2
 ```
 
-## 8. 管理客户端 {#Managing_Clients}
+<a name="81___8__管理客户端"></a>
+## 8. 管理客户端
 
 客户端是可以请求用户身份验证的实体。 客户有两种形式。 第一种类型的客户端是想要参与单点登录的应用程序。 这些客户只希望Keycloak为他们提供安全保障。 另一种类型的客户端是请求访问令牌的客户端，以便它可以代表经过身份验证的用户调用其他服务。 本节讨论有关配置客户端的各个方面以及执行此操作的各种方法。
 
-### 8.1. OIDC 客户端 {#OIDC_Clients}
+<a name="82____8_1__OIDC_客户端"></a>
+### 8.1. OIDC 客户端
 
 [OpenID Connect](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc)是保护应用程序的首选协议。 它的设计从一开始就是Web友好的，并且最适合HTML5/JavaScript应用程序。
 
@@ -1553,7 +1635,8 @@ Keycloak支持经过验证的CORS请求。 它的工作方式是客户端的`Web
 
 要填写`Web Origins`数据，请输入基本URL并单击要添加的`+`号。 点击要删除的网址旁边的`-` 符号。 请记住，您仍然需要单击`Save`按钮！
 
-#### 8.1.1. 高级设置 {#Advanced_Settings}
+<a name="83_____8_1_1__高级设置"></a>
+#### 8.1.1. 高级设置
 **OAuth 2.0 Mutual TLS客户端证书绑定访问令牌**
 
 Mutual TLS使用在TLS握手期间交换的客户端证书绑定访问令牌和刷新令牌。 这可以防止找到窃取这些令牌的方法的攻击者行使令牌。 这种类型的令牌称为持有者令牌。 与承载令牌不同，持有者令牌的接收者可以验证令牌的发送者是否合法。
@@ -1577,7 +1660,8 @@ Mutual TLS使用在TLS握手期间交换的客户端证书绑定访问令牌和�
 
 > 警告：目前没有任何keycloak客户端适配器支持持有者令牌验证。 相反，keycloak适配器当前将访问和刷新令牌视为承载令牌。
 
-#### 8.1.2. 机密客户端凭据 {#Confidential_Client_Credentials}
+<a name="84_____8_1_2__机密客户端凭据"></a>
+#### 8.1.2. 机密客户端凭据
 
 如果您已在客户端的`Settings`选项卡中将客户端的[访问类型](https://www.keycloak.org/docs/latest/server_admin/index.html#_access-type)设置为`confidential`，则为新的 `Credentials`选项卡将显示出来。 作为处理此类客户端的一部分，您必须配置客户端的凭据。
 
@@ -1635,7 +1719,8 @@ Import Certificate
 
 Keycloak有两种方法从请求中获取客户端ID。 第一个选项是查询中的`client_id`参数（在[OAuth 2.0规范]的第2.2节(https://tools.ietf.org/html/rfc6749)中描述）。 第二个选项是提供`client_id`作为查询参数。
 
-#### 8.1.3. 服务帐户 {#Service_Accounts}
+<a name="85_____8_1_3__服务帐户"></a>
+#### 8.1.3. 服务帐户
 
 每个OIDC客户端都有一个内置的*service account*，允许它获取访问令牌。 这在[客户端凭据授权]（(https://www.keycloak.org/docs/latest/server_admin/index.html#_client_credentials_grant)下的OAuth 2.0规范中介绍。 要使用此功能，您必须将客户端的[访问类型](https://www.keycloak.org/docs/latest/server_admin/index.html#_access-type)设置为`confidential`。 执行此操作时，将显示`Service Accounts Enabled`开关。 您需要打开此开关。 还要确保已配置[客户端凭据](https://www.keycloak.org/docs/latest/server_admin/index.html#_client-credentials)。
 
@@ -1678,7 +1763,8 @@ Pragma: no-cache
 
 可以通过越界请求刷新或注销检索到的访问令牌。
 
-#### 8.1.4. 受众支持 {#Audience_Support}
+<a name="86_____8_1_4__受众支持"></a>
+#### 8.1.4. 受众支持
 
 部署Keycloak的典型环境通常包括一组*confidential*或*public*客户端应用程序（前端客户端应用程序），它们使用Keycloak进行身份验证。
 
@@ -1711,13 +1797,15 @@ Pragma: no-cache
 
 并可用于调用`good-service`。
 
-##### 设置 {#Setup}
+<a name="87______设置"></a>
+##### 设置
 要正确设置受众群体检查：
 
 - 确保通过在适配器配置中添加标志*verify-token-audience*，将服务配置为检查发送给它们的访问令牌的受众。 有关详细信息，请参阅[适配器配置](https://www.keycloak.org/docs/6.0/securing_apps/#_java_adapter_config)。
 - 确保当Keycloak发出访问令牌时，它包含所有请求的受众，并且不包含任何不需要的受众。 可以根据[下一节](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_resolve)中描述的客户端角色自动添加受众，也可以按照描述进行硬编码[下文](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_hardcoded)。
 
-##### 自动添加受众群体 {#Automatically_add_audience}
+<a name="88______自动添加受众群体"></a>
+##### 自动添加受众群体
 在默认客户端范围*roles*中，定义了*Audience Resolve*协议映射器。 此协议映射器将检查当前令牌至少具有一个可用客户端角色的所有客户端。 然后，每个客户端的客户端ID将自动添加为受众。 如果您的服务（通常仅限于承载）客户端依赖客户端角色，则此功能尤其有用。
 
 举个例子，让我们假设您有一个仅限持有客户端`good-service`和机密客户端`my-app`，您要对其进行身份验证，然后使用为`my-app`发出的访问令牌来 调用`good-service` REST服务。 如果以下情况属实：
@@ -1732,7 +1820,8 @@ Pragma: no-cache
 
 > 前端客户端本身不会自动添加到访问令牌受众。 这允许容易区分访问令牌和ID令牌，因为访问令牌将不包含作为受众发布令牌的客户端。 因此，在上面的示例中，`my-app`不会作为受众添加。 如果您需要客户本身作为受众，请参阅[硬编码的受众](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience_hardcoded) 选项。 但是，不建议使用相同的客户端作为前端和REST服务。
 
-##### 硬编码的受众 {#Hardcoded_audience}
+<a name="89______硬编码的受众"></a>
+##### 硬编码的受众
 对于您的服务依赖于领域角色或根本不依赖于令牌中的角色的情况，使用硬编码的受众可能很有用。 这是一个协议映射器，它将指定服务客户端的客户端ID作为标记的受众添加。 如果您需要不同于客户端ID的受众，您甚至可以使用任何自定义值，例如某些URL。
 
 您可以将协议映射器直接添加到前端客户端，但始终会添加受众。 如果您想要更精细的控制，可以在专用的客户端范围上创建协议映射器，例如`good-service`。
@@ -1750,7 +1839,8 @@ Pragma: no-cache
 
 > *Audience* 和 *Audience Resolve*协议映射器默认情况下仅将访客添加到访问令牌。 ID令牌通常仅包含单个受众，即为其颁发令牌的客户端的客户端ID。 这是OpenID Connect规范的要求。 另一方面，访问令牌不一定具有客户端的客户端ID，该客户端ID是为其颁发的令牌，除非任何观众映射器添加了它。
 
-### 8.2. SAML 客户端 {#SAML_Clients}
+<a name="90____8_2__SAML_客户端"></a>
+### 8.2. SAML 客户端
 
 Keycloak支持[SAML 2.0](https://www.keycloak.org/docs/latest/server_admin/index.html#_saml)用于已注册的应用程序。 POST和Redirect绑定都受支持。 您可以选择要求客户端签名验证，也可以让服务器签名和/或加密响应。
 
@@ -1876,7 +1966,8 @@ Client Settings
 
   重定向注销服务的绑定URL。
 
-#### 8.2.1. IDP发起登录 {#IDP_Initiated_Login}
+<a name="91_____8_2_1__IDP发起登录"></a>
+#### 8.2.1. IDP发起登录
 
 IDP Initiated Login是一项功能，允许您在Keycloak服务器上设置端点，该端点将登录到特定的应用程序/客户端。 在客户端的`Settings`选项卡中，您需要指定`IDP Initiated SSO URL Name`。 这是一个简单的字符串，里面没有空格。 在此之后，您可以通过以下URL引用您的客户端：`root/auth/realms/{realm}/protocol/saml/clients/{url-name}`
 
@@ -1899,7 +1990,8 @@ IDP发起的登录实现更喜欢*POST* 通过 *REDIRECT* 绑定（检查[saml b
 
 请注意，您可以将基本客户端设置从代理IDP导入外部IDP的客户端设置 - 只需使用[SP描述符](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker_saml_sp_descriptor) 可以从代理IDP中的身份提供者的设置中获得，并将`clients/*client-id*`添加到端点URL。
 
-#### 8.2.2. SAML实体描述符 {#SAML_Entity_Descriptors}
+<a name="92_____8_2_2__SAML实体描述符"></a>
+#### 8.2.2. SAML实体描述符
 
 您可以通过标准SAML实体描述符XML文件导入SAML 2.0客户端，而不是手动注册SAML 2.0客户端。 “添加客户端”页面上有一个`Import`选项。
 
@@ -1911,7 +2003,8 @@ IDP发起的登录实现更喜欢*POST* 通过 *REDIRECT* 绑定（检查[saml b
 
 某些SAML客户端适配器（如*mod-auth-mellon*）需要IDP的XML实体描述符。 您可以通过转到此公共URL来获取此信息：`root/auth/realms/{realm}/protocol/saml/descriptor`
 
-### 8.3. 客户端链接 {#Client_Links}
+<a name="93____8_3__客户端链接"></a>
+### 8.3. 客户端链接
 
 对于想要从一个客户端链接到另一个客户端的场景，Keycloak提供了一个特殊的重定向端点：`/realms/realm_name/clients/{client-id}/redirect`。
 
@@ -1927,7 +2020,8 @@ http://host:port/auth/realms/master/clients/account/redirect
 
 将临时重定向到：`http://host:port/auth/realms/master/account`
 
-### 8.4. OIDC令牌和SAML断言映射 {#OIDC_Token_and_SAML_Assertion_Mappings}
+<a name="94____8_4__OIDC令牌和SAML断言映射"></a>
+### 8.4. OIDC令牌和SAML断言映射
 
 接收ID令牌，访问令牌或SAML断言的应用程序可能需要或想要不同的用户元数据和角色。 Keycloak允许您定义确切传输的内容。 您可以对角色，声明和自定义属性进行硬编码。 您可以将用户元数据拉入令牌或断言。 您可以重命名角色。 基本上你可以很好地控制究竟是什么回到客户端。
 
@@ -1957,14 +2051,16 @@ Add Mapper
 
 从列表框中选择`Mapper Type`。 如果将鼠标悬停在工具提示上，您将看到该映射器类型的描述。 将针对不同的映射器类型显示不同的配置参数。
 
-#### 8.4.1. 优先顺序 {#Priority_order}
+<a name="95_____8_4_1__优先顺序"></a>
+#### 8.4.1. 优先顺序
 映射器实现具有*priority order(优先级顺序)*。 此优先级顺序不是映射器的配置属性; 相反，它是mapper具体实现的属性。
 
 映射器在管理控制台中按照映射器列表中的顺序进行排序，并且将使用该顺序应用令牌或断言中的更改，并且首先应用最低值。 这意味着依赖于其他实现的实现按所需顺序处理。
 
 例如，当我们首先想要计算将包含在令牌中的角色时，我们首先根据这些角色来解析受众。 然后，我们处理一个JavaScript脚本，该脚本使用令牌中已有的角色和受众。
 
-#### 8.4.2. OIDC用户会话记录映射器 {#OIDC_User_Session_Note_Mappers}
+<a name="96_____8_4_2__OIDC用户会话记录映射器"></a>
+#### 8.4.2. OIDC用户会话记录映射器
 用户会话详细信息是通过映射器，并取决于各种标准。 在客户端上使用或启用功能时，将自动包含用户会话详细信息。 您还可以单击`Add builtin`按钮以包含会话详细信息。
 
 模拟的用户会话提供以下详细信息：
@@ -1978,7 +2074,8 @@ Add Mapper
 - `clientAddress`: 服务帐户验证设备的远程主机IP
 - `clientHost`: 服务帐户验证设备的远程主机名
 
-### 8.5. 生成客户端适配器配置 {#Generating_Client_Adapter_Config}
+<a name="97____8_5__生成客户端适配器配置"></a>
+### 8.5. 生成客户端适配器配置
 
 Keycloak可以预先生成配置文件，您可以使用这些配置文件在应用程序的部署环境中安装客户端适配器。 OIDC和SAML都支持许多适配器类型。 转到要为其生成配置的客户端的`Installation`选项卡。
 
@@ -1986,7 +2083,8 @@ Keycloak可以预先生成配置文件，您可以使用这些配置文件在应
 
 选择要为其生成配置的`Format Option`。 支持所有用于OIDC和SAML的Keycloak客户端适配器。 支持SAML的`mod-auth-mellon Apache HTTPD`适配器以及标准SAML实体描述符文件。
 
-### 8.6. 客户端作用域 {#Client_Scopes}
+<a name="98____8_6__客户端作用域"></a>
+### 8.6. 客户端作用域
 
 如果您需要在组织内保护和注册许多应用程序，为每个客户端配置[协议映射器](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers) 和 [角色范围映射](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings) 可能会变得很繁琐。 Keycloak允许您在名为*client scope*的实体中定义共享客户端配置。
 
@@ -2002,7 +2100,8 @@ Client Scopes List
 
 - 单击`Create`按钮。 命名客户端范围并保存。 A *client scope(客户端作用域)* 将具有与常规客户端类似的选项卡。 您可以定义[协议映射器](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers) 和 [角色范围映射](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings)，可以由其他客户端继承，并配置为从此客户端作用域继承。
 
-#### 8.6.1. 协议 {#Protocol}
+<a name="99_____8_6_1__协议"></a>
+#### 8.6.1. 协议
 在创建客户端作用域时，必须选择`Protocol`。 然后，只有使用相同协议的客户端才能与此客户端作用域链接。
 
 创建新领域后，您可以看到菜单中有一个预定义（内置）客户端作用域列表。
@@ -2030,7 +2129,8 @@ Builtin客户端作用域包含按照规范定义的协议映射器，但是您�
 
 创建客户端作用域`microprofile-jwt`以处理[MicroProfile / JWT Auth Specification](https://wiki.eclipse.org/MicroProfile/JWT_Auth)中定义的声明。 此客户端作用域为`upn`声明定义了一个用户属性映射器，并为`groups`声明定义了一个领域角色映射器。 可以根据需要更改这些映射器，以便可以使用不同的属性来创建`MicroProfile/JWT`特定声明。
 
-#### 8.6.2. 同意相关设置 {#Consent_related_settings}
+<a name="100_____8_6_2__同意相关设置"></a>
+#### 8.6.2. 同意相关设置
 客户端作用域包含与同意屏幕相关的选项。 仅当链接客户端配置为需要同意时（如果在客户端上启用了`Consent Required(同意所需)`开关），这些选项才有用。
 
 - 在同意屏幕上显示
@@ -2041,7 +2141,8 @@ Builtin客户端作用域包含按照规范定义的协议映射器，但是您�
 
   当此客户端作用域被添加到需要同意的某个客户端时，同意屏幕上显示的文本默认为客户端范围的名称。 通过使用`${var-name}`字符串指定替换变量，可以对此文本的值进行本地化。 然后，在主题的属性文件中配置本地化值。 有关本地化的更多信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-#### 8.6.3. 将客户端作用域与客户端链接 {#Link_Client_Scope_with_the_Client}
+<a name="101_____8_6_3__将客户端作用域与客户端链接"></a>
+#### 8.6.3. 将客户端作用域与客户端链接
 客户端作用域和客户端之间的链接在特定客户端的`Client Scopes`选项卡中配置。 客户端作用域和客户端之间有两种链接方式。
 
 - Default Client Scopes
@@ -2052,7 +2153,8 @@ Builtin客户端作用域包含按照规范定义的协议映射器，但是您�
 
   这仅适用于OpenID Connect客户端。 在为此客户端发出令牌时应用可选的客户端作用域，但仅当它们由OpenID Connect授权请求中的`scope`参数请求时才应用。
 
-##### 例子 {#Example}
+<a name="102______例子"></a>
+##### 例子
 对于此示例，我们假设客户端将`profile`和`email`链接为默认客户端作用域，并且`phone`和`address`作为可选的客户端作用域链接。 在向OpenID Connect授权端点发送请求时，客户端将使用scope参数的值：
 
 ```properties
@@ -2061,7 +2163,8 @@ scope=openid phone
 
 scope参数包含字符串，范围值除以空格（这也是客户端范围名称中不能包含空格字符的原因）。 值`openid`是用于所有OpenID Connect请求的元值，因此我们将在此示例中忽略它。 令牌将包含来自客户端作用域`profile`，`email`（默认作用域）和`phone`（作用域参数请求的可选客户端作用域）的映射器和角色作用域映射。
 
-#### 8.6.4. 评估客户端作用域 {#Evaluating_Client_Scopes}
+<a name="103_____8_6_4__评估客户端作用域"></a>
+#### 8.6.4. 评估客户端作用域
 客户端的`Mappers` 和 `Scope`选项卡包含仅为此客户端声明的协议映射器和角色范围映射。 它们不包含从客户端作用域继承的映射器和作用域映射。 但是，查看有效协议映射器将是什么（在客户端本身定义的协议映射器以及从链接的客户端作用域继承）以及为特定客户端生成令牌时使用的有效角色作用域映射可能很有用。
 
 当您单击客户端的`Client Scopes`选项卡，然后打开子选项卡`Evaluate(评估)`时，您可以看到所有这些。 从这里，您可以选择要应用的可选客户端范围。 这还将显示`scope`参数的值，该值需要从应用程序发送到Keycloak OpenID Connect授权端点。
@@ -2072,15 +2175,18 @@ Evaluating Client Scopes
 
 > 如果您想了解如何从应用程序发送`scope`参数的自定义值，请参阅[参数转发部分](https://www.keycloak.org/docs/6.0/securing_apps/#_params_forwarding)， 如果您的应用程序使用servlet适配器，或[javascript适配器部分](https://www.keycloak.org/docs/6.0/securing_apps/#_javascript_adapter)，如果您的应用程序使用javascript适配器。
 
-##### 生成示例令牌 {#Generating_Example_Tokens}
+<a name="104______生成示例令牌"></a>
+##### 生成示例令牌
 要查看为特定用户生成并为特定客户端发出的具有指定值`scope`参数的实际访问令牌的示例，请从`Evaluate`屏幕中选择用户。 这将生成一个示例标记，其中包含所有使用的声明和角色映射。
 
-#### 8.6.5. 客户端作用域权限 {#Client_Scopes_Permissions}
+<a name="105_____8_6_5__客户端作用域权限"></a>
+#### 8.6.5. 客户端作用域权限
 为特定用户颁发令牌时，仅在允许用户使用客户端作用域时才应用客户端作用域。 如果客户端作用域没有自己定义的任何角色作用域映射，则会自动允许每个用户使用此客户端作用域。 但是，当客户端作用域具有自身定义的任何角色作用域映射时，用户必须至少是其中一个角色的成员。 换句话说，用户角色与客户端范围的角色之间必须存在交集。 评估此交集时会考虑复合角色。
 
 如果不允许用户使用客户端作用域，则在生成令牌时将不使用协议映射器或角色作用域映射，并且客户端作用域不会出现在令牌中的*scope*值中。
 
-#### 8.6.6. 领域默认客户端作用域 {#Realm_Default_Client_Scopes}
+<a name="106_____8_6_6__领域默认客户端作用域"></a>
+#### 8.6.6. 领域默认客户端作用域
 `Realm Default Client Scopes`允许您定义一组客户端作用域，这些作用域将自动链接到新创建的客户端。
 
 打开左侧菜单项`Client Scopes`，然后选择`Default Client Scopes`。
@@ -2093,7 +2199,8 @@ Default Client Scopes
 
 创建客户端后，您可以根据需要取消链接默认客户端作用域。 这与删除[默认角色](https://www.keycloak.org/docs/latest/server_admin/index.html#_default_roles)的方式类似。
 
-#### 8.6.7. 作用域解释 {#Scopes_explained}
+<a name="107_____8_6_7__作用域解释"></a>
+#### 8.6.7. 作用域解释
 术语`scope`在Keycloak中用于少数几个地方。 各种作用域的出现彼此相关，但可能具有不同的上下文和含义。 为了澄清，这里我们解释Keycloak中使用的各种`scopes`。
 
 - Client scope
@@ -2108,11 +2215,13 @@ Default Client Scopes
 
   这由授权功能使用。 `Authorization Scope`是可以在应用程序中完成的操作。 [授权服务指南](https://www.keycloak.org/docs/6.0/authorization_services/)中的更多详细信息。
 
-## 9. 角色 {#Roles}
+<a name="108___9__角色"></a>
+## 9. 角色
 
 角色标识用户的类型或类别。 `Admin`，`user`，`manager`和`employee`都是组织中可能存在的典型角色。 应用程序通常为特定角色而不是单个用户分配访问权限和权限，因为与用户打交道可能过于细粒度且难以管理。 例如，管理控制台具有特定角色，这些角色授予用户访问管理控制台UI部分并执行某些操作的权限。 角色有一个全局命名空间，每个客户端也有自己的专用命名空间，可以定义角色。
 
-### 9.1. 领域角色 {#Realm_Roles}
+<a name="109____9_1__领域角色"></a>
+### 9.1. 领域角色
 
 领域级角色是定义角色的全局命名空间。 您可以通过单击`Roles`左侧菜单项来查看内置和创建的角色列表。
 
@@ -2126,11 +2235,13 @@ Add Role
 
 通过使用`${var-name}`字符串指定替换变量，可以对`description`字段的值进行本地化。 然后，在主题的属性文件中配置本地化值。 有关本地化的更多信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-### 9.2. 客户端 角色 {#Client_Roles}
+<a name="110____9_2__客户端_角色"></a>
+### 9.2. 客户端 角色
 
 客户端角色基本上是专用于客户端的命名空间。 每个客户端都有自己的命名空间 客户角色在每个客户端下的`Roles`选项卡下进行管理。 您与此UI的交互方式与您对领域级角色的交互方式相同。
 
-### 9.3. 复合 角色 {#Composite_Roles}
+<a name="111____9_3__复合_角色"></a>
+### 9.3. 复合 角色
 
 任何领域或客户级角色都可以转换为*composite role(复合角色)*。 一个 *composite role*是具有一个或多个与之关联的其他角色的角色。 将复合角色映射到用户时，用户还将获得与该复合关联的角色。 这种继承是递归的，因此任何复合合成也都会被继承。
 
@@ -2144,7 +2255,8 @@ Composite Role
 
 > 创建令牌和SAML断言时，任何组合也将其相关角色添加到发送回客户端的身份验证响应的声明和断言中。
 
-### 9.4. 用户角色映射 {#User_Role_Mappings}
+<a name="112____9_4__用户角色映射"></a>
+### 9.4. 用户角色映射
 
 用户角色映射可以通过该单个用户的`Role Mappings(角色映射)`选项卡单独分配给每个用户。
 
@@ -2160,7 +2272,8 @@ Effective Role Mappings
 
 一旦分配了`developer`角色，您就会看到与`developer`合成相关联的`employee`角色出现在`Effective Roles(有效角色)`中。 `Effective Roles`是显式分配给用户的所有角色以及从复合体继承的任何角色。
 
-#### 9.4.1. 默认角色 {#Default_Roles}
+<a name="113_____9_4_1__默认角色"></a>
+#### 9.4.1. 默认角色
 
 默认角色允许您在通过[Identity Brokering](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker)新创建或导入任何用户时自动分配用户角色映射。 要指定默认角色，请转到`Roles`左侧菜单项，然后单击`Default Roles`选项卡。
 
@@ -2170,7 +2283,8 @@ Default Roles
 
 从屏幕截图中可以看出，默认情况下已经设置了许多*default roles*。
 
-### 9.5. 角色范围映射 {#Role_Scope_Mappings}
+<a name="114____9_5__角色范围映射"></a>
+### 9.5. 角色范围映射
 
 创建OIDC访问令牌或SAML断言时，默认情况下，用户的所有用户角色映射都会在令牌或断言中添加为声明。 应用程序使用此信息对该应用程序控制的资源进行访问决策。 在Keycloak中，访问令牌经过数字签名，实际上可以被应用程序重用，以调用其他远程安全的REST服务。 这意味着，如果某个应用程序受到攻击或者该域名中存在一个流氓客户端，则攻击者可以获得具有广泛权限的访问权限，并且您的整个网络都会受到攻击。 这就是*role scope mappings(角色范围映射)*变得重要的地方。
 
@@ -2186,7 +2300,8 @@ Partial Scope
 
 ![client scope](assets/client-scope.png)
 
-## 10. 组 {#Groups}
+<a name="115___10__组"></a>
+## 10. 组
 
 Keycloak中的组允许您为一组用户管理一组通用属性和角色映射。 用户可以是零个或多个组的成员。 用户继承分配给每个组的属性和角色映射。 要管理组，请转到`Groups`左侧菜单项。
 
@@ -2214,13 +2329,15 @@ Group Membership
 
 ![group membership](assets/group-membership.png)
 
-### 10.1. 群组与角色 {#Groups_vs__Roles}
+<a name="116____10_1__群组与角色"></a>
+### 10.1. 群组与角色
 
 在IT世界中，组和角色的概念通常是模糊和可互换的。 在Keycloak中，组只是一组用户，您可以在一个位置应用角色和属性。 角色定义一种用户，应用程序为角色分配权限和访问控制
 
 是不是[复合角色](https://www.keycloak.org/docs/latest/server_admin/index.html#_composite-roles)也与群组相似？ 从逻辑上讲，它们提供了相同的功能，但区别在于概念。 应使用组合角色将权限模型应用于您的服务和应用程序集。 组应关注用户集合及其在组织中的角色。 使用组来管理用户。 使用复合角色来管理应用程序和服务。
 
-### 10.2. 默认组 {#Default_Groups}
+<a name="117____10_2__默认组"></a>
+### 10.2. 默认组
 
 默认组允许您在通过[Identity Brokering](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker)创建或导入任何新用户时自动分配组成员资格。 要指定默认组，请转到`Groups`左侧菜单项，然后单击`Default Groups`选项卡。
 
@@ -2228,15 +2345,18 @@ Default Groups
 
 ![default groups](assets/default-groups.png)
 
-## 11. 管理控制台访问控制和权限 {#Admin_Console_Access_Control_and_Permissions}
+<a name="118___11__管理控制台访问控制和权限"></a>
+## 11. 管理控制台访问控制和权限
 
 Keycloak上创建的每个领域都有一个专用的管理控制台，可以从中管理该领域。 `master`领域是一个特殊的领域，允许管理员管理系统上的多个领域。 您还可以定义对不同领域中的用户的细粒度访问以管理服务器。 本章将讨论所有场景。
 
-### 11.1. Master Realm访问控制 {#Master_Realm_Access_Control}
+<a name="119____11_1__Master_Realm访问控制"></a>
+### 11.1. Master Realm访问控制
 
 Keycloak中的`master`领域是一个特殊的领域，与其他领域的处理方式不同。 可以授予Keycloak`master`域中的用户管理部署在Keycloak服务器上的零个或多个域的权限。 创建领域时，Keycloak会自动创建各种角色，授予细粒度权限以访问新领域。 可以通过将这些角色映射到`master`领域中的用户来控制对`Admin Console`和`Admin REST`端点的访问。 可以创建多个超级用户，以及只能管理特定领域的用户。
 
-#### 11.1.1. Global Roles {#Global_Roles}
+<a name="120_____11_1_1__Global_Roles"></a>
+#### 11.1.1. Global Roles
 在`master`领域有两个领域级别的角色。 这些是：
 
 - admin
@@ -2244,7 +2364,8 @@ Keycloak中的`master`领域是一个特殊的领域，与其他领域的处理�
 
 具有`admin`角色的用户是超级用户，并且拥有管理服务器上任何领域的完全访问权限。 具有`create-realm`角色的用户可以创建新领域。 他们将被授予对他们创建的任何新领域的完全访问权限。
 
-#### 11.1.2. 领域特定角色 {#Realm_Specific_Roles}
+<a name="121_____11_1_2__领域特定角色"></a>
+#### 11.1.2. 领域特定角色
 `master`领域内的管理员用户可以被授予系统中一个或多个其他领域的管理权限。 Keycloak中的每个领域都由`master`领域的客户端代表。 客户端的名称是`<realm name>-realm`。 这些客户端每个都定义了客户端级角色，这些角色定义了管理单个领域的不同访问级别。
 
 可用的角色是：
@@ -2266,7 +2387,8 @@ Keycloak中的`master`领域是一个特殊的领域，与其他领域的处理�
 
 > 具有`manage-users`角色的管理员只能为自己拥有的用户分配管理员角色。 因此，如果管理员具有`manage-users角`色但没有`manage-realm`角色，则他们将无法分配此角色。
 
-### 11.2. 专用领域管理控制台 {#Dedicated_Realm_Admin_Consoles}
+<a name="122____11_2__专用领域管理控制台"></a>
+### 11.2. 专用领域管理控制台
 
 每个领域都有一个专用的管理控制台，可以通过访问url`/auth/admin/{realm-name}/console`来访问。 通过分配特定的用户角色映射，可以为该领域中的用户授予领域管理权限。
 
@@ -2287,7 +2409,8 @@ Keycloak中的`master`领域是一个特殊的领域，与其他领域的处理�
 
 将您想要的角色分配给您的用户，他们只能使用管理控制台的特定部分。
 
-### 11.3. 细粒度管理员权限 {#Fine_Grain_Admin_Permissions}
+<a name="123____11_3__细粒度管理员权限"></a>
+### 11.3. 细粒度管理员权限
 
 > Fine Grain管理员权限是**技术预览**，并不完全支持。 默认情况下禁用此功能。要启用`-Dkeycloak.profile=preview`或`-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled`启动服务器。 有关详细信息，请参阅[配置文件](https://www.keycloak.org/docs/6.0/server_installation/#profiles)。
 
@@ -2309,12 +2432,14 @@ Keycloak中的`master`领域是一个特殊的领域，与其他领域的处理�
 - 细粒度权限仅在[专用管理控制台](https://www.keycloak.org/docs/latest/server_admin/index.html#_per_realm_admin_permissions)和在这些领域内定义的管理员中可用。 您无法定义跨领域细粒度权限。
 - 细粒度权限用于授予其他权限。 您无法覆盖内置管理角色的默认行为。
 
-#### 11.3.1. 管理一个特定的客户 {#Managing_One_Specific_Client}
+<a name="124_____11_3_1__管理一个特定的客户"></a>
+#### 11.3.1. 管理一个特定的客户
 让我们首先看一下管理员只管理一个客户端和一个客户端。 在我们的例子中，我们有一个名为`test`的领域和一个名为`sales-application`的客户端。 在领域`test`中，我们将为该领域的用户授予仅管理该应用程序的权限。
 
 > 你不能做cross realm细粒度权限。 `master`领域的管理员仅限于前面章节中定义的预定义管理员角色。
 
-##### 权限设置 {#Permission_Setup}
+<a name="125______权限设置"></a>
+##### 权限设置
 我们必须做的第一件事是登录管理控制台，以便我们可以为该客户端设置权限。 我们导航到我们要为其定义细粒度权限的客户端的管理部分。
 
 Client Management
@@ -2367,7 +2492,8 @@ Assign query-clients
 
 重要: 如果您没有设置`query-clients`角色，那么受限制的管理员（例如`sales-admin`）在登录管理控制台时将看不到任何菜单选项
 
-##### 测试它 {#Testing_It_Out_}
+<a name="126______测试它"></a>
+##### 测试它
 接下来，我们退出主域并重新登录到[专用管理控制台](https://www.keycloak.org/docs/latest/server_admin/index.html#_per_realm_admin_permissions)，用于`test`域使用 `sales-admin`作为用户名。 它位于`/auth/admin/test/console`下。
 
 Sales Admin Login
@@ -2376,7 +2502,8 @@ Sales Admin Login
 
 此管理员现在可以管理这个客户端。
 
-#### 11.3.2. 限制用户角色映射 {#Restrict_User_Role_Mapping}
+<a name="127_____11_3_2__限制用户角色映射"></a>
+#### 11.3.2. 限制用户角色映射
 您可能想要做的另一件事是限制集合允许管理员分配给用户的角色。 继续我们的最后一个示例，让我们扩展`sales-admin`用户的权限集，以便他还可以控制允许哪些用户访问此应用程序。 通过细粒度权限，我们可以启用它，以便`sales-admin`只能分配授予对`sales-application`的特定访问权限的角色。 我们还可以对其进行限制，以便管理员只能映射角色而不执行任何其他类型的用户管理。
 
 `sales-application`定义了三种不同的客户角色。
@@ -2417,7 +2544,8 @@ Sales Admin Login
 
 ![fine grain add view users](assets/fine-grain-add-view-users.png)
 
-##### 测试它. {#Testing_It_Out_}
+<a name="128______测试它_"></a>
+##### 测试它.
 接下来，我们退出主域并重新登录到[专用管理控制台](https://www.keycloak.org/docs/latest/server_admin/index.html#_per_realm_admin_permissions)，用于`test`域使用 `sales-admin`作为用户名。 它位于`/auth/admin/test/console`下。
 
 您将看到`sales-admin`现在可以查看系统中的用户。 如果您选择其中一个用户，您将看到每个用户详细信息页面都是只读的，`Role Mappings`选项卡除外。 转到这些选项卡，您会发现管理员没有`Available`角色映射到用户，除非我们浏览`sales-application`角色。
@@ -2428,7 +2556,8 @@ Add viewLeads
 
 我们只指定`sales-admin`可以映射`viewLeads`角色。
 
-##### 每个客户端 映射-角色 快捷方式 {#Per_Client_map_roles_Shortcut}
+<a name="129______每个客户端_映射_角色_快捷方式"></a>
+##### 每个客户端 映射-角色 快捷方式
 如果我们必须为`sales-application`发布的每个客户角色执行此操作，那将是单调乏味的。 为了简化操作，有一种方法可以指定管理员可以映射客户端定义的任何角色。 如果我们重新登录管理控制台到我们的主域管理员并返回到`sales-application`权限页面，您将看到`map-roles`权限。
 
 客户端 映射-角色 权限
@@ -2437,10 +2566,12 @@ Add viewLeads
 
 如果您授予管理员对此特定权限的访问权限，则该管理员将能够映射客户端定义的任何角色。
 
-#### 11.3.3. 完整的权限列表 {#Full_List_of_Permissions}
+<a name="130_____11_3_3__完整的权限列表"></a>
+#### 11.3.3. 完整的权限列表
 除了管理特定客户端或客户端的特定角色之外，您还可以使用细粒度权限执行更多操作。 本章定义了可以为领域描述的权限类型的完整列表。
 
-##### Role {#Role}
+<a name="131______Role"></a>
+##### Role
 当转到特定角色的`Permissions`选项卡时，您将看到列出的这些权限类型。
 
 - map-role
@@ -2455,7 +2586,8 @@ Add viewLeads
 
   决定管理员是否可以将此角色应用于客户端范围的策略。 即使管理员可以管理客户端，他也无权为包含此角色的客户端创建令牌，除非授予此权限。
 
-##### 客户端 {#Client}
+<a name="132______客户端"></a>
+##### 客户端
 当转到特定客户端的`Permissions`选项卡时，您将看到列出的这些权限类型。
 
 - view
@@ -2482,7 +2614,8 @@ Add viewLeads
 
   决定管理员是否可以将客户端定义的任何角色映射到另一个客户端范围的策略。 这是一种易于使用的快捷方式，可避免为客户端定义的每个角色定义策略。
 
-##### 用户 {#Users}
+<a name="133______用户"></a>
+##### 用户
 当进入所有用户的`Permissions`选项卡时，您将看到列出的这些权限类型。
 
 - view
@@ -2509,7 +2642,7 @@ Add viewLeads
 
   决定可以模拟哪些用户的策略。 这些策略将应用于被模拟的用户。 例如，您可能希望定义一个策略，禁止任何人冒充具有管理员权限的用户。
 
-##### 组 {#Group}
+##### 组
 当转到特定组的`Permissions`选项卡时，您将看到列出的这些权限类型。
 
 - view
@@ -2532,7 +2665,8 @@ Add viewLeads
 
   决定管理员是否可以更改组成员身份的策略。 在组中添加或删除成员。
 
-### 11.4. 领域密钥 {#Realm_Keys}
+<a name="134____11_4__领域密钥"></a>
+### 11.4. 领域密钥
 
 Keycloak使用的身份验证协议需要加密签名，有时还需要加密。 Keycloak使用非对称密钥对，私钥和公钥来实现这一目标。
 
@@ -2544,7 +2678,8 @@ Keycloak一次只有一个活动密钥对，但也可以有几个被动密钥。
 
 要查看所有可用键，请选择`All`。 这将显示所有活动，被动和禁用键。 密钥对可以具有`Active`状态，但仍未被选为该领域的当前活动密钥对。 基于按能够提供活动密钥对的优先级排序的第一密钥提供者来选择用于签名的所选活动对。
 
-#### 11.4.1. 轮流密钥 {#Rotating_keys}
+<a name="135_____11_4_1__轮流密钥"></a>
+#### 11.4.1. 轮流密钥
 建议定期轮流密钥。 为此，您应该首先创建优先级高于现有活动密钥的新密钥。 或者创建具有相同优先级的新密钥并使之前的密钥处于被动状态。
 
 一旦有新密钥可用，所有新令牌和cookie都将使用新密钥进行签名。 当用户对应用程序进行身份验证时，将使用新签名更新SSO cookie。 刷新OpenID Connect令牌时，将使用新密钥对新令牌进行签名。 这意味着随着时间的推移，所有cookie和令牌都将使用新密钥，过一会儿就可以删除旧密钥。
@@ -2555,39 +2690,46 @@ Keycloak一次只有一个活动密钥对，但也可以有几个被动密钥。
 
 作为指导，每3-6个月创建一个新密钥并在创建新密钥后1-2个月删除旧密钥可能是个好主意。
 
-#### 11.4.2. 添加生成的密钥对 {#Adding_a_generated_keypair}
+<a name="136_____11_4_2__添加生成的密钥对"></a>
+#### 11.4.2. 添加生成的密钥对
 要添加新生成的密钥对，请选择`Providers`并从下拉列表中选择`rsa-generated`。 您可以更改优先级以确保新密钥对成为活动密钥对。 如果需要更小或更大的键，也可以更改`keysize`（默认值为2048，支持的值为1024,2048和4096）。
 
 单击`Save`以添加新密钥。 这将生成一个新的密钥对，包括自签名证书。
 
 更改提供程序的优先级不会导致重新生成密钥，但如果要更改密钥大小，则可以编辑提供程序并生成新密钥。
 
-#### 11.4.3. 添加现有密钥对和证书 {#Adding_an_existing_keypair_and_certificate}
+<a name="137_____11_4_3__添加现有密钥对和证书"></a>
+#### 11.4.3. 添加现有密钥对和证书
 要添加在其他地方获得的密钥对和证书，请选择`Providers`并从下拉列表中选择`rsa`。 您可以更改优先级以确保新密钥对成为活动密钥对。
 
 单击`Select RSA Key`的`Select file`以上传您的私钥。 该文件应以PEM格式编码。 您无需上传公钥，因为它是从私钥中自动提取的。
 
 如果您有密钥的签名证书，请单击`X509证书`旁边的`Select file`。 如果您没有，则可以跳过此项，并生成自签名证书。
 
-#### 11.4.4. 从Java密钥库加载密钥 {#Loading_keys_from_a_Java_Keystore}
+<a name="138_____11_4_4__从Java密钥库加载密钥"></a>
+#### 11.4.4. 从Java密钥库加载密钥
 要在主机上添加存储在Java Keystore文件中的密钥对和证书，请选择`Providers`并从下拉列表中选择`java-keystore`。 您可以更改优先级以确保新密钥对成为活动密钥对。
 
 填写`Keystore`，`Keystore Password`，`Key Alias`和`Key Password`的值，然后单击`Save`。
 
-#### 11.4.5. 使密钥消极 {#Making_keys_passive}
+<a name="139_____11_4_5__使密钥消极"></a>
+#### 11.4.5. 使密钥消极
 在`Active`或`All`中找到密钥对，然后单击`Provider`列中的提供程序。 这将带您进入密钥的密钥提供程序的配置屏幕。 点击`Active`将其变为`OFF`，然后点击`Save`。 密钥将不再处于活动状态，只能用于验证签名。
 
-#### 11.4.6. 禁用密钥 {#Disabling_keys}
+<a name="140_____11_4_6__禁用密钥"></a>
+#### 11.4.6. 禁用密钥
 在`Active`或`All`中找到密钥对，然后单击`Provider`列中的提供程序。 这将带您进入密钥的密钥提供程序的配置屏幕。 单击`Enabled`将其设置为`OFF`，然后单击`Save`。 将不再启用密钥。
 
 或者，您可以从`Providers`表中删除提供程序。
 
-#### 11.4.7. 泄露的密钥 {#Compromised_keys}
+<a name="141_____11_4_7__泄露的密钥"></a>
+#### 11.4.7. 泄露的密钥
 Keycloak只在本地存储签名密钥，它们永远不会与客户端应用程序，用户或其他实体共享。 但是，如果您认为您的域签名密钥已被破坏，则应首先生成如上所述的新密钥对，然后立即删除受损密钥对。
 
 然后，为了确保客户端应用程序不接受受攻击密钥签名的令牌，您应该更新并推送域的非先行策略，这可以从管理控制台执行。 推出新策略将确保客户端应用程序不会接受由受感染密钥签名的现有令牌，但客户端应用程序将被强制从Keycloak下载新密钥对，因此受攻击密钥签名的令牌将无效了。 请注意，您的REST和机密客户端必须设置`Admin URL`,以便Keycloak能够向他们发送有关推送的不在之前策略的请求。
 
-## 12. 身份代理 {#Identity_Brokering}
+<a name="142___12__身份代理"></a>
+## 12. 身份代理
 
 Identity Broker是一种中间服务，它将多个服务提供者与不同的身份提供者连接起来。 作为中间服务，身份代理负责与外部身份提供者建立信任关系，以便使用其身份访问服务提供者公开的内部服务。
 
@@ -2608,7 +2750,8 @@ Identity Broker是一种中间服务，它将多个服务提供者与不同的�
 - `SAML v2.0 Brokering`
 - `Identity Federation`
 
-### 12.1. 经纪概述 {#Brokering_Overview}
+<a name="143____12_1__经纪概述"></a>
+### 12.1. 经纪概述
 
 使用Keycloak作为身份代理时，不会强制用户提供其凭据以在特定领域中进行身份验证。 相反，它们会显示一个身份提供者列表，他们可以从中进行身份验证。
 
@@ -2637,7 +2780,8 @@ Identity Broker是一种中间服务，它将多个服务提供者与不同的�
 
 您可能会注意到，在身份验证过程结束时，Keycloak将始终向客户端应用程序发出自己的令牌。 这意味着客户端应用程序与外部身份提供程序完全分离。 他们不需要知道使用了哪种协议（例如：SAML，OpenID Connect，OAuth等）或如何验证用户的身份。 他们只需要了解Keycloak。
 
-### 12.2. 默认身份提供者 {#Default_Identity_Provider}
+<a name="144____12_2__默认身份提供者"></a>
+### 12.2. 默认身份提供者
 
 可以自动重定向到身份提供者，而不是显示登录表单。 要启用此功能，请转到管理控制台中的`Authentication`页面，然后选择`Browser`流程。 然后单击`Identity Provider Redirector`身份验证器。 将`Default Identity Provider`设置为您要自动将用户重定向到的身份提供程序的别名。
 
@@ -2645,7 +2789,8 @@ Identity Broker是一种中间服务，它将多个服务提供者与不同的�
 
 此验证器还负责处理`kc_idp_hint`查询参数。 有关详细信息，请参阅[客户建议的身份提供商](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_suggested_idp) 部分。
 
-### 12.3. 一般配置 {#General_Configuration}
+<a name="145____12_3__一般配置"></a>
+### 12.3. 一般配置
 
 身份代理配置全部基于身份提供者。 为每个领域创建身份提供程序，默认情况下，它们为每个应用程序启用。 这意味着来自领域的用户在登录应用程序时可以使用任何已注册的身份提供者。
 
@@ -2690,11 +2835,13 @@ IDP登录页面
 | First Login Flow       | 这是第一次通过此IDP登录Keycloak的用户将触发的身份验证流程。 |
 | Post Login Flow        | 用户完成使用外部身份提供程序登录后触发的身份验证流。 |
 
-### 12.4. 社交身份提供者 {#Social_Identity_Providers}
+<a name="146____12_4__社交身份提供者"></a>
+### 12.4. 社交身份提供者
 
 对于面向Internet的应用程序，用户必须在您的站点注册才能获得访问权限，这非常麻烦。 它要求他们记住另一个用户名和密码组合。 社交身份提供程序允许您将身份验证委派给用户可能已拥有帐户的半受信任和受尊重的实体。 Keycloak为最常见的社交网络提供内置支持，例如Google，Facebook，Twitter，GitHub，LinkedIn，Microsoft和Stack Overflow。
 
-#### 12.4.1. Bitbucket {#Bitbucket}
+<a name="147_____12_4_1__Bitbucket"></a>
+#### 12.4.1. Bitbucket
 
 您必须完成许多步骤才能启用Bitbucket登录。
 
@@ -2732,7 +2879,8 @@ Bitbucket应用页面
 
 完成注册后，单击`Save`。 这将打开Bitbucket中的应用程序管理页面。 从此页面中查找客户端ID和密码，以便您可以将其输入Keycloak`Add identity provider`页面。 点击`Save`。
 
-#### 12.4.2. Facebook {#Facebook}
+<a name="148_____12_4_2__Facebook"></a>
+#### 12.4.2. Facebook
 
 您必须完成许多步骤才能启用Facebook登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Facebook`。 这将带您进入`Add identity provider`页面。
 
@@ -2776,7 +2924,8 @@ Bitbucket应用页面
 
 在Facebook的`Add identity provider`页面上注释的一个配置选项是`Default Scopes`字段。 此字段允许您手动指定用户在使用此提供程序进行身份验证时必须授权的范围。 有关范围的完整列表，请查看`<https://developers.facebook.com/docs/graph-api>`。 默认情况下，Keycloak使用以下范围：`email`。
 
-#### 12.4.3. GitHub {#GitHub}
+<a name="149_____12_4_3__GitHub"></a>
+#### 12.4.3. GitHub
 
 您必须完成许多步骤才能启用GitHub登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`GitHub`。 这将带您进入`Add identity provider`页面。
 
@@ -2808,7 +2957,8 @@ GitHub应用页面
 
 您需要从此页面获取客户端ID和密码，以便将其输入Keycloak`Add identity provider`页面。 返回Keycloak并指定这些项目。
 
-#### 12.4.4. GitLab {#GitLab}
+<a name="150_____12_4_4__GitLab"></a>
+#### 12.4.4. GitLab
 
 为了能够使用GitLab启用登录，您必须完成许多步骤。
 
@@ -2840,7 +2990,8 @@ GitLab应用页面
 
 完成后，返回Keycloak并输入它们。 点击`Save`。
 
-#### 12.4.5. Google {#Google}
+<a name="151_____12_4_5__Google"></a>
+#### 12.4.5. Google
 
 您必须完成许多步骤才能启用Google登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Google`。 这将带您进入 `Add identity provider` 页面。
 
@@ -2902,7 +3053,8 @@ Google客户端凭据
 
 如果您的组织使用G Suite并且您希望仅限制对组织成员的访问，则必须将用于G Suite的域输入`Hosted Domain`字段以启用它。
 
-#### 12.4.6. LinkedIn {#LinkedIn}
+<a name="152_____12_4_6__LinkedIn"></a>
+#### 12.4.6. LinkedIn
 
 您必须完成许多步骤才能启用LinkedIn登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`LinkedIn`。 这将带您进入`Add identity provider`页面。
 
@@ -2936,7 +3088,8 @@ Google客户端凭据
 
 然后，您需要从此页面获取客户端ID和密码，以便将其输入Keycloak `Add identity provider`页面。 返回Keycloak并指定这些项目。
 
-#### 12.4.7. Microsoft {#Microsoft}
+<a name="153_____12_4_7__Microsoft"></a>
+#### 12.4.7. Microsoft
 
 您必须完成许多步骤才能启用Microsoft登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Microsoft`。 这将带您进入`Add identity provider`页面。
 
@@ -2966,7 +3119,8 @@ Google客户端凭据
 
 > 从2018年11月起，Microsoft将取消对Live SDK API的支持，转而使用新的Microsoft Graph API。 Keycloak Microsoft身份提供程序已更新为使用新端点，因此请确保升级到Keycloak 4.6.0或更高版本才能使用此提供程序。 此外，在“Live SDK应用程序”下向Microsoft注册的客户端应用程序需要在[Microsoft应用程序注册](https://account.live.com/developers/applications/create)门户中重新注册才能获取应用程序ID 与Microsoft Graph API兼容。
 
-#### 12.4.8. OpenShift {#OpenShift}
+<a name="154_____12_4_8__OpenShift"></a>
+#### 12.4.8. OpenShift
 
 > OpenShift Online目前处于开发者预览模式。 本文档基于本地安装和本地`minishift`开发环境。
 
@@ -3005,7 +3159,8 @@ grantMethod: prompt
 
 有关更多详细指南，请参阅[官方OpenShift文档](https://docs.okd.io/latest/architecture/additional_concepts/authentication.html#oauth)。
 
-#### 12.4.9. PayPal {#PayPal}
+<a name="155_____12_4_9__PayPal"></a>
+#### 12.4.9. PayPal
 
 您必须完成许多步骤才能启用PayPal登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`PayPal`。 这将带您进入`Add identity provider`页面。
 
@@ -3040,7 +3195,8 @@ grantMethod: prompt
 - 检查地址信息部分下的 `Email address` 复选框。
 - 添加指向您域中相应页面的隐私和用户协议URL。
 
-#### 12.4.10. Stack Overflow {#Stack_Overflow}
+<a name="156_____12_4_10__Stack_Overflow"></a>
+#### 12.4.10. Stack Overflow
 
 为了能够使用Stack Overflow启用登录，您必须完成许多步骤。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Stack Overflow`。 这将带您进入`Add identity provider`页面。
 
@@ -3064,7 +3220,8 @@ grantMethod: prompt
 
 最后，您需要从此页面获取客户端ID，密钥和密钥，以便您可以在Keycloak `Add identity provider` 页面上输入它们。 返回Keycloak并指定这些项目。
 
-#### 12.4.11. Twitter {#Twitter}
+<a name="157_____12_4_11__Twitter"></a>
+#### 12.4.11. Twitter
 
 您必须完成许多步骤才能启用Twitter登录。 首先，转到`Identity Providers`左侧菜单项，然后从`Add provider`下拉列表中选择`Twitter`。 这将带您进入 `Add identity provider` 页面。
 
@@ -3104,7 +3261,8 @@ grantMethod: prompt
 
 最后，您需要从此页面获取API密钥和密钥，并将它们复制回Keycloak `Add identity provider` 页面上的 `Client ID` 和 `Client Secret`字段。
 
-### 12.5. OpenID Connect v1.0 身份提供商 {#OpenID_Connect_v1_0_Identity_Providers}
+<a name="158____12_5__OpenID_Connect_v1_0_身份提供商"></a>
+### 12.5. OpenID Connect v1.0 身份提供商
 
 Keycloak可以基于OpenID Connect协议来代理身份提供商。 这些IDP必须支持规范定义的[授权代码流程](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc)，以便对用户进行身份验证并授权访问。
 
@@ -3136,7 +3294,8 @@ Keycloak可以基于OpenID Connect协议来代理身份提供商。 这些IDP必
 
 您还可以通过提供指向OpenID提供程序元数据的URL或文件来导入所有此配置数据（请参阅OIDC发现规范）。 如果要连接到Keycloak外部IDP，则可以从URL `<root>/auth/realms/{realm-name}/.well-known/openid-configuration` 导入IDP设置。 此链接是一个JSON文档，描述有关IDP的元数据。
 
-### 12.6. SAML v2.0 身份提供商 {#SAML_v2_0_Identity_Providers}
+<a name="159____12_6__SAML_v2_0_身份提供商"></a>
+### 12.6. SAML v2.0 身份提供商
 
 Keycloak可以基于SAML v2.0协议代理身份提供商。
 
@@ -3167,7 +3326,8 @@ You can also import all this configuration data by providing a URL or file that 
 
 You can also import all this configuration data by providing a URL or XML file that points to the entity descriptor of the external SAML IDP you want to connect to.
 
-#### 12.6.1. SP描述符 {#SP_Descriptor}
+<a name="160_____12_6_1__SP描述符"></a>
+#### 12.6.1. SP描述符
 创建SAML提供程序后，在查看该提供程序时会出现一个`EXPORT`按钮。 单击此按钮将导出SAML SP实体描述符，您可以使用该描述符导入外部SP。
 
 此元数据也可通过转到URL公开获得。
@@ -3176,7 +3336,8 @@ You can also import all this configuration data by providing a URL or XML file t
 http[s]://{host:port}/auth/realms/{realm-name}/broker/{broker-alias}/endpoint/descriptor
 ```
 
-### 12.7. 客户建议身份提供商 {#Client_suggested_Identity_Provider}
+<a name="161____12_7__客户建议身份提供商"></a>
+### 12.7. 客户建议身份提供商
 
 OIDC应用程序可以通过指定他们想要使用哪个身份提供者的提示来绕过Keycloak登录页面。
 
@@ -3205,7 +3366,8 @@ keycloak.createLoginUrl({
 
 `kc_idp_hint`查询参数还允许客户端覆盖默认身份提供者（如果为`Identity Provider Redirector`身份验证器配置了一个身份提供者）。 客户端还可以通过将`kc_idp_hint`查询参数设置为空值来禁用自动重定向。
 
-### 12.8. 映射声明和断言 {#Mapping_Claims_and_Assertions}
+<a name="162____12_8__映射声明和断言"></a>
+### 12.8. 映射声明和断言
 
 您可以将要进行身份验证的外部IDP提供的SAML和OpenID Connect元数据导入到领域的环境中。 这允许您提取用户配置文件元数据和其他信息，以便您可以将其提供给您的应用程序。
 
@@ -3225,7 +3387,8 @@ keycloak.createLoginUrl({
 
 要调查社交提供程序提供的用户配置文件JSON数据的结构，您可以启用`DEBUG`级别记录器`org.keycloak.social.user_profile_dump`。 这是在服务器的app-server配置文件（domain.xml或standalone.xml）中完成的。
 
-### 12.9. 可用的用户会话数据 {#Available_User_Session_Data}
+<a name="163____12_9__可用的用户会话数据"></a>
+### 12.9. 可用的用户会话数据
 
 用户从外部IDP登录后，Keycloak会存储一些您可以访问的其他用户会话记录数据。 此数据可以传播到客户端，通过令牌请求登录，或者使用适当的客户端映射器将SAML断言传递回客户端。
 
@@ -3239,7 +3402,8 @@ keycloak.createLoginUrl({
 
 您可以使用类型为 `User Session Note` 的[协议映射器](https://www.keycloak.org/docs/latest/server_admin/index.html#_protocol-mappers)将此信息传播给您的客户端。
 
-### 12.10. 首次登录流程 {#First_Login_Flow}
+<a name="164____12_10__首次登录流程"></a>
+### 12.10. 首次登录流程
 
 当用户通过身份代理登录时，会在域的本地数据库中导入和链接用户的某些方面。 当Keycloak通过外部身份提供商成功验证用户时，可能存在两种情况：
 
@@ -3252,7 +3416,8 @@ keycloak.createLoginUrl({
 
 您还可以创建新的身份验证流和/或编写自己的身份验证器实现，并在流中使用它。 有关详细信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-#### 12.10.1. 默认首次登录流程 {#Default_First_Login_Flow}
+<a name="165_____12_10_1__默认首次登录流程"></a>
+#### 12.10.1. 默认首次登录流程
 让我们描述`First Broker Login`流程提供的默认行为。
 
 - Review Profile(回顾概要)
@@ -3275,7 +3440,8 @@ keycloak.createLoginUrl({
 
   如果禁用或不可用电子邮件身份验证器（SMTP未配置为域），则使用此身份验证器。 它将显示一个登录屏幕，用户需要使用其密码进行身份验证，以将其Keycloak帐户与身份提供商进行链接。 用户还可以使用某些不同的身份提供程序重新进行身份验证，该提供程序已与其Keycloak帐户相关联。 您还可以强制用户使用OTP。 否则它是可选的，仅在已为用户帐户设置OTP时使用。
 
-#### 12.10.2. 自动链接现有的第一个登录流程 {#Automatically_Link_Existing_First_Login_Flow}
+<a name="166_____12_10_2__自动链接现有的第一个登录流程"></a>
+#### 12.10.2. 自动链接现有的第一个登录流程
 > 在用户可以使用任意`用户名/电子邮件地址`注册自己的通用环境中，AutoLink身份验证器会很危险。 除非精心策划用户注册并分配`用户名/电子邮件地址`，否则请勿使用此身份验证器。
 
 要配置第一个登录流，用户在不提示的情况下自动链接，请使用以下两个身份验证器创建新流：
@@ -3290,7 +3456,8 @@ keycloak.createLoginUrl({
 
 > 所描述的设置使用两个验证器，并且是最简单的验证器，但可以根据您的需要使用其他验证器。 例如，如果您仍希望最终用户确认其配置文件信息，则可以将审阅配置文件身份验证器添加到流的开头。
 
-### 12.11. 检索外部IDP令牌 {#Retrieving_External_IDP_Tokens}
+<a name="167____12_11__检索外部IDP令牌"></a>
+### 12.11. 检索外部IDP令牌
 
 Keycloak允许您使用外部IDP存储令牌和来自身份验证过程的响应。 为此，您可以在IDP的设置页面上使用`Store Token`配置选项。
 
@@ -3306,15 +3473,18 @@ Authorization: Bearer <KEYCLOAK ACCESS TOKEN>
 
 可以通过再次通过提供程序登录或使用客户端启动的帐户链接API重新建立这些外部令牌。
 
-### 12.12. 身份代理注销 {#Identity_broker_logout}
+<a name="168____12_12__身份代理注销"></a>
+### 12.12. 身份代理注销
 
 当触发从Keycloak注销时，Keycloak将向用于登录Keycloak的外部身份提供者发送请求，并且该用户也将从该身份提供者注销。 可以跳过此行为并避免在外部身份提供程序中注销。 有关详细信息，请参阅[适配器注销文档](https://www.keycloak.org/docs/6.0/securing_apps/#_java_adapter_logout)。
 
-## 13. 用户会话管理 {#User_Session_Management}
+<a name="169___13__用户会话管理"></a>
+## 13. 用户会话管理
 
 当用户登录领域时，Keycloak会为他们维护一个用户会话，并记住他们在会话中访问过的每个客户端。 领域管理员可以对这些用户会话执行许多管理功能。 他们可以查看整个领域的登录统计信息，并深入到每个客户端以查看谁登录以及在哪里登录。 管理员可以从管理控制台注销用户或用户组。 他们可以撤销令牌并在那里设置所有令牌和会话超时。
 
-### 13.1. 管理会话 {#Administering_Sessions}
+<a name="170____13_1__管理会话"></a>
+### 13.1. 管理会话
 
 如果您转到`Sessions`左侧菜单项，您可以看到该领域当前活动的会话数的顶级视图。
 
@@ -3324,26 +3494,30 @@ Sessions
 
 给出了客户端列表以及当前为该客户端提供的活动会话数。 您还可以通过单击此列表右侧的`Logout all`按钮注销域中的所有用户。
 
-#### 13.1.1. 退出所有限制 {#Logout_All_Limitations}
+<a name="171_____13_1_1__退出所有限制"></a>
+#### 13.1.1. 退出所有限制
 任何SSO cookie集现在都将无效，并且在活动浏览器会话中请求身份验证的客户端现在必须重新登录。 只有某些客户端会收到此注销事件的通知，特别是使用Keycloak OIDC客户端适配器的客户端。 其他客户端类型（即SAML）将不会收到反向信道注销请求。
 
 重要的是要注意，单击“全部注销”不会撤消任何未完成的访问令牌。 他们必须自然到期。 您必须将[撤销策略](https://www.keycloak.org/docs/latest/server_admin/index.html#_revocation-policy)推送到客户端，但这也仅适用于使用Keycloak OIDC客户端的客户端 适配器。
 
-#### 13.1.2. 应用追溯 {#Application_Drilldown}
+<a name="172_____13_1_2__应用追溯"></a>
+#### 13.1.2. 应用追溯
 在`Sessions`页面上，您还可以深入查看每个客户端。 这将带您进入该客户端的`Sessions`选项卡。 单击`Show Sessions`按钮，可以查看哪些用户登录到该应用程序。
 
 Application Sessions(应用程序会话)
 
 ![application sessions](assets/application-sessions.png)
 
-#### 13.1.3. 用户追溯 {#User_Drilldown}
+<a name="173_____13_1_3__用户追溯"></a>
+#### 13.1.3. 用户追溯
 如果您转到单个用户的`Sessions`选项卡，您还可以查看会话信息。
 
 User Sessions(用户会话)
 
 ![user sessions](assets/user-sessions.png)
 
-### 13.2. 撤销策略 {#Revocation_Policies}
+<a name="174____13_2__撤销策略"></a>
+### 13.2. 撤销策略
 
 如果您的系统遭到入侵，您将需要一种方法来撤销所有会话并访问已分发的令牌。 您可以通过转到`Sessions`屏幕的`Revocation`选项卡来完成此操作。
 
@@ -3353,7 +3527,8 @@ Revocation(撤销)
 
 您只能设置基于时间的撤销策略。 控制台允许您指定在该时间和日期之前发出的任何会话或令牌无效的时间和日期。 `Set to now`将策略设置为当前时间和日期。 `Push`按钮会将此撤销策略推送到任何已安装Keycloak OIDC客户端适配器的已注册OIDC客户端。
 
-### 13.3. 会话和令牌超时 {#Session_and_Token_Timeouts}
+<a name="175____13_3__会话和令牌超时"></a>
+### 13.3. 会话和令牌超时
 
 Keycloak为您提供对会话，cookie和令牌超时的精细控制。 这都是在`Realm Settings`左侧菜单项的`Tokens`选项卡上完成的。
 
@@ -3384,7 +3559,8 @@ Tokens Tab
 
 > 对于空闲超时，会有一个小的时间窗口（2分钟），在此期间会话保持未到期。 例如，当您将超时设置为30分钟时，它实际上将在会话过期前32分钟。 对于集群和跨数据中心环境中的某些角落情况，如果令牌在到期前的一个集群节点上刷新很短的时间，而其他集群节点在此期间错误地将会话视为 已过期，因为他们尚未从执行刷新的节点收到有关成功刷新的消息。
 
-### 13.4. 离线访问 {#Offline_Access}
+<a name="176____13_4__离线访问"></a>
+### 13.4. 离线访问
 
 脱机访问是[OpenID Connect规范](https://openid.net/specs/openid-connect-core-1_0.html#OfflineAccess)中描述的功能。 我们的想法是，在登录期间，您的客户端应用程序将请求脱机令牌而不是经典的刷新令牌。 应用程序可以将此脱机令牌保存在数据库或磁盘上，即使用户已注销，也可以在以后使用它。 如果您的应用程序需要代表用户执行某些"offline"操作，即使用户不在线，这也很有用。 一个例子是每晚定期备份一些数据。
 
@@ -3398,7 +3574,8 @@ Tokens Tab
 
 客户端可以在向Keycloak发送授权请求时通过添加参数`scope=offline_access`来请求脱机令牌。 当您使用Keycloak OIDC客户端适配器访问应用程序的安全URL（即`http://localhost:8080/customer-portal/secured?scope=offline_access`）时，它会自动添加此参数。 如果在身份验证请求的正文中包含`scope=offline_access`，则直接访问授权和服务帐户也支持脱机令牌。
 
-## 14. 用户存储联合 {#User_Storage_Federation}
+<a name="177___14__用户存储联合"></a>
+## 14. 用户存储联合
 
 许多公司都有现有的用户数据库，用于保存有关用户及其密码或其他凭据的信息。 在许多情况下，无法将这些现有存储迁移到纯粹的Keycloak部署。 Keycloak可以联合现有的外部用户数据库。 开箱即用，我们支持LDAP和Active Directory。 您还可以使用我们的用户存储SPI为您可能拥有的任何自定义用户数据库编写自己的扩展。
 
@@ -3406,7 +3583,8 @@ Tokens Tab
 
 外部用户数据库很少拥有支持Keycloak所具有的所有功能所需的每一项数据。 在这种情况下，用户存储提供程序可以选择在Keycloak用户存储中本地存储一些内容。 有些提供商甚至在本地导入用户并定期与外部商店同步。 所有这些都取决于提供商的功能及其配置方式。 例如，您的外部用户存储可能不支持OTP。 根据提供商的不同，Keycloak可以处理和存储此OTP。
 
-### 14.1. 添加提供商 {#Adding_a_Provider}
+<a name="178____14_1__添加提供商"></a>
+### 14.1. 添加提供商
 要添加存储提供程序，请转到管理控制台中的`User Federation`左侧菜单项。
 
 用户联盟
@@ -3415,7 +3593,8 @@ Tokens Tab
 
 在中心，有一个`Add Provider`列表框。 选择要添加的提供程序类型，然后您将进入该提供程序的配置页面。
 
-### 14.2. 处理提供商失败 {#Dealing_with_Provider_Failures}
+<a name="179____14_2__处理提供商失败"></a>
+### 14.2. 处理提供商失败
 如果用户存储提供程序失败，也就是说，如果LDAP服务器已关闭，则可能无法登录，并且可能无法在管理控制台中查看用户。 使用存储提供程序查找用户时，Keycloak不会捕获故障。 它将中止调用。 因此，如果您有一个优先级较高的存储提供程序在用户查找期间失败，则登录或用户查询将完全失败并发生异常并中止。 它不会故障转移到下一个配置的提供程序。
 
 始终首先搜索本地Keycloak用户数据库，以便在任何LDAP或自定义用户存储提供程序之前解析用户。 您可能需要考虑创建存储在本地Keycloak用户数据库中的管理员帐户，以防万一在连接到LDAP和自定义后端时出现任何问题。
@@ -3424,20 +3603,23 @@ Tokens Tab
 
 如果存储提供程序查找失败，Keycloak不会进行故障转移的原因是用户数据库通常具有重复的用户名或它们之间的重复电子邮件。 这可能导致安全问题和无法预料的问题，因为当管理员期望从另一个用户加载用户时，可以从一个外部存储加载用户。
 
-### 14.3. LDAP和Active Directory {#LDAP_and_Active_Directory}
+<a name="180____14_3__LDAP和Active_Directory"></a>
+### 14.3. LDAP和Active Directory
 
 Keycloak附带内置的`LDAP/AD`提供程序。 可以在同一Keycloak领域中联合多个不同的LDAP服务器。 您可以将LDAP用户属性映射到Keycloak通用用户模型。 默认情况下，它映射用户名，电子邮件，名字和姓氏，但您可以自由配置其他[映射](https://www.keycloak.org/docs/latest/server_admin/index.html#_ldap_mappers)。 LDAP提供程序还支持通过`LDAP/AD`协议进行密码验证以及不同的存储，编辑和同步模式。
 
 要配置联合LDAP存储，请转至管理控制台。 单击 `User Federation` 左侧菜单选项。 当你到达这个页面时，有一个`Add Provider`选择框。 您应该在此列表中看到*ldap*。 选择*ldap*将带您进入LDAP配置页面。
 
-#### 14.3.1. 存储模式 {#Storage_Mode}
+<a name="181_____14_3_1__存储模式"></a>
+#### 14.3.1. 存储模式
 默认情况下，Keycloak会将用户从LDAP导入到本地Keycloak用户数据库中。 该用户副本可以按需同步，也可以通过定期后台任务同步。 一个例外是密码。 不会导入密码，并且会将密码验证委派给LDAP服务器。 这种方法的好处是所有Keycloak功能都可以工作，因为所需的任何额外的每用户数据都可以存储在本地。 此方法还减少了LDAP服务器上的负载，因为第二次访问时，Keycloak数据库会加载未缓存的用户。 LDAP服务器唯一的负载是密码验证。 这种方法的缺点是，当首次查询用户时，这将需要Keycloak数据库插入。 导入还必须根据需要与LDAP服务器同步。
 
 或者，您可以选择不将用户导入Keycloak用户数据库。 在这种情况下，Keycloak运行时使用的公共用户模型仅由LDAP服务器支持。 这意味着如果LDAP不支持Keycloak功能所需的数据，则该功能将无法使用。 这种方法的好处是您没有将LDAP用户的副本导入和同步到Keycloak用户数据库的开销。
 
 此存储模式由`Import Users`开关控制。 设置为`On`以导入用户。
 
-#### 14.3.2. 编辑模式 {#Edit_Mode}
+<a name="182_____14_3_2__编辑模式"></a>
+#### 14.3.2. 编辑模式
 用户通过[用户帐户服务](https://www.keycloak.org/docs/latest/server_admin/index.html#_account-service)和管理员通过管理控制台可以修改用户元数据。 根据您的设置，您可能拥有或不拥有LDAP更新权限。 `Edit Mode`配置选项定义了LDAP存储的编辑策略。
 
 - READONLY(只读)
@@ -3452,7 +3634,8 @@ Keycloak附带内置的`LDAP/AD`提供程序。 可以在同一Keycloak领域中
 
   对用户名，电子邮件，名字，姓氏和密码的任何更改都将存储在Keycloak本地存储中。 由您决定如何同步回LDAP。 这允许Keycloak部署支持在只读LDAP服务器上更新用户元数据。 此选项仅在将用户从LDAP导入本地Keycloak用户数据库时适用。
 
-#### 14.3.3. 其他配置选项 {#Other_config_options}
+<a name="183_____14_3_3__其他配置选项"></a>
+#### 14.3.3. 其他配置选项
 - Console Display Name(控制台显示名称)
 
   在管理控制台中引用此提供程序时使用的名称
@@ -3473,14 +3656,16 @@ Keycloak附带内置的`LDAP/AD`提供程序。 可以在同一Keycloak领域中
 
   其余配置选项应该是自解释的。 您可以将鼠标悬停在管理控制台中的工具提示，以查看有关它们的更多详细信息。
 
-#### 14.3.4. 通过SSL连接到LDAP {#Connect_to_LDAP_over_SSL}
+<a name="184_____14_3_4__通过SSL连接到LDAP"></a>
+#### 14.3.4. 通过SSL连接到LDAP
 当您为LDAP存储配置安全连接URL时（例如`ldaps://myhost.com:636`），Keycloak将使用SSL与LDAP服务器进行通信。 重要的是在Keycloak服务器端正确配置信任库，否则Keycloak不能信任到LDAP的SSL连接。
 
 可以使用Truststore SPI配置Keycloak的全局信任库。 有关更多详细信息，请查看[服务器安装和配置指南](https://www.keycloak.org/docs/6.0/server_installation/)。 如果未配置信任库SPI，则信任库将回退到Java提供的缺省机制（系统属性`javax.net.ssl.trustStore`提供的文件或JDK提供的cacerts文件，如果系统属性为 没有设置）。
 
 在LDAP联合提供程序配置中有一个配置属性`Use Truststore SPI`，您可以在其中选择是否使用`Truststore SPI`。 默认情况下，该值为`Only for ldaps`，这适用于大多数部署。 仅当与LDAP的连接以`ldaps`开头时，才会使用`Truststore SPI`。
 
-#### 14.3.5. LDAP用户与Keycloak的同步 {#Sync_of_LDAP_users_to_Keycloak}
+<a name="185_____14_3_5__LDAP用户与Keycloak的同步"></a>
+#### 14.3.5. LDAP用户与Keycloak的同步
 如果启用了导入，LDAP提供程序将自动负责将所需LDAP用户同步（导入）到Keycloak本地数据库中。 当用户登录时，LDAP提供程序会将LDAP用户导入Keycloak数据库，然后根据LDAP密码进行身份验证。 这是用户导入的唯一时间。 如果您转到管理控制台中的`Users`左侧菜单项并单击`View all users`按钮，您将只看到那些已被Keycloak至少验证过一次的LDAP用户。 它以这种方式实现，以便管理员不会意外地尝试导入庞大的LDAP用户数据库。
 
 如果要将所有LDAP用户同步到Keycloak数据库，可以配置并启用您配置的LDAP提供程序的`Sync Settings`。 有两种类型的同步：
@@ -3495,7 +3680,8 @@ Keycloak附带内置的`LDAP/AD`提供程序。 可以在同一Keycloak领域中
 
 处理同步的最佳方法是在首次创建LDAP提供程序时单击`Synchronize all users`按钮，然后设置已更改用户的定期同步。 LDAP提供程序的配置页面有几个选项可以为您提供支持。
 
-#### 14.3.6. LDAP映射器 {#LDAP_Mappers}
+<a name="186_____14_3_6__LDAP映射器"></a>
+#### 14.3.6. LDAP映射器
 LDAP映射器是`listeners`，由LDAP提供程序在各个点触发，为LDAP集成提供另一个扩展点。 当用户通过LDAP登录并需要导入，在Keycloak启动的注册期间或从管理控制台查询用户时，会触发它们。 当您创建LDAP联合提供程序时，Keycloak将自动为此提供程序提供一组内置的`mappers`。 您可以自由更改此设置并创建新的映射器或更新/删除现有映射器。
 
 - User Attribute Mapper(用户属性映射器)
@@ -3524,12 +3710,14 @@ LDAP映射器是`listeners`，由LDAP提供程序在各个点触发，为LDAP集
 
 默认情况下，有用户属性映射器将基本的Keycloak用户属性（如用户名，名字，姓氏和电子邮件）映射到相应的LDAP属性。 您可以自由扩展这些并提供其他属性映射。 管理控制台提供工具提示，这有助于配置相应的映射器。
 
-#### 14.3.7. 密码哈希 {#Password_Hashing}
+<a name="187_____14_3_7__密码哈希"></a>
+#### 14.3.7. 密码哈希
 当用户的密码从Keycloak更新并发送到LDAP时，它始终以纯文本形式发送。 这与将密码更新为内置Keycloak数据库不同，当在将密码发送到DB之前对密码应用散列和salting时。 对于LDAP，Keycloak依赖于LDAP服务器来提供密码的散列和腌制。
 
 大多数LDAP服务器（Microsoft Active Directory，RHDS，FreeIPA）默认提供此功能。 其他一些（OpenLDAP，ApacheDS）可能默认以纯文本形式存储密码，您可能需要为它们显式启用密码散列。 请参阅LDAP服务器的文档更多详细信息。
 
-### 14.4. SSSD和FreeIPA身份管理集成 {#SSSD_and_FreeIPA_Identity_Management_Integration}
+<a name="188____14_4__SSSD和FreeIPA身份管理集成"></a>
+### 14.4. SSSD和FreeIPA身份管理集成
 
 Keycloak还附带了一个内置的[SSSD](https://fedoraproject.org/wiki/Features/SSSD)（系统安全服务守护程序）插件。 SSSD是最新的Fedora或Red Hat Enterprise Linux的一部分，可以访问多个身份和身份验证提供程序。 它提供故障转移和脱机支持等好处。 有关配置选项的详细信息，请参阅[红帽企业Linux身份管理文档](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/sssd)。
 
@@ -3543,7 +3731,8 @@ Keycloak和SSSD之间的大多数通信都是通过只读D-Bus接口实现的。
 
 下面是有关如何配置`FreeIPA/IdM`服务器的信息。
 
-#### 14.4.1. FreeIPA/IdM服务器 {#FreeIPA_IdM_Server}
+<a name="189_____14_4_1__FreeIPA_IdM服务器"></a>
+#### 14.4.1. FreeIPA/IdM服务器
 为简单起见，使用了[FreeIPA Docker image](https://hub.docker.com/r/freeipa/freeipa-server/)。 要设置服务器，请参阅[FreeIPA文档](https://www.freeipa.org/page/Quick_Start_Guide)。
 
 使用Docker运行FreeIPA服务器需要以下命令：
@@ -3583,7 +3772,8 @@ kinit admin
 $ ipa user-add john --first=John --last=Smith --email=john@smith.com --phone=042424242 --street="Testing street" \      --city="Testing city" --state="Testing State" --postalcode=0000000000
 ```
 
-#### 14.4.2. SSSD and D-Bus {#SSSD_and_D_Bus}
+<a name="190_____14_4_2__SSSD_and_D_Bus"></a>
+#### 14.4.2. SSSD and D-Bus
 如前所述，联合提供程序使用D-BUS从SSSD获取数据，并使用PAM进行身份验证。
 
 首先，您必须安装sssd-dbus RPM，它允许来自SSSD的信息通过系统总线传输。
@@ -3637,7 +3827,8 @@ sudo dbus-send --print-reply --system --dest=org.freedesktop.sssd.infopipe /org/
 allowed_uids = root, your_username
 ```
 
-#### 14.4.3. 启用SSSD联合提供程序 {#Enabling_the_SSSD_Federation_Provider}
+<a name="191_____14_4_3__启用SSSD联合提供程序"></a>
+#### 14.4.3. 启用SSSD联合提供程序
 Keycloak使用DBus-Java与D-Bus进行低级通信，这取决于[Unix套接字库](http://www.matthew.ath.cx/projects/java/)。
 
 可以在[此存储库](https://github.com/keycloak/libunix-dbus-java/releases)中找到此库的RPM。 在安装之前，请务必检查RPM签名：
@@ -3664,7 +3855,8 @@ $ sudo yum install jna
 $ sudo sssctl user-checks admin -s keycloak
 ```
 
-### 14.5. 配置联合SSSD存储 {#Configuring_a_Federated_SSSD_Store}
+<a name="192____14_5__配置联合SSSD存储"></a>
+### 14.5. 配置联合SSSD存储
 安装后，您需要配置联合SSSD存储。
 
 要配置联合SSSD存储，请完成以下步骤：
@@ -3676,15 +3868,18 @@ $ sudo sssctl user-checks admin -s keycloak
 
 现在，您可以使用`FreeIPA/IdM`凭据对Keycloak进行身份验证。
 
-### 14.6. 定制供应商 {#Custom_Providers}
+<a name="193____14_6__定制供应商"></a>
+### 14.6. 定制供应商
 
 Keycloak确实有一个用于用户存储联合的SPI，您可以使用它来编写自己的自定义提供程序。 您可以在我们的[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)中找到相关文档。
 
-## 15. 审计和事件 {#Auditing_and_Events}
+<a name="194___15__审计和事件"></a>
+## 15. 审计和事件
 
 Keycloak提供丰富的审计功能。 每个登录操作都可以记录并存储在数据库中，并在管理控制台中查看。 还可以记录和审查所有管理操作。 还有一个监听器SPI，插件可以监听这些事件并执行某些操作。 内置侦听器包括简单的日志文件以及在事件发生时发送电子邮件的功能。
 
-### 15.1. 登录活动 {#Login_Events}
+<a name="195____15_1__登录活动"></a>
+### 15.1. 登录活动
 
 登录事件发生在用户成功登录，有人输入错误密码或用户帐户更新时。 可以记录和查看发生在用户身上的每个事件。 默认情况下，管理控制台中不会存储或查看任何事件。 只有错误事件记录到控制台和服务器的日志文件中。 要开始持久化，您需要启用存储。 转到`Events`左侧菜单项并选择`Config`选项卡。
 
@@ -3714,7 +3909,8 @@ Login Event Filter(登录事件过滤器)
 
 在此屏幕截图中，我们仅过滤了`Login`事件。 单击`Update`按钮可运行过滤器。
 
-#### 15.1.1. 事件类型 {#Event_Types}
+<a name="196_____15_1_1__事件类型"></a>
+#### 15.1.1. 事件类型
 登录事件：
 
 - Login - 用户已登录。
@@ -3738,7 +3934,8 @@ Login Event Filter(登录事件过滤器)
 
 对于所有事件，都存在相应的错误事件。
 
-#### 15.1.2. 事件监听器 {#Event_Listener}
+<a name="197_____15_1_2__事件监听器"></a>
+#### 15.1.2. 事件监听器
 事件侦听器侦听事件并基于该事件执行操作。 Keycloak附带了两个内置监听器：`Logging Event Listener` 和 `Email Event Listener`。
 
 每当发生错误事件时，`Logging Event Listener`都会写入日志文件，并且默认情况下处于启用状态。 这是一个示例日志消息：
@@ -3777,7 +3974,8 @@ Login Event Filter(登录事件过滤器)
 
 有关`standalone.xml`，`standalone-ha.xml`或`domain的详细信息，请参阅[服务器安装和配置指南](https://www.keycloak.org/docs/6.0/server_installation/)。
 
-### 15.2. 管理事件 {#Admin_Events}
+<a name="198____15_2__管理事件"></a>
+### 15.2. 管理事件
 
 可以记录管理员在管理控制台中执行的任何操作以进行审计。 管理控制台通过调用Keycloak REST接口来执行管理功能。 Keycloak审核这些REST调用。 然后，可以在管理控制台中查看生成的事件。
 
@@ -3813,7 +4011,8 @@ Admin Event Filter(管理事件筛选器)
 
 ![admin events filter](assets/admin-events-filter.png)
 
-## 16. 导出和导入 {#Export_and_Import}
+<a name="199___16__导出和导入"></a>
+## 16. 导出和导入
 
 Keycloak具有导出和导入整个数据库的能力。 如果要将整个Keycloak数据库从一个环境迁移到另一个环境或迁移到其他数据库（例如从MySQL到Oracle），这可能特别有用。 导出和导入在服务器启动时触发，其参数通过Java系统属性传递。 需要注意的是，由于导入和导出是在服务器启动时发生的，因此在发生这种情况时，不应对服务器或数据库执行任何其他操作。
 
@@ -3876,7 +4075,8 @@ bin/standalone.sh -Dkeycloak.migration.action=import
 - -Dkeycloak.import=/tmp/realm1.json
 - -Dkeycloak.import=/tmp/realm1.json,/tmp/realm2.json
 
-### 16.1. 管理控制台导出/导入 {#Admin_console_export_import}
+<a name="200____16_1__管理控制台导出_导入"></a>
+### 16.1. 管理控制台导出/导入
 可以从管理控制台执行大多数资源的导入，也可以导出大多数资源。 不支持导出用户。
 
 注意：包含机密或私人信息的属性将在导出文件中屏蔽。 因此，通过管理控制台获取的导出文件不适用于服务器之间的备份或数据传输。 只有启动时导出才适合。
@@ -3887,7 +4087,8 @@ bin/standalone.sh -Dkeycloak.migration.action=import
 
 > 管理控制台导出允许您导出客户端，组和角色。 如果您的领域中存在大量这些资产，则操作可能需要一些时间才能完成。 在此期间，服务器可能无法响应用户请求。 请谨慎使用此功能，尤其是在生产系统上。
 
-## 17. 用户帐户服务 {#User_Account_Service}
+<a name="201___17__用户帐户服务"></a>
+## 17. 用户帐户服务
 
 Keycloak有一个内置的用户帐户服务，每个用户都可以访问。 此服务允许用户管理其帐户，更改其凭据，更新其个人资料以及查看其登录会话。 此服务的URL是`<server-root>/auth/realms/{realm-name}/account`。
 
@@ -3927,14 +4128,17 @@ Applications(应用)
 
 ![account service apps](assets/account-service-apps.png)
 
-### 17.1. 主题化 {#Themeable}
+<a name="202____17_1__主题化"></a>
+### 17.1. 主题化
 与Keycloak中的所有UI一样，用户帐户服务完全可以主题化和国际化。 有关详细信息，请参阅[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)。
 
-## 18. 威胁模型缓解 {#Threat_Model_Mitigation}
+<a name="203___18__威胁模型缓解"></a>
+## 18. 威胁模型缓解
 
 本章讨论了任何身份验证服务器可能存在的安全漏洞以及Keycloak如何减轻这些漏洞。 在IETF提出的[OAuth 2.0威胁模型](https://tools.ietf.org/html/rfc6819)文档中可以找到一个很好的潜在漏洞清单以及安全实施应该采取哪些措施来缓解这些漏洞。 这里讨论了许多漏洞。
 
-### 18.1. 主机名 {#Host}
+<a name="204____18_1__主机名"></a>
+### 18.1. 主机名
 
 Keycloak使用公共主机名进行许多操作。 例如，在密码重置电子邮件中发送的令牌颁发者字段和URL中。
 
@@ -3944,7 +4148,8 @@ Keycloak使用公共主机名进行许多操作。 例如，在密码重置电�
 
 Hostname SPI提供了一种为请求配置主机名的方法。 开箱即用有两个提供商。 这些是请求和修复。 如果内置提供程序不提供所需的功能，也可以开发自己的提供程序。
 
-#### 18.1.1. 请求提供者 {#Request_provider}
+<a name="205_____18_1_1__请求提供者"></a>
+#### 18.1.1. 请求提供者
 这是默认的主机名提供程序，并使用请求标头来确定主机名。 由于它使用请求中的标头，因此将其与代理或拒绝无效主机名的过滤器结合使用非常重要。
 
 提供有关如何为代理配置有效主机名的说明超出了本文档的范围。 要在过滤器中对其进行配置，您需要编辑standalone.xml以为服务器设置允许的别名。 以下示例仅允许对`auth.example.com`的请求：
@@ -3972,7 +4177,8 @@ Hostname SPI提供了一种为请求配置主机名的方法。 开箱即用有�
 :reload
 ```
 
-#### 18.1.2. 固定提供商 {#Fixed_provider}
+<a name="206_____18_1_2__固定提供商"></a>
+#### 18.1.2. 固定提供商
 固定提供程序可以配置固定主机名。 与请求提供程序不同，固定提供程序允许内部应用程序在备用URL（例如内部IP地址）上调用Keycloak。 还可以通过管理控制台中域的配置覆盖特定域的主机名。
 
 这是在生产中使用的推荐提供商。
@@ -4003,12 +4209,14 @@ Hostname SPI提供了一种为请求配置主机名的方法。 开箱即用有�
 
 在大多数情况下，应该正确设置方案。 如果反向代理无法正确设置`X-Forwarded-For`标头，或者如果有内部应用程序使用非https来调用Keycloak，则可能不是这样。 在这种情况下，可以将`alwaysHttps`设置为`true`。
 
-#### 18.1.3. 定制提供商 {#Custom_provider}
+<a name="207_____18_1_3__定制提供商"></a>
+#### 18.1.3. 定制提供商
 要开发自定义主机名提供程序，您需要实现`org.keycloak.urls.HostnameProviderFactory`和`orl.keycloak.urls.HostnameProvider`。
 
 按照[服务器开发人员指南](https://www.keycloak.org/docs/6.0/server_development/)中“服务提供商接口”部分中的说明，了解有关如何开发自定义提供程序的更多信息。
 
-### 18.2. 管理员端点和控制台 {#Admin_Endpoints_and_Console}
+<a name="208____18_2__管理员端点和控制台"></a>
+### 18.2. 管理员端点和控制台
 
 默认情况下，Keycloak管理REST API和Web控制台在与非管理员用法相同的端口上公开。 如果您在Internet上公开Keycloak，我们建议您不要在Internet上公开管理端点。
 
@@ -4018,7 +4226,8 @@ Hostname SPI提供了一种为请求配置主机名的方法。 开箱即用有�
 
 要在Keycloak中直接实现这一点，有一些选择。 本文档包含两个选项，IP限制和单独端口。
 
-#### 18.2.1. IP限制 {#IP_Restriction}
+<a name="209_____18_2_1__IP限制"></a>
+#### 18.2.1. IP限制
 可以将对`/auth/admin`的访问限制为仅限于特定的IP地址。
 
 以下示例将对`/auth/admin`的访问限制为`10.0.0.1`到`10.0.0.255`范围内的IP地址。
@@ -4049,7 +4258,8 @@ Hostname SPI提供了一种为请求配置主机名的方法。 开箱即用有�
 
 > 对于IP限制，如果您使用代理，请务必正确配置以确保Keycloak接收客户端IP地址而不是代理IP地址
 
-#### 18.2.2. 端口限制 {#Port_Restriction}
+<a name="210_____18_2_2__端口限制"></a>
+#### 18.2.2. 端口限制
 可以将`/auth/admin`暴露给未在Internet上公开的其他端口。
 
 以下示例在端口`8444`上公开`/auth/admin`，而不允许使用默认端口`8443`进行访问。
@@ -4093,7 +4303,8 @@ Hostname SPI提供了一种为请求配置主机名的方法。 开箱即用有�
 /subsystem=undertow/server=default-server/host=default-host/filter-ref=portAccess:add()
 ```
 
-### 18.3. 密码猜测：暴力攻击 {#Password_guess:_brute_force_attacks}
+<a name="211____18_3__密码猜测：暴力攻击"></a>
+### 18.3. 密码猜测：暴力攻击
 
 当攻击者试图猜测用户的密码时，会发生暴力攻击。 Keycloak具有一些有限的强力检测功能。 如果启用，则在达到登录失败阈值时将暂时禁用用户帐户。 要启用此功能，请转到`Realm Settings`左侧菜单项，单击`Security Defenses`选项卡，然后转到`Brute Force Detection`子选项卡。
 
@@ -4162,12 +4373,14 @@ Keycloak强力检测的缺点是服务器容易受到拒绝服务攻击。 攻�
 
 更好的选择可能是像[Fail2Ban]这样的工具(http://www.fail2ban.org/wiki/index.php/Main_Page)。 您可以将此服务指向Keycloak服务器的日志文件。 Keycloak记录每次登录失败和发生故障的客户端IP地址。 在检测到阻止来自特定IP地址的连接的攻击后，Fail2Ban可用于修改防火墙。
 
-#### 18.3.1. 密码策略 {#Password_Policies}
+<a name="212_____18_3_1__密码策略"></a>
+#### 18.3.1. 密码策略
 防止密码猜测应该做的另一件事是拥有足够复杂的密码策略，以确保用户选择难以猜测的密码。 有关详细信息，请参阅[密码策略](https://www.keycloak.org/docs/latest/server_admin/index.html#_password-policies)一章。
 
 防止密码猜测的最佳方法是将服务器设置为使用一次性密码（OTP）。
 
-### 18.4. 点击劫持 {#Clickjacking}
+<a name="213____18_4__点击劫持"></a>
+### 18.4. 点击劫持
 
 通过点击劫持，恶意网站将目标网站加载到覆盖在一组虚拟按钮顶部的透明iFrame中，这些虚拟按钮经过精心构造，可直接放置在目标站点上的重要按钮下。 当用户单击可见按钮时，他们实际上是在隐藏页面上单击按钮（例如“登录”按钮）。 攻击者可以窃取用户的身份验证凭据并访问其资源。
 
@@ -4177,7 +4390,8 @@ Keycloak强力检测的缺点是服务器容易受到拒绝服务攻击。 攻�
 
 默认情况下，Keycloak仅为iframe设置*同源(same-origin)*政策。
 
-### 18.5. SSL/HTTPS要求 {#SSL_HTTPS_Requirement}
+<a name="214____18_5__SSL_HTTPS要求"></a>
+### 18.5. SSL/HTTPS要求
 
 如果您没有使用`SSL/HTTPS`进行Keycloak auth服务器与它所保护的客户端之间的所有通信，那么在中间攻击中您将非常容易受到攻击。 `OAuth 2.0/OpenID Connect`使用访问令牌来提高安全性。 如果没有`SSL/HTTPS`，攻击者可以嗅探您的网络并获取访问令牌。 一旦他们拥有访问令牌，他们就可以执行令牌已获得权限的任何操作。
 
@@ -4185,7 +4399,8 @@ Keycloak有[SSL / HTTPS的三种模式](https://www.keycloak.org/docs/latest/ser
 
 在适配器/客户端，Keycloak允许您关闭SSL信任管理器。 信任管理器确保客户端正在与之交谈。 它根据服务器的证书检查DNS域名。 在生产中，您应确保将每个客户端适配器配置为使用信任库。 否则你在中间攻击中容易受到DNS人员的攻击。
 
-### 18.6. CSRF 攻击 {#CSRF_Attacks}
+<a name="215____18_6__CSRF_攻击"></a>
+### 18.6. CSRF 攻击
 
 跨站点请求伪造（CSRF）是基于Web的攻击，其中HTTP请求从网站信任或已经过身份验证的用户（例如，通过HTTP重定向或HTML表单）传输。 任何使用基于cookie的身份验证的站点都容易受到这些类型的攻击。 通过将状态cookie与发布的表单或查询参数进行匹配来减轻这些攻击。
 
@@ -4195,11 +4410,13 @@ Keycloak管理控制台是一个纯JavaScript / HTML5应用程序，可以对后
 
 Keycloak中唯一真正落入CSRF的部分是用户帐户管理页面。 要缓解此Keycloak设置状态cookie，并将此状态cookie的值嵌入隐藏表单字段或操作链接中的查询参数。 将针对状态cookie检查此查询或表单参数，以验证用户是否进行了调用。
 
-### 18.7. 非特定的重定向URI {#Unspecific_Redirect_URIs}
+<a name="216____18_7__非特定的重定向URI"></a>
+### 18.7. 非特定的重定向URI
 
 对于[授权代码流程](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows)，如果您注册过于笼统的重定向URI，那么就有可能 对于流氓客户端冒充具有更广泛访问范围的不同客户端。 例如，如果两个客户端位于同一域下，则可能发生这种情况。 因此，最好使注册的重定向URI尽可能具体。
 
-### 18.8. 受损的访问和刷新令牌 {#Compromised_Access_and_Refresh_Tokens}
+<a name="217____18_8__受损的访问和刷新令牌"></a>
+### 18.8. 受损的访问和刷新令牌
 
 您可以采取一些措施来减少访问令牌并刷新令牌被盗。 最重要的是在Keycloak及其客户端和应用程序之间强制执行`SSL/HTTPS`通信。 这似乎很明显，但由于Keycloak默认情况下没有启用SSL，因此管理员可能没有意识到这是必要的。
 
@@ -4211,37 +4428,45 @@ Keycloak中唯一真正落入CSRF的部分是用户帐户管理页面。 要缓�
 
 如果您认为这些实体中的任何一个完全受到损害，您还可以禁用特定应用程序，客户端和用户。
 
-### 18.9. 受损的授权码 {#Compromised_Authorization_Code}
+<a name="218____18_9__受损的授权码"></a>
+### 18.9. 受损的授权码
 
 对于[OIDC Auth Code Flow](https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-auth-flows)，攻击者很难破解Keycloak授权码。 Keycloak为其授权码生成加密强随机值，因此很难猜测访问令牌。 授权代码只能使用一次才能获得访问令牌。 在管理控制台中，您可以在[超时页面](https://www.keycloak.org/docs/latest/server_admin/index.html#_timeouts)上指定授权代码的有效期。 这个值应该非常短，只需几秒钟，并且足够长，以便客户端从代码中获取请求以获取令牌。
 
-### 18.10. 打开重定向器 {#Open_redirectors}
+<a name="219____18_10__打开重定向器"></a>
+### 18.10. 打开重定向器
 
 攻击者可以使用最终用户授权端点和重定向URI参数将授权服务器滥用为开放重定向器。 开放重定向器是一个端点，使用参数自动将用户代理重定向到参数值指定的位置，而不进行任何验证。 攻击者可以利用用户对授权服务器的信任来发起网络钓鱼攻击。
 
 Keycloak要求所有注册的应用程序和客户端至少注册一个重定向URI模式。 每当客户端要求Keycloak执行重定向（例如登录或注销）时，Keycloak将检查重定向URI与有效注册URI模式列表。 客户端和应用程序注册为特定的URI模式以减轻开放重定向器攻击非常重要。
 
-### 18.11. 密码数据库受损 {#Password_database_compromised}
+<a name="220____18_11__密码数据库受损"></a>
+### 18.11. 密码数据库受损
 
 Keycloak不会以原始文本存储密码。 它使用PBKDF2算法存储它们的散列。 它实际上使用默认的20,000次散列迭代！ 这是安全社区建议的迭代次数。 这可能会对您的系统产生相当大的性能影响，因为PBKDF2在设计上占用了大量的CPU。 您需要决定保护密码数据库的严肃程度。
 
-### 18.12. 限制范围 {#Limiting_Scope}
+<a name="221____18_12__限制范围"></a>
+### 18.12. 限制范围
 
 默认情况下，每个新的客户端应用程序都具有无限的`角色范围映射`。 这意味着为该客户端创建的每个访问令牌都将包含用户拥有的所有权限。 如果客户端遭到入侵并且访问令牌泄露，则用户有权访问的每个系统现在也会受到损害。 强烈建议您使用每个客户端的[范围菜单](https://www.keycloak.org/docs/latest/server_admin/index.html#_role_scope_mappings)限制访问令牌的角色。 或者，您可以在客户端作用域级别设置角色范围映射，并使用[客户端范围菜单](https://www.keycloak.org/docs/latest/server_admin/index.html#_client_scopes_linking)将客户端范围分配给客户端。
 
-### 18.13. 限制令牌受众 {#Limit_Token_Audience}
+<a name="222____18_13__限制令牌受众"></a>
+### 18.13. 限制令牌受众
 
 在服务之间的信任级别较低的环境中，限制令牌上的受众是一种好习惯。 其背后的动机在[OAuth2威胁模型](https://tools.ietf.org/html/rfc6819#section-5.1.5.5)文档中有所描述，更多详细信息请参见[受众支持部分](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience)。
 
-### 18.14. SQL注入攻击 {#SQL_Injection_Attacks}
+<a name="223____18_14__SQL注入攻击"></a>
+### 18.14. SQL注入攻击
 
 在这个时间点，没有在任何Keycloak SQL注入漏洞的知识。
 
-## 19. 管理员 命令行 {#The_Admin_CLI}
+<a name="224___19__管理员_命令行"></a>
+## 19. 管理员 命令行
 
 在前面的章节中，我们介绍了如何使用Keycloak管理控制台执行管理任务。 您还可以使用Admin CLI命令行工具从命令行界面（CLI）执行这些任务。
 
-### 19.1. 安装Admin CLI {#Installing_the_Admin_CLI}
+<a name="225____19_1__安装Admin_CLI"></a>
+### 19.1. 安装Admin CLI
 Admin CLI打包在Keycloak Server发行版中。 您可以在`bin`目录中找到执行脚本。
 
 Linux脚本称为`kcadm.sh`，Windows脚本称为`kcadm.bat`。
@@ -4268,7 +4493,8 @@ c:\> kcadm
 
 > 为避免重复，本文档的其余部分仅在CLI中的差异超出`kcadm`命令名称的地方提供Windows示例。
 
-### 19.2. 使用Admin CLI {#Using_the_Admin_CLI}
+<a name="226____19_2__使用Admin_CLI"></a>
+### 19.2. 使用Admin CLI
 Admin CLI通过向Admin REST端点发出HTTP请求来工作。 对它们的访问受到保护并需要身份验证。
 
   > 有关特定端点的JSON属性的详细信息，请参阅`Admin REST API`文档。  
@@ -4312,7 +4538,8 @@ Admin CLI通过向Admin REST端点发出HTTP请求来工作。 对它们的访�
      c:\> kcadm config truststore --trustpass %PASSWORD% %HOMEPATH%\.keycloak\truststore.jks
      ```
 
-### 19.3. 认证 {#Authenticating}
+<a name="227____19_3__认证"></a>
+### 19.3. 认证
 使用Admin CLI登录时，指定服务器端点URL和域，然后指定用户名。 另一种选择是仅指定clientId，这导致使用特殊的"(service account)服务帐户"。 使用用户名登录时，必须使用指定用户的密码。 使用clientId登录时，只需要客户端密码，而不是用户密码。 您也可以使用`Signed JWT`而不是客户端密钥。
 
 确保用于会话的帐户具有调用Admin REST API操作的适当权限。 例如，`realm-management`客户端的`realm-admin`角色允许用户管理定义用户的领域。
@@ -4337,7 +4564,8 @@ $ kcadm.sh get realms --no-config --server http://localhost:8080/auth --realm ma
 
 运行`kcadm.sh config credentials --help`命令以获取有关启动经过身份验证的会话的更多信息。
 
-### 19.4. 使用其他配置 {#Working_with_alternative_configurations}
+<a name="228____19_4__使用其他配置"></a>
+### 19.4. 使用其他配置
 默认情况下，Admin CLI会自动维护位于用户主目录下的名为`kcadm.config`的配置文件。 在基于Linux的系统中，完整路径名是`$HOME/.keycloak/kcadm.config`。 在Windows上，完整路径名是`%HOMEPATH%\.keycloak\kcadm.config`。 您可以使用`--config`选项指向不同的文件或位置，以便您可以并行维护多个经过身份验证的会话。
 
 > 最好从单个线程执行绑定到单个配置文件的操作。
@@ -4346,7 +4574,8 @@ $ kcadm.sh get realms --no-config --server http://localhost:8080/auth --realm ma
 
 If your unique circumstances require you to avoid storing secrets inside a configuration file, you can do so. It will be less convenient and you will have to make more token requests. To not store secrets, use the `--no-config` option with all your commands and specify all the authentication information needed by the `config credentials` command with each `kcadm`invocation.
 
-### 19.5. Basic operations and resource URIs {#Basic_operations_and_resource_URIs}
+<a name="229____19_5__Basic_operations_and_resource_URIs"></a>
+### 19.5. Basic operations and resource URIs
 The Admin CLI allows you to generically perform CRUD operations against Admin REST API endpoints with additional commands that simplify performing certain tasks.
 
 The main usage pattern is listed below, where the `create`, `get`, `update`, and `delete` commands are mapped to the HTTP verbs `POST`, `GET`, `PUT`, and `DELETE`, respectively.
@@ -4417,8 +4646,10 @@ That method only updates the `enabled` attribute to `false`.
 
 By default, the `update` command first performs a `get` and then merges the new attribute values with existing values. This is the preferred behavior. In some cases, the endpoint may support the `PUT` command but not the `GET` command. You can use the `-n` option to perform a "no-merge" update, which performs a `PUT` command without first running a `GET`command.
 
-### 19.6. Realm operations {#Realm_operations}
-#### Creating a new realm {#Creating_a_new_realm}
+<a name="230____19_6__Realm_operations"></a>
+### 19.6. Realm operations
+<a name="231_____Creating_a_new_realm"></a>
+#### Creating a new realm
 Use the `create` command on the `realms` endpoint to create a new enabled realm, and set the attributes to `realm` and `enabled`.
 
 ```
@@ -4451,7 +4682,8 @@ EOF
 c:\> echo { "realm": "demorealm", "enabled": true } | kcadm create realms -f -
 ```
 
-#### Listing existing realms {#Listing_existing_realms}
+<a name="232_____Listing_existing_realms"></a>
+#### Listing existing realms
 The following command returns a list of all realms.
 
 ```
@@ -4474,14 +4706,16 @@ You can also display the result as comma separated values.
 $ kcadm.sh get realms --fields realm --format csv --noquotes
 ```
 
-#### Getting a specific realm {#Getting_a_specific_realm}
+<a name="233_____Getting_a_specific_realm"></a>
+#### Getting a specific realm
 You append a realm name to a collection URI to get an individual realm.
 
 ```
 $ kcadm.sh get realms/master
 ```
 
-#### Updating a realm {#Updating_a_realm}
+<a name="234_____Updating_a_realm"></a>
+#### Updating a realm
 1. Use the `-s` option to set new values for the attributes when you want to change only some of the realm’s attributes.
 
    For example:
@@ -4500,14 +4734,16 @@ $ kcadm.sh get realms/master
    $ kcadm.sh update realms/demorealm -f demorealm.json
    ```
 
-#### Deleting a realm {#Deleting_a_realm}
+<a name="235_____Deleting_a_realm"></a>
+#### Deleting a realm
 Run the following command to delete a realm.
 
 ```
 $ kcadm.sh delete realms/demorealm
 ```
 
-#### Turning on all login page options for the realm {#Turning_on_all_login_page_options_for_the_realm}
+<a name="236_____Turning_on_all_login_page_options_for_the_realm"></a>
+#### Turning on all login page options for the realm
 Set the attributes controlling specific capabilities to `true`.
 
 For example:
@@ -4516,14 +4752,16 @@ For example:
 $ kcadm.sh update realms/demorealm -s registrationAllowed=true -s registrationEmailAsUsername=true -s rememberMe=true -s verifyEmail=true -s resetPasswordAllowed=true -s editUsernameAllowed=true
 ```
 
-#### Listing the realm keys {#Listing_the_realm_keys}
+<a name="237_____Listing_the_realm_keys"></a>
+#### Listing the realm keys
 Use the `get` operation on the `keys` endpoint of the target realm.
 
 ```
 $ kcadm.sh get keys -r demorealm
 ```
 
-#### Generating new realm keys {#Generating_new_realm_keys}
+<a name="238_____Generating_new_realm_keys"></a>
+#### Generating new realm keys
 1. Get the ID of the target realm before adding a new RSA-generated key pair.
 
    For example:
@@ -4552,7 +4790,8 @@ $ kcadm.sh get keys -r demorealm
 
    The newly added key should now become the active key as revealed by `kcadm.sh get keys -r demorealm`.
 
-#### Adding new realm keys from a Java Key Store file {#Adding_new_realm_keys_from_a_Java_Key_Store_file}
+<a name="239_____Adding_new_realm_keys_from_a_Java_Key_Store_file"></a>
+#### Adding new realm keys from a Java Key Store file
 1. Add a new key provider to add a new key pair already prepared as a JKS file on the server.
 
    For example, on:
@@ -4573,7 +4812,8 @@ $ kcadm.sh get keys -r demorealm
 
 3. Set the `parentId` attribute to the value of the target realm’s ID.
 
-#### Making the key passive or disabling the key {#Making_the_key_passive_or_disabling_the_key}
+<a name="240_____Making_the_key_passive_or_disabling_the_key"></a>
+#### Making the key passive or disabling the key
 1. Identify the key you want to make passive
 
    ```
@@ -4604,7 +4844,8 @@ $ kcadm.sh get keys -r demorealm
 
 5. Set a new `priority` value to change the key’s priority, for example, `config.priority=["110"]`.
 
-#### Deleting an old key {#Deleting_an_old_key}
+<a name="241_____Deleting_an_old_key"></a>
+#### Deleting an old key
 1. Make sure the key you are deleting has been passive and disabled to prevent any existing tokens held by applications and users from abruptly failing to work.
 
 2. Identify the key you want to make passive.
@@ -4619,7 +4860,8 @@ $ kcadm.sh get keys -r demorealm
    $ kcadm.sh delete components/PROVIDER_ID -r demorealm
    ```
 
-#### Configuring event logging for a realm {#Configuring_event_logging_for_a_realm}
+<a name="242_____Configuring_event_logging_for_a_realm"></a>
+#### Configuring event logging for a realm
 Use the `update` command on the `events/config` endpoint.
 
 The `eventsListeners` attribute contains a list of EventListenerProviderFactory IDs that specify all event listeners receiving events. Separately, there are attributes that control a built-in event storage, which allows querying past events via the Admin REST API. There is separate control over logging of service calls (`eventsEnabled`) and auditing events triggered during Admin Console or Admin REST API (`adminEventsEnabled`). You may want to set up expiry of old events so that your database does not fill up; `eventsExpiration` is set to time-to-live expressed in seconds.
@@ -4680,7 +4922,8 @@ Here is an example of how to delete all saved events.
 $ kcadm delete events
 ```
 
-#### Flushing the caches {#Flushing_the_caches}
+<a name="243_____Flushing_the_caches"></a>
+#### Flushing the caches
 1. Use the `create` command and one of the following endpoints: `clear-realm-cache`, `clear-user-cache`, or `clear-keys-cache`.
 
 2. Set `realm` to the same value as the target realm.
@@ -4693,7 +4936,8 @@ $ kcadm delete events
    $ kcadm.sh create clear-keys-cache -r demorealm -s realm=demorealm
    ```
 
-#### Importing a realm from exported .json file {#Importing_a_realm_from_exported__json_file}
+<a name="244_____Importing_a_realm_from_exported__json_file"></a>
+#### Importing a realm from exported .json file
 1. Use the `create` command on the `partialImport` endpoint.
 
 2. Set `ifResourceExists` to one of `FAIL`, `SKIP`, `OVERWRITE`.
@@ -4714,15 +4958,18 @@ $ kcadm delete events
    $ kcadm.sh create realms -s realm=demorealm2 -s enabled=true
    ```
 
-### 19.7. Role operations {#Role_operations}
-#### Creating a realm role {#Creating_a_realm_role}
+<a name="245____19_7__Role_operations"></a>
+### 19.7. Role operations
+<a name="246_____Creating_a_realm_role"></a>
+#### Creating a realm role
 Use the `roles` endpoint to create a realm role.
 
 ```
 $ kcadm.sh create roles -r demorealm -s name=user -s 'description=Regular user with limited set of permissions'
 ```
 
-#### Creating a client role {#Creating_a_client_role}
+<a name="247_____Creating_a_client_role"></a>
+#### Creating a client role
 1. Identify the client first and then use the `get` command to list available clients when creating a client role.
 
    ```
@@ -4737,7 +4984,8 @@ $ kcadm.sh create roles -r demorealm -s name=user -s 'description=Regular user w
    $ kcadm.sh create clients/a95b6af3-0bdc-4878-ae2e-6d61a4eca9a0/roles -r demorealm -s name=editor -s 'description=Editor can edit, and publish any article'
    ```
 
-#### Listing realm roles {#Listing_realm_roles}
+<a name="248_____Listing_realm_roles"></a>
+#### Listing realm roles
 Use the `get` command on the `roles` endpoint to list existing realm roles.
 
 ```
@@ -4750,7 +4998,8 @@ You can also use the `get-roles` command.
 $ kcadm.sh get-roles -r demorealm
 ```
 
-#### Listing client roles {#Listing_client_roles}
+<a name="249_____Listing_client_roles"></a>
+#### Listing client roles
 There is a dedicated `get-roles` command to simplify listing realm and client roles. It is an extension of the `get` command and behaves the same with additional semantics for listing roles.
 
 Use the `get-roles` command, passing it either the clientId attribute (via the `--cclientid` option) or `id` (via the `--cid`option) to identify the client to list client roles.
@@ -4761,7 +5010,8 @@ For example:
 $ kcadm.sh get-roles -r demorealm --cclientid realm-management
 ```
 
-#### Getting a specific realm role {#Getting_a_specific_realm_role}
+<a name="250_____Getting_a_specific_realm_role"></a>
+#### Getting a specific realm role
 Use the `get` command and the role `name` to construct an endpoint URI for a specific realm role: `roles/ROLE_NAME`, where `user` is the name of the existing role.
 
 For example:
@@ -4778,7 +5028,8 @@ For example:
 $ kcadm.sh get-roles -r demorealm --rolename user
 ```
 
-#### Getting a specific client role {#Getting_a_specific_client_role}
+<a name="251_____Getting_a_specific_client_role"></a>
+#### Getting a specific client role
 Use a dedicated `get-roles` command, passing it either the clientId attribute (via the `--cclientid` option) or ID (via the `--cid` option) to identify the client, and passing it either the role name (via the `--rolename` option) or ID (via the `--roleid`) to identify a specific client role.
 
 For example:
@@ -4787,7 +5038,8 @@ For example:
 $ kcadm.sh get-roles -r demorealm --cclientid realm-management --rolename manage-clients
 ```
 
-#### Updating a realm role {#Updating_a_realm_role}
+<a name="252_____Updating_a_realm_role"></a>
+#### Updating a realm role
 Use the `update` command with the same endpoint URI that you used to get a specific realm role.
 
 For example:
@@ -4796,7 +5048,8 @@ For example:
 $ kcadm.sh update roles/user -r demorealm -s 'description=Role representing a regular user'
 ```
 
-#### Updating a client role {#Updating_a_client_role}
+<a name="253_____Updating_a_client_role"></a>
+#### Updating a client role
 Use the `update` command with the same endpoint URI that you used to get a specific client role.
 
 For example:
@@ -4805,7 +5058,8 @@ For example:
 $ kcadm.sh update clients/a95b6af3-0bdc-4878-ae2e-6d61a4eca9a0/roles/editor -r demorealm -s 'description=User that can edit, and publish articles'
 ```
 
-#### Deleting a realm role {#Deleting_a_realm_role}
+<a name="254_____Deleting_a_realm_role"></a>
+#### Deleting a realm role
 Use the `delete` command with the same endpoint URI that you used to get a specific realm role.
 
 For example:
@@ -4814,7 +5068,8 @@ For example:
 $ kcadm.sh delete roles/user -r demorealm
 ```
 
-#### Deleting a client role {#Deleting_a_client_role}
+<a name="255_____Deleting_a_client_role"></a>
+#### Deleting a client role
 Use the `delete` command with the same endpoint URI that you used to get a specific client role.
 
 For example:
@@ -4823,7 +5078,8 @@ For example:
 $ kcadm.sh delete clients/a95b6af3-0bdc-4878-ae2e-6d61a4eca9a0/roles/editor -r demorealm
 ```
 
-#### Listing assigned, available, and effective realm roles for a composite role {#Listing_assigned,_available,_and_effective_realm_roles_for_a_composite_role}
+<a name="256_____Listing_assigned__available__and_effective_realm_roles_for_a_composite_role"></a>
+#### Listing assigned, available, and effective realm roles for a composite role
 Use a dedicated `get-roles` command to list assigned, available, and effective realm roles for a composite role.
 
 1. To list **assigned** realm roles for the composite role, you can specify the target composite role by either name (via the `--rname` option) or ID (via the `--rid` option).
@@ -4850,7 +5106,8 @@ Use a dedicated `get-roles` command to list assigned, available, and effective r
    $ kcadm.sh get-roles -r demorealm --rname testrole --available
    ```
 
-#### Listing assigned, available, and effective client roles for a composite role {#Listing_assigned,_available,_and_effective_client_roles_for_a_composite_role}
+<a name="257_____Listing_assigned__available__and_effective_client_roles_for_a_composite_role"></a>
+#### Listing assigned, available, and effective client roles for a composite role
 Use a dedicated `get-roles` command to list assigned, available, and effective client roles for a composite role.
 
 1. To list **assigned** client roles for the composite role, you can specify the target composite role by either name (via the `--rname` option) or ID (via the `--rid` option) and client by either the clientId attribute (via the `--cclientid` option) or ID (via the `--cid` option).
@@ -4877,7 +5134,8 @@ Use a dedicated `get-roles` command to list assigned, available, and effective c
    $ kcadm.sh get-roles -r demorealm --rname testrole --cclientid realm-management --available
    ```
 
-#### Adding realm roles to a composite role {#Adding_realm_roles_to_a_composite_role}
+<a name="258_____Adding_realm_roles_to_a_composite_role"></a>
+#### Adding realm roles to a composite role
 There is a dedicated `add-roles` command that can be used for adding realm roles and client roles.
 
 The following example adds the `user` role to the composite role `testrole`.
@@ -4886,7 +5144,8 @@ The following example adds the `user` role to the composite role `testrole`.
 $ kcadm.sh add-roles --rname testrole --rolename user -r demorealm
 ```
 
-#### Removing realm roles from a composite role {#Removing_realm_roles_from_a_composite_role}
+<a name="259_____Removing_realm_roles_from_a_composite_role"></a>
+#### Removing realm roles from a composite role
 There is a dedicated `remove-roles` command that can be used to remove realm roles and client roles.
 
 The following example removes the `user` role from the target composite role `testrole`.
@@ -4895,7 +5154,8 @@ The following example removes the `user` role from the target composite role `te
 $ kcadm.sh remove-roles --rname testrole --rolename user -r demorealm
 ```
 
-#### Adding client roles to a realm role {#Adding_client_roles_to_a_realm_role}
+<a name="260_____Adding_client_roles_to_a_realm_role"></a>
+#### Adding client roles to a realm role
 Use a dedicated `add-roles` command that can be used for adding realm roles and client roles.
 
 The following example adds the roles defined on the client `realm-management` - `create-client` role and the `view-users` role to the `testrole` composite role.
@@ -4904,7 +5164,8 @@ The following example adds the roles defined on the client `realm-management` - 
 $ kcadm.sh add-roles -r demorealm --rname testrole --cclientid realm-management --rolename create-client --rolename view-users
 ```
 
-#### Adding client roles to a client role {#Adding_client_roles_to_a_client_role}
+<a name="261_____Adding_client_roles_to_a_client_role"></a>
+#### Adding client roles to a client role
 1. Determine the ID of the composite client role by using the `get-roles` command.
 
    For example:
@@ -4929,7 +5190,8 @@ $ kcadm.sh add-roles -r demorealm --rname testrole --cclientid realm-management 
    $ kcadm.sh get-roles --rid fc400897-ef6a-4e8c-872b-1581b7fa8a71 --all
    ```
 
-#### Removing client roles from a composite role {#Removing_client_roles_from_a_composite_role}
+<a name="262_____Removing_client_roles_from_a_composite_role"></a>
+#### Removing client roles from a composite role
 Use a dedicated `remove-roles` command to remove client roles from a composite role.
 
 Use the following example to remove two roles defined on the client `realm management` - `create-client` role and the `view-users` role from the `testrole` composite role.
@@ -4938,7 +5200,8 @@ Use the following example to remove two roles defined on the client `realm manag
 $ kcadm.sh remove-roles -r demorealm --rname testrole --cclientid realm-management --rolename create-client --rolename view-users
 ```
 
-#### Adding client roles to a group {#Adding_client_roles_to_a_group}
+<a name="263_____Adding_client_roles_to_a_group"></a>
+#### Adding client roles to a group
 Use a dedicated `add-roles` command that can be used for adding realm roles and client roles.
 
 The following example adds the roles defined on the client `realm-management` - `create-client` role and the `view-users` role to the `Group` group (via the `--gname` option). The group can alternatively be specified by ID (via the `--gid`option).
@@ -4949,7 +5212,8 @@ See [Group operations](https://www.keycloak.org/docs/latest/server_admin/index.h
 $ kcadm.sh add-roles -r demorealm --gname Group --cclientid realm-management --rolename create-client --rolename view-users
 ```
 
-#### Removing client roles from a group {#Removing_client_roles_from_a_group}
+<a name="264_____Removing_client_roles_from_a_group"></a>
+#### Removing client roles from a group
 Use a dedicated `remove-roles` command to remove client roles from a group.
 
 Use the following example to remove two roles defined on the client `realm management` - `create-client` role and the `view-users` role from the `Group` group.
@@ -4960,8 +5224,10 @@ See [Group operations](https://www.keycloak.org/docs/latest/server_admin/index.h
 $ kcadm.sh remove-roles -r demorealm --gname Group --cclientid realm-management --rolename create-client --rolename view-users
 ```
 
-### 19.8. Client operations {#Client_operations}
-#### Creating a client {#Creating_a_client}
+<a name="265____19_8__Client_operations"></a>
+### 19.8. Client operations
+<a name="266_____Creating_a_client"></a>
+#### Creating a client
 1. Run the `create` command on a `clients` endpoint to create a new client.
 
    For example:
@@ -4978,7 +5244,8 @@ $ kcadm.sh remove-roles -r demorealm --gname Group --cclientid realm-management 
    $ kcadm.sh create clients -r demorealm -s clientId=myapp -s enabled=true -s clientAuthenticatorType=client-secret -s secret=d0b8122f-8dfb-46b7-b68a-f5cc4e25d000
    ```
 
-#### Listing clients {#Listing_clients}
+<a name="267_____Listing_clients"></a>
+#### Listing clients
 Use the `get` command on the `clients` endpoint to list clients.
 
 For example:
@@ -4989,7 +5256,8 @@ $ kcadm.sh get clients -r demorealm --fields id,clientId
 
 This example filters the output to list only the `id` and `clientId` attributes.
 
-#### Getting a specific client {#Getting_a_specific_client}
+<a name="268_____Getting_a_specific_client"></a>
+#### Getting a specific client
 Use a client’s ID to construct an endpoint URI that targets a specific client, such as `clients/ID`.
 
 For example:
@@ -4998,7 +5266,8 @@ For example:
 $ kcadm.sh get clients/c7b8547f-e748-4333-95d0-410b76b3f4a3 -r demorealm
 ```
 
-#### Getting the current secret for a specific client {#Getting_the_current_secret_for_a_specific_client}
+<a name="269_____Getting_the_current_secret_for_a_specific_client"></a>
+#### Getting the current secret for a specific client
 Use a client’s ID to construct an endpoint URI, such as `clients/ID/client-secret`.
 
 For example:
@@ -5007,7 +5276,8 @@ For example:
 $ kcadm.sh get clients/$CID/client-secret
 ```
 
-#### Getting an adapter configuration file (keycloak.json) for a specific client {#Getting_an_adapter_configuration_file__keycloak_json__for_a_specific_client}
+<a name="270_____Getting_an_adapter_configuration_file__keycloak_json__for_a_specific_client"></a>
+#### Getting an adapter configuration file (keycloak.json) for a specific client
 Use a client’s ID to construct an endpoint URI that targets a specific client, such as `clients/ID/installation/providers/keycloak-oidc-keycloak-json`.
 
 For example:
@@ -5016,7 +5286,8 @@ For example:
 $ kcadm.sh get clients/c7b8547f-e748-4333-95d0-410b76b3f4a3/installation/providers/keycloak-oidc-keycloak-json -r demorealm
 ```
 
-#### Getting a WildFly subsystem adapter configuration for a specific client {#Getting_a_WildFly_subsystem_adapter_configuration_for_a_specific_client}
+<a name="271_____Getting_a_WildFly_subsystem_adapter_configuration_for_a_specific_client"></a>
+#### Getting a WildFly subsystem adapter configuration for a specific client
 Use a client’s ID to construct an endpoint URI that targets a specific client, such as `clients/ID/installation/providers/keycloak-oidc-jboss-subsystem`.
 
 For example:
@@ -5025,7 +5296,8 @@ For example:
 $ kcadm.sh get clients/c7b8547f-e748-4333-95d0-410b76b3f4a3/installation/providers/keycloak-oidc-jboss-subsystem -r demorealm
 ```
 
-#### Getting a Docker-v2 example configuration for a specific client {#Getting_a_Docker_v2_example_configuration_for_a_specific_client}
+<a name="272_____Getting_a_Docker_v2_example_configuration_for_a_specific_client"></a>
+#### Getting a Docker-v2 example configuration for a specific client
 Use a client’s ID to construct an endpoint URI that targets a specific client, such as `clients/ID/installation/providers/docker-v2-compose-yaml`.
 
 Note that response will be in `.zip` format.
@@ -5036,7 +5308,8 @@ For example:
 $ kcadm.sh get http://localhost:8080/auth/admin/realms/demorealm/clients/8f271c35-44e3-446f-8953-b0893810ebe7/installation/providers/docker-v2-compose-yaml -r demorealm > keycloak-docker-compose-yaml.zip
 ```
 
-#### Updating a client {#Updating_a_client}
+<a name="273_____Updating_a_client"></a>
+#### Updating a client
 Use the `update` command with the same endpoint URI that you used to get a specific client.
 
 For example, on:
@@ -5053,7 +5326,8 @@ $ kcadm.sh update clients/c7b8547f-e748-4333-95d0-410b76b3f4a3 -r demorealm -s e
 c:\> kcadm update clients/c7b8547f-e748-4333-95d0-410b76b3f4a3 -r demorealm -s enabled=false -s publicClient=true -s "redirectUris=[\"http://localhost:8080/myapp/*\"]" -s baseUrl=http://localhost:8080/myapp -s adminUrl=http://localhost:8080/myapp
 ```
 
-#### Deleting a client {#Deleting_a_client}
+<a name="274_____Deleting_a_client"></a>
+#### Deleting a client
 Use the `delete` command with the same endpoint URI that you used to get a specific client.
 
 For example:
@@ -5062,11 +5336,14 @@ For example:
 $ kcadm.sh delete clients/c7b8547f-e748-4333-95d0-410b76b3f4a3 -r demorealm
 ```
 
-#### Adding or removing roles for client’s service account {#Adding_or_removing_roles_for_client’s_service_account}
+<a name="275_____Adding_or_removing_roles_for_client_s_service_account"></a>
+#### Adding or removing roles for client’s service account
 Service account for the client is just a special kind of user account with username `service-account-CLIENT_ID`. You can perform user operations on this account as if it was a regular user.
 
-### 19.9. User operations {#User_operations}
-#### Creating a user {#Creating_a_user}
+<a name="276____19_9__User_operations"></a>
+### 19.9. User operations
+<a name="277_____Creating_a_user"></a>
+#### Creating a user
 Run the `create` command on the `users` endpoint to create a new user.
 
 For example:
@@ -5075,7 +5352,8 @@ For example:
 $ kcadm.sh create users -r demorealm -s username=testuser -s enabled=true
 ```
 
-#### Listing users {#Listing_users}
+<a name="278_____Listing_users"></a>
+#### Listing users
 Use the `users` endpoint to list users. The target user will have to change the password the next time they log in.
 
 For example:
@@ -5099,7 +5377,8 @@ $ kcadm.sh get users -r demorealm -q username=testuser
 
 You can also filter across multiple attributes by specifying multiple `-q` options, which return only users that match the condition for all the attributes.
 
-#### Getting a specific user {#Getting_a_specific_user}
+<a name="279_____Getting_a_specific_user"></a>
+#### Getting a specific user
 Use a user’s ID to compose an endpoint URI, such as `users/USER_ID`.
 
 For example:
@@ -5108,7 +5387,8 @@ For example:
 $ kcadm.sh get users/0ba7a3fd-6fd8-48cd-a60b-2e8fd82d56e2 -r demorealm
 ```
 
-#### Updating a user {#Updating_a_user}
+<a name="280_____Updating_a_user"></a>
+#### Updating a user
 Use the `update` command with the same endpoint URI that you used to get a specific user.
 
 For example, on:
@@ -5125,7 +5405,8 @@ $ kcadm.sh update users/0ba7a3fd-6fd8-48cd-a60b-2e8fd82d56e2 -r demorealm -s 're
 c:\> kcadm update users/0ba7a3fd-6fd8-48cd-a60b-2e8fd82d56e2 -r demorealm -s "requiredActions=[\"VERIFY_EMAIL\",\"UPDATE_PROFILE\",\"CONFIGURE_TOTP\",\"UPDATE_PASSWORD\"]"
 ```
 
-#### Deleting a user {#Deleting_a_user}
+<a name="281_____Deleting_a_user"></a>
+#### Deleting a user
 Use the `delete` command with the same endpoint URI that you used to get a specific user.
 
 For example:
@@ -5134,7 +5415,8 @@ For example:
 $ kcadm.sh delete users/0ba7a3fd-6fd8-48cd-a60b-2e8fd82d56e2 -r demorealm
 ```
 
-#### Resetting a user’s password {#Resetting_a_user’s_password}
+<a name="282_____Resetting_a_user_s_password"></a>
+#### Resetting a user’s password
 Use the dedicated `set-password` command to reset a user’s password.
 
 For example:
@@ -5157,7 +5439,8 @@ $ kcadm.sh update users/0ba7a3fd-6fd8-48cd-a60b-2e8fd82d56e2/reset-password -r d
 
 The last parameter (`-n`) ensures that only the `PUT` command is performed without a prior `GET` command. It is necessary in this instance because the `reset-password` endpoint does not support `GET`.
 
-#### Listing assigned, available, and effective realm roles for a user {#Listing_assigned,_available,_and_effective_realm_roles_for_a_user}
+<a name="283_____Listing_assigned__available__and_effective_realm_roles_for_a_user"></a>
+#### Listing assigned, available, and effective realm roles for a user
 You can use a dedicated `get-roles` command to list assigned, available, and effective realm roles for a user.
 
 1. Specify the target user by either user name or ID to list **assigned** realm roles for the user.
@@ -5184,7 +5467,8 @@ $ kcadm.sh get-roles -r demorealm --uusername testuser
    $ kcadm.sh get-roles -r demorealm --uusername testuser --available
    ```
 
-#### Listing assigned, available, and effective client roles for a user {#Listing_assigned,_available,_and_effective_client_roles_for_a_user}
+<a name="284_____Listing_assigned__available__and_effective_client_roles_for_a_user"></a>
+#### Listing assigned, available, and effective client roles for a user
 Use a dedicated `get-roles` command to list assigned, available, and effective client roles for a user.
 
 1. Specify the target user by either a user name (via the `--uusername` option) or an ID (via the `--uid` option) and client by either a clientId attribute (via the `--cclientid` option) or an ID (via the `--cid` option) to list **assigned** client roles for the user.
@@ -5211,7 +5495,8 @@ Use a dedicated `get-roles` command to list assigned, available, and effective c
    $ kcadm.sh get-roles -r demorealm --uusername testuser --cclientid realm-management --available
    ```
 
-#### Adding realm roles to a user {#Adding_realm_roles_to_a_user}
+<a name="285_____Adding_realm_roles_to_a_user"></a>
+#### Adding realm roles to a user
 Use a dedicated `add-roles` command to add realm roles to a user.
 
 Use the following example to add the `user` role to user `testuser`.
@@ -5220,7 +5505,8 @@ Use the following example to add the `user` role to user `testuser`.
 $ kcadm.sh add-roles --uusername testuser --rolename user -r demorealm
 ```
 
-#### Removing realm roles from a user {#Removing_realm_roles_from_a_user}
+<a name="286_____Removing_realm_roles_from_a_user"></a>
+#### Removing realm roles from a user
 Use a dedicated `remove-roles` command to remove realm roles from a user.
 
 Use the following example to remove the `user` role from the user `testuser`.
@@ -5229,7 +5515,8 @@ Use the following example to remove the `user` role from the user `testuser`.
 $ kcadm.sh remove-roles --uusername testuser --rolename user -r demorealm
 ```
 
-#### Adding client roles to a user {#Adding_client_roles_to_a_user}
+<a name="287_____Adding_client_roles_to_a_user"></a>
+#### Adding client roles to a user
 Use a dedicated `add-roles` command to add client roles to a user.
 
 Use the following example to add two roles defined on the client `realm management` - `create-client` role and the `view-users` role to the user `testuser`.
@@ -5238,7 +5525,8 @@ Use the following example to add two roles defined on the client `realm manageme
 $ kcadm.sh add-roles -r demorealm --uusername testuser --cclientid realm-management --rolename create-client --rolename view-users
 ```
 
-#### Removing client roles from a user {#Removing_client_roles_from_a_user}
+<a name="288_____Removing_client_roles_from_a_user"></a>
+#### Removing client roles from a user
 Use a dedicated `remove-roles` command to remove client roles from a user.
 
 Use the following example to remove two roles defined on the realm management client.
@@ -5247,7 +5535,8 @@ Use the following example to remove two roles defined on the realm management cl
 $ kcadm.sh remove-roles -r demorealm --uusername testuser --cclientid realm-management --rolename create-client --rolename view-users
 ```
 
-#### Listing a user’s sessions {#Listing_a_user’s_sessions}
+<a name="289_____Listing_a_user_s_sessions"></a>
+#### Listing a user’s sessions
 1. Identify the user’s ID, and then use it to compose an endpoint URI, such as `users/ID/sessions`.
 
 2. Use the `get` command to retrieve a list of the user’s sessions.
@@ -5258,7 +5547,8 @@ $ kcadm.sh remove-roles -r demorealm --uusername testuser --cclientid realm-mana
    $kcadm get users/6da5ab89-3397-4205-afaa-e201ff638f9e/sessions
    ```
 
-#### Logging out a user from a specific session {#Logging_out_a_user_from_a_specific_session}
+<a name="290_____Logging_out_a_user_from_a_specific_session"></a>
+#### Logging out a user from a specific session
 1. Determine the session’s ID as described above.
 
 2. Use the session’s ID to compose an endpoint URI, such as `sessions/ID`.
@@ -5271,7 +5561,8 @@ $ kcadm.sh remove-roles -r demorealm --uusername testuser --cclientid realm-mana
    $ kcadm.sh delete sessions/d0eaa7cc-8c5d-489d-811a-69d3c4ec84d1
    ```
 
-#### Logging out a user from all sessions {#Logging_out_a_user_from_all_sessions}
+<a name="291_____Logging_out_a_user_from_all_sessions"></a>
+#### Logging out a user from all sessions
 You need a user’s ID to construct an endpoint URI, such as `users/ID/logout`.
 
 Use the `create` command to perform `POST` on that endpoint URI.
@@ -5282,8 +5573,10 @@ For example:
 $ kcadm.sh create users/6da5ab89-3397-4205-afaa-e201ff638f9e/logout -r demorealm -s realm=demorealm -s user=6da5ab89-3397-4205-afaa-e201ff638f9e
 ```
 
-### 19.10. Group operations {#Group_operations}
-#### Creating a group {#Creating_a_group}
+<a name="292____19_10__Group_operations"></a>
+### 19.10. Group operations
+<a name="293_____Creating_a_group"></a>
+#### Creating a group
 Use the `create` command on the `groups` endpoint to create a new group.
 
 For example:
@@ -5292,7 +5585,8 @@ For example:
 $ kcadm.sh create groups -r demorealm -s name=Group
 ```
 
-#### Listing groups {#Listing_groups}
+<a name="294_____Listing_groups"></a>
+#### Listing groups
 Use the `get` command on the `groups` endpoint to list groups.
 
 For example:
@@ -5301,7 +5595,8 @@ For example:
 $ kcadm.sh get groups -r demorealm
 ```
 
-#### Getting a specific group {#Getting_a_specific_group}
+<a name="295_____Getting_a_specific_group"></a>
+#### Getting a specific group
 Use the group’s ID to construct an endpoint URI, such as `groups/GROUP_ID`.
 
 For example:
@@ -5310,7 +5605,8 @@ For example:
 $ kcadm.sh get groups/51204821-0580-46db-8f2d-27106c6b5ded -r demorealm
 ```
 
-#### Updating a group {#Updating_a_group}
+<a name="296_____Updating_a_group"></a>
+#### Updating a group
 Use the `update` command with the same endpoint URI that you used to get a specific group.
 
 For example:
@@ -5319,7 +5615,8 @@ For example:
 $ kcadm.sh update groups/51204821-0580-46db-8f2d-27106c6b5ded -s 'attributes.email=["group@example.com"]' -r demorealm
 ```
 
-#### Deleting a group {#Deleting_a_group}
+<a name="297_____Deleting_a_group"></a>
+#### Deleting a group
 Use the `delete` command with the same endpoint URI that you used to get a specific group.
 
 For example:
@@ -5328,7 +5625,8 @@ For example:
 $ kcadm.sh delete groups/51204821-0580-46db-8f2d-27106c6b5ded -r demorealm
 ```
 
-#### Creating a subgroup {#Creating_a_subgroup}
+<a name="298_____Creating_a_subgroup"></a>
+#### Creating a subgroup
 Find the ID of the parent group by listing groups, and then use that ID to construct an endpoint URI, such as `groups/GROUP_ID/children`.
 
 For example:
@@ -5337,7 +5635,8 @@ For example:
 $ kcadm.sh create groups/51204821-0580-46db-8f2d-27106c6b5ded/children -r demorealm -s name=SubGroup
 ```
 
-#### Moving a group under another group {#Moving_a_group_under_another_group}
+<a name="299_____Moving_a_group_under_another_group"></a>
+#### Moving a group under another group
 1. Find the ID of an existing parent group and of an existing child group.
 2. Use the parent group’s ID to construct an endpoint URI, such as `groups/PARENT_GROUP_ID/children`.
 3. Run the `create` command on this endpoint and pass the child group’s ID as a JSON body.
@@ -5348,7 +5647,8 @@ For example:
 $ kcadm.sh create groups/51204821-0580-46db-8f2d-27106c6b5ded/children -r demorealm -s id=08d410c6-d585-4059-bb07-54dcb92c5094
 ```
 
-#### Get groups for a specific user {#Get_groups_for_a_specific_user}
+<a name="300_____Get_groups_for_a_specific_user"></a>
+#### Get groups for a specific user
 Use a user’s ID to determine a user’s membership in groups to compose an endpoint URI, such as `users/USER_ID/groups`.
 
 For example:
@@ -5357,7 +5657,8 @@ For example:
 $ kcadm.sh get users/b544f379-5fc4-49e5-8a8d-5cfb71f46f53/groups -r demorealm
 ```
 
-#### Adding a user to a group {#Adding_a_user_to_a_group}
+<a name="301_____Adding_a_user_to_a_group"></a>
+#### Adding a user to a group
 Use the `update` command with an endpoint URI composed from user’s ID and a group’s ID, such as `users/USER_ID/groups/GROUP_ID`, to add a user to a group.
 
 For example:
@@ -5366,7 +5667,8 @@ For example:
 $ kcadm.sh update users/b544f379-5fc4-49e5-8a8d-5cfb71f46f53/groups/ce01117a-7426-4670-a29a-5c118056fe20 -r demorealm -s realm=demorealm -s userId=b544f379-5fc4-49e5-8a8d-5cfb71f46f53 -s groupId=ce01117a-7426-4670-a29a-5c118056fe20 -n
 ```
 
-#### Removing a user from a group {#Removing_a_user_from_a_group}
+<a name="302_____Removing_a_user_from_a_group"></a>
+#### Removing a user from a group
 Use the `delete` command on the same endpoint URI as used for adding a user to a group, such as `users/USER_ID/groups/GROUP_ID`, to remove a user from a group.
 
 For example:
@@ -5375,7 +5677,8 @@ For example:
 $ kcadm.sh delete users/b544f379-5fc4-49e5-8a8d-5cfb71f46f53/groups/ce01117a-7426-4670-a29a-5c118056fe20 -r demorealm
 ```
 
-#### Listing assigned, available, and effective realm roles for a group {#Listing_assigned,_available,_and_effective_realm_roles_for_a_group}
+<a name="303_____Listing_assigned__available__and_effective_realm_roles_for_a_group"></a>
+#### Listing assigned, available, and effective realm roles for a group
 Use a dedicated `get-roles` command to list assigned, available, and effective realm roles for a group.
 
 1. Specify the target group by name (via the `--gname` option), path (via the [command] `--gpath` option), or ID (via the `--gid` option) to list **assigned** realm roles for the group.
@@ -5402,7 +5705,8 @@ Use a dedicated `get-roles` command to list assigned, available, and effective r
    $ kcadm.sh get-roles -r demorealm --gname Group --available
    ```
 
-#### Listing assigned, available, and effective client roles for a group {#Listing_assigned,_available,_and_effective_client_roles_for_a_group}
+<a name="304_____Listing_assigned__available__and_effective_client_roles_for_a_group"></a>
+#### Listing assigned, available, and effective client roles for a group
 Use a dedicated `get-roles` command to list assigned, available, and effective client roles for a group.
 
 1. Specify the target group by either name (via the `--gname` option) or ID (via the `--gid` option), and client by either the clientId attribute (via the [command] `--cclientid` option) or ID (via the `--id` option) to list **assigned** client roles for the user.
@@ -5429,8 +5733,10 @@ Use a dedicated `get-roles` command to list assigned, available, and effective c
    $ kcadm.sh get-roles -r demorealm --gname Group --cclientid realm-management --available
    ```
 
-### 19.11. Identity provider operations {#Identity_provider_operations}
-#### Listing available identity providers {#Listing_available_identity_providers}
+<a name="305____19_11__Identity_provider_operations"></a>
+### 19.11. Identity provider operations
+<a name="306_____Listing_available_identity_providers"></a>
+#### Listing available identity providers
 Use the `serverinfo` endpoint to list available identity providers.
 
 For example:
@@ -5443,7 +5749,8 @@ $ kcadm.sh get serverinfo -r demorealm --fields 'identityProviders(*)'
 | ---- | ------------------------------------------------------------ |
 |      |                                                              |
 
-#### Listing configured identity providers {#Listing_configured_identity_providers}
+<a name="307_____Listing_configured_identity_providers"></a>
+#### Listing configured identity providers
 Use the `identity-provider/instances` endpoint.
 
 For example:
@@ -5452,7 +5759,8 @@ For example:
 $ kcadm.sh get identity-provider/instances -r demorealm --fields alias,providerId,enabled
 ```
 
-#### Getting a specific configured identity provider {#Getting_a_specific_configured_identity_provider}
+<a name="308_____Getting_a_specific_configured_identity_provider"></a>
+#### Getting a specific configured identity provider
 Use the `alias` attribute of the identity provider to construct an endpoint URI, such as `identity-provider/instances/ALIAS`, to get a specific identity provider.
 
 For example:
@@ -5461,7 +5769,8 @@ For example:
 $ kcadm.sh get identity-provider/instances/facebook -r demorealm
 ```
 
-#### Removing a specific configured identity provider {#Removing_a_specific_configured_identity_provider}
+<a name="309_____Removing_a_specific_configured_identity_provider"></a>
+#### Removing a specific configured identity provider
 Use the `delete` command with the same endpoint URI that you used to get a specific configured identity provider to remove a specific configured identity provider.
 
 For example:
@@ -5470,7 +5779,8 @@ For example:
 $ kcadm.sh delete identity-provider/instances/facebook -r demorealm
 ```
 
-#### Configuring a Keycloak OpenID Connect identity provider {#Configuring_a_Keycloak_OpenID_Connect_identity_provider}
+<a name="310_____Configuring_a_Keycloak_OpenID_Connect_identity_provider"></a>
+#### Configuring a Keycloak OpenID Connect identity provider
 1. Use `keycloak-oidc` as the `providerId` when creating a new identity provider instance.
 
 2. Provide the `config` attributes: `authorizationUrl`, `tokenUrl`, `clientId`, and `clientSecret`.
@@ -5481,10 +5791,12 @@ $ kcadm.sh delete identity-provider/instances/facebook -r demorealm
    $ kcadm.sh create identity-provider/instances -r demorealm -s alias=keycloak-oidc -s providerId=keycloak-oidc -s enabled=true -s 'config.useJwksUrl="true"' -s config.authorizationUrl=http://localhost:8180/auth/realms/demorealm/protocol/openid-connect/auth -s config.tokenUrl=http://localhost:8180/auth/realms/demorealm/protocol/openid-connect/token -s config.clientId=demo-oidc-provider -s config.clientSecret=secret
    ```
 
-#### Configuring an OpenID Connect identity provider {#Configuring_an_OpenID_Connect_identity_provider}
+<a name="311_____Configuring_an_OpenID_Connect_identity_provider"></a>
+#### Configuring an OpenID Connect identity provider
 Configure the generic OpenID Connect provider the same way you configure the Keycloak OpenID Connect provider, except that you set the `providerId` attribute value to `oidc`.
 
-#### Configuring a SAML 2 identity provider {#Configuring_a_SAML_2_identity_provider}
+<a name="312_____Configuring_a_SAML_2_identity_provider"></a>
+#### Configuring a SAML 2 identity provider
 1. Use `saml` as the `providerId`.
 2. Provide the `config` attributes: `singleSignOnServiceUrl`, `nameIDPolicyFormat`, and `signatureAlgorithm`.
 
@@ -5494,7 +5806,8 @@ For example:
 $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s providerId=saml -s enabled=true -s 'config.useJwksUrl="true"' -s config.singleSignOnServiceUrl=http://localhost:8180/auth/realms/saml-broker-realm/protocol/saml -s config.nameIDPolicyFormat=urn:oasis:names:tc:SAML:2.0:nameid-format:persistent -s config.signatureAlgorithm=RSA_SHA256
 ```
 
-#### Configuring a Facebook identity provider {#Configuring_a_Facebook_identity_provider}
+<a name="313_____Configuring_a_Facebook_identity_provider"></a>
+#### Configuring a Facebook identity provider
 1. Use `facebook` as the `providerId`.
 
 2. Provide the `config` attributes: `clientId` and `clientSecret`. You can find these attributes in the Facebook Developers application configuration page for your application.
@@ -5505,7 +5818,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create identity-provider/instances -r demorealm -s alias=facebook -s providerId=facebook -s enabled=true  -s 'config.useJwksUrl="true"' -s config.clientId=FACEBOOK_CLIENT_ID -s config.clientSecret=FACEBOOK_CLIENT_SECRET
    ```
 
-#### Configuring a Google identity provider {#Configuring_a_Google_identity_provider}
+<a name="314_____Configuring_a_Google_identity_provider"></a>
+#### Configuring a Google identity provider
 1. Use `google` as the `providerId`.
 
 2. Provide the `config` attributes: `clientId` and `clientSecret`. You can find these attributes in the Google Developers application configuration page for your application.
@@ -5516,7 +5830,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create identity-provider/instances -r demorealm -s alias=google -s providerId=google -s enabled=true  -s 'config.useJwksUrl="true"' -s config.clientId=GOOGLE_CLIENT_ID -s config.clientSecret=GOOGLE_CLIENT_SECRET
    ```
 
-#### Configuring a Twitter identity provider {#Configuring_a_Twitter_identity_provider}
+<a name="315_____Configuring_a_Twitter_identity_provider"></a>
+#### Configuring a Twitter identity provider
 1. Use `twitter` as the `providerId`.
 
 2. Provide the `config` attributes `clientId` and `clientSecret`. You can find these attributes in the Twitter Application Management application configuration page for your application.
@@ -5527,7 +5842,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create identity-provider/instances -r demorealm -s alias=google -s providerId=google -s enabled=true  -s 'config.useJwksUrl="true"' -s config.clientId=TWITTER_API_KEY -s config.clientSecret=TWITTER_API_SECRET
    ```
 
-#### Configuring a GitHub identity provider {#Configuring_a_GitHub_identity_provider}
+<a name="316_____Configuring_a_GitHub_identity_provider"></a>
+#### Configuring a GitHub identity provider
 1. Use `github` as the `providerId`.
 
 2. Provide the `config` attributes `clientId` and `clientSecret`. You can find these attributes in the GitHub Developer Application Settings page for your application.
@@ -5538,7 +5854,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create identity-provider/instances -r demorealm -s alias=github -s providerId=github -s enabled=true  -s 'config.useJwksUrl="true"' -s config.clientId=GITHUB_CLIENT_ID -s config.clientSecret=GITHUB_CLIENT_SECRET
    ```
 
-#### Configuring a LinkedIn identity provider {#Configuring_a_LinkedIn_identity_provider}
+<a name="317_____Configuring_a_LinkedIn_identity_provider"></a>
+#### Configuring a LinkedIn identity provider
 1. Use `linkedin` as the `providerId`.
 
 2. Provide the `config` attributes `clientId` and `clientSecret`. You can find these attributes in the LinkedIn Developer Console application page for your application.
@@ -5549,7 +5866,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create identity-provider/instances -r demorealm -s alias=linkedin -s providerId=linkedin -s enabled=true  -s 'config.useJwksUrl="true"' -s config.clientId=LINKEDIN_CLIENT_ID -s config.clientSecret=LINKEDIN_CLIENT_SECRET
    ```
 
-#### Configuring a Microsoft Live identity provider {#Configuring_a_Microsoft_Live_identity_provider}
+<a name="318_____Configuring_a_Microsoft_Live_identity_provider"></a>
+#### Configuring a Microsoft Live identity provider
 1. Use `microsoft` as the `providerId`.
 
 2. Provide the `config` attributes `clientId` and `clientSecret`. You can find these attributes in the Microsoft Application Registration Portal page for your application.
@@ -5560,7 +5878,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create identity-provider/instances -r demorealm -s alias=microsoft -s providerId=microsoft -s enabled=true  -s 'config.useJwksUrl="true"' -s config.clientId=MICROSOFT_APP_ID -s config.clientSecret=MICROSOFT_PASSWORD
    ```
 
-#### Configuring a Stack Overflow identity provider {#Configuring_a_Stack_Overflow_identity_provider}
+<a name="319_____Configuring_a_Stack_Overflow_identity_provider"></a>
+#### Configuring a Stack Overflow identity provider
 1. Use `stackoverflow` command as the `providerId`.
 
 2. Provide the `config` attributes `clientId`, `clientSecret`, and `key`. You can find these attributes in the Stack Apps OAuth page for your application.
@@ -5571,8 +5890,10 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create identity-provider/instances -r demorealm -s alias=stackoverflow -s providerId=stackoverflow -s enabled=true  -s 'config.useJwksUrl="true"' -s config.clientId=STACKAPPS_CLIENT_ID -s config.clientSecret=STACKAPPS_CLIENT_SECRET -s config.key=STACKAPPS_KEY
    ```
 
-### 19.12. Storage provider operations {#Storage_provider_operations}
-#### Configuring a Kerberos storage provider {#Configuring_a_Kerberos_storage_provider}
+<a name="320____19_12__Storage_provider_operations"></a>
+### 19.12. Storage provider operations
+<a name="321_____Configuring_a_Kerberos_storage_provider"></a>
+#### Configuring a Kerberos storage provider
 1. Use the `create` command against the `components` endpoint.
 
 2. Specify realm id as a value of the `parentId` attribute.
@@ -5585,7 +5906,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create components -r demorealm -s parentId=demorealmId -s id=demokerberos -s name=demokerberos -s providerId=kerberos -s providerType=org.keycloak.storage.UserStorageProvider -s 'config.priority=["0"]' -s 'config.debug=["false"]' -s 'config.allowPasswordAuthentication=["true"]' -s 'config.editMode=["UNSYNCED"]' -s 'config.updateProfileFirstLogin=["true"]' -s 'config.allowKerberosAuthentication=["true"]' -s 'config.kerberosRealm=["KEYCLOAK.ORG"]' -s 'config.keyTab=["http.keytab"]' -s 'config.serverPrincipal=["HTTP/localhost@KEYCLOAK.ORG"]' -s 'config.cachePolicy=["DEFAULT"]'
    ```
 
-#### Configuring an LDAP user storage provider {#Configuring_an_LDAP_user_storage_provider}
+<a name="322_____Configuring_an_LDAP_user_storage_provider"></a>
+#### Configuring an LDAP user storage provider
 1. Use the `create` command against the `components` endpoint.
 
 2. Specify `ldap` as a value of the `providerId` attribute, and `org.keycloak.storage.UserStorageProvider` as the value of the `providerType` attribute.
@@ -5598,7 +5920,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create components -r demorealm -s name=kerberos-ldap-provider -s providerId=ldap -s providerType=org.keycloak.storage.UserStorageProvider -s parentId=3d9c572b-8f33-483f-98a6-8bb421667867  -s 'config.priority=["1"]' -s 'config.fullSyncPeriod=["-1"]' -s 'config.changedSyncPeriod=["-1"]' -s 'config.cachePolicy=["DEFAULT"]' -s config.evictionDay=[] -s config.evictionHour=[] -s config.evictionMinute=[] -s config.maxLifespan=[] -s 'config.batchSizeForSync=["1000"]' -s 'config.editMode=["WRITABLE"]' -s 'config.syncRegistrations=["false"]' -s 'config.vendor=["other"]' -s 'config.usernameLDAPAttribute=["uid"]' -s 'config.rdnLDAPAttribute=["uid"]' -s 'config.uuidLDAPAttribute=["entryUUID"]' -s 'config.userObjectClasses=["inetOrgPerson, organizationalPerson"]' -s 'config.connectionUrl=["ldap://localhost:10389"]'  -s 'config.usersDn=["ou=People,dc=keycloak,dc=org"]' -s 'config.authType=["simple"]' -s 'config.bindDn=["uid=admin,ou=system"]' -s 'config.bindCredential=["secret"]' -s 'config.searchScope=["1"]' -s 'config.useTruststoreSpi=["ldapsOnly"]' -s 'config.connectionPooling=["true"]' -s 'config.pagination=["true"]' -s 'config.allowKerberosAuthentication=["true"]' -s 'config.serverPrincipal=["HTTP/localhost@KEYCLOAK.ORG"]' -s 'config.keyTab=["http.keytab"]' -s 'config.kerberosRealm=["KEYCLOAK.ORG"]' -s 'config.debug=["true"]' -s 'config.useKerberosForPasswordAuthentication=["true"]'
    ```
 
-#### Removing a user storage provider instance {#Removing_a_user_storage_provider_instance}
+<a name="323_____Removing_a_user_storage_provider_instance"></a>
+#### Removing a user storage provider instance
 1. Use the storage provider instance’s `id` attribute to compose an endpoint URI, such as `components/ID`.
 
 2. Run the `delete` command against this endpoint.
@@ -5609,7 +5932,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh delete components/3d9c572b-8f33-483f-98a6-8bb421667867 -r demorealm
    ```
 
-#### Triggering synchronization of all users for a specific user storage provider {#Triggering_synchronization_of_all_users_for_a_specific_user_storage_provider}
+<a name="324_____Triggering_synchronization_of_all_users_for_a_specific_user_storage_provider"></a>
+#### Triggering synchronization of all users for a specific user storage provider
 1. Use the storage provider’s `id` attribute to compose an endpoint URI, such as `user-storage/ID_OF_USER_STORAGE_INSTANCE/sync`.
 
 2. Add the `action=triggerFullSync` query parameter and run the `create` command.
@@ -5620,7 +5944,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create user-storage/b7c63d02-b62a-4fc1-977c-947d6a09e1ea/sync?action=triggerFullSync
    ```
 
-#### Triggering synchronization of changed users for a specific user storage provider {#Triggering_synchronization_of_changed_users_for_a_specific_user_storage_provider}
+<a name="325_____Triggering_synchronization_of_changed_users_for_a_specific_user_storage_provider"></a>
+#### Triggering synchronization of changed users for a specific user storage provider
 1. Use the storage provider’s `id` attribute to compose an endpoint URI, such as `user-storage/ID_OF_USER_STORAGE_INSTANCE/sync`.
 
 2. Add the `action=triggerChangedUsersSync` query parameter and run the `create` command.
@@ -5631,7 +5956,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create user-storage/b7c63d02-b62a-4fc1-977c-947d6a09e1ea/sync?action=triggerChangedUsersSync
    ```
 
-#### Test LDAP user storage connectivity {#Test_LDAP_user_storage_connectivity}
+<a name="326_____Test_LDAP_user_storage_connectivity"></a>
+#### Test LDAP user storage connectivity
 1. Run the `get` command on the `testLDAPConnection` endpoint.
 
 2. Provide query parameters `bindCredential`, `bindDn`, `connectionUrl`, and `useTruststoreSpi`, and then set the `action` query parameter to `testConnection`.
@@ -5642,7 +5968,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh get testLDAPConnection -q action=testConnection -q bindCredential=secret -q bindDn=uid=admin,ou=system -q connectionUrl=ldap://localhost:10389 -q useTruststoreSpi=ldapsOnly
    ```
 
-#### Test LDAP user storage authentication {#Test_LDAP_user_storage_authentication}
+<a name="327_____Test_LDAP_user_storage_authentication"></a>
+#### Test LDAP user storage authentication
 1. Run the `get` command on the `testLDAPConnection` endpoint.
 
 2. Provide the query parameters `bindCredential`, `bindDn`, `connectionUrl`, and `useTruststoreSpi`, and then set the `action` query parameter to `testAuthentication`.
@@ -5653,8 +5980,10 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh get testLDAPConnection -q action=testAuthentication -q bindCredential=secret -q bindDn=uid=admin,ou=system -q connectionUrl=ldap://localhost:10389 -q useTruststoreSpi=ldapsOnly
    ```
 
-### 19.13. Adding mappers {#Adding_mappers}
-#### Adding a hardcoded role LDAP mapper {#Adding_a_hardcoded_role_LDAP_mapper}
+<a name="328____19_13__Adding_mappers"></a>
+### 19.13. Adding mappers
+<a name="329_____Adding_a_hardcoded_role_LDAP_mapper"></a>
+#### Adding a hardcoded role LDAP mapper
 1. Run the `create` command on the `components` endpoint.
 
 2. Set the `providerType` attribute to `org.keycloak.storage.ldap.mappers.LDAPStorageMapper`.
@@ -5669,7 +5998,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create components -r demorealm -s name=hardcoded-ldap-role-mapper -s providerId=hardcoded-ldap-role-mapper -s providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper -s parentId=b7c63d02-b62a-4fc1-977c-947d6a09e1ea -s 'config.role=["realm-management.create-client"]'
    ```
 
-#### Adding an MS Active Directory mapper {#Adding_an_MS_Active_Directory_mapper}
+<a name="330_____Adding_an_MS_Active_Directory_mapper"></a>
+#### Adding an MS Active Directory mapper
 1. Run the `create` command on the `components` endpoint.
 
 2. Set the `providerType` attribute to `org.keycloak.storage.ldap.mappers.LDAPStorageMapper`.
@@ -5684,7 +6014,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create components -r demorealm -s name=msad-user-account-control-mapper -s providerId=msad-user-account-control-mapper -s providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper -s parentId=b7c63d02-b62a-4fc1-977c-947d6a09e1ea
    ```
 
-#### Adding a user attribute LDAP mapper {#Adding_a_user_attribute_LDAP_mapper}
+<a name="331_____Adding_a_user_attribute_LDAP_mapper"></a>
+#### Adding a user attribute LDAP mapper
 1. Run the `create` command on the `components` endpoint.
 
 2. Set the `providerType` attribute to `org.keycloak.storage.ldap.mappers.LDAPStorageMapper`.
@@ -5699,7 +6030,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create components -r demorealm -s name=user-attribute-ldap-mapper -s providerId=user-attribute-ldap-mapper -s providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper -s parentId=b7c63d02-b62a-4fc1-977c-947d6a09e1ea -s 'config."user.model.attribute"=["email"]' -s 'config."ldap.attribute"=["mail"]' -s 'config."read.only"=["false"]' -s 'config."always.read.value.from.ldap"=["false"]' -s 'config."is.mandatory.in.ldap"=["false"]'
    ```
 
-#### Adding a group LDAP mapper {#Adding_a_group_LDAP_mapper}
+<a name="332_____Adding_a_group_LDAP_mapper"></a>
+#### Adding a group LDAP mapper
 1. Run the `create` command on the `components` endpoint.
 
 2. Set the `providerType` attribute to `org.keycloak.storage.ldap.mappers.LDAPStorageMapper`.
@@ -5714,7 +6046,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create components -r demorealm -s name=group-ldap-mapper -s providerId=group-ldap-mapper -s providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper -s parentId=b7c63d02-b62a-4fc1-977c-947d6a09e1ea -s 'config."groups.dn"=[]' -s 'config."group.name.ldap.attribute"=["cn"]' -s 'config."group.object.classes"=["groupOfNames"]' -s 'config."preserve.group.inheritance"=["true"]' -s 'config."membership.ldap.attribute"=["member"]' -s 'config."membership.attribute.type"=["DN"]' -s 'config."groups.ldap.filter"=[]' -s 'config.mode=["LDAP_ONLY"]' -s 'config."user.roles.retrieve.strategy"=["LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"]' -s 'config."mapped.group.attributes"=["admins-group"]' -s 'config."drop.non.existing.groups.during.sync"=["false"]' -s 'config.roles=["admins"]' -s 'config.groups=["admins-group"]' -s 'config.group=[]' -s 'config.preserve=["true"]' -s 'config.membership=["member"]'
    ```
 
-#### Adding a full name LDAP mapper {#Adding_a_full_name_LDAP_mapper}
+<a name="333_____Adding_a_full_name_LDAP_mapper"></a>
+#### Adding a full name LDAP mapper
 1. Run the `create` command on the `components` endpoint.
 
 2. Set the `providerType` attribute to `org.keycloak.storage.ldap.mappers.LDAPStorageMapper`.
@@ -5729,8 +6062,10 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
    $ kcadm.sh create components -r demorealm -s name=full-name-ldap-mapper -s providerId=full-name-ldap-mapper -s providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper -s parentId=b7c63d02-b62a-4fc1-977c-947d6a09e1ea -s 'config."ldap.full.name.attribute"=["cn"]' -s 'config."read.only"=["false"]' -s 'config."write.only"=["true"]'
    ```
 
-### 19.14. Authentication operations {#Authentication_operations}
-#### Setting a password policy {#Setting_a_password_policy}
+<a name="334____19_14__Authentication_operations"></a>
+### 19.14. Authentication operations
+<a name="335_____Setting_a_password_policy"></a>
+#### Setting a password policy
 1. Set the realm’s `passwordPolicy` attribute to an enumeration expression that includes the specific policy provider ID and optional configuration.
 
 2. Use the following example to set a password policy to default values. The default values include:
@@ -5775,7 +6110,8 @@ $ kcadm.sh create identity-provider/instances -r demorealm -s alias=saml -s prov
      $ kcadm.sh update realms/demorealm -s 'passwordPolicy="hashIterations(25000) and specialChars(2) and upperCase(2) and lowerCase(2) and digits(2) and length(9) and notUsername and passwordHistory(4)"'
      ```
 
-#### Getting the current password policy {#Getting_the_current_password_policy}
+<a name="336_____Getting_the_current_password_policy"></a>
+#### Getting the current password policy
 Get the current realm configuration and filter everything but the `passwordPolicy` attribute.
 
 Use the following example to display `passwordPolicy` for `demorealm`.
@@ -5784,7 +6120,8 @@ Use the following example to display `passwordPolicy` for `demorealm`.
 $ kcadm.sh get realms/demorealm --fields passwordPolicy
 ```
 
-#### Listing authentication flows {#Listing_authentication_flows}
+<a name="337_____Listing_authentication_flows"></a>
+#### Listing authentication flows
 Run the `get` command on the `authentication/flows` endpoint.
 
 For example:
@@ -5793,7 +6130,8 @@ For example:
 $ kcadm.sh get authentication/flows -r demorealm
 ```
 
-#### Getting a specific authentication flow {#Getting_a_specific_authentication_flow}
+<a name="338_____Getting_a_specific_authentication_flow"></a>
+#### Getting a specific authentication flow
 Run the `get` command on the `authentication/flows/FLOW_ID` endpoint.
 
 For example:
@@ -5802,7 +6140,8 @@ For example:
 $ kcadm.sh get authentication/flows/febfd772-e1a1-42fb-b8ae-00c0566fafb8 -r demorealm
 ```
 
-#### Listing executions for a flow {#Listing_executions_for_a_flow}
+<a name="339_____Listing_executions_for_a_flow"></a>
+#### Listing executions for a flow
 Run the `get` command on the `authentication/flows/FLOW_ALIAS/executions` endpoint.
 
 For example:
@@ -5811,7 +6150,8 @@ For example:
 $ kcadm.sh get authentication/flows/Copy%20of%20browser/executions -r demorealm
 ```
 
-#### Adding configuration to an execution {#Adding_configuration_to_an_execution}
+<a name="340_____Adding_configuration_to_an_execution"></a>
+#### Adding configuration to an execution
 1. Get execution for a flow, and take note of its ID
 2. Run the `create` command on the `authentication/executions/{executionId}/config` endpoint.
 
@@ -5821,7 +6161,8 @@ For example:
 $ kcadm create "authentication/executions/a3147129-c402-4760-86d9-3f2345e401c7/config" -r examplerealm -b '{"config":{"x509-cert-auth.mapping-source-selection":"Match SubjectDN using regular expression","x509-cert-auth.regular-expression":"(.*?)(?:$)","x509-cert-auth.mapper-selection":"Custom Attribute Mapper","x509-cert-auth.mapper-selection.user-attribute-name":"usercertificate","x509-cert-auth.crl-checking-enabled":"","x509-cert-auth.crldp-checking-enabled":false,"x509-cert-auth.crl-relative-path":"crl.pem","x509-cert-auth.ocsp-checking-enabled":"","x509-cert-auth.ocsp-responder-uri":"","x509-cert-auth.keyusage":"","x509-cert-auth.extendedkeyusage":"","x509-cert-auth.confirmation-page-disallowed":""},"alias":"my_otp_config"}'
 ```
 
-#### Getting configuration for an execution {#Getting_configuration_for_an_execution}
+<a name="341_____Getting_configuration_for_an_execution"></a>
+#### Getting configuration for an execution
 1. Get execution for a flow, and get its `authenticationConfig` attribute, containing the config ID.
 2. Run the `get` command on the `authentication/config/ID` endpoint.
 
@@ -5831,7 +6172,8 @@ For example:
 $ kcadm get "authentication/config/dd91611a-d25c-421a-87e2-227c18421833" -r examplerealm
 ```
 
-#### Updating configuration for an execution {#Updating_configuration_for_an_execution}
+<a name="342_____Updating_configuration_for_an_execution"></a>
+#### Updating configuration for an execution
 1. Get execution for a flow, and get its `authenticationConfig` attribute, containing the config ID.
 2. Run the `update` command on the `authentication/config/ID` endpoint.
 
@@ -5841,7 +6183,8 @@ For example:
 $ kcadm update "authentication/config/dd91611a-d25c-421a-87e2-227c18421833" -r examplerealm -b '{"id":"dd91611a-d25c-421a-87e2-227c18421833","alias":"my_otp_config","config":{"x509-cert-auth.extendedkeyusage":"","x509-cert-auth.mapper-selection.user-attribute-name":"usercertificate","x509-cert-auth.ocsp-responder-uri":"","x509-cert-auth.regular-expression":"(.*?)(?:$)","x509-cert-auth.crl-checking-enabled":"true","x509-cert-auth.confirmation-page-disallowed":"","x509-cert-auth.keyusage":"","x509-cert-auth.mapper-selection":"Custom Attribute Mapper","x509-cert-auth.crl-relative-path":"crl.pem","x509-cert-auth.crldp-checking-enabled":"false","x509-cert-auth.mapping-source-selection":"Match SubjectDN using regular expression","x509-cert-auth.ocsp-checking-enabled":""}}'
 ```
 
-#### Deleting configuration for an execution {#Deleting_configuration_for_an_execution}
+<a name="343_____Deleting_configuration_for_an_execution"></a>
+#### Deleting configuration for an execution
 1. Get execution for a flow, and get its `authenticationConfig` attribute, containing the config ID.
 2. Run the `delete` command on the `authentication/config/ID` endpoint.
 
