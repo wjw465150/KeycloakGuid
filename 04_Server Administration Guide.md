@@ -1,5 +1,8 @@
 # Server Administration Guide(服务器管理指南)
 
+> 翻译: 白石(https://github.com/wjw465150/KeycloakGuid)
+> 原文地址: https://www.keycloak.org/docs/latest/server_admin/index.html
+
 <a name="1___1__概述"></a>
 ## 1. 概述
 Keycloak是针对Web应用程序和RESTful Web服务的单点登录解决方案。 Keycloak的目标是使安全性变得简单，以便应用程序开发人员可以轻松保护他们在组织中部署的应用程序和服务。开发人员通常必须为自己编写的安全功能是开箱即用的，并且可以根据组织的个性化需求轻松定制。 Keycloak为登录，注册，管理和帐户管理提供可定制的用户界面。您还可以使用Keycloak作为集成平台将其挂钩到现有的LDAP和Active Directory服务器中。您还可以将身份验证委派给第三方身份提供商，如Facebook和Google+。

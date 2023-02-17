@@ -1,6 +1,7 @@
 # KeyCloak服务器安装和配置指南
 
-[原文地址: https://www.keycloak.org/docs/latest/server_installation/index.html](https://www.keycloak.org/docs/latest/server_installation/index.html)
+> 翻译: 白石(https://github.com/wjw465150/KeycloakGuid)
+> 原文地址: https://www.keycloak.org/docs/latest/server_installation/index.html
 
 <a name="1___1__指南概述"></a>
 ## 1. 指南概述
@@ -31,7 +32,7 @@ Keycloak构建在WildFly应用服务器之上，它的子项目包括Infinispan(
 - Java 8 JDK
 - zip 或者 gzip 和 tar
 - 至少512M内存
-- At least 1G of diskspace
+- 至少1G的磁盘空间
 - 共享的外部数据库，如PostgreSQL、MySQL、Oracle等。如果要在集群中运行，Keycloak需要一个外部共享数据库。有关更多信息，请参阅本指南的[数据库配置](https://www.keycloak.org/docs/latest/server_installation/index.html#_database)部分。
 - 如果您想在集群中运行，最好计算机上的网络支持多播。Keycloak可以在没有多播的情况下集群化，但这需要大量的配置更改。有关更多信息，请参见本指南的[集群](https://www.keycloak.org/docs/latest/server_installation/index.html#_clustering)部分。
 - 在Linux上，建议使用`/dev/urandom`作为随机数据的来源，以防止由于缺少可用的熵而导致密钥隐藏挂起，除非您的安全策略强制使用`/dev/random`。要在Oracle JDK 8和OpenJDK 8上实现这一点，请设置 `java.security.egd`系统属性为` file:/dev/urandom`。

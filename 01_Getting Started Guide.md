@@ -1,6 +1,7 @@
 # Keycloak入门指南
 
-[原文地址: https://www.keycloak.org/docs/latest/getting_started/index.html](https://www.keycloak.org/docs/latest/getting_started/index.html)
+> 翻译: 白石(https://github.com/wjw465150/KeycloakGuid)
+> 原文地址: https://www.keycloak.org/docs/latest/getting_started/index.html
 
 
 <a name="1___1__概述"></a>

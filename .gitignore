@@ -7,3 +7,21 @@
 /_book/
 /node_modules/
 
+hs_err_pid*
+
+
+*.log
+*.log.*
+
+*.htm
+*.html
+
+# IDE support files
+/.classpath
+/.launch
+/.project
+/.settings
+/*.launch
+/*.tmproj
+/ivy*
+/eclipse 

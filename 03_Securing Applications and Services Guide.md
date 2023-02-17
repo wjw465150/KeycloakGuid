@@ -1,6 +1,7 @@
 # 保护应用程序和服务指南
 
-
+> 翻译: 白石(https://github.com/wjw465150/KeycloakGuid)
+> 原文地址: https://www.keycloak.org/docs/latest/securing_apps/index.html
 
 <a name="1___1__概述"></a>
 ## 1. 概述
